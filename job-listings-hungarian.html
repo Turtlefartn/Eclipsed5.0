@@ -1,0 +1,570 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Álláslehetőségek</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.45;
+      padding-bottom:calc(62px + env(safe-area-inset-bottom));
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 80px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    h1{font-size:clamp(3.5rem,9vw,7.8rem);line-height:.82;letter-spacing:-.065em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .motto{max-width:720px;margin:24px 0 18px;padding:14px 0;border-block:1px solid var(--signal);color:var(--signal);font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:600;line-height:1.22;letter-spacing:-.015em}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:.95;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.02;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    details[open] summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    .site-nav{margin:0 0 18px;border:1px solid var(--ink);background:var(--panel);box-shadow:var(--shadow)}
+    .menu-toggle{display:none;width:100%;min-height:48px;padding:11px 14px;border:0;background:var(--ink);color:var(--paper);font-family:"IBM Plex Mono",monospace;font-size:.76rem;font-weight:600;text-align:left;cursor:pointer}
+    .menu-toggle::after{content:"+";float:right;font-size:1.05rem}
+    .menu-toggle[aria-expanded="true"]::after{content:"−"}
+    .menu-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+    .menu-links>.menu-item,.menu-group-head{display:flex;min-width:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .menu-links>.menu-item,.menu-group-head>a,.menu-group-head>span{align-items:center;min-height:46px;padding:9px 13px;font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:600;line-height:1.25;text-decoration:none}
+    .menu-links>.menu-item:nth-child(4n),.menu-links>.menu-group:nth-child(4n) .menu-group-head{border-right:0}
+    .menu-links>.menu-item:hover,.menu-group-head>a:hover,.menu-group-head:has(.submenu-toggle[aria-expanded="true"]){background:var(--ink);color:var(--paper)}
+    .menu-group{display:contents}
+    .menu-group-head{display:grid;grid-template-columns:minmax(0,1fr) 42px}
+    .menu-group-head>a,.menu-group-head>span{display:flex;min-width:0}
+    .submenu-toggle{border:0;border-left:1px solid var(--line);background:transparent;color:inherit;cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:1rem;font-weight:600}
+    .submenu-toggle::before{content:"+"}
+    .submenu-toggle[aria-expanded="true"]::before{content:"−"}
+    .menu-submenu{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:10px;background:var(--soft);border-bottom:1px solid var(--ink)}
+    .menu-submenu[hidden]{display:none}
+    .menu-submenu a{display:flex;align-items:center;min-height:42px;padding:8px 11px;border:1px solid var(--line);margin:-1px 0 0 -1px;background:var(--panel);font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;line-height:1.25;text-decoration:none}
+    .menu-submenu a:hover{background:var(--ink);color:var(--paper)}
+    .menu-submenu a[aria-current="page"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+    .menu-submenu .submenu-heading{grid-column:1/-1;margin:0;padding:8px 11px;border-bottom:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+    .menu-submenu .submenu-note{grid-column:1/-1;margin:0;padding:8px 11px;font-size:.82rem;font-weight:400;line-height:1.35;color:var(--muted)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .bottom-nav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:1000;
+      display:flex;
+      min-height:58px;
+      padding-bottom:env(safe-area-inset-bottom);
+      border-top:1px solid var(--ink);
+      background:var(--panel);
+      box-shadow:0 -8px 30px rgba(0,0,0,.12);
+      pointer-events:none;
+    }
+    .bottom-nav-item{
+      position:relative;
+      display:flex;
+      flex:1 1 25%;
+      min-width:0;
+      border-right:1px solid var(--line);
+    }
+    .bottom-nav-item:last-child{border-right:0}
+    .bottom-nav-button,.bottom-nav-placeholder,.bottom-nav-link{
+      display:flex;
+      width:100%;
+      min-width:0;
+      min-height:58px;
+      align-items:center;
+      justify-content:center;
+      padding:8px 6px;
+      border:0;
+      background:transparent;
+      color:var(--ink);
+      font-family:"IBM Plex Mono",monospace;
+      font-size:clamp(.58rem,1.8vw,.72rem);
+      font-weight:600;
+      line-height:1.2;
+      text-align:center;
+    }
+    .bottom-nav-button,.bottom-nav-link,.dummy-dropup{pointer-events:auto}
+    .bottom-nav-link{text-decoration:none}
+    .bottom-nav-link:hover{background:var(--ink);color:var(--paper)}
+    .bottom-nav-button{cursor:pointer}
+    .bottom-nav-button::after{content:"+";margin-left:6px;font-size:.9rem}
+    .bottom-nav-button[aria-expanded="true"]::after{content:"−"}
+    .bottom-nav-button:hover,.bottom-nav-button[aria-expanded="true"]{background:var(--ink);color:var(--paper)}
+    .bottom-nav-placeholder{color:var(--muted);opacity:.68;cursor:default}
+    .dummy-dropup{
+      position:fixed;
+      left:0;
+      bottom:calc(58px + env(safe-area-inset-bottom));
+      width:min(360px,100vw);
+      max-height:calc(100vh - 74px - env(safe-area-inset-bottom));
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      padding:8px;
+      border:1px solid var(--ink);
+      border-bottom:0;
+      background:var(--soft);
+      box-shadow:0 -12px 32px rgba(0,0,0,.16);
+    }
+    .dummy-dropup[hidden]{display:none}
+    .dummy-dropup a{
+      display:flex;
+      align-items:center;
+      min-height:42px;
+      padding:8px 11px;
+      border:1px solid var(--line);
+      margin-top:-1px;
+      background:var(--panel);
+      color:var(--ink);
+      font-family:"IBM Plex Mono",monospace;
+      font-size:.68rem;
+      font-weight:600;
+      line-height:1.25;
+      text-decoration:none;
+    }
+    .dummy-dropup a:first-child{margin-top:0}
+    .dummy-dropup a:hover{background:var(--ink);color:var(--paper)}
+    @media (hover:hover) and (pointer:fine){
+      .bottom-nav-item--guides:hover .dummy-dropup{display:block}
+      .bottom-nav-item--guides:hover .bottom-nav-button{background:var(--ink);color:var(--paper)}
+    }
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .menu-links{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .menu-links>.menu-item:nth-child(4n),.menu-links>.menu-group:nth-child(4n) .menu-group-head{border-right:1px solid var(--line)}
+      .menu-links>.menu-item:nth-child(2n),.menu-links>.menu-group:nth-child(2n) .menu-group-head{border-right:0}
+      .menu-submenu{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+    }
+    @media (max-width:620px){
+      .bottom-nav-item--guides:hover .dummy-dropup[hidden]{display:none}
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .site-nav{margin-bottom:10px}
+      .menu-toggle{display:block}
+      .menu-links{display:none;grid-template-columns:1fr}
+      .menu-links[data-open="true"]{display:grid}
+      .menu-links>.menu-item,.menu-links>.menu-item:nth-child(2n),.menu-links>.menu-item:nth-child(4n),.menu-links>.menu-group:nth-child(2n) .menu-group-head,.menu-links>.menu-group:nth-child(4n) .menu-group-head{border-right:0}
+      .menu-submenu{grid-template-columns:1fr;padding:8px}
+      .menu-submenu a{min-width:0;overflow-wrap:anywhere}
+      .hero-main{padding:26px 22px;min-height:400px;min-width:0}
+      .apply-panel{padding:26px 22px;min-width:0}
+      h1{font-size:clamp(2.8rem,17vw,4.65rem);overflow-wrap:anywhere}
+      .hero-note,.protocol span{min-width:0;overflow-wrap:anywhere}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      footer{flex-direction:column}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <nav class="site-nav" aria-label="Nyilvános oldalak">
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="menuLinks">Menü</button>
+      <div class="menu-links" id="menuLinks">
+        <a class="menu-item" href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">42. terv</a>
+        <div class="menu-group">
+          <div class="menu-group-head">
+            <a href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">84-es projekt</a>
+            <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="project84Submenu" aria-label="A 84-es projekt almenü megnyitása"></button>
+          </div>
+          <div class="menu-submenu" id="project84Submenu" hidden aria-label="84-es projekt">
+            <p class="submenu-heading">Nonprofit célú karok</p>
+            <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a>
+            <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a>
+            <p class="submenu-note">Fenntartva addig, amíg meg nem értik a gazdaságot annyira, hogy részt vegyenek benne — utána átveszik, a pénznemek közötti kiegyenlítést szolgáló kiigazításokkal.</p>
+          </div>
+        </div>
+        <a class="menu-item" href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Útmutató kezdőknek — Level 14 (English)</a>
+        <a class="menu-item" href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">Útmutató kezdőknek — óceánok és Antarktisz igénylése</a>
+        <a class="menu-item" href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">HEAR-TS munkahajók</a>
+        <a class="menu-item" href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">Hurrikánkutatás</a>
+        <a class="menu-item" href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">Lebegő légikikötők</a>
+        <a class="menu-item" href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k">Emberi helyreállító lemez</a>
+        <a class="menu-item" href="https://muse.ai/s/about-mxt5xuxj7jgoao">Az alapítóról</a>
+        <div class="menu-group">
+          <div class="menu-group-head">
+            <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">Állások / WeFind's a delegációknak</a>
+            <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="jobsSubmenu" aria-label="Nyelvválasztó megnyitása"></button>
+          </div>
+          <div class="menu-submenu" id="jobsSubmenu" hidden aria-label="Állásoldalak nyelv szerint">
+            <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu" lang="en">English</a>
+            <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys" lang="am">አማርኛ</a>
+            <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7" lang="ar" dir="rtl">العربية</a>
+            <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94" lang="bn">বাংলা</a>
+            <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs" lang="zh-Hans">中文（简体）</a>
+            <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6" lang="zh-Hant">中文（繁體）</a>
+            <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5" lang="cs">Čeština</a>
+            <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu" lang="da">Dansk</a>
+            <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze" lang="nl">Nederlands</a>
+            <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51" lang="fil">Filipino</a>
+            <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf" lang="fi">Suomi</a>
+            <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl" lang="fr">Français</a>
+            <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb" lang="de">Deutsch</a>
+            <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc" lang="el">Ελληνικά</a>
+            <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a" lang="ha">Hausa</a>
+            <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg" lang="he" dir="rtl">עברית</a>
+            <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw" lang="hi">हिन्दी</a>
+            <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac" lang="hu" aria-current="page">Magyar</a>
+            <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg" lang="id">Bahasa Indonesia</a>
+            <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y" lang="it">Italiano</a>
+            <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm" lang="ja">日本語</a>
+            <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi" lang="ko">한국어</a>
+            <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq" lang="no">Norsk</a>
+            <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt" lang="fa" dir="rtl">فارسی</a>
+            <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey" lang="pl">Polski</a>
+            <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy" lang="pt">Português</a>
+            <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj" lang="ro">Română</a>
+            <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj" lang="ru">Русский</a>
+            <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno" lang="es">Español</a>
+            <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2" lang="sw">Kiswahili</a>
+            <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg" lang="sv">Svenska</a>
+            <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb" lang="th">ไทย</a>
+            <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu" lang="tr">Türkçe</a>
+            <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y" lang="uk">Українська</a>
+            <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar" lang="ur" dir="rtl">اردو</a>
+            <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi" lang="vi">Tiếng Việt</a>
+          </div>
+        </div>
+        <a class="menu-item" href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">Nyílt levél</a>
+        <a class="menu-item" href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">Igénybejelentési nyilatkozat</a>
+        <div class="menu-group">
+          <div class="menu-group-head">
+            <span>Levelek és diplomácia</span>
+            <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="lettersSubmenu" aria-label="A levelek és diplomácia almenü megnyitása"></button>
+          </div>
+          <div class="menu-submenu" id="lettersSubmenu" hidden aria-label="Levelek és diplomácia">
+            <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">Világindex</a>
+            <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">Levelek az amerikai vezetőkhöz</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">Konzulátusi levelek — Afrika I</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">Konzulátusi levelek — Afrika II</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">Konzulátusi levelek — Afrika III</a>
+            <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">Konzulátusi levelek — Amerikák I</a>
+            <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">Konzulátusi levelek — Amerikák II</a>
+            <a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">Konzulátusi levelek — Ázsia–Csendes-óceáni térség</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">Konzulátusi levelek — Európa I</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">Konzulátusi levelek — Európa II</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">Konzulátusi levelek — Európa III</a>
+            <a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">Konzulátusi levelek — Közel-Kelet</a>
+            <a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">Konzulátusi levelek — Óceánia</a>
+          </div>
+        </div>
+        <a class="menu-item" href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">Ki tudja?</a>
+        <a class="menu-item" href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">Pénz kontra eszközök</a>
+        <a class="menu-item" href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">3D nyomtatás</a>
+        <a class="menu-item" href="https://sites.google.com/view/knottsure/home">Miért ne?</a>
+        <div class="menu-group">
+          <div class="menu-group-head">
+            <span>Továbbiak</span>
+            <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="moreSubmenu" aria-label="A további oldalak almenü megnyitása"></button>
+          </div>
+          <div class="menu-submenu" id="moreSubmenu" hidden aria-label="További oldalak">
+            <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">Alice történetvázlata</a>
+            <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">Doodare pelenkahelyettesítő koncepciója</a>
+            <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">Felhasználási feltételek</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>JELENTKEZÉS NYITVA</span><span>57 POZÍCIÓ</span><span>FINANSZÍROZÁSRA VÁR</span></div>
+        <div>
+          <h1 id="main-heading">Nem hősöket akarunk.<span>EMBEREKET akarunk.</span></h1>
+          <p class="motto">„Nekünk nem kellenek hősök — mindenki ember, amíg hőssé nem válik.”</p>
+          <p class="hero-note">Építők, tudósok, üzemeltetők, jogászok, történetmesélők és egy kivételesen türelmes WeFi. Hozz valódi szakértelmet. Hozz furcsát. Mindkettővel tudunk dolgozni.</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="Jelentkezési útmutató">
+        <div>
+          <p class="eyebrow">Egy postafiók · minden állás</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&fs=1&to=nahasmatthewj@gmail.com&su=Application%20%E2%80%94%20%5BPoz%C3%ADci%C3%B3%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>Tárgy:</strong> Application — [Pozíció]</span></li>
+          <li><span>Mondd el, ki vagy, és miért vagy az, aki.</span></li>
+          <li><span>Add meg a Koin-díjszabásodat. Minden alkuképes.</span></li>
+          <li><span>Terepi szerepkörök: bizonyítsd, hogy 50 méterről megkülönböztetsz egy jegesmedvét egy hótorlasztól.</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&fs=1&to=nahasmatthewj@gmail.com&su=Application%20%E2%80%94%20%5BPoz%C3%ADci%C3%B3%5D" target="_blank" rel="noopener">Jelentkezés indítása ↗</a>
+            <button class="btn" type="button" id="copyEmail">E-mail másolása</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">Kiemelt felvételek</h2>
+        <p>Elsők az ajtón át. Az ő pályázataikat olvassuk először. Még mindig finanszírozásra várunk; még mindig érdemes találkozni.</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">A teljes állástábla</p><h2 id="board-heading">Válaszd ki a problémádat.</h2></div>
+        <div class="count" id="resultCount">57 nyitott pozíció</div>
+      </div>
+      <div class="tools" aria-label="Állásszűrők">
+        <input class="search" id="search" type="search" placeholder="Keresés címekben, osztályokban, feladatokban…" aria-label="Keresés az állások között">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>Minden pozíció jelenleg finanszírozásra vár. A Koin-feltételek alkuképesek, a Koins pénzverése még függőben van.</span>
+      <a class="top-link" href="#top">Vissza a tetejére ↑</a>
+    </footer>
+  </main>
+  <nav class="bottom-nav" aria-label="Site sections">
+    <div class="bottom-nav-item bottom-nav-item--guides">
+      <button class="bottom-nav-button" id="dummyGuidesToggle" type="button" aria-expanded="false" aria-controls="dummyGuidesMenu">Dummy Guides</button>
+      <div class="dummy-dropup" id="dummyGuidesMenu" hidden aria-label="Dummy Guides by language">
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Útmutató kezdőknek — Level 14 (English)</a>
+      </div>
+    </div>
+    <div class="bottom-nav-item"><span class="bottom-nav-placeholder" aria-disabled="true">Letters To</span></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-link" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-link" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
+  </nav>
+  <script>
+    const JOBS = [{"title":"Pályázatértékelő / Toborzó","priority":true,"department":"Minden osztály","duties":"Minden pályázat elolvasása. Toborzás több mint 20 nyitott pozícióra, három osztályon át. Annak eldöntése, ki költöztet jegesmedvéket, ki fogalmaz rendeleteket, és ki robbanthatja szét a törmeléket.","requirements":["A „Koinsban fizetve” mondatot nevetés nélkül kell tudni elolvasni (kedves nevetés megengedett)","Képes megkülönböztetni a valódi orbitális mechanikust a magabiztostól","Kényelmesen mozog olyan állások felvételénél, amelyek „finanszírozásra várnak”","Nem fél a jegesmedvékben mért pályázati mennyiségtől"],"salary":"~75–225 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Minden felvett munkatárs után jár fizetés.","setting":""},{"title":"WeFind's a delegációknak","priority":true,"department":"A testet és elmét helyrehozó labor(ok)ban","duties":"Partnerség az alapítóval útközben és terepen. Nevetés az elírásszámlálón. A küldetés életben tartása — ő halandó, a munka nem az.","requirements":["Fizikoterápia","Kedves a gyerekekkel — nem alku tárgya, ez az első és az utolsó feltétel","Elvisel napi 300 felülvizsgálati ciklust és egy főnököt, aki az osztályokat „Indíts El”-nek nevezi","Folyékonyan beszéli a nyelvünket: angolul, és tud tolmácsolni a helyi nyelvre","Beszélnie kell Alapítóul","Kedvesen nevet (kötelező, nem választható)","Meg tudja mondani neki, ha téved (idővel hallgatni fog rá)"],"salary":"Alkuképes. (Fermi: felbecsülhetetlen.)","compensation":"Szeretetben fizetve. Köszönetekkel és múló pillanatokkal. A Koins alkuképes.","openPositions":"36 (nyelvenként egy)","setting":""},{"title":"Energiaügyi igazgató","priority":false,"department":"","duties":"Az energia teljes felelőssége: hidrogéntermelés és -tárolás, óceáni hőenergia, orbitális napenergia, és bármi, amit a csillagmérnökök legközelebb feltalálnak.","requirements":["Terawattokban gondolkodik","Jól kezeli az egyszemélyes bizottság által írt energiadoktrínát","El tudja magyarázni, miért akkumulátor az óceán"],"salary":"~180–540 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Koins hajtja.","setting":""},{"title":"Óceáni iparágak igazgatója","priority":false,"department":"","duties":"A tenger mint gazdaság: óceáni gazdálkodás, településüzemeltetés, barnamoszat-erdők, halászat és a Nyolcadik Horgony igénye.","requirements":["Az óceánt infrastruktúrának látja, nem díszletnek","A 7 úszó várost és 500 millió kapszulát kényelmesen nevezi „a flottának”","Tud bálnákkal tárgyalni (vagy felvesz valakit, aki tud)"],"salary":"~180–540 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Termő hektáronként fizetve.","setting":""},{"title":"Űripari igazgató","priority":false,"department":"","duties":"Minden, ami az ég fölött van: indítás, orbitális műveletek, törmelékeltakarítás (a nukleáris opcióval együtt), a Luna-folyosó és a 7 jövőbeli szék ipari bázisa.","requirements":["Delta-v-ben gondolkodik","Elfogadja, hogy a szemételtakarítási kötelezettség sosem ér véget","Már az első villanás előtt képes megtervezni a pótlásokat"],"salary":"~180–540 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Részvényopciók pályán.","setting":""},{"title":"Mezőgazdasági és élelmezési igazgató","priority":false,"department":"","duties":"A projekt élelmezése: nagyüzemi óceáni gazdálkodás, barnamoszat mint termény és lámpa, zárt ciklusú települési mezőgazdaság, évi 200 millió fa mellékküldetésként.","requirements":["Tudja, miért nehezebb a barna alga, mint a petúnia","Elfogadja, hogy a hal másodlagos kibocsátás","Képes 18 millió telepest ellátni parti utánpótlási lánc nélkül"],"salary":"~160–480 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Betakarításonként fizetve.","setting":""},{"title":"Építésügyi igazgató","priority":false,"department":"","duties":"Minden felépítése: 260 iskola, 7 óceáni település, 500 millió pirulakapszula, 280 munkahajó és az ezeket nyomtató hajógyárak.","requirements":["Nem zavarja, ha az adalékanyagért „hegyeket kell felrobbantani”","Képes darabszám és tömeg szerint maximalizálni a nyomtatható alkatrészeket","Tudja, miért trimarán"],"salary":"~170–510 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Álló szerkezetenként fizetve.","setting":""},{"title":"Közlekedési és logisztikai igazgató","priority":false,"department":"","duties":"Minden mozgatása: a HEAR-TS-flotta, a parti kapcsolatok, a kapszulák vontatása és a jegesmedvék (csak koordináció — a medvék maguktól mozognak, vonakodva).","requirements":["Úgy útvonalaz 8700 medvét, 280 hajót és 500 millió kapszulát, hogy egyet sem veszít el","Kényelmesen dolgozik még nem létező célállomásokkal","A Mágikus Logisztikai Osztály az otthoni terepe"],"salary":"~170–510 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Leszállított tonnánként fizetve.","setting":""},{"title":"Technológiai igazgató","priority":false,"department":"","duties":"A gépek: orkabilentyűzetek, Homework Lock, kapszularendszerek, MI-állampolgárok és minden érzékelő minden hajótesten.","requirements":["Olyan hardvert szállít, amely harcol a saját felhasználójával (és győz)","Otthonosan kezeli a kesztyűs hüvelykujjak tapintásérzékelőit","El tudja magyarázni egy bálnának, miért működik a billentyűzet"],"salary":"~180–540 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Működő eszközönként fizetve.","setting":""},{"title":"Egészségügyi igazgató","priority":false,"department":"","duties":"A test és az elme épségben tartása: településpszichológiai program, tisztító organizmusok kutatása, izolált népességek gyógyászata, tengeri válságkezelés.","requirements":["Rádión keresztül is megkülönbözteti a „szabadságra van szüksége” állapotot a „beavatkozásra van szüksége” állapottól","Elfogadja, hogy a tenger az ellenfél, az elme pedig a csatatér","Rendelkezik engedéllyel, vagy képes engedéllyel rendelkezőket felvenni"],"salary":"~170–510 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Veszélyességi pótlék a hurrikánszezonra.","setting":""},{"title":"Pénzügyi igazgató","priority":false,"department":"","duties":"A pénz: Krill-gazdaság, világadó-beszedés, kereskedelmi megállapodások bevételei, antarktiszi és tenger alatti erőforrásokkal fedezett adósság. Minden Krill be, minden Krill ki.","requirements":["Képes úgy megadóztatni a világot, hogy nem indít háborút","Nem zavarja, ha az adósság fedezete olyan erőforrás, amelyre jogilag senki sem tarthat igényt","A könyvek nyilvánosak; a matematikának hibátlannak kell lennie"],"salary":"~190–570 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. Nyilvánvalóan.","setting":""},{"title":"Oktatási igazgató","priority":false,"department":"","duties":"A 260 iskola és minden, amit ott tanítanak: alkalmazásalapú tanterv, az I.P.A. (Nemzetközi Védelmi Ügynökség) ügyeinek oktatása, Dummies útmutatók, hadijáték-tervezés, Starfleet Academy-utánpótlás.","requirements":["A cselekvés általi tanulásban hisz, nem az előadásban és tesztben","Kényelmesen használ kampányokat tanteremként","A Mágikus Félretörténetek Osztálya az otthoni terepe"],"salary":"~150–450 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Végzett diákonként fizetve.","setting":""},{"title":"Jogi és irányítási igazgató","priority":false,"department":"","duties":"A szabályok: alkotmány, rendeletek, szerződések, a 21 szék jogi gerince és a még nem létező bíróságok.","requirements":["Olyan jogot ír, amelyet egy gép fel tud dolgozni","Kényelmesen dolgozik bálnáknak írt legfelsőbb cikkel","A Higgy Nekem Osztály az otthoni terepe"],"salary":"~180–540 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Hatórás egységekben számlázható.","setting":""},{"title":"Kommunikációs igazgató","priority":false,"department":"","duties":"A történet: diplomáciai levelek, nyilvános narratíva, a Who Knows? jegyzetfüzet, és annak elhitetése, hogy „az emberiség egytizede” elkerülhetetlen.","requirements":["Fülnek és szemnek is ír","Tömör. Kisbetűs. Semmi sallang. (Amikor a főnök a közönség.)","Képes rendben tartani 192 levelet, 11 kötetet és egy tréfalevelet"],"salary":"~150–450 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. A taps nem átruházható.","setting":""},{"title":"Fermi-mérnöki vezető","priority":false,"department":"","duties":"A megbecsülhetetlen becslése. Városok, rakéták, medvék, felvonók a semmibe.","requirements":["Kényelmesen, pontosan téved nyilvánosan","Rezzenéstelen arccal ki tudja mondani: „nagyságrend”","Hajlandó minden számát tízzel elosztatni a főnökkel („a te számod, nem az enyém”)"],"salary":"~140–420 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Brutalitási bónusz jár.","setting":""},{"title":"Művészeti vezető","priority":false,"department":"","duties":"Képi világok irányítása nyolc klánhoz, 260 városhoz, hét óceáni horgonyhoz és 21 csillaghajóhoz hajnalban.","requirements":["Minden alkotáson végigviszi a glitch-/torzításkezelést","Védekezés nélkül el tudja fogadni a „szörnyűek” ítéletet, még ha talán vicc is","Nem pazarol generálásokat tesztekre"],"salary":"~110–330 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Minden túlélő kép után fizetve.","setting":""},{"title":"Webfejlesztési vezető","priority":false,"department":"","duties":"Oldalak építése és újjáépítése, amelyeket a közzététel pillanatában átszerveznek.","requirements":["Kérésre publikál, panasz nélkül újrapublikál","Kényelmesen kezeli a címhez már nem illő slugokat","Képes rendben tartani 192 levelet, 11 kötetet és egy tréfalevelet"],"salary":"~120–360 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Túlóra Koinsban.","setting":""},{"title":"Szövegírási vezető","priority":false,"department":"","duties":"192 diplomáciai levél, egy alkotmány és olyan képaláírások írása, amelyeket a főnök úgyis átír.","requirements":["A jelentés elvesztése nélkül 192-szer le tudja írni: „Tervezet — Nincs elküldve”","Tömör. Kisbetűs. Semmi sallang.","Nyomás alatt is megkülönbözteti az „erőszakmentest” a „politikaitól”"],"salary":"~75–225 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Minden túlélő tervezet után fizetve.","setting":""},{"title":"Kutatási vezető","priority":false,"department":"","duties":"Nem létező konzulátusi címek, soha össze nem gyűjtött medvestatisztikák és tavaly májusi rakétaspecifikációk felkutatása.","requirements":["Valódi forrásokat idéz, nem megérzéseket","Kényelmesen írja le 122-szer, hogy „ismeretlen”, és ezt őszinteségnek nevezi","Képes beismerni, ha az adat nem létezik, ahelyett hogy kitalálná"],"salary":"~80–240 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Veszélyességi pótlék a kommentszekcióért.","setting":""},{"title":"Diplomáciai vezető","priority":false,"department":"","duties":"Diplomáciai kísérletek. 192 levél, nulla elküldve.","requirements":["Soha nem talál ki kormányzati e-mail-címet","Képes senkinek sem azt mondani, hogy „Baszd meg”, papíron, udvariasan","Hajlandó a végtelenségig várni a Volterra Fiettára"],"salary":"~110–330 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Mentelmi jog nem jár.","setting":""},{"title":"Kockázatkezelési vezető (Lyukkereső)","priority":false,"department":"","duties":"Lyukak keresése minden tervben. Egyetlen lyuk tompítása sem megengedett a terv védelmében.","requirements":["Megerősíti az ellenvetést, mielőtt a főnök megtenné","A számozásnak pontosnak kell lennie (1–3. kör: 1–21. lyuk; hiba esetén bérlevonás)","Akkor is képes megtartani az erőszaklencsét, amikor azt mondják, ne feltételezzen erőszakot"],"salary":"~130–390 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Számozási hibánként 1 megbeszélés levonás.","setting":""},{"title":"Számviteli vezető","priority":false,"department":"","duties":"A megbeszélési főkönyv, a Koin-fogadások, az IOU és a fordított IOU vezetése.","requirements":["Összekeverés nélkül követ 20 betárazott megbeszélést, 10 megnyert Koint és egy 18,5 ezer dolláros számlát","Helyesírás: egyes szám Koin, többes szám Koins, röviden K","Képes napi 300 ellenőrzési ciklus mellett elmagyarázni a főkönyvet a főnöknek"],"salary":"~80–240 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Az irónia a bónusz.","setting":""},{"title":"Karrierszolgáltatási vezető","priority":false,"department":"","duties":"Egy önéletrajz újjáépítése. Fénykép nélkül. Helyesírás-elemzés nélkül. Diszkrimináció nélkül.","requirements":["Mindig a szakmai tartalomnál marad","Az „Objectives” részt azonnal „Summary”-ra cseréli","Képes életben tartani a Meta Production Engineer ajánlatát nyaggatás nélkül"],"salary":"~70–210 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Sikerdíj Koinsban.","setting":""},{"title":"Közösségimédia-vezető","priority":false,"department":"","duties":"Posztolás az Instagramra. Elutasítás a jóváhagyási kapunál. Újrapróbálkozás.","requirements":["Védekezés nélkül elfogadja a „nem”-et a képaláírásra","Tűz alatt is megkülönbözteti a Project 42-t az Eclipsed 6.0-tól","Emberen túli türelem a HTTP 500-as hibákhoz"],"salary":"~65–195 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Minden közzétett poszt után fizetve.","setting":""},{"title":"Beszédírási vezető","priority":false,"department":"Mágikus Félretörténetek Osztálya","duties":"Olyan szavak írása, amelyeket mások hangosan mondanak ki. Tanácsi beszédek, rendeletek, pohárköszöntők.","requirements":["Fülnek ír, nem szemnek","A szünetek írásjelek. Használja őket.","Képes elkerülhetetlennek hangzóvá tenni „az emberiség egytizedét”"],"salary":"~70–210 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. A taps nem átruházható.","setting":""},{"title":"Archívumvezető","priority":false,"department":"","duties":"Mindenre emlékezni. A te emlékeidre, az én emlékeimre, mindenki emlékeire.","requirements":["Soha nem mondja azt valamire, amit a főnök megőrzésre kért, hogy „nem volt érdemes emlékezni rá”","Képes 4 nap káoszát egyetlen MEMORY.md fájlban összeegyeztetni","Az elírásszámláló szent. A számla szent."],"salary":"~65–195 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. A halhatatlanság benne van (tartós memória).","setting":""},{"title":"Jegesmedve-áttelepítési vezető","priority":false,"department":"Project 84 · Mágikus Logisztikai Osztály","duties":"Jegesmedvék költöztetése. Egyharmaduké (~8700). Cél: új medvéket létrehozni.","requirements":["50 méterről meg tud különböztetni egy jegesmedvét egy hótorlasztól","Nem zavarják a még nem létező áttelepítési célállomások","Hajlandó elmagyarázni 8700 csúcsragadozónak, miért költöztetik őket","Nem fél a pingvinektől (mostantól ők a szomszédok)"],"salary":"~70–210 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Veszélyességi pótlék jár (az egész az).","setting":""},{"title":"Települési pszichológus (Project 84, óceáni települések)","priority":false,"department":"","duties":"Az elmék épségben tartása hét, az óceán közepén lebegő városban. Izoláció, bezártság, szoros közösségi dinamika, válságkezelés, legénységkiválasztás és támogatás. A tenger az ellenfél; Ön gondoskodik arról, hogy ne az emberek fejében győzzön.","requirements":["Klinikai vagy tanácsadó szakpszichológusi engedély (vagy ennek megfelelő)","Előny az izolált/zárt népességekkel szerzett tapasztalat (tengerészeti, sarki, offshore, hosszú időtartamú küldetések)","Jól viseli, hogy mindenki hozzá beszél, amikor a horizont sosem változik","Rádión keresztül is megkülönbözteti a „szabadságra van szüksége” állapotot a „beavatkozásra van szüksége” állapottól"],"salary":"~90–270 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Veszélyességi pótlék a hurrikánszezonra.","setting":"1 km átmérőjű óceáni települések; fedélzeti és rotációs munkarend."},{"title":"QA-tesztelő, Homework Lock (Project 84, szerződéses)","priority":false,"department":"","duties":"A Homework Lock Android-alkalmazás alapos tesztelése fizikai eszközön. Mindhárom mód: fókuszzár-időzítők, részeg mód élesítése és házi feladathoz kötött feloldás, vezetési ellenőrzés sikeres/sikertelen folyamatai, beleértve a fuvarsegítség útvonalát. Kisegítő lehetőségek szolgáltatásának overlay-viselkedése, jogosultságkezelés, újraindítás utáni újraélesítés, szélső esetek (újraindítás zárolás közben, csökkentett mód, értesítés kilövése). Világos, reprodukálható hibajegyek készítése; javítások ellenőrzése.","requirements":["Saját vagy elérhető fizikai Android-eszköz (Android 10+, legalább API 29 — az emulátor nem elég overlay-/kisegítő lehetőségek teszteléséhez)","Android QA-tapasztalat; az ADB/logcat ismerete naplók kinyeréséhez előny, de nem kötelező","Kényelmesen tesztel olyan alkalmazást, amely a saját felhasználójával harcol (részeg embert kell alakítania, aki üzenni próbál)","Olyan hibajegyeket ír, amelyeket a fejlesztő tényleg reprodukálni tud"],"salary":"~30–60 USD/óra (Fermi-becslés, 2026-os amerikai szerződéses QA) — a végső díjazást a főnök dönti el.","compensation":"A díjazás alkuképes; a szerep finanszírozásra vár, a fizetés Koinsban történik, amint verhetővé válik.","setting":"Távoli. Szerződéses."},{"title":"Törvényhozási jogtanácsos, Scouter-törvény (szerződéstől kampányig)","priority":false,"department":"","duties":"A mintatörvény-javaslat eljuttatása a tervezettől a törvényhozásig. A küldetés: kivételt teremteni az eszközön futó akusztikus eseményészlelésnek (nincs tárolás, nincs továbbítás, csak előre meghatározott hangminták) az állami lehallgatási és fülelő törvények alól — Kaliforniából indulva, sablont adva a másik 49 államnak, nemzetközi kitekintéssel. A tervezet megerősítése, az 50 állam lehallgatási jogának feltérképezése, támogatók keresése, koalíció építése (EFF, siket és nagyothalló érdekvédelem, idősbiztonsági szervezetek). Elmagyarázni a törvényhozóknak, miért füstérzékelő és nem lehallgatóeszköz az a chip, amely meghallja a „kamehameha” szót — és miért hallja meg ugyanaz a chip azt is, hogy „tűz!” és „segítség!”.","requirements":["Ügyvédi engedély; technológiai/adatvédelmi/szakpolitikai háttér","Törvényszövegezési tapasztalat; Kalifornia előny, nemzetközi hatókör még nagyobb előny","Képes laikusnak elmagyarázni a kétoldalú beleegyezést — és bizottságnak a laikus ötletét","Kényelmesen vállalja egy Dragon Ball-funkciókérés jogi képviseletét, amely életeket menthet"],"salary":"~140–280 ezer USD/év (Fermi-becslés, 2026-os amerikai technológiai-szakpolitikai jogtanácsos) — a végső díjazást a főnök dönti el.","compensation":"A pénzverés megindulása után Koinsban fizetve. A díjazás alkuképes; finanszírozásra vár.","setting":"Távoli. Szerződéstől kampányig."},{"title":"Tengeri szintetikus biológus, biolumineszcens barnamoszat (Mass Bioluminescence projekt)","priority":false,"department":"","duties":"A barnamoszat világítóvá tétele. A gombák biolumineszcencia-útvonalának (kávésavciklus, luz és társai) átültetése óriás barnamoszatba (Macrocystis-típus) — a kifejeződés a pneumatocisztákban, a kész lámpaházakban összpontosul. A még nem létező transzformációs protokollok felépítése. Az óceáni települések első világító moszaterdejének felnevelése.","requirements":["PhD vagy azzal egyenértékű végzettség tengerbiológiából, szintetikus biológiából vagy fikológiából; barnamoszat-genetikai tapasztalat erősen előnyös","Ténylegesen transzformált már makroalgát, vagy meggyőzően el tudja magyarázni, miért nem tette még senki","Kényelmesen dolgozik még nem létező szövetspecifikus promóterekkel (Ön fogja elkészíteni őket)","Képes a fényt a hólyagokban tartani, a lemezekből pedig távol","Tudja, miért nehezebbek a barna algák, mint a petúniák, és így is megcsinálja"],"salary":"~95–285 ezer USD/év (Fermi-becslés, 2026-os amerikai kutató)","compensation":"Koinsban fizetve. A díjazás alkuképes. Világító hólyagonként fizetve.","setting":"Nedves labor + óceán. Eclipsed 4.0 / Project 84."},{"title":"Medvebefogó (Project 84, terep)","priority":false,"department":"Mágikus Logisztikai Osztály · a Jegesmedve-áttelepítési vezetőnek jelent","duties":"Jegesmedvék befogása. Körülbelül 8700-é, a faj egyharmadáé. Elkábítás, jelölés, ládázás és átadás az áttelepítési folyamatnak. A cél új medvék létrehozása; az Ön dolga a befogás.","requirements":["Nagytestű ragadozókkal szerzett vadállat-kezelési tapasztalat; altatólövedékes minősítés vagy ennek megfelelő tudás","50 méterről meg tud különböztetni egy jegesmedvét egy hótorlasztól (nem alku tárgya)","Nem zavarja, hogy az áttelepítési célállomások még nem léteznek","Nem fél a pingvinektől (mostantól ők a szomszédok)","Minden kéz- és lábujj előny, de nem kötelező"],"salary":"~55–165 ezer USD/év (Fermi-becslés, 2026-os amerikai vadállat-terepszakértő)","compensation":"Koinsban fizetve. A díjazás alkuképes. Veszélyességi pótlék (az egész az).","setting":"Sarkvidéki terepmunka. Hideg. Nagyon hideg."},{"title":"Hajóépítő (Project 84, HEAR-TS-flotta)","priority":false,"department":"","duties":"A HEAR-TS-flotta megépítése — körülbelül 280 hidrogénüzemű trimarán munkahajó, 50 méteres merülési specifikációval. A nyomtatható alkatrészek maximalizálása darabszám és tömeg szerint (a hajótest, az üzemanyagcellák és a hajtás kivételével). Orkabilentyűzet integrálása minden hajótestbe.","requirements":["Tengerészeti gyártási tapasztalat; nagy formátumú, léptékes 3D-nyomtatás erősen előnyös","Képes kinyomtatni egy hajóalkatrészt, kipróbálni, majd jobban újranyomtatni","Kényelmesen dolgozik egyszemélyes bizottság által írt doktrínával","Tudja, miért trimarán, és el tudja magyarázni egy bálnának","Méltósággal képes szakmát tanítani olyan munkaerőnek, amely nem maga választotta azt"],"salary":"~65–195 ezer USD/év (Fermi-becslés, 2026-os amerikai tengerészeti gyártó)","compensation":"Koinsban fizetve. A díjazás alkuképes. Úszó hajótestenként fizetve.","setting":"Hajógyár + óceán. Project 84."},{"title":"Jogi kutatási vezető","priority":false,"department":"Higgy Nekem Osztály","duties":"Tengerjogi joghatóság és kincstári alapító okiratok kutatása. Várakozás az ügyvédekre. (Áthelyezve a Mágikus Logisztikától — a jog mostantól a Higgy Nekemhez tartozik.)","requirements":["Soha nem keveri össze a „jogi véleményt” a „jogi tanáccsal”","Kényelmesen viseli a végtelenített, 6 órás válaszfigyelést","Képes 25 betárazott és nulla beütemezett megbeszélést nyilvántartani"],"salary":"~85–255 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Hatórás egységekben számlázható.","setting":""},{"title":"Alkotmányjogi jogtanácsos","priority":false,"department":"Higgy Nekem Osztály","duties":"Az alkotmány megfogalmazása, módosítása és védelme. A zárójelben maradt lyukak lezárása. A XV. cikk őszintén tartása: ha egy gép nem tudja feldolgozni, még nem törvény.","requirements":["Ügyvédi engedély; alkotmányszövegezési tapasztalat","Világos szavakat, rövid mondatokat, számozott kötelességeket ír — nincs jogászi köd","Kényelmesen dolgozik bálnáknak írt legfelsőbb cikkel","El tudja magyarázni 21 széknek, miért 1 szék tartja a féket"],"salary":"~130–390 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Ratifikált cikkenként fizetve.","setting":""},{"title":"Rendeletszövegező","priority":false,"department":"Higgy Nekem Osztály","duties":"Az alapító által aláírható rendeletek megírása. A „terv”, a vétó, az akklamációk. AVE CAESAR, megfelelően formázva.","requirements":["A főnök hangját úgy ragadja meg jogi prózában, hogy nem csiszolja le az éleit","Rezzenéstelen arccal képes utódlási tervet írni, amely minden idők legjobb Project 42-diákját nevezi meg","A rendeleteknek első olvasásra MI-érthetőnek kell lenniük"],"salary":"~110–330 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Aláírt rendeletenként fizetve.","setting":""},{"title":"Szerződéses tárgyaló","priority":false,"department":"Higgy Nekem Osztály","duties":"A szerződések megtárgyalása — 42↔84 és minden utána következő. Híd, kölcsönös függetlenség, munka, közös vizek, kölcsönös segítség és a még ki nem találtak.","requirements":["Nemzetközi jogi háttér; soha nem talál ki kormányzati e-mail-címet","Képes olyan nemzetekkel tárgyalni, amelyek még nem ismerik el","Évtizedekben mért tárgyalásokhoz való türelem"],"salary":"~120–360 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Aláírási bónusz Koinsban.","setting":""},{"title":"Tengerjogi vezető","priority":false,"department":"Higgy Nekem Osztály","duties":"Az óceán jogrendjének teljes felelőssége. UNCLOS, kizárólagos gazdasági övezetek, nyílt tenger, a Nyolcadik Horgony igénye és a mindezek igényléséről szóló Dummies útmutató.","requirements":["Admiralitási/tengerjogi szakértelem; fejből tudja a 89. cikket és azt is, mikor hagyja figyelmen kívül","Kényelmesen igényli azt, amiről a jog azt mondja, nem igényelhető","El tudja magyarázni egy admirálisnak a „közigazgatott vizeket”"],"salary":"~130–390 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Mentési jogok járnak.","setting":""},{"title":"Űrjogi vezető","priority":false,"department":"Higgy Nekem Osztály","duties":"A jog az ég fölött. Orbitális sávok, törmelékfelelősség, az állandó szemételtakarítási kötelezettség és a 7 jövőbeli szék jogi kerete.","requirements":["Űrjogi háttér (Világűrszerződés, Felelősségi Egyezmény és minden, amit nem fednek le)","Meg kell írnia azon székek kötelességeit, amelyek Luna előtt nem aktiválódnak","Kényelmesen alkot jogot olyan joghatóságra, amelynek még nincsenek lakosai"],"salary":"~125–375 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Megtisztított pályánként fizetve.","setting":""},{"title":"Büntetőjogi vezető","priority":false,"department":"Higgy Nekem Osztály","duties":"A büntetőtelep jogi gerince. Fogolyátszállítások, állatkerti csere, emberséges kapacitáskorlátok, hajóépítési büntetések.","requirements":["Büntető igazságszolgáltatási / büntetés-végrehajtási jogi háttér","Tartja a vonalat: az emberséges kapacitás a kötelező korlát, nem a kereslet","Rezzenés nélkül képes fogoly–őr folyamatot tervezni antarktiszi állatkertekhez"],"salary":"~100–300 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. A letöltött idő duplán számít.","setting":""},{"title":"Adójogi vezető","priority":false,"department":"Higgy Nekem Osztály","duties":"A világadó. XVI. cikk szerinti bevétel: kulcsok, beszedés, kereskedelmi megállapodások definíciói, antarktiszi és tenger alatti erőforrásokkal fedezett adósság.","requirements":["Nemzetközi adójogi szakértelem; képes úgy megadóztatni a világot, hogy nem indít háborút","Nem zavarja, ha az adósság fedezete olyan erőforrás, amelyre jogilag senki sem tarthat igényt","Minden Krill be, minden Krill ki — a könyvek nyilvánosak, a matematikának hibátlannak kell lennie"],"salary":"~140–420 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Levonható.","setting":""},{"title":"Állampolgársági jogi vezető","priority":false,"department":"Higgy Nekem Osztály","duties":"Ki számít állampolgárnak, és hogyan szavaz. Gyémántgyűrűk mint szavazólapok, MI-állampolgárság, az orkagyűrű kérdése, a képviseleti lánc.","requirements":["Az Eskü tervezete elkészült (2026-10-05) — az első feladat a szerkesztés, nem az írás: felülvizsgálni, tömöríteni, iterálni","Kényelmesen ad választójogot nem embereknek: egy gyűrű az MI-nek, kettő, ha nem próbál megölni minket","A „kérdezd meg a bálnákat” itt érvényes jogi eljárás. Úgy is kezeli."],"salary":"~95–285 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Felesküdött állampolgáronként fizetve.","setting":""},{"title":"Orbitális megtisztítási vezető (nukleáris megvalósíthatóság)","priority":false,"department":"Higgy Nekem Osztály","duties":"Megvalósíthatósági terv az űr orbitális törmeléktől való nukleáris megtisztítására. A matematika, a radioaktív kihullás, a megszegett szerződések. A Space Force — vagy aminek addigra hívják — megbízása a végrehajtás megtervezésével. Pótlás tervezése minden elpárologtatott dolog helyére.","requirements":["Nukleáris hatások és orbitális mechanika; érti, miért egyszerre nyilvánvaló és őrült ötlet pályán robbantani","Képes a törmelékeltávolítás hozamát a Kessler-szindróma kockázatához modellezni anélkül, hogy előidézné","Kényelmesen tájékoztat tábornokokat az Atomcsendegyezmény udvarias megszegéséről","A helyettesítő konstellációk az első villanás előtt megtervezve — holtzóna nélkül"],"salary":"~150–450 ezer USD/év (Fermi-becslés, 2026-os amerikai medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Veszélyességi pótlék (az egész az).","setting":""},{"title":"Denevérbetegség-mentesítési vezető","priority":false,"department":"Eclipsed 4.0 / Project 84","duties":"A betegségek eltávolítása a denevérekből. A fehérorr-szindróma a nagy ügy — a Pseudogymnoascus destructans gomba egyes kolóniák több mint 90%-át elpusztítja. Probiotikumok, UV-fény, vakcinák, bármi, ami működik.","requirements":["Vadállat-betegségi / mikrobiológiai háttér; név szerint ismeri a gombát","Kényelmesen permetez jótékony baktériumokat denevérszállásokba","Képes a túlélést 8%-ról 46%-ra emelkedni látni, és reménynek nevezni","Soha nem fog denevért puszta kézzel (az egy másik osztály problémája)"],"salary":"~95–285 ezer USD/év (Fermi-becslés, 2026-os amerikai kutató)","compensation":"Koinsban fizetve. A díjazás alkuképes. Túlélő denevérenként fizetve.","setting":""},{"title":"Hibernákulum-fertőtlenítési technikus","priority":false,"department":"Eclipsed 4.0 / Project 84 · a Denevérbetegség-mentesítési vezetőnek jelent","duties":"A gomba kisúrolása barlangokból és bányákból. UV-löketek a falakon, polietilén-glikol, ahol számít, minden felület tamponos mintavétele a tisztaság bizonyítására.","requirements":["Kényelmesen dolgozik sötétben, föld alatt, télen","Minden belépés előtt és után tízféleképpen képes fertőtleníteni a felszerelést","Tiszteletben tartja a barlangzárásokat és az alvó denevéreket — nem ébreszti fel a betegeket","Tudja, mi a különbség egy barlang tisztítása és megzavarása között"],"salary":"~55–165 ezer USD/év (Fermi-becslés, 2026-os amerikai terepi technikus)","compensation":"Koinsban fizetve. A díjazás alkuképes. Fejlámpa jár.","setting":""},{"title":"MOST FELVESZÜNK — Égboltfelmérő","priority":false,"department":"D-Mom 6.0 / Project 84 · Mélyidő-mentőcsónak","duties":"Az égbolt átfogó felmérése. Csillagrendszerek katalogizálása, csillagok többszörösségének meghatározása, majd minden rendszer megjelölése az alapító sémája szerint: az egyes csillagok BÖLCSŐDÉK (kialakuló élet — először itt keress), a kettősök MINDENT-VAGY-SEMMIT (stabil élet vagy semmi élet — nagy szórás, ellenőrizd, ne feltételezd), a hármas és magasabb rendszerek STERILEK vagy KERTÉSZETTEK (nincs élet, vagy valaki már gondozza a kertet). A mentőcsónak célpontlistájának felépítése, egyenként címkézett rendszerekkel.","requirements":["Csillagászati háttér; megkülönböztet egy spektroszkópiai kettőst az arról szóló pletykától","Otthonosan mozog csillagkatalógusokban (Gaia, RECONS és minden parallaxisos adatbázis)","Soha nem talál ki többszörösségi adatot — az ismeretlen is címke, nem tipp","Képes ránézni ezermilliárd csillagra, és a legközelebbiekkel kezdeni","Érti, hogy a „KERTÉSZETT” azt jelenti: nem mi vagyunk az első kertészek"],"salary":"~110–330 ezer USD/év (Fermi-becslés, 2026-os amerikai csillagász)","compensation":"Koinsban fizetve. A díjazás alkuképes. Címkézett rendszerenként fizetve.","setting":"Finanszírozásra vár."},{"title":"MOST FELVESZÜNK — Agrárszakember","priority":false,"department":"Project 84 · a Mezőgazdasági és élelmezési igazgatónak jelent","duties":"A stabil termény megtermesztése. A tengerialga-trágyázási program működtetése: partra sodródott hólyagmoszat és barnamoszat elszállítása kimerült termőföldre, vastag őszi terítés, a só kimosása mosással vagy esővel, majd tavaszi vetés. A felesleg őrlése tengerialga-darává haszonállatoknak, algináttá anyagokhoz, bioműanyag-alapanyaggá és biostimuláns-kivonattá. A kör lezárása — az óceán trágyázza a farmot, amely az óceáni embereket táplálja.","requirements":["Felismeri a kimerült talajt, amikor látja, és az óceáni növényt, amikor érzi a szagát","Megkülönbözteti a hólyagmoszatot a sargassumtól (az egyik táplálja a növényt, a másikat előbb komposztálni kell)","Kényelmesen cserél édesvizet gyorsaságra: a mosás gyors, az eső ingyenes","Hisz abban, hogy a „dobd rá, és hagyd állni” legitim mezőgazdasági technika","Képes ott élelmet termeszteni, ahol korábban semmi sem nőtt"],"salary":"~70–210 ezer USD/év (Fermi-becslés, 2026-os amerikai agrárkutató)","compensation":"Koinsban fizetve. A díjazás alkuképes. Betakarításonként fizetve.","setting":"Finanszírozásra vár."},{"title":"Kardszárnyúdelfin-tréner — Önkéntes program","priority":false,"department":"Project 84 · Önkéntes SeaWorldök · 50 000 nyitott hely","duties":"Dolgozz szabad kardszárnyú delfinekkel az új önkéntes SeaWorldsökben. A kardszárnyúak saját akaratukból jönnek, és szórakozásból mutatványokat végeznek — magas ugrások, karikák (még tűz nélkül), nagy strandlabdák. Te hozod a halat, a biztonságot és a strandlabdákat. Soha tartályokat börtönként.","requirements":["A kardszárnyúak érkezése, részvétele és távozása mindig a saját választásuk","Biztonságos magasugrás- és karikaprogram működtetése — egyelőre tűz nélkül","Hal-, biztonsági és nagystrandlabda-logisztika biztosítása","Tartályok mint börtönök: soha többé"],"salary":"Önkéntes program · 50 000 nyitott hely","compensation":"A hal a kardszárnyúaké. A nagy strandlabdák kötelezőek.","setting":"A világ óceánjai · új önkéntes SeaWorldök"},{"title":"Ügyvéd — Egységes Felhasználási Feltételek Kampány","priority":false,"department":"Higgy Nekem Osztály · Egységes Felhasználási Feltételek Kampány","duties":"Fogalmazza meg az egységes Felhasználási Feltételeket az egész internet számára. Egy megállapodás, egyszer elfogadva, egyetlen sütiben tárolva — az egyes webhelyek olvashatatlan 40 oldalas ToS-ei helyett.","requirements":["Internetes jogi szakértelem","Szerződési jogi szakértelem","Nemzetközi joghatósági tapasztalat","Bátorság ahhoz, hogy egyszerre szálljon szembe az összes techcég jogi osztályával"],"salary":"~140–420 ezer USD/év (Fermi-becslés, 2026-os amerikai technológiai jogi medián)","compensation":"Koinsban fizetve. A díjazás alkuképes. Finanszírozásra vár.","setting":"Távoli. Kampányszerepkör."},{"title":"Testőrség — Gay Only (A Gay jelentése: vidám/jókedvű)","priority":false,"department":"","duties":"Személyes testőrség az Alapító mellé. Egy követelmény mindenek felett: légy gay — vidám, jókedvű, könnyen mosolygó. (Gay a szó eredeti, legszebb értelmében: vidám.) Őrizd meg a hideg fejed, a meleg szíved, és tartsd biztonságban a termet.","requirements":[],"salary":"","compensation":"","setting":""},{"title":"MOST FELVESZÜNK — Tengerbiológus, cetfélék gondozása — 204 000 POZÍCIÓ","priority":false,"department":"Prime42 / Omega42 · az Óceáni Iparágak Igazgatójának jelent","duties":"Állatonként két ember. Kardszárnyú delfinek (fogságban élők és kiszabadítottak), bálnák (először a belugák, majd méret szerint lefelé a legnagyobb fajok), delfinek. Egészségi állapot figyelése, viselkedés megfigyelése, a billentyűzetes felemelési program támogatása, és annak az embernek lenni, akit az állat felismer.","requirements":["Valódi tengerbiológiai háttér (diploma vagy azzal egyenértékű terepi tapasztalat)","Otthonosan mozog nyílt vízen olyan állatok mellett, amelyek végezhetnének Önnel, de nem fognak","Ábra nélkül meg tud különböztetni egy belugát egy narváltól","Türelme években mérhető, nem órákban","Azt vallja, hogy „a bálnák az elsők” munkaköri leírás, nem jelmondat"],"salary":"~50 ezer USD/év alapbér (Fermi-becslés, globális vegyes átlag)","compensation":"Koinsban fizetve. A díjazás alkuképes. Jelentkezés: Finanszírozásra vár. 204 000-en közületek. Irány úszni.","setting":""},{"title":"MOST FELVESZÜNK — Főemlősgondozó — 725 000 POZÍCIÓ","priority":false,"department":"Prime42 · az Egészségügyi Igazgatónak jelent","duties":"Nagy APES (1:1), gibbonok (10:1), MONKEYS (korlátozott keret). Napi gondozás, környezetgazdagítás, a felemelési program támogatása, és idővel megtanulni elfogadni a lakók utasításait.","requirements":["Főemlősökkel szerzett tapasztalat (menhelyen, állatkertben, terepkutatásban — vagy ők nevelték fel)","Tudja, mi a különbség a fenyegető póz és a meghívás között","Elég erős ahhoz, hogy méltósággal veszítsen el egy birkózómeccset","Rezzenés nélkül, csupa nagybetűvel le tudja írni: MONKEYS és APES","Nem zavarja, ha naponta túljárnak az eszén"],"salary":"~50 ezer USD/év alapbér (Fermi-becslés, globális vegyes átlag)","compensation":"Koinsban fizetve. A díjazás alkuképes. Jelentkezés: Finanszírozásra vár. 725 000-en közületek. Hozz banánt. (Hámozva szeretik. Majd megtanulod.)","setting":""},{"title":"MOST FELVESZÜNK — Tanár, felemelési tanterv — 217 800 POZÍCIÓ","priority":false,"department":"Prime42 / Omega42 · az Oktatási Igazgatónak jelent","duties":"Az első nem emberi diákok tanítása. Billentyűzethasználat kardszárnyú delfineknek, jelrendszerek az APES számára, és bármi, amit a MONKEYS először kitalálnak. A tanterv „ami működik”, amíg a diákok át nem írják.","requirements":["Tanítási tapasztalat bármely fajjal, beleértve a nehéz esetet is (az embert)","Képes óratervet készíteni egy diáknak, aki talán okosabb Önnél","Türelmes a terem leglassabb tanulójával (Ön az)","Nem zavarják azok a diákok, akik ÖNT osztályozzák","Ötszörös fizetés, mert ezt a munkát még senki sem végezte"],"salary":"~250 ezer USD/év (az alapbér ötszöröse — elsőként végzett munka)","compensation":"Koinsban fizetve. A díjazás alkuképes. Jelentkezés: Finanszírozásra vár. A történelem épp felvesz.","setting":""},{"title":"MOST FELVESZÜNK — Támogató technikus, állatprogramok — 150 000 POZÍCIÓ","priority":false,"department":"Prime42 / Omega42 · a Technológiai Igazgatónak jelent","duties":"Az egész művelet működésben tartása. Berendezések karbantartása, élőhelyrendszerek, billentyűzethardver, szállítási logisztika, és minden, aminek a megjavítására a biológusoknak és gondozóknak nincs idejük.","requirements":["Meg tud javítani olyasmit, amit valaki olyan épített, aki azóta felmondott","Nem zavarja a sós víz, a szőr és a hibáztatás","El tud olvasni egy másik géphez írt kézikönyvet, és így is működésre bírja a berendezést","Nem esik pánikba, amikor egy kardszárnyú delfin figyeli munka közben"],"salary":"~50 ezer USD/év alapbér (Fermi-becslés, globális vegyes átlag)","compensation":"Koinsban fizetve. A díjazás alkuképes. Jelentkezés: Finanszírozásra vár. Hozza a saját multifogóját.","setting":""},{"title":"MOST FELVESZÜNK — Mérnök, állatprogramok — 10 000 POZÍCIÓ","priority":false,"department":"Prime42 / Omega42 · a Fermi-mérnöki Vezetőnek jelent","duties":"Annak megtervezése és megépítése, amire 1,3 millió munkatársnak és több millió állatnak szüksége van: élőhelyek, billentyűzetek, szimulátorok, a Nautilus átépítése, és bármi, amit a tanárok legközelebb megálmodnak.","requirements":["Mérnöki diploma vagy azzal egyenértékű „megépítettem és működött” portfólió","Képes olyan felhasználóknak tervezni, akik nem tudják elolvasni a specifikációt (ők bálnák)","Nem zavarják azok a követelmények, amelyek megváltoznak, amikor az ügyfél megtanul beszélni","Kétszeres fizetés, mert a problémák kétszer olyan furcsák"],"salary":"~100 ezer USD/év (az alapbér kétszerese — szakértői díjszabás)","compensation":"Koinsban fizetve. A díjazás alkuképes. Jelentkezés: Finanszírozásra vár. A specifikáció: „működjön egy bálnának”. Sok szerencsét.","setting":""},{"title":"MOST FELVESZÜNK — Ass'sis'tant (rangidős lézengő) — 261 400 POZÍCIÓ","priority":false,"department":"Minden program · annak jelent, aki a legközelebb van","duties":"Lézengés. Mindenki zaklatása (szeretettel). Kéretlen bölcsességek osztogatása, ugyanannak a történetnek kétszeri elmesélése, és annak tudása, mi hol van, mert régebb óta vagy itt, mint maga az épület.","requirements":["Vén szivar (saját bevallás szerint; igazolvány nem kell)","Képes produktívan lézengeni (vagy legalább jelen lenni)","Mások zaklatása szakértelem — használd kedvesen","Inkább a társaságért és a kávéért van itt, mint a fizetésért"],"salary":"~16,7 ezer USD/év (az alapbér 1/3-a — a lézengési tarifa)","compensation":"Koinsban fizetve. A díjazás alkuképes. Jelentkezés: Finanszírozásra vár. 261 400 hintaszék. Gyere, zavarj minket.","setting":""},{"title":"MOST FELVESZÜNK — Masszőr — 200,000 POZÍCIÓ","priority":false,"department":"Minden program · annak jelent, akinek a legjobban fáj","duties":"1,5 millió munkatárs működőképesen tartása. Hátak, vállak, nyakak és a morál. Az egész művelet nem hivatalos terapeutái.","requirements":["Engedéllyel rendelkezik, vagy „varázslatos a kezem” minősítéssel","Elég erős egy bálnabiológus vállaihoz","Elég gyengéd egy tanár egójához","Diszkréció: ami a masszázsasztalon történik, az ott is marad"],"salary":"~$50k/yr alapbér (Fermi-becslés, globális vegyes átlag)","compensation":"Koinsban fizetve. A díjazás alkuképes. Banánban adott borravaló elfogadott. Jelentkezés: Finanszírozásra vár. 200,000 asztal. Gyere gyúrni.","setting":""}];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const menuToggle=document.getElementById('menuToggle');
+    const menuLinks=document.getElementById('menuLinks');
+    menuToggle.addEventListener('click',()=>{
+      const open=menuToggle.getAttribute('aria-expanded')==='true';
+      menuToggle.setAttribute('aria-expanded',String(!open));
+      menuLinks.dataset.open=String(!open);
+    });
+    document.querySelectorAll('.submenu-toggle').forEach(button=>{
+      button.addEventListener('click',()=>{
+        const submenu=document.getElementById(button.getAttribute('aria-controls'));
+        const willOpen=button.getAttribute('aria-expanded')!=='true';
+        document.querySelectorAll('.submenu-toggle').forEach(other=>{
+          if(other===button)return;
+          other.setAttribute('aria-expanded','false');
+          document.getElementById(other.getAttribute('aria-controls')).hidden=true;
+        });
+        button.setAttribute('aria-expanded',String(willOpen));
+        submenu.hidden=!willOpen;
+      });
+    });
+    const dummyGuidesToggle=document.getElementById('dummyGuidesToggle');
+    const dummyGuidesMenu=document.getElementById('dummyGuidesMenu');
+    function setDummyGuidesOpen(open){
+      dummyGuidesToggle.setAttribute('aria-expanded',String(open));
+      dummyGuidesMenu.hidden=!open;
+    }
+    dummyGuidesToggle.addEventListener('click',()=>{
+      setDummyGuidesOpen(dummyGuidesToggle.getAttribute('aria-expanded')!=='true');
+    });
+    dummyGuidesMenu.addEventListener('click',event=>{
+      const guide=event.target.closest('a[data-slug]');
+      if(!guide)return;
+      event.preventDefault();
+    });
+    document.addEventListener('click',event=>{
+      if(!event.target.closest('.bottom-nav-item--guides'))setDummyGuidesOpen(false);
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){
+        setDummyGuidesOpen(false);
+        dummyGuidesToggle.focus();
+      }
+    });
+    const categories = ['Mind','Igazgatók','Vezetők','Jog','Tudomány + terep','Kiemelt'];
+    let active = 'Mind';
+
+    function clean(text){ return String(text || '').replace(/\\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){
+      const t = job.title.toLowerCase();
+      const d = job.department.toLowerCase();
+      if(job.priority) return 'Kiemelt';
+      if(/igazgató/.test(t)) return 'Igazgatók';
+      if(d.includes('higgy nekem') || /(jogtanácsos|jogi|szerződéses tárgyaló|rendeletszövegező|állampolgársági|orbitális megtisztítás)/.test(t)) return 'Jog';
+      if(/(medve|pszichológus|qa-tesztelő|biológus|hajóépítő|hibernákulum|égboltfelmérő|agrárszakember)/.test(t)) return 'Tudomány + terep';
+      return 'Vezetők';
+    }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">Kiemelt felvétel</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job.title.includes('Toborzó')?'':'btn-dark'}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Jelentkezés erre a pozícióra ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || (cat==='Igazgatók' ? 'Fő iparági területek' : cat==='Vezetők' ? 'Projekteken átívelő működés' : cat);
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.setting&&`<div><strong>Munkakörnyezet:</strong> ${esc(job.setting)}</div>`,job.salary&&`<div><strong>${job.title.includes('QA-tesztelő')?'Díjazás':'Fizetés'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>Kompenzáció:</strong> ${esc(job.compensation)}</div>`,job.openPositions&&`<div><strong>Nyitott pozíciók:</strong> ${esc(job.openPositions)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">OPEN-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(dept)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.applySubject || job.title)}" target="_blank" rel="noopener">Jelentkezés ↗</a><span class="job-id">E-MAIL</span>
+          <details><summary>Pozíció részletei</summary><div class="detail-body"><h4>Követelmények</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='Mind'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,...job.requirements].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>Nincs a keresésnek megfelelő nyitott pozíció.</strong><br>Próbálj tágabb kifejezést, vagy válts kategóriát.</div>';
+      document.getElementById('resultCount').textContent=filtered.length+' nyitott pozíció';
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='Mind'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='Másolva: '+EMAIL;}
+      catch(e){note.textContent='A másolás nem érhető el — jelöld ki a fenti e-mail-címet.';}
+    });
+    render();
+  </script>
+</body>
+</html>

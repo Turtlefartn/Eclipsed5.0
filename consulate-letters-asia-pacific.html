@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Consulate Letters — Asia-Pacific</title>
+<meta name="description" content="Twenty-nine draft Project 84 diplomatic consulate letters for Asia-Pacific.">
+<style>
+  :root {
+    color-scheme: light dark;
+    --ink: #1c1a15;
+    --muted: #675f55;
+    --line: #d8cfbc;
+    --paper: #fffdf8;
+    --navy: #17243f;
+    --gold: #a97822;
+    --bg: #eeeae0;
+    --shadow: rgba(31, 42, 68, .10);
+    --focus: #9b5f22;
+    --stamp: #9a342e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #eee8dc;
+      --muted: #c0b7a8;
+      --line: #4b514f;
+      --paper: #171b1c;
+      --navy: #b9cdeb;
+      --gold: #d8ad59;
+      --bg: #0e1112;
+      --shadow: rgba(0, 0, 0, .38);
+      --focus: #e6a056;
+      --stamp: #ef8f84;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-bottom: 88px; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: Georgia, Cambria, "Times New Roman", serif;
+    margin: 0; padding: 56px 20px 132px; line-height: 1.75;
+    text-rendering: optimizeLegibility;
+  }
+  a:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
+  ::selection { background: var(--navy); color: var(--paper); }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  .masthead {
+    text-align: center; letter-spacing: .35em; font-size: .72rem;
+    color: var(--navy); text-transform: uppercase; margin-bottom: 28px;
+  }
+  .doctitle {
+    text-align: center; font-size: 2.2rem; font-weight: 400;
+    color: var(--navy); margin: 0 0 8px;
+  }
+  .docsub {
+    text-align: center; color: var(--muted); font-size: 1rem; margin: 0 0 32px;
+  }
+  nav.run-index {
+    background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--gold);
+    padding: 24px 32px; margin-bottom: 48px;
+    box-shadow: 0 12px 36px var(--shadow);
+  }
+  nav.run-index h2 {
+    font-size: .8rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 12px; font-weight: 400;
+  }
+  nav.run-index ol { margin: 0; padding-left: 22px; }
+  nav.run-index li { margin: 6px 0; }
+  nav.run-index a { color: var(--navy); text-decoration: none; border-bottom: 1px dotted var(--navy); }
+  nav.run-index a:hover { border-bottom-style: solid; }
+  .page {
+    background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--gold);
+    padding: 58px 68px 64px; margin-bottom: 56px;
+    box-shadow: 0 16px 48px var(--shadow);
+    page-break-inside: avoid; scroll-margin-top: 24px;
+  }
+  .page .masthead { margin-bottom: 18px; }
+  .draft-stamp {
+    width: max-content; max-width: 100%; margin: 0 0 20px auto;
+    border: 2px solid var(--stamp); color: var(--stamp); padding: 2px 10px;
+    font-family: Arial, sans-serif; font-size: .7rem; line-height: 1.5;
+    letter-spacing: .15em; text-transform: uppercase; transform: rotate(-2deg);
+  }
+  .page h1 {
+    text-align: center; font-size: 2.4rem; font-weight: 400;
+    color: var(--navy); margin: 0 0 6px;
+  }
+  .consul { text-align: center; font-size: 1.05rem; margin: 0 0 4px; }
+  .address { text-align: center; color: var(--muted); font-size: .92rem; margin: 0 0 36px; }
+  hr.rule { border: 0; border-top: 1px solid var(--gold); margin: 0 0 40px; }
+  .salutation { margin: 0 0 24px; font-weight: 700; }
+  p.body { margin: 0 0 20px; text-align: justify; }
+  p.terms-intro { margin: 0 0 10px; text-align: justify; }
+  ul.terms { margin: 0 0 20px; padding: 0; list-style: none; }
+  ul.terms li {
+    margin: 0 0 10px; padding-left: 28px; position: relative; text-align: justify;
+  }
+  ul.terms li::before {
+    content: "\25C6"; position: absolute; left: 0;
+    color: var(--gold); font-size: .8rem; top: .28rem;
+  }
+  .signoff { margin-top: 44px; }
+  .signoff p { margin-top: 0; }
+  .signoff .close { margin-bottom: 24px; }
+  .signoff .name { font-size: 1.25rem; font-weight: 700; margin-bottom: 0; }
+  .signoff .title { color: var(--muted); margin-bottom: 18px; }
+  .signoff .credit { color: var(--muted); font-size: .88rem; font-style: italic; margin-bottom: 0; }
+  .footer {
+    text-align: center; margin-top: 48px; color: var(--muted);
+    font-size: .8rem; letter-spacing: .15em; text-transform: uppercase;
+  }
+  .bottom-nav {
+    --bottom-bar-height: 64px;
+    position: fixed; z-index: 1000; left: 0; right: 0; bottom: 0;
+    display: flex; min-height: var(--bottom-bar-height); pointer-events: none;
+    background: var(--paper); border-top: 4px solid var(--gold);
+    box-shadow: 0 -12px 36px var(--shadow);
+  }
+  .bottom-nav__item {
+    position: relative; display: flex; flex: 1 1 25%; min-width: 0;
+    align-items: stretch; justify-content: center;
+  }
+  .bottom-nav__item + .bottom-nav__item { border-left: 1px solid var(--line); }
+  .bottom-nav__trigger,
+  .bottom-nav__placeholder,
+  .bottom-nav__link {
+    width: 100%; min-width: 0; margin: 0; padding: 10px 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--navy); font: 400 .84rem/1.2 Georgia, Cambria, "Times New Roman", serif;
+    text-align: center;
+  }
+  .bottom-nav__trigger {
+    appearance: none; border: 0; background: transparent; cursor: pointer; pointer-events: auto;
+  }
+  .bottom-nav__trigger:hover,
+  .bottom-nav__trigger:focus-visible,
+  .bottom-nav__item--menu.is-open .bottom-nav__trigger {
+    background: var(--bg); text-decoration: underline; text-underline-offset: 4px;
+  }
+  .bottom-nav__trigger:focus-visible { outline: 3px solid var(--focus); outline-offset: -4px; }
+  .bottom-nav__placeholder { color: var(--muted); opacity: .72; cursor: default; }
+  .bottom-nav__link {
+    color: var(--navy); text-decoration: none; cursor: pointer; pointer-events: auto;
+  }
+  .bottom-nav__link:hover,
+  .bottom-nav__link:focus-visible {
+    background: var(--bg); text-decoration: underline; text-underline-offset: 4px;
+  }
+  .bottom-nav__link:focus-visible { outline: 3px solid var(--focus); outline-offset: -4px; }
+  .bottom-nav__dropup {
+    position: absolute; left: 0; bottom: 100%; width: min(360px, 100vw);
+    max-height: calc(100vh - var(--bottom-bar-height) - 16px); overflow-y: auto;
+    margin: 0; padding: 8px 0; list-style: none;
+    background: var(--paper); border: 1px solid var(--line); border-bottom: 0;
+    box-shadow: 0 -12px 36px var(--shadow);
+    visibility: hidden; opacity: 0; pointer-events: none;
+    transform: translateY(6px); transition: opacity .16s ease, transform .16s ease, visibility .16s;
+    overscroll-behavior: contain;
+  }
+  .bottom-nav__dropup a {
+    display: block; padding: 8px 18px; color: var(--navy);
+    text-decoration: none; border-bottom: 1px dotted var(--line);
+    font-size: .92rem; line-height: 1.35;
+  }
+  .bottom-nav__dropup li:last-child a { border-bottom: 0; }
+  .bottom-nav__dropup a:hover,
+  .bottom-nav__dropup a:focus-visible { background: var(--bg); text-decoration: underline; text-underline-offset: 3px; }
+  .bottom-nav__item--menu:hover .bottom-nav__dropup,
+  .bottom-nav__item--menu:focus-within .bottom-nav__dropup,
+  .bottom-nav__item--menu.is-open .bottom-nav__dropup {
+    visibility: visible; opacity: 1; pointer-events: auto; transform: translateY(0);
+  }
+  @media (max-width: 640px) {
+    body { padding: 28px 12px 116px; line-height: 1.64; }
+    .bottom-nav { --bottom-bar-height: 68px; }
+    .bottom-nav__trigger, .bottom-nav__placeholder, .bottom-nav__link { padding: 9px 4px; font-size: .72rem; }
+    .bottom-nav__dropup { width: 100vw; }
+    .masthead { letter-spacing: .22em; }
+    nav.run-index { padding: 22px 24px; margin-bottom: 36px; }
+    nav.run-index li { margin: 10px 0; }
+    .page { padding: 34px 24px 38px; margin-bottom: 32px; }
+    .page h1 { font-size: 2rem; line-height: 1.15; }
+    .doctitle { font-size: 1.75rem; line-height: 1.18; }
+    .address { line-height: 1.45; overflow-wrap: anywhere; }
+    p.body, p.terms-intro, ul.terms li { text-align: left; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+  @media print {
+    :root {
+      --ink: #1c1a15; --muted: #6b6257; --line: #d9d0bd;
+      --paper: #fff; --navy: #17243f; --gold: #a97822; --bg: #fff; --stamp: #9a342e;
+    }
+    body { background: #fff; padding: 0; }
+    .wrap { max-width: none; }
+    .wrap > .masthead, .wrap > .doctitle, .wrap > .docsub, nav.run-index, .footer, .bottom-nav { display: none; }
+    .page { box-shadow: none; border: 0; border-top: 2px solid var(--gold); margin: 0; page-break-before: always; padding: 48px 56px; }
+    .page:first-of-type { page-break-before: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <h1 class="doctitle">Diplomatic Letters</h1>
+  <p class="docsub">Twenty-nine consulate letters · English · requesting recognition of Project 84's sovereignty of Oceania</p>
+  <nav class="run-index" aria-label="Consulate letters">
+    <h2>Asia-Pacific consulate run</h2>
+    <ol id="letter-index"></ol>
+  </nav>
+  <main id="letters"></main>
+  <footer class="footer">Draft — Not Sent. Prepared October 2026.</footer>
+</div>
+<nav class="bottom-nav" aria-label="Site collections">
+  <div class="bottom-nav__item bottom-nav__item--menu">
+    <button class="bottom-nav__trigger" type="button" aria-expanded="false" aria-controls="dummy-guides-menu">Dummy Guides</button>
+    <ul class="bottom-nav__dropup" id="dummy-guides-menu" hidden inert>
+      <li><a href="#" data-slug="project-84-dummies-guide-english">English</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-amharic">Amharic</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-arabic">Arabic</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-bengali">Bengali</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-chinese-simplified">Chinese Simplified</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-chinese-traditional">Chinese Traditional</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-czech">Czech</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-danish">Danish</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-dutch">Dutch</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-filipino">Filipino</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-finnish">Finnish</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-french">French</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-german">German</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-greek">Greek</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-hausa">Hausa</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-hebrew">Hebrew</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-hindi">Hindi</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-hungarian">Hungarian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-indonesian">Indonesian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-italian">Italian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-japanese">Japanese</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-korean">Korean</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-norwegian">Norwegian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-persian">Persian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-polish">Polish</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-portuguese">Portuguese</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-romanian">Romanian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-russian">Russian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-spanish">Spanish</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-swahili">Swahili</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-swedish">Swedish</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-thai">Thai</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-turkish">Turkish</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-ukrainian">Ukrainian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-urdu">Urdu</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-vietnamese">Vietnamese</a></li>
+    </ul>
+  </div>
+  <div class="bottom-nav__item"><span class="bottom-nav__placeholder" aria-disabled="true">Letters To</span></div>
+  <div class="bottom-nav__item"><a class="bottom-nav__link" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></div>
+  <div class="bottom-nav__item"><a class="bottom-nav__link" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
+</nav>
+<script>
+(function () {
+  "use strict";
+  var letters = [
+    { country: "Afghanistan", slug: "afghanistan", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Armenia", slug: "armenia", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Azerbaijan", slug: "azerbaijan", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Bangladesh", slug: "bangladesh", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Bhutan", slug: "bhutan", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Brunei", slug: "brunei", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Cambodia", slug: "cambodia", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "China", slug: "china", title: "Consul General", name: "Zhang Jianmin", address: "1450 Laguna Street, San Francisco, CA 94115, USA", salutation: "Dear Consul General Zhang Jianmin," },
+    { country: "Georgia", slug: "georgia", title: "Consul General", name: "Levan Kulijanishvili", address: "135 Main St., Ste. 800, San Francisco, CA 94105, USA", salutation: "Dear Consul General Levan Kulijanishvili," },
+    { country: "Indonesia", slug: "indonesia", title: "Consul General", name: "Yohpy Ichsan Wardana", address: "1111 Columbus Avenue, San Francisco, CA 94133, USA", salutation: "Dear Consul General Yohpy Ichsan Wardana," },
+    { country: "Japan", slug: "japan", title: "Consul General", name: "Kotaro Otsuki", address: "275 Battery Street, Suite 2100, San Francisco, CA 94111, USA", salutation: "Dear Consul General Kotaro Otsuki," },
+    { country: "Kazakhstan", slug: "kazakhstan", title: "Consul General", name: "Nazira Nurbayeva", address: "456 Montgomery Street, Suite 950, San Francisco, CA 94104, USA", salutation: "Dear Consul General Nazira Nurbayeva," },
+    { country: "Kyrgyzstan", slug: "kyrgyzstan", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Laos", slug: "laos", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Malaysia", slug: "malaysia", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Maldives", slug: "maldives", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Mongolia", slug: "mongolia", title: "Consul General", name: "Munkhbaatar Begzjav", address: "465 California Street, Suite 200, San Francisco, CA 94104, USA", salutation: "Dear Consul General Munkhbaatar Begzjav," },
+    { country: "Myanmar", slug: "myanmar", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Nepal", slug: "nepal", title: "Consul General", name: "Lakshuman Khanal", address: "505 Beach Street, Suite 130, San Francisco, CA 94133, USA", salutation: "Dear Consul General Lakshuman Khanal," },
+    { country: "North Korea", slug: "north-korea", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Pakistan", slug: "pakistan", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "South Korea", slug: "south-korea", title: "Consul General", name: "Lim Jung-taek", address: "3500 Clay Street, San Francisco, CA 94118, USA", salutation: "Dear Consul General Lim Jung-taek," },
+    { country: "Sri Lanka", slug: "sri-lanka", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Tajikistan", slug: "tajikistan", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Thailand", slug: "thailand", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Timor-Leste", slug: "timor-leste", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Turkmenistan", slug: "turkmenistan", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Uzbekistan", slug: "uzbekistan", title: "Consul-General", name: "(unknown)", address: "unknown", salutation: "Dear Consul-General," },
+    { country: "Vietnam", slug: "vietnam", title: "Consul General", name: "Hoang Anh Tuan", address: "1700 California Street, Suite 580, San Francisco, CA 94109, USA", salutation: "Dear Consul General Hoang Anh Tuan," }
+  ];
+
+  var bodyText = [
+    "I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.",
+    "We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.",
+    "And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.",
+    "We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially \"Lesser\" species, until proper \"cities\" can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.",
+    "Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.",
+    "I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you."
+  ];
+  var terms = [
+    "14 land and air chairs in our council — two per region across seven regions, voted by region;",
+    "port access and disaster-shelter priority in Project 84 waters;",
+    "a share of the science: our stations, our data, the output of the colonies."
+  ];
+  var debtBillIntro = "And the rest of the bill — what the world has been sweeping under the rug:";
+  var debtBillItems = [
+    "~$100 trillion in sovereign government debt — the part we're buying;",
+    "~$2 trillion a year in ocean climate damages alone;",
+    "~$35 billion a year in subsidies paid to overfish the oceans;",
+    "~$13 billion a year in plastic damage to marine life;",
+    "7 million dead a year from air pollution."
+  ];
+  var debtBillClose = "The Treasury buys the first. The rest, we intend to stop.";
+  var index = document.getElementById("letter-index");
+  var lettersRoot = document.getElementById("letters");
+
+  function element(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (typeof text === "string") node.textContent = text;
+    return node;
+  }
+
+  letters.forEach(function (letter) {
+    var indexItem = document.createElement("li");
+    var link = document.createElement("a");
+    link.href = "#letter-" + letter.slug;
+    link.textContent = letter.country + " — " + letter.title + " " + letter.name;
+    indexItem.appendChild(link);
+    index.appendChild(indexItem);
+
+    var section = document.createElement("section");
+    section.className = "page";
+    section.id = "letter-" + letter.slug;
+    section.setAttribute("aria-label", "Letter to " + letter.country);
+    section.appendChild(element("div", "masthead", "Project 84 · Oceanic Nation"));
+    section.appendChild(element("p", "draft-stamp", "Draft — Not Sent"));
+    section.appendChild(element("h1", "", letter.country));
+    section.appendChild(element("p", "consul", letter.title + " " + letter.name));
+    section.appendChild(element("p", "address", letter.address));
+    section.appendChild(element("hr", "rule"));
+    section.appendChild(element("p", "salutation", letter.salutation));
+    section.appendChild(element("p", "body", bodyText[0]));
+    section.appendChild(element("p", "body", bodyText[1]));
+    section.appendChild(element("p", "terms-intro", "What we offer in return:"));
+
+    var list = element("ul", "terms");
+    terms.forEach(function (term) { list.appendChild(element("li", "", term)); });
+    section.appendChild(list);
+    section.appendChild(element("p", "body", bodyText[2]));
+    section.appendChild(element("p", "terms-intro", debtBillIntro));
+
+    var debtBillList = element("ul", "terms");
+    debtBillItems.forEach(function (item) { debtBillList.appendChild(element("li", "", item)); });
+    section.appendChild(debtBillList);
+    section.appendChild(element("p", "body", debtBillClose));
+    section.appendChild(element("p", "body", bodyText[3]));
+    section.appendChild(element("p", "body", bodyText[4]));
+    section.appendChild(element("p", "body", bodyText[5]));
+
+    var signoff = element("div", "signoff");
+    signoff.appendChild(element("p", "close", "With respect,"));
+    signoff.appendChild(element("p", "name", "Matthew Nahas"));
+    signoff.appendChild(element("p", "title", "Founder, Project 84"));
+    signoff.appendChild(element("p", "credit", "Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84."));
+    section.appendChild(signoff);
+    lettersRoot.appendChild(section);
+  });
+
+  var guidesItem = document.querySelector(".bottom-nav__item--menu");
+  var guidesTrigger = guidesItem.querySelector(".bottom-nav__trigger");
+  var guidesMenu = guidesItem.querySelector(".bottom-nav__dropup");
+  var guideLinks = guidesMenu.querySelectorAll("a");
+  var hoverOpen = false;
+  var hoverCapable = window.matchMedia("(hover: hover)");
+
+  function setGuidesOpen(open) {
+    guidesItem.classList.toggle("is-open", open);
+    guidesTrigger.setAttribute("aria-expanded", open ? "true" : "false");
+    guidesMenu.hidden = !open;
+    guidesMenu.toggleAttribute("inert", !open);
+  }
+
+  guidesItem.addEventListener("mouseenter", function () {
+    if (hoverCapable.matches && !guidesItem.classList.contains("is-open")) {
+      hoverOpen = true;
+      setGuidesOpen(true);
+    }
+  });
+
+  guidesItem.addEventListener("mouseleave", function () {
+    if (hoverOpen && !guidesItem.contains(document.activeElement)) {
+      hoverOpen = false;
+      setGuidesOpen(false);
+    }
+  });
+
+  guidesTrigger.addEventListener("click", function () {
+    if (hoverOpen) {
+      hoverOpen = false;
+      setGuidesOpen(true);
+    } else {
+      setGuidesOpen(!guidesItem.classList.contains("is-open"));
+    }
+  });
+
+  guidesItem.addEventListener("focusout", function () {
+    window.setTimeout(function () {
+      if (!guidesItem.contains(document.activeElement) && !hoverOpen) setGuidesOpen(false);
+    }, 0);
+  });
+
+  document.addEventListener("click", function (event) {
+    if (!guidesItem.contains(event.target)) {
+      hoverOpen = false;
+      setGuidesOpen(false);
+    }
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && guidesItem.classList.contains("is-open")) {
+      hoverOpen = false;
+      setGuidesOpen(false);
+      guidesTrigger.focus();
+    }
+  });
+
+  Array.prototype.forEach.call(guideLinks, function (guideLink) {
+    guideLink.addEventListener("click", function (event) {
+      event.preventDefault();
+      hoverOpen = false;
+      setGuidesOpen(false);
+      guidesTrigger.focus();
+    });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".bottom-nav__link[data-slug]"), function (link) {
+    link.addEventListener("click", function (event) {
+      if (link.getAttribute("href") === "#") event.preventDefault();
+    });
+  });
+}());
+</script>
+</body>
+</html>

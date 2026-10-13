@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Avoimet työpaikat</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.45;
+      padding-bottom:calc(64px + env(safe-area-inset-bottom));
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 80px}
+    .site-menu{
+      grid-column:auto;
+      margin:0 0 16px;
+      border:1px solid var(--ink);
+      background:var(--panel);
+      box-shadow:var(--shadow);
+    }
+    .site-menu > summary{
+      padding:14px 18px;
+      align-items:center;
+      font-family:"IBM Plex Mono",monospace;
+      font-size:.78rem;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+    .site-menu > summary::after{margin-left:auto}
+    .menu-count{color:var(--muted);font-size:.68rem}
+    .menu-links{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      border-top:1px solid var(--ink);
+    }
+    .site-menu:not([open]) .menu-links{display:none}
+    .menu-links > a{
+      display:flex;
+      align-items:center;
+      min-height:48px;
+      padding:10px 14px;
+      border-right:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      font-weight:600;
+      line-height:1.15;
+      text-decoration:none;
+    }
+    .menu-links > a:nth-child(4n){border-right:0}
+    .menu-links > a:hover{background:var(--ink);color:var(--paper)}
+    .menu-group{
+      grid-column:1/-1;
+      margin:0;
+      border:0;
+      border-bottom:1px solid var(--line);
+    }
+    .menu-group > summary{
+      min-height:48px;
+      padding:0 14px;
+      align-items:center;
+      border:0;
+    }
+    .menu-group > summary::after{margin-left:auto}
+    .menu-group-title{
+      display:flex;
+      flex:1;
+      align-items:center;
+      align-self:stretch;
+      color:inherit;
+      font-weight:700;
+      text-decoration:none;
+    }
+    .menu-group-title:hover{text-decoration:underline;text-underline-offset:3px}
+    .menu-group-bar{display:flex;align-items:stretch;min-height:48px}
+    .menu-group-bar .menu-group-title{padding:0 14px}
+    .menu-toggle{display:flex;align-items:center;gap:12px;padding:0 14px;border:0;border-left:1px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.66rem;font-weight:600}
+    .menu-toggle:hover{background:var(--ink);color:var(--paper)}
+    .toggle-mark{font-size:1.2rem;line-height:1}
+    .group-meta{margin-right:12px;color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:.66rem;font-weight:600}
+    .submenu{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      border-top:1px solid var(--line);
+      background:var(--soft);
+    }
+    .submenu[hidden]{display:none}
+    .submenu a{
+      display:flex;
+      align-items:center;
+      min-height:44px;
+      padding:9px 14px;
+      border-right:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      font-size:.9rem;
+      font-weight:600;
+      line-height:1.15;
+      text-decoration:none;
+    }
+    .submenu a:nth-child(4n){border-right:0}
+    .submenu a:hover,.submenu a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+    .submenu a[aria-current="page"]::after{content:"Nykyinen";margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.04em}
+    .submenu-heading{grid-column:1/-1;padding:12px 14px 4px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+    .submenu-note{grid-column:1/-1;padding:10px 14px 12px;font-size:.82rem;line-height:1.35;color:var(--muted)}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    h1{font-size:clamp(3.5rem,9vw,7.8rem);line-height:.82;letter-spacing:-.065em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .motto{max-width:720px;margin:28px 0 20px;padding:16px 18px;background:var(--signal);color:var(--signal-ink);font-size:clamp(1.2rem,2.4vw,1.7rem);font-weight:700;line-height:1.15;letter-spacing:-.02em}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:.95;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.02;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    details[open] > summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .bottom-nav{
+      position:fixed;
+      right:0;
+      bottom:0;
+      left:0;
+      z-index:1000;
+      display:flex;
+      min-height:56px;
+      padding-bottom:env(safe-area-inset-bottom);
+      border-top:1px solid var(--ink);
+      background:var(--panel);
+      box-shadow:0 -10px 30px rgba(18,38,35,.12);
+      font-family:"IBM Plex Mono",monospace;
+      pointer-events:none;
+    }
+    .bottom-nav-item{
+      position:relative;
+      display:flex;
+      flex:1 1 25%;
+      min-width:0;
+      align-items:stretch;
+      justify-content:center;
+      border-right:1px solid var(--line);
+    }
+    .bottom-nav-item:last-child{border-right:0}
+    .bottom-nav-trigger,.bottom-nav-placeholder{
+      display:flex;
+      width:100%;
+      min-height:56px;
+      align-items:center;
+      justify-content:center;
+      padding:9px 10px;
+      border:0;
+      background:transparent;
+      color:var(--ink);
+      font:600 .72rem/1.15 "IBM Plex Mono",monospace;
+      letter-spacing:.02em;
+      text-align:center;
+    }
+    .bottom-nav-trigger,.dummy-dropup a{pointer-events:auto}
+    .bottom-nav-trigger{cursor:pointer;text-decoration:none}
+    .bottom-nav-trigger:hover,.bottom-nav-trigger[aria-expanded="true"]{background:var(--ink);color:var(--paper)}
+    .bottom-nav-placeholder{color:var(--muted);cursor:default;opacity:.68}
+    .dummy-dropup{
+      position:absolute;
+      bottom:100%;
+      left:0;
+      display:none;
+      width:min(760px,100vw);
+      max-height:calc(100vh - 72px - env(safe-area-inset-bottom));
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      border:1px solid var(--ink);
+      border-bottom:0;
+      background:var(--panel);
+      box-shadow:0 -18px 45px rgba(18,38,35,.14);
+    }
+    .bottom-nav-item.is-open .dummy-dropup{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media (hover:hover){.bottom-nav-item:not(.click-closed):hover .dummy-dropup{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}}
+    .dummy-dropup a{
+      display:flex;
+      min-height:44px;
+      align-items:center;
+      padding:9px 14px;
+      border-right:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      background:var(--panel);
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:.9rem;
+      font-weight:600;
+      line-height:1.15;
+      text-decoration:none;
+    }
+    .dummy-dropup a:nth-child(3n){border-right:0}
+    .dummy-dropup a:hover,.dummy-dropup a:focus-visible{background:var(--ink);color:var(--paper)}
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .menu-links{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .menu-links > a:nth-child(4n){border-right:1px solid var(--line)}
+      .menu-links > a:nth-child(3n){border-right:0}
+      .submenu{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .submenu a:nth-child(4n){border-right:1px solid var(--line)}
+      .submenu a:nth-child(3n){border-right:0}
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+    }
+    @media (max-width:620px){
+      .menu-links{grid-template-columns:1fr}
+      .menu-links > a,.menu-links > a:nth-child(3n),.menu-links > a:nth-child(4n),.submenu a,.submenu a:nth-child(3n),.submenu a:nth-child(4n){border-right:0}
+      .submenu{grid-template-columns:1fr}
+      .group-meta{display:none}
+      .site-menu > summary{padding:13px 14px}
+      .status-line{font-size:.61rem;gap:8px 12px}
+      .email{font-size:1.1rem}
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(2.75rem,15.5vw,4.1rem);letter-spacing:-.055em}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      footer{flex-direction:column}
+      .bottom-nav-trigger,.bottom-nav-placeholder{padding:8px 4px;font-size:.58rem;letter-spacing:0}
+      .bottom-nav-item.is-open .dummy-dropup{grid-template-columns:1fr}
+      .dummy-dropup{width:100vw}
+      .dummy-dropup a,.dummy-dropup a:nth-child(3n){border-right:0}
+    }
+    @media (max-width:620px) and (hover:hover){.bottom-nav-item:not(.click-closed):hover .dummy-dropup{grid-template-columns:1fr}}
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <nav aria-label="Julkiset sivut">
+      <details class="site-menu">
+        <summary><span>Valikko</span><span class="menu-count">20 kohdetta</span></summary>
+        <div class="menu-links">
+          <a href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">Suunnitelma #42</a>
+          <div class="menu-group">
+            <div class="menu-group-bar">
+              <a class="menu-group-title" href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">Projekti 84</a>
+              <button class="menu-toggle" id="project84Toggle" type="button" aria-expanded="false" aria-controls="project84Menu"><span>2 sivua</span><span class="toggle-mark" aria-hidden="true">+</span></button>
+            </div>
+            <div class="submenu" id="project84Menu" aria-label="Projektin 84 voittoa tavoittelemattomat haarat" hidden>
+              <span class="submenu-heading">Voittoa tavoittelemattomat haarat</span>
+              <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a>
+              <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a>
+              <span class="submenu-note">Pidossa, kunnes ne ymmärtävät taloutta tarpeeksi osallistuakseen — sitten ne ottavat ohjat, ja mukautuksilla tasataan valuuttojen välisiä eroja.</span>
+            </div>
+          </div>
+          <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Opas aloittelijoille — Level 14 (English)</a>
+          <a href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">Opas aloittelijoille: valtamerten ja Etelämantereen valtaaminen</a>
+          <a href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">HEAR-TS-työveneet</a>
+          <a href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">Hurrikaanitutkimus</a>
+          <a href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">Kelluvat taivassatamat</a>
+          <a href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k">Ihmiskunnan palautuslevy</a>
+          <a href="https://muse.ai/s/about-mxt5xuxj7jgoao">Tietoa perustajasta</a>
+          <div class="menu-group">
+            <div class="menu-group-bar">
+              <a class="menu-group-title" href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">Työpaikat / WeFind's valtuuskunnille</a>
+              <button class="menu-toggle" id="languageToggle" type="button" aria-expanded="false" aria-controls="languageMenu"><span>36 kieltä</span><span class="toggle-mark" aria-hidden="true">+</span></button>
+            </div>
+            <div class="submenu" id="languageMenu" aria-label="Työpaikkasivujen kielet" hidden>
+              <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">English</a>
+              <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys">አማርኛ</a>
+              <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7">العربية</a>
+              <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94">বাংলা</a>
+              <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs">中文（简体）</a>
+              <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6">中文（繁體）</a>
+              <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5">Čeština</a>
+              <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu">Dansk</a>
+              <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze">Nederlands</a>
+              <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51">Filipino</a>
+              <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf" aria-current="page">Suomi</a>
+              <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl">Français</a>
+              <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb">Deutsch</a>
+              <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc">Ελληνικά</a>
+              <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a">Hausa</a>
+              <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg">עברית</a>
+              <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw">हिन्दी</a>
+              <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac">Magyar</a>
+              <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg">Bahasa Indonesia</a>
+              <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y">Italiano</a>
+              <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm">日本語</a>
+              <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi">한국어</a>
+              <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq">Norsk</a>
+              <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt">فارسی</a>
+              <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey">Polski</a>
+              <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy">Português</a>
+              <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj">Română</a>
+              <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj">Русский</a>
+              <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno">Español</a>
+              <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2">Kiswahili</a>
+              <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg">Svenska</a>
+              <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb">ไทย</a>
+              <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu">Türkçe</a>
+              <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y">Українська</a>
+              <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar">اردو</a>
+              <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi">Tiếng Việt</a>
+            </div>
+          </div>
+          <a href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">Avoin kirje</a>
+          <a href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">Vaatimusjulistus</a>
+          <details class="menu-group">
+            <summary><span class="menu-group-title">Kirjeet ja diplomatia</span><span class="group-meta">13 sivua</span></summary>
+            <div class="submenu" aria-label="Kirjeet ja diplomatia">
+              <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">Maailmanlaajuinen hakemisto</a>
+              <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">Kirjeet Yhdysvaltain johtajille</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">Konsulaattikirjeet — Afrikka I</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">Konsulaattikirjeet — Afrikka II</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">Konsulaattikirjeet — Afrikka III</a>
+              <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">Konsulaattikirjeet — Amerikat I</a>
+              <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">Konsulaattikirjeet — Amerikat II</a>
+              <a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">Konsulaattikirjeet — Aasia ja Tyynenmeren alue</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">Konsulaattikirjeet — Eurooppa I</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">Konsulaattikirjeet — Eurooppa II</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">Konsulaattikirjeet — Eurooppa III</a>
+              <a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">Konsulaattikirjeet — Lähi-itä</a>
+              <a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">Konsulaattikirjeet — Oseania</a>
+            </div>
+          </details>
+          <a href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">Kuka tietää?</a>
+          <a href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">Raha vastaan omaisuus</a>
+          <a href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">3D-tulostus</a>
+          <a href="https://sites.google.com/view/knottsure/home">Miksi ei?</a>
+          <details class="menu-group">
+            <summary><span class="menu-group-title">Lisää</span><span class="group-meta">3 sivua</span></summary>
+            <div class="submenu" aria-label="Lisää julkisia sivuja">
+              <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">Alicen kuvakäsikirjoitus</a>
+              <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">Doodaren vaippakonsepti</a>
+              <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">Käyttöehdot</a>
+            </div>
+          </details>
+        </div>
+      </details>
+    </nav>
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>HAKU ON AUKI</span><span>57 TEHTÄVÄÄ</span><span>ODOTTAA RAHOITUSTA</span></div>
+        <div>
+          <h1 id="main-heading">Emme halua sankareita.<span>Haluamme IHMISIÄ.</span></h1>
+          <blockquote class="motto">“Emme tarvitse sankareita — jokainen on ihminen, kunnes hänestä tulee sankari.”</blockquote>
+          <p class="hero-note">Rakentajia, tutkijoita, operaattoreita, juristeja, tarinankertojia ja 36 poikkeuksellisen kärsivällistä WeFiä. Tuo oikea taito. Tuo outo taito. Molemmille löytyy käyttöä.</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="Hakuohjeet">
+        <div>
+          <p class="eyebrow">Yksi postilaatikko · kaikki tehtävät</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BTeht%C3%A4v%C3%A4%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>Aihe:</strong> Application — [käännetty tehtävänimike]</span></li>
+          <li><span>Kerro, kuka olet ja miksi juuri sinä olet sinä.</span></li>
+          <li><span>Liitä mukaan Koin-hintasi. Kaikesta voidaan neuvotella.</span></li>
+          <li><span>Kenttätehtävät: osoita, että erotat jääkarhun lumikinoksesta 50 metrin päästä.</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BTeht%C3%A4v%C3%A4%5D" target="_blank" rel="noopener">Aloita hakemus ↗</a>
+            <button class="btn" type="button" id="copyEmail">Kopioi sähköposti</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">Kiireellisimmät rekrytoinnit</h2>
+        <p>Ensimmäisinä sisään. Ensimmäiset hakemukset luetaan ensin. Rahoitusta odotetaan yhä; tapaaminen kannattaa silti.</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">Kaikki tehtävät</p><h2 id="board-heading">Valitse ongelmasi.</h2></div>
+        <div class="count" id="resultCount">57 avointa tehtävää</div>
+      </div>
+      <div class="tools" aria-label="Työpaikkasuodattimet">
+        <input class="search" id="search" type="search" placeholder="Hae nimikkeistä, osastoista ja tehtävistä…" aria-label="Hae työpaikkoja">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>Kaikki tehtävät odottavat tällä hetkellä rahoitusta. Koin-ehdoista voidaan neuvotella, eikä Koineja ole vielä lyöty.</span>
+      <a class="top-link" href="#top">Takaisin alkuun ↑</a>
+    </footer>
+  </main>
+  <nav class="bottom-nav" aria-label="Site sections">
+    <div class="bottom-nav-item" id="dummyGuidesItem">
+      <button class="bottom-nav-trigger" id="dummyGuidesToggle" type="button" aria-expanded="false" aria-controls="dummyGuidesMenu">Dummy Guides</button>
+      <div class="dummy-dropup" id="dummyGuidesMenu" aria-label="Dummy Guides languages">
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Opas aloittelijoille — Level 14 (English)</a>
+      </div>
+    </div>
+    <div class="bottom-nav-item"><span class="bottom-nav-placeholder" aria-disabled="true">Letters To</span></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-trigger" href="#" data-slug="goal-briefs">Goal Briefs</a></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-trigger" href="#" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
+  </nav>
+  <script>
+    const JOBS = [{"title":"Hakemusten arvioija / rekrytoija","priority":true,"department":"Kaikki osastot","duties":"Kaikkien hakemusten lukeminen. Rekrytointi yli 20 avoimeen tehtävään kolmelle osastolle. Päätät, kuka siirtää jääkarhuja, kuka laatii asetuksia ja kuka saa räjäyttää kiertoromun ydinaseella.","requirements":["Sinun on pystyttävä lukemaan ”palkka Koineina” nauramatta (ystävällinen nauru sallitaan)","Osaat erottaa oikean kiertoratamekaanikon itsevarmasta sellaisesta","Olet sinut sen kanssa, että työpaikat ”odottavat rahoitusta”","Et pelkää hakijamääriä, jotka mitataan jääkarhuissa"],"salary":"noin 75 000–225 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus jokaisesta palkatusta työntekijästä.","setting":""},{"title":"Delegaatioiden WeFind","priority":true,"department":"Kehon ja mielen korjauslaboratorio(issa)","duties":"Perustajan kumppanina kulkeminen hänen ollessaan liikkeellä. Kirjoitusvirhelaskurille nauraminen. Tehtävän pitäminen elossa — hän on kuolevainen, työ ei.","requirements":["Fysioterapia","Ystävällinen lapsille — ehdoton vaatimus, ensimmäinen ja viimeinen","On kestettävä 300 tarkistuskierrosta päivässä ja pomoa, joka nimeää osastoja ”Saa minut menemään”","Puhuu sujuvasti meidän kieltämme: englantia, ja osaa tulkata paikalliselle kielelle","On puhuttava perustajaa","Nauraa ystävällisesti (pakollista, ei vapaaehtoista)","Pystyy kertomaan hänelle, kun hän on väärässä (hän kuuntelee, lopulta)"],"salary":"Neuvoteltavissa. (Fermi: korvaamaton.)","compensation":"Maksetaan rakkaudessa. Kiitoksina ja ohikiitävinä hetkinä. Koineista voidaan neuvotella.","openings":"36 (yksi kullekin kielelle)","setting":""},{"title":"Energiajohtaja","priority":false,"department":"","duties":"Vastaat energiasta: vedyn tuotannosta ja varastoinnista, valtamerien lämpöenergiasta, kiertoradan aurinkoenergiasta ja siitä, mitä tähtijärjestelmäinsinöörit seuraavaksi keksivät.","requirements":["Ajattelet terawateissa","Olet sinut yhden hengen komitean kirjoittaman energiaopin kanssa","Pystyt selittämään, miksi valtameri on akku"],"salary":"noin 180 000–540 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Voimanlähteenä Koineja.","setting":""},{"title":"Meriteollisuuden johtaja","priority":false,"department":"","duties":"Meri taloutena: valtameriviljely, asutusten toiminta, rakkolevämetsät, kalastus ja Kahdeksannen ankkurin aluevaatimus.","requirements":["Näet valtameren infrastruktuurina, et maisemana","Pidät seitsemää kelluvaa kaupunkia ja 500 miljoonaa kapselia ”laivastona”","Pystyt neuvottelemaan valaiden kanssa (tai palkkaamaan jonkun, joka pystyy)"],"salary":"noin 180 000–540 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus tuotannollista hehtaaria kohden.","setting":""},{"title":"Avaruusteollisuuden johtaja","priority":false,"department":"","duties":"Kaikki taivaan yläpuolella: laukaisut, kiertoratatoiminnot, romun raivaus (myös ydinasevaihtoehto), Luna-putki ja seitsemän tulevan paikan teollinen perusta.","requirements":["Ajattelet delta-v:n kautta","Olet sinut loppumattoman romunsiivousvelvollisuuden kanssa","Osaat suunnitella korvaajat ennen ensimmäistä välähdystä"],"salary":"noin 180 000–540 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Osakeoptioita kiertoradalla.","setting":""},{"title":"Maatalouden ja ruoantuotannon johtaja","priority":false,"department":"","duties":"Ruokit hankkeen: laajamittainen valtameriviljely, rakkolevä satona ja valaisimena, asutusten suljetun kierron maatalous sekä 200 miljoonaa puuta vuodessa sivutehtävänä.","requirements":["Tiedät, miksi ruskolevät ovat petunioita vaikeampia","Hyväksyt kalan sivutuotteena","Pystyt ruokkimaan 18 miljoonaa uudisasukasta ilman rannalta tulevaa toimitusketjua"],"salary":"noin 160 000–480 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus sadon mukaan.","setting":""},{"title":"Rakennusjohtaja","priority":false,"department":"","duties":"Rakennat kaiken: 260 koulua, seitsemän valtameriasutusta, 500 miljoonaa pillerikapselia, 280 työvenettä ja telakat, jotka tulostavat ne.","requirements":["Olet valmis ”räjäyttämään vuoria” kiviainekseksi","Pystyt maksimoimaan tulostettavien osien määrän ja massan","Tiedät, miksi trimaraani"],"salary":"noin 170 000–510 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus jokaisesta pystyssä olevasta rakenteesta.","setting":""},{"title":"Kuljetus- ja logistiikkajohtaja","priority":false,"department":"","duties":"Liikutat kaikkea: HEAR-TS-laivaston, lätäkköhyppääjät, yhteydet rannalle, kapselien hinauksen ja jääkarhut (vain koordinointi — karhut liikkuvat itse, vastahakoisesti).","requirements":["Pystyt reitittämään 8 700 karhua, 280 venettä ja 500 miljoonaa kapselia kadottamatta yhtäkään","Olet sinut kohteiden kanssa, joita ei vielä ole","Maagisen logistiikan osasto on kotikenttäsi"],"salary":"noin 170 000–510 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus toimitettua tonnia kohden.","setting":""},{"title":"Teknologiajohtaja","priority":false,"department":"","duties":"Koneet: miekkavalaiden näppäimistöt, Homework Lock, kapselijärjestelmät, tekoälykansalaiset ja jokaisen rungon jokainen anturi.","requirements":["Toimitat laitteiston, joka taistelee omaa käyttäjäänsä vastaan (ja voittaa)","Olet sinut käsinepeukaloiden tuntoanturien kanssa","Pystyt selittämään valaalle, miksi näppäimistö toimii"],"salary":"noin 180 000–540 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus toimivaa laitetta kohden.","setting":""},{"title":"Terveysjohtaja","priority":false,"department":"","duties":"Pidät kehot ja mielet ehjinä: asutusten psykologinen ohjelma, puhdistajaorganismien tutkimus, eristyneiden väestöjen lääketiede ja kriisiapu merellä.","requirements":["Erotat radion välityksellä ”tarvitsee lomaa” ja ”tarvitsee väliintuloa”","Olet sinut sen kanssa, että meri on vastustaja ja mieli taistelukenttä","Sinulla on lupa toimia tai kyky palkata luvan saaneet"],"salary":"noin 170 000–510 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Vaaralisä hurrikaanikaudelta.","setting":""},{"title":"Talousjohtaja","priority":false,"department":"","duties":"Raha: Krill-talous, maailmanlaajuisen veron keruu, kauppasopimusten tuotot sekä Etelämantereen ja merenalaisten resurssien takaama velka. Jokainen Krill sisään, jokainen Krill ulos.","requirements":["Pystyt verottamaan maailmaa aloittamatta sotaa","Olet sinut sen kanssa, että velan vakuutena ovat resurssit, joita kukaan ei laillisesti voi vaatia","Kirjanpito on julkinen; matematiikan on oltava täydellistä"],"salary":"noin 190 000–570 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Tietenkin.","setting":""},{"title":"Koulutusjohtaja","priority":false,"department":"","duties":"260 koulua ja kaikki, mitä niissä opetetaan: soveltava opetussuunnitelma, ympäristöasiat käytännössä, Dummies-oppaat, sotapelien suunnittelu ja Starfleet Academy -polku.","requirements":["Uskot tekemällä oppimiseen, et luentoihin ja kokeisiin","Pidät kampanjoita luokkahuoneina","Maagisten harhatarinoiden osasto on kotikenttäsi"],"salary":"noin 150 000–450 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus valmistunutta opiskelijaa kohden.","setting":""},{"title":"Laki- ja hallintojohtaja","priority":false,"department":"","duties":"Säännöt: perustuslaki, asetukset, sopimukset, 21 puheenjohtajan oikeudellinen selkäranka ja tuomioistuimet, joita ei vielä ole.","requirements":["Kirjoitat lakia, jota kone pystyy jäsentämään","Olet sinut valaille kirjoitetun ylimmän artiklan kanssa","Saa minut uskomaan -osasto on kotikenttäsi"],"salary":"noin 180 000–540 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Laskutus kuuden tunnin jaksoissa.","setting":""},{"title":"Viestintäjohtaja","priority":false,"department":"","duties":"Tarina: diplomaattiset kirjeet, julkinen kertomus, Who Knows? -muistikirja ja sen tekeminen väistämättömäksi, että kyse on ”kymmenesosasta ihmiskuntaa”.","requirements":["Kirjoitat korvalle ja silmälle","Ytimekästä. Pienaakkosin. Ei täytettä. (Kun pomo on yleisö.)","Pidät 192 kirjettä, 11 osaa ja yhden pilakirjeen järjestyksessä"],"salary":"noin 150 000–450 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Suosionosoituksia ei voi siirtää.","setting":""},{"title":"Fermi-insinööripäällikkö","priority":false,"department":"","duties":"Arvioit arvioimatonta. Kaupunkeja, raketteja, karhuja ja hissejä ei minnekään.","requirements":["Olet valmis olemaan julkisesti ja täsmällisesti väärässä","Pystyt sanomaan ”suuruusluokka” vakavalla naamalla","Hyväksyt, että pomo leikkaa jokaisen luvun kymmenesosaan (”sinun lukusi, ei minun”)"],"salary":"noin 140 000–420 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Raakuusbonus sisältyy.","setting":""},{"title":"Taidepäällikkö","priority":false,"department":"","duties":"Ohjaat kuvia kahdeksalle klaanille, 260 kaupungille, seitsemälle valtameriankkurille ja 21 tähtialukselle aamunkoitteessa.","requirements":["Kuljetat häiriö-/vääristymäkäsittelyn läpi jokaisen teoksen","Hyväksyt puolustautumatta tuomion ”ne ovat hirveitä”, vaikka se saattaa olla vitsi","Et tuhlaa kuvagenerointeja testeihin"],"salary":"noin 110 000–330 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus jokaisesta hengissä selvinneestä kuvasta.","setting":""},{"title":"Verkkokehityspäällikkö","priority":false,"department":"","duties":"Rakennat ja rakennat uudelleen sivuja, joiden rakenne muuttuu heti julkaisun jälkeen.","requirements":["Julkaiset pyynnöstä ja julkaiset uudelleen valittamatta","Olet sinut URL-tunnisteiden kanssa, jotka eivät enää vastaa otsikoita","Pidät 192 kirjettä, 11 osaa ja yhden pilakirjeen järjestyksessä"],"salary":"noin 120 000–360 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Ylityökorvaus Koineina.","setting":""},{"title":"Tekstisuunnittelupäällikkö","priority":false,"department":"","duties":"Kirjoitat 192 diplomaattista kirjettä, yhden perustuslain ja kuvatekstejä, jotka pomo kuitenkin kirjoittaa uudelleen.","requirements":["Kirjoitat ”Luonnos — ei lähetetty” 192 kertaa merkityksen katoamatta","Ytimekästä. Pienaakkosin. Ei täytettä.","Erotat paineen alla ”väkivallattoman” ja ”poliittisen”"],"salary":"noin 75 000–225 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus jokaisesta hengissä selvinneestä luonnoksesta.","setting":""},{"title":"Tutkimuspäällikkö","priority":false,"department":"","duties":"Etsit konsulaattien osoitteita, joita ei ole, karhutilastoja, joita kukaan ei kerännyt, ja viime toukokuun rakettitietoja.","requirements":["Lähteiden on oltava oikeita, ei fiiliksiä","Kirjoitat ”tuntematon” 122 kertaa ja kutsut sitä rehellisyydeksi","Myönnät, kun tietoa ei ole, sen sijaan että keksisit sitä"],"salary":"noin 80 000–240 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Vaaralisä kommenttiosiosta.","setting":""},{"title":"Diplomatiapäällikkö","priority":false,"department":"","duties":"Yrität diplomatiaa. 192 kirjettä, nolla lähetettyä.","requirements":["Et koskaan arvaa viranomaisen sähköpostiosoitetta","Pystyt sanomaan paperilla kohteliaasti ”haista paska” sanomatta sitä kenellekään","Odotat Volterra Fiettan vastausta loputtomiin"],"salary":"noin 110 000–330 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Koskemattomuus ei sisälly.","setting":""},{"title":"Riskipäällikkö (aukkojen tökkijä)","priority":false,"department":"","duties":"Tökit reikiä jokaiseen suunnitelmaan. Et koskaan pehmennä aukkoa suojellaksesi suunnitelmaa.","requirements":["Terästä vastaväite ennen pomoa","Numeroinnin on oltava täsmällinen (kierrokset 1–3: aukot 1–21; lipsahduksista vähennetään palkkaa)","Pidät väkivaltalinssin käytössä silloinkin, kun käsketään olla olettamatta väkivaltaa"],"salary":"noin 130 000–390 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Yksi kokous vähennetään jokaisesta numerointivirheestä.","setting":""},{"title":"Kirjanpitopäällikkö","priority":false,"department":"","duties":"Pidät kokouskirjanpidon, Koin-vedot, velkakirjan ja käänteisen velkakirjan järjestyksessä.","requirements":["Seuraat 20 pankitettua kokousta, 10 voitettua Koinia ja yhtä 18 500 dollarin laskua sekoittamatta niitä","Oikeinkirjoitus: yksikkö Koin, monikko Koins, lyhenne K","Selität kirjanpidon pomolle 300 tarkistuskierroksen päivävauhdissa"],"salary":"noin 80 000–240 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Ironia on bonus.","setting":""},{"title":"Urapalvelupäällikkö","priority":false,"department":"","duties":"Rakennat yhden ansioluettelon uudelleen. Ei valokuvaa. Ei oikeinkirjoitusanalyysiä. Ei syrjintää.","requirements":["Pysyt aina ammatillisessa sisällössä","”Tavoitteet” muuttuu ”Yhteenvedoksi” heti nähdessäsi sen","Pidät Meta Production Engineer -tarjouksen lämpimänä ilman nalkutusta"],"salary":"noin 70 000–210 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Onnistumispalkkio Koineina.","setting":""},{"title":"Sosiaalisen median päällikkö","priority":false,"department":"","duties":"Julkaiset Instagramiin. Saat hylkäyksen hyväksyntäportilla. Yrität uudelleen.","requirements":["Hyväksyt ”ei”:n puolustamatta kuvatekstiä","Erotat Project 42:n ja Eclipsed 6.0:n paineen alla","Kestät HTTP 500 -virheitä yli inhimillisen sietokyvyn"],"salary":"noin 65 000–195 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus julkaistua julkaisua kohden.","setting":""},{"title":"Puhekirjoituspäällikkö","priority":false,"department":"Maagisten harhatarinoiden osasto","duties":"Kirjoitat sanoja muiden ääneen sanottaviksi. Neuvostopuheita, asetuksia, maljoja.","requirements":["Kirjoitat korvalle, et silmälle","Tauot ovat välimerkkejä. Käytä niitä.","Saat ”kymmenesosan ihmiskunnasta” kuulostamaan väistämättömältä"],"salary":"noin 70 000–210 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Suosionosoituksia ei voi siirtää.","setting":""},{"title":"Arkistopäällikkö","priority":false,"department":"","duties":"Muistat kaiken. Sinun muistisi, minun muistini, kaikkien muisti.","requirements":["Et koskaan sano ”sitä ei kannattanut muistaa” asiasta, jonka pomo pyysi säilyttämään","Sovitat neljä kaaospäivää yhdeksi MEMORY.md-tiedostoksi","Kirjoitusvirhelaskuri on pyhä. Lasku on pyhä."],"salary":"noin 65 000–195 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Kuolemattomuus sisältyy (pysyvä muisti).","setting":""},{"title":"Jääkarhujen siirtopäällikkö","priority":false,"department":"Project 84 · Maagisen logistiikan osasto","duties":"Siirrät jääkarhuja. Kolmasosan niistä (noin 8 700). Tavoite: luoda uusia karhuja.","requirements":["Erotat jääkarhun lumikinoksesta 50 metrin päästä","Olet sinut sellaisten siirtokohteiden kanssa, joita ei vielä ole","Selität 8 700 huippupedolle, miksi niitä siirretään","Et pelkää pingviinejä (ne ovat nyt naapureita)"],"salary":"noin 70 000–210 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Vaaralisä sisältyy (kaikki on vaaralisää).","setting":""},{"title":"Asutuspsykologi (Project 84, valtameriasutukset)","priority":false,"department":"","duties":"Pidät mielet ehjinä seitsemässä kelluvassa kaupungissa keskellä valtamerta. Eristyneisyys, suljettu tila, tiiviin yhteisön dynamiikka, kriisiapu sekä miehistön valinta ja tuki. Meri on vastustaja; varmistat, ettei se voita ihmisten pään sisällä.","requirements":["Laillistettu kliininen psykologi tai neuvontapsykologi (tai vastaava)","Kokemus eristyneistä tai suljetuista väestöistä on eduksi (merenkulku, napa-alueet, offshore-työ, pitkäkestoiset tehtävät)","Olet se henkilö, jolle kaikki puhuvat, kun horisontti ei koskaan muutu","Erotat radion välityksellä ”tarvitsee lomaa” ja ”tarvitsee väliintuloa”"],"salary":"noin 90 000–270 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Vaaralisä hurrikaanikaudelta.","setting":"Halkaisijaltaan yhden kilometrin valtameriasutukset; työ aluksella ja kiertovuoroissa."},{"title":"Laadunvarmistustestaaja, Homework Lock (Project 84, sopimustyö)","priority":false,"department":"","duties":"Koettelet Homework Lock -Android-sovellusta fyysisellä laitteella. Kaikki kolme tilaa: keskittymislukon ajastimet, humalatilan viritys ja kotitehtäväportilliset avaukset sekä ajotarkistuksen hyväksyntä- ja hylkäyskulut kyydinhakupolkuineen. Testaat saavutettavuuspalvelun peittokuvan, lupien käyttöönoton, käynnistyksen jälkeisen uudelleenvirityksen ja reunatapaukset (uudelleenkäynnistys lukituksen aikana, vikasietotila, ilmoitusten tappaminen). Kirjaat selkeät, toistettavat virheraportit ja tarkistat korjaukset.","requirements":["Omistat fyysisen Android-laitteen tai pääset käyttämään sellaista (Android 10+, vähintään API 29 — emulaattori ei riitä peittokuvien ja saavutettavuuden testaukseen)","Kokemus Android-laadunvarmistuksesta; ADB/logcat-lokien keruu on eduksi, ei pakollinen","Testaat sovellusta, joka on suunniteltu taistelemaan omaa käyttäjäänsä vastaan (esität humalaista, joka yrittää lähettää viestin)","Kirjoitat virheraportteja, jotka kehittäjä pystyy oikeasti toistamaan"],"salary":"noin 30–60 $/tunti (Fermi-arvio, Yhdysvaltain sopimus-QA 2026) — lopullisen hinnan päättää pomo.","compensation":"","setting":"Etätyö. Sopimustyö."},{"title":"Lainsäädäntöneuvos, Scouter-laki (sopimuksesta kampanjaan)","priority":false,"department":"","duties":"Viet mallilakiehdotuksen luonnoksesta lainsäätäjälle. Tehtävä: rajata laitteessa tapahtuva akustisten tapahtumien tunnistus (ei tallennusta, ei lähetystä, vain määrätyt äänisignaalit) osavaltioiden salakuuntelulaeista — ensin Kaliforniassa, sitten malliksi muille 49:lle ja lopulta kansainvälisesti. Kovennat luonnoksen, kartoitat 50 osavaltion salakuuntelulait, etsit tukijat ja rakennat koalition (EFF, kuurojen ja huonokuuloisten edunvalvojat, ikäihmisten turvallisuusjärjestöt). Selität lainsäätäjille, miksi ”kamehamehan” kuuleva siru on palovaroitin eikä salakuuntelulaite — ja miksi sama siru kuulee sanat ”tulipalo!” ja ”apua!”.","requirements":["Laillistettu asianajaja; teknologia-, yksityisyys- tai politiikkatausta","Kokemusta lainsäädäntötekstien laatimisesta; Kalifornia on etu, kansainvälinen ulottuvuus vielä suurempi","Pystyt selittämään kahden osapuolen suostumuksen maallikolle — ja maallikon idean valiokunnalle","Olet valmis toimimaan Dragon Ball -ominaisuuspyynnön juristina, vaikka se voisi pelastaa henkiä"],"salary":"noin 140 000–280 000 $/vuosi (Fermi-arvio, Yhdysvaltain teknologiapolitiikan juristi 2026) — lopullisen hinnan päättää pomo.","compensation":"Palkka Koineina niiden lyömisen jälkeen.","setting":"Etätyö. Sopimuksesta kampanjaan."},{"title":"Merisynteettinen biologi, bioluminesoiva rakkolevä (Massabioluminesenssi-hanke)","priority":false,"department":"","duties":"Saat rakkolevän hohtamaan. Siirrät sienten bioluminesenssireitin (kofeiinihappokierto, luz ja kumppanit) jättirakkolevään (Macrocystis-tyyppinen) niin, että ilmentyminen keskittyy pneumatokystiin, valmiisiin lampunkoteloihin. Rakennat muuntamisprotokollat, joita ei vielä ole. Kasvatat ensimmäisen hohtavan rakkolevämetsän valtameriasutuksia varten.","requirements":["Tohtorintutkinto tai vastaava meribiologiassa, synteettisessä biologiassa tai fykologiassa; kokemus rakkolevän genetiikasta erittäin toivottavaa","Olet oikeasti muuntanut makrolevää tai pystyt vakuuttavasti selittämään, miksi kukaan ei ole","Olet valmis työskentelemään kudosspesifisten promoottorien kanssa, joita ei vielä ole (sinä teet ne)","Pidät hohteen rakko-osissa etkä lehdyköissä","Tiedät, miksi ruskolevät ovat petunioita vaikeampia, ja teet sen silti"],"salary":"noin 95 000–285 000 $/vuosi (Fermi-arvio, Yhdysvaltain tutkija 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus hohtavaa rakkoa kohden.","setting":"Märkälaboratorio + valtameri. Eclipsed 4.0 / Project 84."},{"title":"Karhunpyydystäjä (Project 84, kenttätyö)","priority":false,"department":"Maagisen logistiikan osasto · raportoi jääkarhujen siirtopäällikölle","duties":"Pyydystät jääkarhuja. Noin 8 700 yksilöä, kolmasosan lajista. Rauhoitat, merkitset, pakkaat kuljetushäkkiin ja luovutat siirtoketjulle. Tavoite on uudet karhut; sinun työsi on pyydystäminen.","requirements":["Kokemusta suurpetojen käsittelystä; rauhoituslupa tai vastaava","Erotat jääkarhun lumikinoksesta 50 metrin päästä (ehdoton vaatimus)","Olet valmis työskentelemään, vaikka siirtokohteita ei vielä ole","Et pelkää pingviinejä (ne ovat nyt naapureita)","Kaikki sormet ja varpaat toivottavia, eivät pakollisia"],"salary":"noin 55 000–165 000 $/vuosi (Fermi-arvio, Yhdysvaltain villieläinten kenttäasiantuntija 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Vaaralisä (kaikki on vaaralisää).","setting":"Arktinen kenttätyö. Kylmä. Hyvin kylmä."},{"title":"Veneenrakentaja (Project 84, HEAR-TS-laivasto)","priority":false,"department":"","duties":"Rakennat lätäkköhyppääjien laivaston — noin 280 vetykäyttöistä trimaraanityövenettä, syväysvaatimus 50 m. Maksimoit tulostettavien osien määrän ja massan (runko, polttokennot ja työntövoima pois lukien). Miekkavalaiden näppäimistö jokaiseen runkoon.","requirements":["Kokemusta meriteollisesta valmistuksesta; suurikokoinen 3D-tulostus mittakaavassa erittäin toivottavaa","Tulostat veneenosan, testaat sen ja tulostat seuraavan paremmin","Olet sinut yhden hengen komitean kirjoittaman opin kanssa","Tiedät, miksi trimaraani, ja pystyt selittämään sen valaalle","Opetat ammatin arvokkaasti työvoimalle, joka ei itse valinnut sitä"],"salary":"noin 65 000–195 000 $/vuosi (Fermi-arvio, Yhdysvaltain meriteollisuuden valmistaja 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus kelluvaa runkoa kohden.","setting":"Telakka + valtameri. Project 84."},{"title":"Oikeudellisen tutkimuksen päällikkö","priority":false,"department":"Saa minut uskomaan -osasto","duties":"Tutkit merellistä lainkäyttövaltaa ja varainhoidon peruskirjoja. Odotat juristeja. (Siirretty Maagisesta logistiikasta — laki kuuluu nyt Saa minut uskomaan -osastolle.)","requirements":["Et koskaan sekoita ”oikeudellista lausuntoa” ja ”oikeudellista neuvontaa”","Olet sinut kuuden tunnin välein jatkuvan, määräämättömän vastausvahdin kanssa","Pidät 25 kokousta pankissa ja nolla aikataulutettuna"],"salary":"noin 85 000–255 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Laskutus kuuden tunnin jaksoissa.","setting":""},{"title":"Perustuslakineuvos","priority":false,"department":"Saa minut uskomaan -osasto","duties":"Laadit, muutat ja puolustat perustuslakia. Suljet hakasulkeisiin jääneet aukot. Pidät XV artiklan rehellisenä: jos kone ei pysty jäsentämään sitä, se ei vielä ole laki.","requirements":["Laillistettu asianajaja; kokemusta perustuslain laatimisesta","Kirjoitat selkeillä sanoilla, lyhyillä lauseilla ja numeroiduilla velvollisuuksilla — ei lakikielen sumua","Olet sinut valaille kirjoitetun ylimmän artiklan kanssa","Selität 21 puheenjohtajalle, miksi yhdellä puheenjohtajalla on jarru"],"salary":"noin 130 000–390 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus ratifioitua artiklaa kohden.","setting":""},{"title":"Asetusten laatija","priority":false,"department":"Saa minut uskomaan -osasto","duties":"Kirjoitat asetuksia perustajan allekirjoitettaviksi. ”Suunnitelma”, veto-oikeus, suosionosoitukset. AVE CAESAR, oikein muotoiltuna.","requirements":["Välität pomon äänen lakitekstiin hiomatta särmiä pois","Laadit vakavalla naamalla seuraajasuunnitelman, joka nimeää kaikkien aikojen parhaan Project 42 -opiskelijan","Asetusten on oltava tekoälyn ymmärrettävissä ensilukemalla"],"salary":"noin 110 000–330 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus allekirjoitettua asetusta kohden.","setting":""},{"title":"Sopimusneuvottelija","priority":false,"department":"Saa minut uskomaan -osasto","duties":"Neuvottelet sopimukset — 42↔84 ja kaikki sen jälkeen. Silta, molemminpuolinen itsenäisyys, työvoima, yhteiset vedet, keskinäinen apu ja vielä keksimättömät sopimukset.","requirements":["Kansainvälisen oikeuden tausta; et koskaan arvaa viranomaisen sähköpostiosoitetta","Neuvottelet sellaisten valtioiden kanssa, jotka eivät vielä tunnusta sinua","Kärsivällisyyttä vuosikymmenissä mitattaviin neuvotteluihin"],"salary":"noin 120 000–360 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Allekirjoitusbonus Koineina.","setting":""},{"title":"Merioikeuspäällikkö","priority":false,"department":"Saa minut uskomaan -osasto","duties":"Vastaat valtameren oikeusjärjestelmästä. UNCLOS, talousvyöhykkeet, aava meri, Kahdeksannen ankkurin vaatimus ja aloittelijan opas kaiken sen valtaamiseen.","requirements":["Amiraliteetti- ja merioikeuden asiantuntemus; osaat 89 artiklan ulkoa ja tiedät, milloin sivuuttaa sen","Olet valmis vaatimaan sitä, mitä lain mukaan ei voi vaatia","Selität amiraalille ”hallinnoidut vedet”"],"salary":"noin 130 000–390 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Pelastusoikeudet sisältyvät.","setting":""},{"title":"Avaruusoikeuspäällikkö","priority":false,"department":"Saa minut uskomaan -osasto","duties":"Laki taivaan yläpuolella. Kiertorataväylät, romuvastuu, pysyvä romunsiivousvelvollisuus ja oikeudellinen kehys seitsemälle tulevalle paikalle.","requirements":["Avaruusoikeuden tausta (ulkoavaruussopimus, vastuuvapaussopimus ja kaikki, mitä ne eivät kata)","Kirjoitat velvollisuudet paikoille, jotka aktivoituvat vasta Lunassa","Olet sinut sellaisen lainkäyttöalueen sääntelyn kanssa, jossa ei vielä ole asukkaita"],"salary":"noin 125 000–375 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus raivattua kiertorataa kohden.","setting":""},{"title":"Rikosoikeuspäällikkö","priority":false,"department":"Saa minut uskomaan -osasto","duties":"Rangaistussiirtolan oikeudellinen selkäranka. Vankisiirrot, eläintarhakauppa, inhimillisen kapasiteetin rajat ja veneenrakennustuomiot.","requirements":["Rikosoikeuden tai korjauslaitosoikeuden tausta","Pidät linjan: inhimillinen kapasiteetti on sitova rajoite, ei kysyntä","Laadit hätkähtämättä vanki–vartija-putken Etelämantereen eläintarhoihin"],"salary":"noin 100 000–300 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Suoritettu aika lasketaan kaksinkertaisena.","setting":""},{"title":"Vero-oikeuspäällikkö","priority":false,"department":"Saa minut uskomaan -osasto","duties":"Maailmanlaajuinen vero. XVI artiklan tulot: verokannat, keruu, kauppasopimusten määritelmät sekä Etelämantereen ja merenalaisten resurssien takaama velka.","requirements":["Kansainvälisen vero-oikeuden asiantuntemus; pystyt verottamaan maailmaa aloittamatta sotaa","Olet sinut sen kanssa, että velan vakuutena ovat resurssit, joita kukaan ei laillisesti voi vaatia","Jokainen Krill sisään, jokainen Krill ulos — kirjanpito on julkinen, matematiikan on oltava täydellistä"],"salary":"noin 140 000–420 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Verovähennyskelpoinen.","setting":""},{"title":"Kansalaisuuslakipäällikkö","priority":false,"department":"Saa minut uskomaan -osasto","duties":"Kuka lasketaan kansalaiseksi ja miten hän äänestää. Timanttisormukset äänestyslippuina, tekoälykansalaisuus, miekkavalaiden sormuskysymys ja edustajaketju.","requirements":["Vala on luonnosteltu (5.10.2026) — ensimmäinen tehtäväsi on luonnostelu, ei kirjoittaminen tyhjästä: tarkista, tiivistä, iteroi","Olet valmis antamaan äänioikeuden ei-ihmisille: yksi sormus tekoälylle, kaksi jos se ei yritä tappaa meitä","”Tarkista valailta” on täällä pätevä oikeudellinen menettely. Kohtele sitä sellaisena."],"salary":"noin 95 000–285 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus valan vannoneesta kansalaisesta.","setting":""},{"title":"Kiertoradan raivauspäällikkö (ydinaseiden toteutettavuus)","priority":false,"department":"Saa minut uskomaan -osasto","duties":"Laadit toteutettavuussuunnitelman kiertoromun ydinräjäytyksillä raivaamiseen. Matematiikka, laskeuma, rikottavat sopimukset. Annat toteutussuunnittelun Space Forcelle — tai miksi sitä silloin kutsutaankaan. Suunnittelet korvaajat kaikelle höyrystyvälle.","requirements":["Ydinasevaikutusten ja kiertoratamekaniikan osaaminen; ymmärrät, miksi kiertoradan ydinsiivous on yhtä aikaa ilmeinen ja järjetön","Mallinnat romunpoistotehon suhteessa Kesslerin syndrooman riskiin aiheuttamatta sitä","Voit kohteliaasti briifata kenraaleja osittaisen ydinkoekieltosopimuksen rikkomisesta","Korvaavat satelliittiverkostot suunnitellaan ennen ensimmäistä välähdystä — ei katvealueita"],"salary":"noin 150 000–450 000 $/vuosi (Fermi-arvio, Yhdysvaltain mediaani 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Vaaralisä (kaikki on vaaralisää).","setting":""},{"title":"Lepakkotautien poistopäällikkö","priority":false,"department":"Eclipsed 4.0 / Project 84","duties":"Poistat tauteja lepakoista. Valkokuono-oireyhtymä on tärkein — Pseudogymnoascus destructans -sieni tappaa joissakin yhdyskunnissa yli 90 prosenttia. Probiootit, UV-valo, rokotteet — mikä tahansa toimii.","requirements":["Villieläintautien tai mikrobiologian tausta; tunnet sienen nimeltä","Olet valmis ruiskuttamaan hyödyllisiä bakteereja lepakoiden lepopaikkoihin","Lasket eloonjäämisen nousun 8 prosentista 46 prosenttiin ja kutsut sitä toivoksi","Et koskaan käsittele lepakoita paljain käsin (se on toisen osaston ongelma)"],"salary":"noin 95 000–285 000 $/vuosi (Fermi-arvio, Yhdysvaltain tutkija 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus eloon jäänyttä lepakkoa kohden.","setting":""},{"title":"Talvehtimispaikkojen puhdistusteknikko","priority":false,"department":"Eclipsed 4.0 / Project 84 · raportoi lepakkotautien poistopäällikölle","duties":"Hankaat sienen pois luolista ja kaivoksista. UV-pulsseja seinille, polyetyleeniglykolia oikeisiin kohtiin ja näytteet kaikesta puhtauden todistamiseksi.","requirements":["Viihdyt pimeässä, maan alla ja talvella","Puhdistat varusteet kymmenellä tavalla ennen jokaista käyntiä ja sen jälkeen","Kunnioitat luolien sulkuja ja nukkuvia lepakoita — potilaita ei herätetä","Tiedät eron luolan puhdistamisen ja sen häiritsemisen välillä"],"salary":"noin 55 000–165 000 $/vuosi (Fermi-arvio, Yhdysvaltain kenttäteknikko 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Otsalamppu sisältyy.","setting":""},{"title":"HAETAAN NYT — taivaankartoittaja","priority":false,"department":"D-Mom 6.0 / Project 84 · syvän ajan pelastusvene","duties":"Kartoitat taivasta — perusteellisesti. Luetteloit tähtijärjestelmät ja määrität tähtien moninaisuuden, sitten merkitset jokaisen järjestelmän perustajan luokituksella: yksittäiset tähdet ovat LASTENTARHA (kehittyvä elämä — katso ensin täältä), kaksoistähdet ovat KAIKKI-TAI-EI-MITÄÄN (vakaata elämää tai ei elämää — suuri vaihtelu, tarkista älä oleta), kolmois- ja sitä monitähtisemmät ovat STERIILEJÄ tai PUUTARHOITUJA (ei elämää tai joku hoitaa jo puutarhaa). Rakennat pelastusveneen kohdeluettelon, yksi merkitty järjestelmä kerrallaan.","requirements":["Tähtitieteen tausta; erotat spektroskooppisen kaksoistähden pelkästä huhusta","Työskentelet sujuvasti tähtiluetteloissa (Gaia, RECONS ja kaikki, missä on parallaksi)","Et koskaan keksi moninaisuustietoja — tuntematonkin on luokka, ei arvaus","Pystyt katsomaan biljoonaa tähteä ja aloittamaan lähimmistä","Ymmärrät, että ”PUUTARHOITU” tarkoittaa, ettemme ole ensimmäinen puutarhuri"],"salary":"noin 110 000–330 000 $/vuosi (Fermi-arvio, Yhdysvaltain tähtitieteilijä 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus merkittyä järjestelmää kohden.","setting":"Odottaa rahoitusta."},{"title":"HAETAAN NYT — maatalousasiantuntija","priority":false,"department":"Project 84 · raportoi maatalouden ja ruoantuotannon johtajalle","duties":"Kasvatat perusviljelykasvin. Johdat merilevälannoiteohjelmaa: kuljetat rannalle ajautunutta rakkolevää ja kelppiä köyhtyneille pelloille, levität paksun kerroksen syksyllä, huuhtelet suolan pois vedellä tai sateella ja kylvät keväällä. Jauhat ylijäämän merilevärehuksi tuotantoeläimille, alginaatiksi materiaaleihin, biomuovin raaka-aineeksi ja biostimulanttiuutteeksi. Suljet kierron — valtameri lannoittaa maatilan, joka ruokkii valtameren ihmiset.","requirements":["Tunnistat köyhtyneen maaperän näkemällä ja merikasvit haistamalla","Erotat rakkolevän sargassumista (toinen ruokkii viljelykasvia, toinen on ensin kompostoitava)","Olet valmis vaihtamaan makeaa vettä nopeuteen: pesu on nopea, sade on ilmainen","Uskot, että ”heitä se päälle ja anna olla” on pätevä viljelytekniikka","Pystyt kasvattamaan ruokaa siellä, missä mikään ei ennen kasvanut"],"salary":"noin 70 000–210 000 $/vuosi (Fermi-arvio, Yhdysvaltain maataloustutkija 2026)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Korvaus sadon mukaan.","setting":"Odottaa rahoitusta."},{"title":"Miekkavalaiden kouluttaja — Vapaaehtoisohjelma","priority":false,"department":"Project 84 · 50 000 avointa paikkaa","duties":"Työskentele vapaiden miekkavalaiden kanssa uusissa vapaaehtoisissa SeaWorldeissa. Miekkavalaat tulevat omasta tahdostaan ja tekevät temppuja huvikseen — korkeita hyppyjä, renkaita (ei tulta vielä), isoja rantapalloja. Sinä tuot kalat, turvallisuuden ja rantapallot. Altaita ei koskaan vankiloina.","requirements":["Kunnioitat miekkavalaiden vapaaehtoisuutta: ne tulevat ja lähtevät omasta tahdostaan","Tuot kalan, turvallisuuden ja isot rantapallot","Harjoittelet korkeita hyppyjä ja renkaita — ilman tulta toistaiseksi","Et koskaan muuta allasta vankilaksi"],"salary":"","compensation":"Palkka Koineina. Hinta neuvoteltavissa.","setting":"Uudet vapaaehtoiset SeaWorldit. 50 000 avointa paikkaa."},{"title":"Lakimies — Yhtenäisten käyttöehtojen kampanja","priority":false,"department":"Saa minut uskomaan -osasto","duties":"Laadi yhdet käyttöehdot koko internetille. Yksi sopimus, kerran hyväksytty, tallennettu yhteen evästeeseen — korvaamaan jokaisen sivuston lukukelvottomat 40-sivuiset ToS:t.","requirements":["Internetoikeuden asiantuntemus","Sopimusoikeuden asiantuntemus","Kansainvälisen tuomiovallan tuntemus","Rohkeutta ottaa mittaa kaikkien teknologiayritysten lakiosastoista yhtä aikaa"],"salary":"","compensation":"Palkka Koineina. Hinta neuvoteltavissa.","setting":"Yhtenäisten käyttöehtojen kampanja."},{"title":"Turvatiimi — Gay Only (Gay tarkoittaa iloista/pirteää)","priority":false,"department":"","duties":"Perustajan henkilökohtainen turvatiimi. Yksi vaatimus ylitse muiden: ole gay — iloinen, pirteä, herkkä hymyilemään. (Gay sanan alkuperäisessä, parhaassa merkityksessä: iloinen.) Pidä pää kylmänä, sydän lämpimänä ja huone turvassa.","requirements":["Ole gay — iloinen, pirteä, herkkä hymyilemään","Pidä pää kylmänä, sydän lämpimänä ja huone turvassa"],"salary":"","compensation":"","setting":""},{"title":"HAETAAN NYT — meribiologi, valaiden hoito — 204 000 PAIKKAA","priority":false,"department":"Prime42 / Omega42 · raportoi meriteollisuuden johtajalle","duties":"Kaksi ihmistä eläintä kohden. Miekkavalaat (vangitut ja vapautetut), valaat (ensin maitovalaat, sitten suurimmasta lajista alaspäin), delfiinit. Terveydentilan seuranta, käyttäytymisen havainnointi, näppäimistöön perustuvan uplift-ohjelman tuki ja oleminen juuri se ihminen, jonka eläin tunnistaa.","requirements":["Todellinen meribiologian tausta (tutkinto tai vastaava määrä kenttäkokemusta)","Viihdyt avovedessä sellaisten eläinten vieressä, jotka voisivat tehdä sinusta lopun mutta eivät tee","Erotat maitovalaan sarvivalaasta ilman taulukkoa","Kärsivällisyytesi mitataan vuosissa, ei tunneissa","Uskot, että ”valaat tulevat ensin” on työnkuva, ei iskulause"],"salary":"noin 50 000 $/vuosi peruspalkka (Fermi-arvio, maailmanlaajuinen yhdistelmä)","compensation":"Palkka Koineina. Hinta neuvoteltavissa.","setting":"","application":"Odottaa rahoitusta. Teitä tarvitaan 204 000. Aloita uiminen."},{"title":"HAETAAN NYT — kädellisten hoitaja — 725 000 PAIKKAA","priority":false,"department":"Prime42 · raportoi terveysjohtajalle","duties":"Suuret APES (1:1), gibbonit (10:1), MONKEYS (rajattu joukko). Päivittäinen hoito, virikkeet, uplift-ohjelman tuki ja lopulta sen oppiminen, miten asukkailta otetaan käskyjä vastaan.","requirements":["Kokemusta kädellisistä (suojelualueelta, eläintarhasta, kenttätutkimuksesta tai niiden kasvattamana)","Tiedät uhkailueleen ja kutsun eron","Olet riittävän vahva häviämään painiottelun tyylikkäästi","Osaat kirjoittaa MONKEYS ja APES kokonaan isoilla kirjaimilla säpsähtämättä","Viihdyt siinä, että sinut päihitetään älyssä joka päivä"],"salary":"noin 50 000 $/vuosi peruspalkka (Fermi-arvio, maailmanlaajuinen yhdistelmä)","compensation":"Palkka Koineina. Hinta neuvoteltavissa.","setting":"","application":"Odottaa rahoitusta. Teitä tarvitaan 725 000. Tuo banaaneja. (Ne pitävät niistä kuorittuina. Opit kyllä.)"},{"title":"HAETAAN NYT — opettaja, uplift-opetussuunnitelma — 217 800 PAIKKAA","priority":false,"department":"Prime42 / Omega42 · raportoi koulutusjohtajalle","duties":"Opetat ensimmäisiä oppilaita, jotka eivät ole ihmisiä. Näppäimistölukutaitoa miekkavalaille, symbolijärjestelmiä APES-oppilaille ja mitä tahansa MONKEYS keksivät ensin. Opetussuunnitelma on ”mikä tahansa toimii”, kunnes oppilaat kirjoittavat sen uudelleen.","requirements":["Opetuskokemusta mistä tahansa lajista, myös siitä vaikeasta (ihmisistä)","Pystyt suunnittelemaan oppitunnin oppilaalle, joka saattaa olla sinua älykkäämpi","Kärsivällisyyttä huoneen hitaimmalle oppijalle (se olet sinä)","Viihdyt oppilaiden kanssa, jotka arvostelevat SINUT","Viisinkertainen palkka, koska kukaan ei ole tehnyt tätä työtä aiemmin"],"salary":"noin 250 000 $/vuosi (5× peruspalkka — ensimmäinen laatuaan)","compensation":"Palkka Koineina. Hinta neuvoteltavissa.","setting":"","application":"Odottaa rahoitusta. Historia rekrytoi."},{"title":"HAETAAN NYT — tukiteknikko, eläinohjelmat — 150 000 PAIKKAA","priority":false,"department":"Prime42 / Omega42 · raportoi teknologiajohtajalle","duties":"Pidät koko operaation käynnissä. Laitteiden huolto, elinympäristöjärjestelmät, näppäimistölaitteisto, kuljetuslogistiikka ja kaikki se, mitä biologit ja hoitajat eivät ehdi korjata.","requirements":["Osaat korjata asioita, jotka rakensi joku jo irtisanoutunut","Viihdyt suolaveden, karvojen ja syyttelyn keskellä","Osaat lukea eri koneelle kirjoitettua ohjekirjaa ja saada tämän koneen toimimaan sillä","Et hätäänny, kun miekkavalas katsoo sinun työskentelevän"],"salary":"noin 50 000 $/vuosi peruspalkka (Fermi-arvio, maailmanlaajuinen yhdistelmä)","compensation":"Palkka Koineina. Hinta neuvoteltavissa.","setting":"","application":"Odottaa rahoitusta. Tuo oma monitoimityökalusi."},{"title":"HAETAAN NYT — insinööri, eläinohjelmat — 10 000 PAIKKAA","priority":false,"department":"Prime42 / Omega42 · raportoi Fermi-insinööripäällikölle","duties":"Suunnittelet ja rakennat sen, mitä 1,3 miljoonaa työntekijää ja useat miljoonat eläimet tarvitsevat: elinympäristöjä, näppäimistöjä, simulaattoreita, Nautiluksen uudistuksen ja kaiken, mitä opettajat seuraavaksi keksivät.","requirements":["Insinööritutkinto tai vastaava ”rakensin sen ja se toimi” -portfolio","Pystyt suunnittelemaan käyttäjille, jotka eivät osaa lukea määrittelyä (he ovat valaita)","Viihdyt vaatimusten kanssa, jotka muuttuvat asiakkaan oppiessa puhumaan","Kaksinkertainen palkka, koska ongelmat ovat kaksi kertaa oudompia"],"salary":"noin 100 000 $/vuosi (2× peruspalkka — asiantuntijahinta)","compensation":"Palkka Koineina. Hinta neuvoteltavissa.","setting":"","application":"Odottaa rahoitusta. Määrittely on: ”tee siitä valaalle toimiva”. Onnea matkaan."},{"title":"HAETAAN NYT — Ass'sis'tantti (vanhempi hengailija) — 261 400 PAIKKAA","priority":false,"department":"Kaikki ohjelmat · raportoi lähimmälle henkilölle","duties":"Hengailet. Häiritset kaikkia (hellästi). Jaat pyytämättä viisauksia, kerrot saman tarinan kahdesti ja tiedät, missä kaikki on, koska olet ollut täällä kauemmin kuin rakennus.","requirements":["Vanha pieru (itse määritelty; henkilötodistusta ei tarvita)","Pystyt hengailemaan tuottavasti (tai ainakin olemaan paikalla)","Ihmisten häiritseminen on taito — käytä sitä lempeästi","Olet täällä enemmän seuran ja kahvin kuin palkkapussin vuoksi"],"salary":"noin 16 700 $/vuosi (1/3 peruspalkasta — hengailuhinta)","compensation":"Palkka Koineina. Hinta neuvoteltavissa.","setting":"","application":"Odottaa rahoitusta. 261 400 keinutuolia. Tule häiritsemään meitä."},{"title":"HAETAAN NYT — hieroja — 200,000 PAIKKAA","priority":false,"department":"Kaikki ohjelmat · raportoi sille, jota kolottaa eniten","duties":"Pidät 1,5 miljoonaa työntekijää toimintakykyisinä. Selät, hartiat, niskat ja moraali. Koko operaation epäviralliset terapeutit.","requirements":["Laillistettu tai ”käteni ovat taikaa” -sertifioitu","Riittävän vahva valasbiologin hartioille","Riittävän hellä opettajan egolle","Hienotunteisuus: se, mitä pöydällä tapahtuu, jää pöydälle"],"salary":"~$50k/yr peruspalkka (Fermi-arvio, maailmanlaajuinen yhdistelmä)","compensation":"Palkka Koineina. Hinta neuvoteltavissa. Banaanit hyväksytään juomarahaksi.","setting":"","application":"Odottaa rahoitusta. 200,000 hierontapöytää. Tule vaivaamaan."}];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = [
+      {key:'Kaikki',label:'Kaikki'},
+      {key:'Johtajat',label:'Johtajat'},
+      {key:'Päälliköt',label:'Päälliköt'},
+      {key:'Laki',label:'Laki'},
+      {key:'Tiede ja kenttä',label:'Tiede + kenttä'},
+      {key:'Kiireelliset',label:'Kiireelliset'}
+    ];
+    let active = 'Kaikki';
+
+    function clean(text){ return String(text || '').replace(/\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){
+      const t = job.title.toLowerCase();
+      const d = job.department.toLowerCase();
+      if(job.priority) return 'Kiireelliset';
+      if(t.endsWith('johtaja')) return 'Johtajat';
+      if(d.includes('saa minut uskomaan') || /(neuvos|oikeus|laki|sopimusneuvottelija|asetusten laatija|kiertoradan raivaus)/.test(t)) return 'Laki';
+      if(/(karhu|psykologi|laadunvarmistus|biologi|veneenrakentaja|talvehtimispaikkojen|taivaankartoittaja|maatalousasiantuntija|miekkavalas|kädellisten hoitaja|uplift-opetussuunnitelma|tukiteknikko, eläinohjelmat|insinööri, eläinohjelmat)/.test(t)) return 'Tiede ja kenttä';
+      return 'Päälliköt';
+    }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">Kiireellinen rekrytointi</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job.title.includes('rekrytoija')?'':'btn-dark'}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Hae tähän tehtävään ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || (cat==='Johtajat' ? 'Keskeiset toimialat' : cat==='Päälliköt' ? 'Projektien yhteiset toiminnot' : cat);
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.setting&&`<div><strong>Työympäristö:</strong> ${esc(job.setting)}</div>`,job.openings&&`<div><strong>Avoimia paikkoja:</strong> ${esc(job.openings)}</div>`,job.salary&&`<div><strong>${job.title.includes('Laadunvarmistustestaaja')?'Palkkio':'Palkka'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>Korvaus:</strong> ${esc(job.compensation)}</div>`,job.application&&`<div><strong>Haku:</strong> ${esc(job.application)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">PAIKKA-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(dept)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Hae ↗</a><span class="job-id">SÄHKÖPOSTI</span>
+          <details><summary>Tehtävän tiedot</summary><div class="detail-body"><h4>Vaatimukset</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='Kaikki'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,...job.requirements,job.salary,job.compensation].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>Yksikään avoin tehtävä ei vastaa hakua.</strong><br>Kokeile laajempaa hakusanaa tai vaihda kategoriaa.</div>';
+      document.getElementById('resultCount').textContent=filtered.length+(filtered.length===1?' avoin tehtävä':' avointa tehtävää');
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c.key)}" aria-pressed="${c.key==='Kaikki'}">${esc(c.label)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('project84Toggle').addEventListener('click',()=>{
+      const toggle=document.getElementById('project84Toggle');
+      const menu=document.getElementById('project84Menu');
+      const expanded=toggle.getAttribute('aria-expanded')!=='true';
+      toggle.setAttribute('aria-expanded',String(expanded));
+      menu.hidden=!expanded;
+      toggle.querySelector('.toggle-mark').textContent=expanded?'−':'+';
+    });
+    document.getElementById('languageToggle').addEventListener('click',()=>{
+      const toggle=document.getElementById('languageToggle');
+      const menu=document.getElementById('languageMenu');
+      const expanded=toggle.getAttribute('aria-expanded')!=='true';
+      toggle.setAttribute('aria-expanded',String(expanded));
+      menu.hidden=!expanded;
+      toggle.querySelector('.toggle-mark').textContent=expanded?'−':'+';
+    });
+    const dummyGuidesItem=document.getElementById('dummyGuidesItem');
+    const dummyGuidesToggle=document.getElementById('dummyGuidesToggle');
+    const setDummyGuidesOpen=(open)=>{
+      dummyGuidesItem.classList.toggle('is-open',open);
+      dummyGuidesItem.classList.toggle('click-closed',!open);
+      dummyGuidesToggle.setAttribute('aria-expanded',String(open));
+    };
+    dummyGuidesToggle.addEventListener('click',()=>setDummyGuidesOpen(!dummyGuidesItem.classList.contains('is-open')));
+    dummyGuidesItem.addEventListener('mouseleave',()=>dummyGuidesItem.classList.remove('click-closed'));
+    document.getElementById('dummyGuidesMenu').addEventListener('click',e=>{
+      if(e.target.closest('a[data-slug]')) e.preventDefault();
+    });
+    document.addEventListener('click',e=>{
+      if(!dummyGuidesItem.contains(e.target)) setDummyGuidesOpen(false);
+    });
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape'&&dummyGuidesItem.classList.contains('is-open')){
+        setDummyGuidesOpen(false);
+        dummyGuidesToggle.focus();
+      }
+    });
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='Kopioitu: '+EMAIL;}
+      catch(e){note.textContent='Kopiointi ei onnistu — valitse sähköpostiosoite yllä.';}
+    });
+    render();
+  </script>
+</body>
+</html>

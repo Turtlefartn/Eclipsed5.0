@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Vacatures</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.45;
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    body{padding-bottom:calc(62px + env(safe-area-inset-bottom))}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 80px}
+    .bottom-nav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:100;
+      display:flex;
+      min-height:62px;
+      padding-bottom:env(safe-area-inset-bottom);
+      background:var(--ink);
+      color:var(--paper);
+      border-top:1px solid var(--ink);
+      box-shadow:0 -12px 32px rgba(18,38,35,.14);
+      font-family:"IBM Plex Mono",monospace;
+    }
+    .bottom-item{
+      position:relative;
+      flex:1 1 25%;
+      min-width:0;
+      min-height:62px;
+      border-right:1px solid color-mix(in srgb,var(--paper) 30%,transparent);
+    }
+    .bottom-item:last-child{border-right:0}
+    .bottom-item-label,.bottom-item-link,.bottom-guides>summary{
+      display:flex;
+      width:100%;
+      min-height:62px;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:10px 8px;
+      text-align:center;
+      font-size:.72rem;
+      font-weight:600;
+      letter-spacing:.02em;
+      line-height:1.2;
+    }
+    .bottom-item-link{
+      color:var(--paper);
+      text-decoration:none;
+    }
+    .bottom-item-link:hover,.bottom-item-link:focus-visible{
+      background:var(--signal);
+      color:var(--signal-ink);
+    }
+    .bottom-guides{
+      display:block;
+      grid-column:auto;
+      margin:0;
+      border:0;
+    }
+    .bottom-guides>summary{cursor:pointer}
+    .bottom-guides>summary::after,
+    .bottom-guides[open]>summary::after{
+      content:"↑";
+      margin:0;
+      color:var(--signal);
+      font-size:.9rem;
+      line-height:1;
+    }
+    .bottom-guides>summary:hover,
+    .bottom-guides[open]>summary{
+      background:var(--signal);
+      color:var(--signal-ink);
+    }
+    .bottom-guides[open]>summary::after{color:var(--signal-ink)}
+    .bottom-item-label{color:color-mix(in srgb,var(--paper) 58%,transparent);cursor:default}
+    .bottom-dropup{
+      display:none;
+      position:absolute;
+      left:0;
+      bottom:100%;
+      z-index:101;
+      width:min(360px,100vw);
+      max-height:calc(100vh - 78px - env(safe-area-inset-bottom));
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      background:var(--panel);
+      color:var(--ink);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+    }
+    .bottom-guides[open] .bottom-dropup{display:block}
+    .bottom-dropup a{
+      display:block;
+      padding:10px 14px;
+      border-bottom:1px solid var(--line);
+      text-decoration:none;
+      font-weight:500;
+    }
+    .bottom-dropup a:last-child{border-bottom:0}
+    .bottom-dropup a:hover,.bottom-dropup a:focus-visible{background:var(--signal);color:var(--signal-ink)}
+    @media (hover:hover) and (pointer:fine){
+      .bottom-guides:hover .bottom-dropup{display:block}
+      .bottom-guides:hover>summary{background:var(--signal);color:var(--signal-ink)}
+      .bottom-guides:hover>summary::after{color:var(--signal-ink)}
+    }
+    .site-menu{display:block;margin:0 0 14px;border:1px solid var(--ink);background:var(--panel);box-shadow:var(--shadow)}
+    .site-menu>summary{padding:13px 16px;background:var(--ink);color:var(--paper);font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+    .site-menu>summary::after{color:var(--signal)}
+    .site-menu:not([open]) .site-links{display:none}
+    .site-menu[open]>summary{border-bottom:1px solid var(--ink)}
+    .site-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+    .site-links>a,.site-group{min-width:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .site-links>a{padding:12px 14px;text-decoration:none;font-weight:600}
+    .site-links>a:hover,.site-links>a[aria-current="page"]{background:var(--signal);color:var(--signal-ink)}
+    .site-links>:nth-child(3n){border-right:0}
+    .site-group{position:relative;grid-column:auto;margin:0;border-top:0}
+    .site-group>summary{height:100%;padding:12px 14px;align-items:center}
+    .site-group>summary:hover{background:var(--signal);color:var(--signal-ink)}
+    .site-group>summary::after{margin-left:auto}
+    .site-group:not([open])>summary::after{content:"+"}
+    .site-group>summary>a{text-decoration:none}
+    .site-submenu{position:absolute;top:100%;left:-1px;z-index:12;width:max(100%,320px);max-height:min(430px,65vh);overflow-y:auto;background:var(--panel);color:var(--ink);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .site-group.align-right .site-submenu{left:auto;right:-1px}
+    .site-submenu a{display:block;padding:10px 14px;border-bottom:1px solid var(--line);text-decoration:none;font-weight:500}
+    .site-submenu a:last-child{border-bottom:0}
+    .site-submenu a:hover,.site-submenu a[aria-current="page"]{background:var(--signal);color:var(--signal-ink)}
+    .site-submenu .submenu-heading{display:block;padding:10px 14px 2px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .site-submenu .submenu-note{display:block;padding:8px 14px 12px;font-size:.85rem;line-height:1.35;color:var(--muted)}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    .language-control{position:relative;margin-left:auto}
+    .language-control summary{min-height:36px;border:1px solid color-mix(in srgb,var(--paper) 58%,transparent);padding:8px 10px;white-space:nowrap}
+    .language-control summary::after{margin-left:10px}
+    .language-control:not([open]) .language-menu{display:none}
+    .language-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:8;width:280px;max-height:min(430px,65vh);overflow-y:auto;display:grid;background:var(--panel);color:var(--ink);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .language-menu a{padding:9px 12px;text-decoration:none;border-bottom:1px solid var(--line)}
+    .language-menu a:last-child{border-bottom:0}
+    .language-menu a:hover,.language-menu a[aria-current="page"]{background:var(--signal);color:var(--signal-ink)}
+    h1{font-size:clamp(3.5rem,9vw,7.8rem);line-height:.82;letter-spacing:-.065em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .motto{max-width:720px;margin:24px 0 18px;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--signal) 65%,transparent);color:var(--signal);font-size:clamp(1.25rem,2.4vw,1.7rem);font-weight:600;line-height:1.15;letter-spacing:-.02em}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:.95;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.02;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    details[open] summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .site-links{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .site-links>:nth-child(3n){border-right:1px solid var(--line)}
+      .site-links>:nth-child(2n){border-right:0}
+      .site-group.align-right .site-submenu{left:-1px;right:auto}
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+    }
+    @media (max-width:620px){
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .site-links{grid-template-columns:1fr}
+      .site-links>:nth-child(n){border-right:0}
+      .site-group{position:static}
+      .site-group>summary{height:auto}
+      .site-submenu,.site-group.align-right .site-submenu{position:static;width:100%;max-height:320px;border:0;border-top:1px solid var(--line);box-shadow:none}
+      .site-submenu a{padding-left:24px}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .language-control{width:100%;margin-left:0;margin-top:6px}
+      .language-control summary{width:100%}
+      .language-menu{left:0;right:auto;width:min(100%,260px)}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(3.1rem,19vw,5.3rem)}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      footer{flex-direction:column}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <details class="site-menu">
+      <summary>Projectmenu</summary>
+      <nav class="site-links" aria-label="Openbare projectpagina's">
+        <a href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">Plan #42</a>
+        <details class="site-group">
+          <summary><a href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">Project 84</a></summary>
+          <nav class="site-submenu" aria-label="Project 84">
+            <span class="submenu-heading">Non-profitgerichte takken</span>
+            <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a>
+            <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a>
+            <span class="submenu-note">In beheer gehouden totdat ze economie goed genoeg begrijpen om deel te nemen — dan nemen ze het over, met aanpassingen om tussen valuta's gelijk te trekken.</span>
+          </nav>
+        </details>
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Dummies-gids — Level 14 (English)</a>
+        <a href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">Dummies-gids voor het claimen van oceanen en Antarctica</a>
+        <a href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">HEAR-TS-werkboten</a>
+        <a href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">Orkaanonderzoek</a>
+        <a href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">Drijvende luchtvaartknooppunten</a>
+        <a href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k">Herstelschijf voor de mensheid</a>
+        <a href="https://muse.ai/s/about-mxt5xuxj7jgoao">Over de oprichter</a>
+        <details class="site-group">
+          <summary>Vacatures / WeFind's voor de delegaties</summary>
+          <nav class="site-submenu" aria-label="Kies een vacaturetaal">
+            <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">Engels</a>
+            <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys">Amhaars</a>
+            <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7">Arabisch</a>
+            <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94">Bengaals</a>
+            <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs">Chinees (vereenvoudigd)</a>
+            <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6">Chinees (traditioneel)</a>
+            <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5">Tsjechisch</a>
+            <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu">Deens</a>
+            <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze" aria-current="page">Nederlands</a>
+            <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51">Filipijns</a>
+            <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf">Fins</a>
+            <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl">Frans</a>
+            <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb">Duits</a>
+            <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc">Grieks</a>
+            <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a">Hausa</a>
+            <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg">Hebreeuws</a>
+            <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw">Hindi</a>
+            <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac">Hongaars</a>
+            <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg">Indonesisch</a>
+            <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y">Italiaans</a>
+            <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm">Japans</a>
+            <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi">Koreaans</a>
+            <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq">Noors</a>
+            <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt">Perzisch</a>
+            <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey">Pools</a>
+            <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy">Portugees</a>
+            <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj">Roemeens</a>
+            <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj">Russisch</a>
+            <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno">Spaans</a>
+            <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2">Swahili</a>
+            <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg">Zweeds</a>
+            <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb">Thais</a>
+            <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu">Turks</a>
+            <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y">Oekraïens</a>
+            <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar">Urdu</a>
+            <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi">Vietnamees</a>
+          </nav>
+        </details>
+        <a href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">Open brief</a>
+        <a href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">Proclamatie van aanspraak</a>
+        <details class="site-group">
+          <summary>Brieven &amp; diplomatie</summary>
+          <nav class="site-submenu" aria-label="Brieven en diplomatie">
+            <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">Wereldindex</a>
+            <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">Brieven aan Amerikaanse leiders</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">Consulaatbrieven — Afrika I</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">Consulaatbrieven — Afrika II</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">Consulaatbrieven — Afrika III</a>
+            <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">Consulaatbrieven — Amerika I</a>
+            <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">Consulaatbrieven — Amerika II</a>
+            <a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">Consulaatbrieven — Azië-Pacific</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">Consulaatbrieven — Europa I</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">Consulaatbrieven — Europa II</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">Consulaatbrieven — Europa III</a>
+            <a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">Consulaatbrieven — Midden-Oosten</a>
+            <a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">Consulaatbrieven — Oceanië</a>
+          </nav>
+        </details>
+        <a href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">Wie weet?</a>
+        <a href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">Geld versus activa</a>
+        <a href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">3D-printen</a>
+        <a href="https://sites.google.com/view/knottsure/home">Waarom niet?</a>
+        <details class="site-group">
+          <summary>Meer</summary>
+          <nav class="site-submenu" aria-label="Meer openbare pagina's">
+            <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">Alice-storyboard</a>
+            <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">Doodare's luierconcept</a>
+            <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">Servicevoorwaarden</a>
+          </nav>
+        </details>
+      </nav>
+    </details>
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line">
+          <span class="status-dot" aria-hidden="true"></span><span>SOLLICITATIES OPEN</span><span>57 FUNCTIES</span><span>IN AFWACHTING VAN FINANCIERING</span>
+          <details class="language-control">
+            <summary>Taal: Nederlands</summary>
+            <nav class="language-menu" aria-label="Kies een taal">
+              <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">Engels</a>
+              <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys">Amhaars</a>
+              <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7">Arabisch</a>
+              <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94">Bengaals</a>
+              <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs">Chinees (vereenvoudigd)</a>
+              <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6">Chinees (traditioneel)</a>
+              <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5">Tsjechisch</a>
+              <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu">Deens</a>
+              <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze" aria-current="page">Nederlands</a>
+              <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51">Filipijns</a>
+              <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf">Fins</a>
+              <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl">Frans</a>
+              <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb">Duits</a>
+              <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc">Grieks</a>
+              <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a">Hausa</a>
+              <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg">Hebreeuws</a>
+              <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw">Hindi</a>
+              <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac">Hongaars</a>
+              <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg">Indonesisch</a>
+              <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y">Italiaans</a>
+              <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm">Japans</a>
+              <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi">Koreaans</a>
+              <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq">Noors</a>
+              <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt">Perzisch</a>
+              <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey">Pools</a>
+              <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy">Portugees</a>
+              <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj">Roemeens</a>
+              <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj">Russisch</a>
+              <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno">Spaans</a>
+              <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2">Swahili</a>
+              <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg">Zweeds</a>
+              <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb">Thais</a>
+              <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu">Turks</a>
+              <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y">Oekraïens</a>
+              <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar">Urdu</a>
+              <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi">Vietnamees</a>
+            </nav>
+          </details>
+        </div>
+        <div>
+          <h1 id="main-heading">We willen geen helden.<span>We willen MENSEN.</span></h1>
+          <p class="motto">“We hebben geen helden nodig — iedereen is een mens totdat diegene een held wordt.”</p>
+          <p class="hero-note">Bouwers, wetenschappers, uitvoerders, juristen, verhalenvertellers en één uitzonderlijk geduldige WeFi. Breng een echte vaardigheid mee. Of een vreemde. Met beide kunnen we werken.</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="Zo solliciteer je">
+        <div>
+          <p class="eyebrow">Eén inbox · elke vacature</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BRole%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>Onderwerp:</strong> Application — [Functie]</span></li>
+          <li><span>Vertel ons wie je bent en waarom jij jij bent.</span></li>
+          <li><span>Vermeld je Koin-tarief. Alles is bespreekbaar.</span></li>
+          <li><span>Veldfuncties: bewijs dat je op 50 meter afstand een ijsbeer van een sneeuwbank kunt onderscheiden.</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BRole%5D" target="_blank" rel="noopener">Sollicitatie starten ↗</a>
+            <button class="btn" type="button" id="copyEmail">E-mailadres kopiëren</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">Prioritaire vacatures</h2>
+        <p>Als eerste binnen. Als eerste gelezen. Nog steeds wachtend op financiering; nog steeds de kennismaking waard.</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">Alle vacatures</p><h2 id="board-heading">Kies je probleem.</h2></div>
+        <div class="count" id="resultCount">57 vacatures</div>
+      </div>
+      <div class="tools" aria-label="Vacaturefilters">
+        <input class="search" id="search" type="search" placeholder="Zoek op titel, afdeling, taken…" aria-label="Vacatures doorzoeken">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>Alle functies wachten momenteel op financiering. Koin-voorwaarden zijn bespreekbaar en de Koins moeten nog worden gemunt.</span>
+      <a class="top-link" href="#top">Terug naar boven ↑</a>
+    </footer>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Aanvullende navigatie">
+    <div class="bottom-item">
+      <details class="bottom-guides">
+        <summary>Dummy Guides</summary>
+        <div class="bottom-dropup" aria-label="Dummy Guides per taal">
+          <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Dummies-gids — Level 14 (English)</a>
+        </div>
+      </details>
+    </div>
+    <div class="bottom-item"><span class="bottom-item-label" aria-disabled="true">Letters To</span></div>
+    <div class="bottom-item"><a class="bottom-item-link" href="/spaces/v2/goal-briefs/">Goal Briefs</a></div>
+    <div class="bottom-item"><a class="bottom-item-link" href="/spaces/v2/homo-e-s-m/">HOMO-E/S/M</a></div>
+  </nav>
+
+  <script>
+    const JOBS = [{"title":"Sollicitatiebeoordelaar / Recruiter","priority":true,"department":"Alle afdelingen","duties":"Elke sollicitatie lezen. Werven voor meer dan 20 openstaande functies in drie afdelingen. Beslissen wie ijsberen verplaatst, wie decreten opstelt en wie het puin mag vernietigen met kernwapens.","requirements":["Moet “betaald in Koins” kunnen lezen zonder te lachen (vriendelijk lachen mag)","Kan een echte specialist in baanmechanica onderscheiden van iemand die alleen zelfverzekerd klinkt","Voelt zich prettig bij het aannemen voor banen die “wachten op financiering”","Niet bang voor sollicitatievolumes uitgedrukt in ijsberen"],"salary":"ca. $75k–$225k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per aangenomen kandidaat.","setting":""},{"title":"WeFind's voor de delegaties","priority":true,"department":"In het lab/de labs waar lichaam en geest worden hersteld","duties":"Samen met de oprichter optrekken wanneer hij op pad is. Lachen om de typfoutenteller. De missie in leven houden — hij is sterfelijk, het werk niet.","requirements":["Fysiotherapie","Lief voor kinderen — niet onderhandelbaar, als eerste en als laatste","Moet 300 beoordelingsrondes per dag verdragen en een baas die afdelingen “Make Me Go” noemt","Vloeiend in onze taal: Engels én vertaler voor de lokale taal","Moet de taal van de Oprichter spreken","Lacht vriendelijk (verplicht, niet optioneel)","Kan hem vertellen wanneer hij ongelijk heeft (uiteindelijk luistert hij wel)"],"salary":"Onderhandelbaar. (Fermi: onbetaalbaar.)","compensation":"Betaald in liefde. Bedankjes en vluchtige momenten. Koins bespreekbaar.","openPositions":"36 (één voor elke taal)","setting":""},{"title":"Directeur Energie","priority":false,"department":"","duties":"Verantwoordelijk voor energie: waterstofproductie en -opslag, thermische oceaanenergie, zonne-energie in een baan om de aarde en alles wat de sterreningenieurs hierna bedenken.","requirements":["Moet in terawatts denken","Voelt zich thuis bij een energiedoctrine geschreven door een commissie van één","Kan uitleggen waarom de oceaan een batterij is"],"salary":"ca. $180k–$540k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Aangedreven door Koins.","setting":""},{"title":"Directeur Oceaanindustrieën","priority":false,"department":"","duties":"De zee als economie: oceaanlandbouw, exploitatie van nederzettingen, kelpwouden, visserij en de aanspraak op het Achtste Anker.","requirements":["Moet de oceaan als infrastructuur zien, niet als decor","Voelt zich thuis bij 7 drijvende steden en 500 miljoen capsules als “de vloot”","Kan met walvissen onderhandelen (of iemand aannemen die dat kan)"],"salary":"ca. $180k–$540k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per productieve hectare.","setting":""},{"title":"Directeur Ruimtevaartindustrieën","priority":false,"department":"","duties":"Alles boven de hemel: lanceringen, operaties in een baan om de aarde, puinruiming (inclusief de nucleaire optie), de Luna-pijplijn en de industriële basis voor de 7 toekomstige zetels.","requirements":["Moet in delta-v denken","Voelt zich thuis bij een eeuwigdurende opruimplicht","Kan vervanging plannen vóór de eerste flits"],"salary":"ca. $180k–$540k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Aandelenopties in een baan om de aarde.","setting":""},{"title":"Directeur Landbouw & Voedsel","priority":false,"department":"","duties":"Het project voeden: oceaanlandbouw op schaal, kelp als gewas en lamp, kringlooplandbouw in nederzettingen, 200 miljoen bomen per jaar als nevenmissie.","requirements":["Moet weten waarom bruine algen moeilijker zijn dan petunia’s","Voelt zich thuis bij vis als secundaire opbrengst","Kan 18 miljoen kolonisten voeden zonder bevoorradingsketen vanaf de kust"],"salary":"ca. $160k–$480k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per oogst.","setting":""},{"title":"Directeur Bouw","priority":false,"department":"","duties":"Alles bouwen: 260 scholen, 7 oceaannederzettingen, 500 miljoen pilcapsules, 280 werkboten en de scheepswerven die ze printen.","requirements":["Moet zich prettig voelen bij “bergen opblazen” voor toeslagmateriaal","Kan het aandeel printbare onderdelen maximaliseren, naar aantal én massa","Weet waarom een trimaran"],"salary":"ca. $170k–$510k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per overeind staande constructie.","setting":""},{"title":"Directeur Transport & Logistiek","priority":false,"department":"","duties":"Alles verplaatsen: de HEAR-TS-vloot, plas-springers, kustverbindingen, het slepen van capsules en ijsberen (alleen coördinatie — de beren bewegen zichzelf, met tegenzin).","requirements":["Moet 8.700 beren, 280 boten en 500 miljoen capsules kunnen routeren zonder er één kwijt te raken","Voelt zich thuis bij bestemmingen die nog niet bestaan","De Department of Magical Logistics is jouw thuisbasis"],"salary":"ca. $170k–$510k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per geleverde ton.","setting":""},{"title":"Directeur Technologie","priority":false,"department":"","duties":"De machines: orka-toetsenborden, Homework Lock, capsulesystemen, AI-burgers en elke sensor op elke romp.","requirements":["Moet hardware leveren die tegen zijn eigen gebruiker vecht (en wint)","Voelt zich thuis bij tactiele sensoren op duimen in handschoenen","Kan een walvis uitleggen waarom het toetsenbord werkt"],"salary":"ca. $180k–$540k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per werkend apparaat.","setting":""},{"title":"Directeur Gezondheid","priority":false,"department":"","duties":"Lichaam en geest heel houden: psychologieprogramma voor nederzettingen, onderzoek naar schoonmaakorganismen, geneeskunde voor geïsoleerde bevolkingen, crisisinterventie op zee.","requirements":["Moet via de radio “heeft vakantie nodig” kunnen onderscheiden van “heeft een interventie nodig”","Voelt zich thuis bij de zee als tegenstander en de geest als slagveld","Heeft een vergunning of kan bevoegde professionals aannemen"],"salary":"ca. $170k–$510k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Gevarentoeslag voor het orkaanseizoen.","setting":""},{"title":"Directeur Financiën","priority":false,"department":"","duties":"Het geld: Krill-economie, inning van de wereldbelasting, opbrengsten uit handelsdeals, schuld gedekt door Antarctische en onderzeese hulpbronnen. Elke Krill erin, elke Krill eruit.","requirements":["Moet de wereld kunnen belasten zonder een oorlog te beginnen","Voelt zich thuis bij schuld gedekt door hulpbronnen waarop niemand juridisch aanspraak kan maken","De boeken zijn openbaar; de berekeningen moeten perfect zijn"],"salary":"ca. $190k–$570k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Uiteraard.","setting":""},{"title":"Directeur Onderwijs","priority":false,"department":"","duties":"De 260 scholen en alles wat er wordt onderwezen: toepassingsgericht curriculum, onderwijs over zaken van de I.P.A. (Internationaal Beschermingsagentschap), Dummies-gidsen, ontwerp van oorlogsspellen en de pijplijn naar Starfleet Academy.","requirements":["Moet geloven in leren door te doen, niet in luisteren-en-toetsen","Voelt zich thuis bij campagnes als klaslokalen","De Department of Magical MisStories is jouw thuisbasis"],"salary":"ca. $150k–$450k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per afgestudeerde leerling.","setting":""},{"title":"Directeur Recht & Bestuur","priority":false,"department":"","duties":"De regels: grondwet, decreten, verdragen, de juridische ruggengraat van de 21 zetels en de rechtbanken die nog niet bestaan.","requirements":["Moet wetten schrijven die een machine kan verwerken","Voelt zich thuis bij een hoogste artikel geschreven voor walvissen","De Department of Make Me Believe is jouw thuisbasis"],"salary":"ca. $180k–$540k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Facturabel in blokken van 6 uur.","setting":""},{"title":"Directeur Communicatie","priority":false,"department":"","duties":"Het verhaal: diplomatieke brieven, het publieke narratief, het Who Knows?-notitieboek en zorgen dat “een tiende van de mensheid” onvermijdelijk klinkt.","requirements":["Moet voor oor én oog schrijven","Bondig. Kleine letters. Geen opvulling. (Wanneer de baas het publiek is.)","Kan 192 brieven, 11 delen en één grapbrief uit elkaar houden"],"salary":"ca. $150k–$450k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Applaus niet overdraagbaar.","setting":""},{"title":"Manager Fermi-engineering","priority":false,"department":"","duties":"Het onschatbare schatten. Steden, raketten, beren, liften naar nergens.","requirements":["Moet zich er prettig bij voelen om precies en in het openbaar ongelijk te hebben","Kan “orde van grootte” met een strak gezicht zeggen","Bereid om elk getal door de baas met een factor tien te laten verlagen (“jouw getal, niet het mijne”)"],"salary":"ca. $140k–$420k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Brutaliteitsbonus inbegrepen.","setting":""},{"title":"Kunstmanager","priority":false,"department":"","duties":"Beelden regisseren voor acht clans, 260 steden, zeven oceaanankers en 21 ruimteschepen bij zonsopgang.","requirements":["Moet de glitch-/vervormingstechniek in elk werk doorvoeren","Kan “ze zijn verschrikkelijk” als mogelijk grappig oordeel accepteren zonder het werk te verdedigen","Geen generaties verspillen aan tests"],"salary":"ca. $110k–$330k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per beeld dat overleeft.","setting":""},{"title":"Manager Webontwikkeling","priority":false,"department":"","duties":"Pagina’s bouwen en herbouwen die meteen na publicatie opnieuw worden ingedeeld.","requirements":["Moet op verzoek publiceren en zonder klagen opnieuw publiceren","Voelt zich thuis bij slugs die niet meer bij titels passen","Kan 192 brieven, 11 delen en één grapbrief uit elkaar houden"],"salary":"ca. $120k–$360k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Overuren in Koins.","setting":""},{"title":"Manager Copywriting","priority":false,"department":"","duties":"192 diplomatieke brieven, één grondwet en bijschriften schrijven die de baas toch weer herschrijft.","requirements":["Moet 192 keer “Concept — Niet verzonden” kunnen schrijven zonder betekenis te verliezen","Bondig. Kleine letters. Geen opvulling.","Kan onder druk “niet-gewelddadig” onderscheiden van “politiek”"],"salary":"ca. $75k–$225k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per concept dat overleeft.","setting":""},{"title":"Onderzoeksmanager","priority":false,"department":"","duties":"Consulaatadressen vinden die niet bestaan, berenstatistieken die niemand heeft verzameld en raketspecificaties van afgelopen mei.","requirements":["Moet echte bronnen citeren, geen onderbuikgevoel","Kan 122 keer “onbekend” schrijven en dat eerlijkheid noemen","Kan toegeven dat gegevens niet bestaan in plaats van ze te verzinnen"],"salary":"ca. $80k–$240k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Gevarentoeslag voor de commentaarsectie.","setting":""},{"title":"Manager Diplomatie","priority":false,"department":"","duties":"Diplomatie proberen. 192 brieven, nul verzonden.","requirements":["Mag nooit een e-mailadres van een overheid raden","Kan beleefd “Fuck you” tegen niemand zeggen, op papier","Bereid om onbeperkt op Volterra Fietta te wachten"],"salary":"ca. $110k–$330k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Immuniteit niet inbegrepen.","setting":""},{"title":"Risicomanager (Gatenprikker)","priority":false,"department":"","duties":"Gaten prikken in elk plan. Nooit een gat verzachten om het plan te beschermen.","requirements":["Moet de aanval sterker kunnen formuleren voordat de baas dat doet","Nummering moet exact zijn (rondes 1–3: gaten 1–21; looninhouding bij missers)","Kan de geweldslens blijven hanteren, zelfs wanneer wordt gezegd geweld niet te veronderstellen"],"salary":"ca. $130k–$390k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. 1 vergadering ingehouden per nummeringsfout.","setting":""},{"title":"Accountingmanager","priority":false,"department":"","duties":"Het vergadergrootboek, de Koin-weddenschappen, de IOU en de omgekeerde IOU bijhouden.","requirements":["Moet 20 opgespaarde vergaderingen, 10 gewonnen Koins en één factuur van $18,5k bijhouden zonder ze door elkaar te halen","Spelling: enkelvoud Koin, meervoud Koins, afkorting K","Kan het grootboek aan de baas uitleggen bij 300 beoordelingsrondes per dag"],"salary":"ca. $80k–$240k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. De ironie is de bonus.","setting":""},{"title":"Manager Loopbaandiensten","priority":false,"department":"","duties":"Eén cv herbouwen. Geen foto. Geen spellinganalyse. Geen discriminatie.","requirements":["Moet zich altijd bij de professionele inhoud houden","“Doelstellingen” wordt op zicht “Samenvatting”","Kan het aanbod voor Meta Production Engineer warm houden zonder te zeuren"],"salary":"ca. $70k–$210k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Succesvergoeding in Koins.","setting":""},{"title":"Socialmediamanager","priority":false,"department":"","duties":"Op Instagram posten. Afgewezen worden bij de goedkeuringspoort. Opnieuw proberen.","requirements":["Moet “nee” accepteren zonder het bijschrift te verdedigen","Kan Project 42 onder vuur onderscheiden van Eclipsed 6.0","Geduld voor HTTP 500-fouten dat menselijk uithoudingsvermogen te boven gaat"],"salary":"ca. $65k–$195k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per geposte post.","setting":""},{"title":"Manager Speechwriting","priority":false,"department":"Department of Magical MisStories","duties":"Woorden schrijven die anderen hardop uitspreken. Toespraken voor de raad, decreten, toosts.","requirements":["Moet voor het oor schrijven, niet voor het oog","Pauzes zijn leestekens. Gebruik ze.","Kan “een tiende van de mensheid” onvermijdelijk laten klinken"],"salary":"ca. $70k–$210k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Applaus niet overdraagbaar.","setting":""},{"title":"Archiefmanager","priority":false,"department":"","duties":"Alles onthouden. Jouw geheugen, mijn geheugen, ieders geheugen.","requirements":["Mag nooit zeggen “het was niet de moeite waard om te onthouden” over iets dat de baas wilde bewaren","Kan 4 dagen chaos samenbrengen in één MEMORY.md","De typfoutenteller is heilig. De factuur is heilig."],"salary":"ca. $65k–$195k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Onsterfelijkheid inbegrepen (blijvend geheugen).","setting":""},{"title":"Manager IJsbeerverplaatsing","priority":false,"department":"Project 84 · Department of Magical Logistics","duties":"IJsberen verplaatsen. Een derde ervan (ca. 8.700). Doel: nieuwe beren creëren.","requirements":["Moet op 50 meter afstand een ijsbeer van een sneeuwbank kunnen onderscheiden","Voelt zich thuis bij verplaatsingsbestemmingen die nog niet bestaan","Bereid om 8.700 toppredatoren uit te leggen waarom ze worden verplaatst","Niet bang voor pinguïns (dat zijn nu de buren)"],"salary":"ca. $70k–$210k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Gevarentoeslag inbegrepen (alles is gevarentoeslag).","setting":""},{"title":"Nederzettingspsycholoog (Project 84, oceaannederzettingen)","priority":false,"department":"","duties":"Geesten heel houden in zeven drijvende steden midden op de oceaan. Isolatie, opsluiting, gemeenschapsdynamiek op kleine schaal, crisisinterventie, selectie en ondersteuning van bemanningen. De zee is de tegenstander; jij zorgt dat zij niet wint in de hoofden van mensen.","requirements":["Geregistreerd klinisch psycholoog of counselingpsycholoog (of gelijkwaardig)","Ervaring met geïsoleerde/opgesloten populaties is een pluspunt (maritiem, polair, offshore, langdurige missies)","Voelt zich thuis als degene met wie iedereen praat wanneer de horizon nooit verandert","Kan via de radio “heeft vakantie nodig” onderscheiden van “heeft een interventie nodig”"],"salary":"ca. $90k–$270k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Gevarentoeslag voor het orkaanseizoen.","setting":"Oceaannederzettingen met een diameter van 1 km; aan boord en op rotatiebasis."},{"title":"QA-tester, Homework Lock (Project 84, contract)","priority":false,"department":"","duties":"De Android-app Homework Lock grondig testen op een fysiek apparaat. Alle drie de modi: timers voor focusvergrendeling, activering van dronkenmodus en door huiswerk ontgrendelen, rijcontroles met slagen/mislukken inclusief het pad voor ritassistentie. Gedrag van de overlay van de toegankelijkheidsservice, onboarding voor machtigingen, opnieuw activeren na opstarten, randgevallen (herstart tijdens vergrendeling, veilige modus, meldingen beëindigen). Duidelijke, reproduceerbare bugrapporten indienen; oplossingen verifiëren.","requirements":["Bezit of heeft toegang tot een fysiek Android-apparaat (Android 10+, minimaal API 29 — emulators zijn onvoldoende voor overlay-/toegankelijkheidstests)","Ervaring met Android-QA; ADB/logcat voor het ophalen van logs is een pluspunt, niet verplicht","Voelt zich thuis bij het testen van een app die tegen zijn eigen gebruiker moet vechten (je speelt een dronken persoon die probeert te appen)","Schrijft bugrapporten die een ontwikkelaar echt kan reproduceren"],"salary":"ca. $30–$60/uur (Fermi, Amerikaans contract-QA 2026) — definitief tarief nader te bepalen door de baas.","compensation":"","setting":"Op afstand. Contract."},{"title":"Wetgevingsjurist, Scouter-wet (contract-naar-campagne)","priority":false,"department":"","duties":"Het voorstel voor een modelwet van concept naar wetgever brengen. De missie: detectie van akoestische gebeurtenissen op het apparaat (geen opslag, geen verzending, beperkt tot signaturen) uitzonderen van staatswetten over aftappen/afluisteren — te beginnen in Californië, als sjabloon voor de andere 49, met het oog op internationaal gebruik. Het concept aanscherpen, het landschap van afluisterwetten in 50 staten in kaart brengen, indieners vinden, de coalitie bouwen (EFF, belangenbehartiging voor doven en slechthorenden, organisaties voor de veiligheid van ouderen). Wetgevers uitleggen waarom een chip die “kamehameha” hoort een rookmelder is, geen afluisterapparaat — en waarom dezelfde chip “brand!” en “help!” hoort.","requirements":["Bevoegd advocaat; achtergrond in technologie/privacy/beleid","Ervaring met wetgevend schrijven; Californië is een pluspunt, internationaal bereik een nog groter pluspunt","Kan toestemming van beide partijen aan een leek uitleggen — en het idee van een leek aan een commissie","Voelt zich thuis als advocaat voor een Dragon Ball-functieverzoek dat levens kan redden"],"salary":"ca. $140k–$280k/jaar (Fermi, Amerikaanse jurist technologiebeleid 2026) — definitief tarief nader te bepalen door de baas.","compensation":"Betaald in Koins zodra die zijn gemunt.","setting":"Op afstand. Contract-naar-campagne."},{"title":"Marien synthetisch bioloog, bioluminescente kelp (project Massabioluminescentie)","priority":false,"department":"","duties":"Kelp laten gloeien. De bioluminescentieroute van schimmels (cafeïnezuurcyclus, luz en vrienden) overbrengen naar reuzenkelp (Macrocystis-type) — met expressie geconcentreerd in de pneumatocysten, de kant-en-klare lamphuizen. De transformatieprotocollen bouwen die nog niet bestaan. Het eerste gloeiende kelpwoud voor de oceaannederzettingen kweken.","requirements":["PhD of gelijkwaardig in mariene biologie, synthetische biologie of fytologie; ervaring met kelpgenetica sterk gewenst","Heeft daadwerkelijk een macroalg getransformeerd, of kan overtuigend uitleggen waarom niemand dat heeft gedaan","Voelt zich thuis bij weefselspecifieke promotors die nog niet bestaan (jij maakt ze)","Kan de gloed in de blaasjes houden en uit de bladeren","Weet waarom bruine algen moeilijker zijn dan petunia’s en doet het toch"],"salary":"ca. $95k–$285k/jaar (Fermi, Amerikaanse onderzoekswetenschapper 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per gloeiend blaasje.","setting":"Nat lab + oceaan. Eclipsed 4.0 / Project 84."},{"title":"Berencatcher (Project 84, veldwerk)","priority":false,"department":"Department of Magical Logistics · rapporteert aan de Manager IJsbeerverplaatsing","duties":"IJsberen vangen. Ongeveer 8.700, een derde van de soort. Verdoven, merken, in kratten plaatsen en overdragen aan de verplaatsingsketen. Het doel is nieuwe beren; jouw werk is het vangen.","requirements":["Ervaring met het hanteren van wilde grote roofdieren; certificering voor verdovingsmiddelen of gelijkwaardig","Kan op 50 meter afstand een ijsbeer van een sneeuwbank onderscheiden (niet onderhandelbaar)","Voelt zich thuis bij werk waarbij de verplaatsingsbestemmingen nog niet bestaan","Niet bang voor pinguïns (dat zijn nu de buren)","Alle vingers en tenen gewenst, maar niet verplicht"],"salary":"ca. $55k–$165k/jaar (Fermi, Amerikaanse specialist veldwerk wilde dieren 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Gevarentoeslag (alles is gevarentoeslag).","setting":"Arctisch veldwerk. Koud. Zeer koud."},{"title":"Botenbouwer (Project 84, HEAR-TS-vloot)","priority":false,"department":"","duties":"De plas-springervloot bouwen — ongeveer 280 waterstoftrimaran-werkboten, specificatie 50 m diepgang. Het aandeel printbare onderdelen maximaliseren naar aantal en massa (romp, brandstofcellen en aandrijving uitgezonderd). Integratie van een orka-toetsenbord op elke romp.","requirements":["Ervaring met scheepsbouw; grootschalig 3D-printen op grote schaal sterk gewenst","Kan een bootonderdeel printen, testen en opnieuw beter printen","Voelt zich thuis bij een doctrine geschreven door een commissie van één","Weet waarom een trimaran en kan het aan een walvis uitleggen","Kan het vak waardig onderwijzen aan een beroepsbevolking die er niet zelf voor koos"],"salary":"ca. $65k–$195k/jaar (Fermi, Amerikaanse scheepsbouwer 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per drijvende romp.","setting":"Scheepswerf + oceaan. Project 84."},{"title":"Manager Juridisch Onderzoek","priority":false,"department":"Department of Make Me Believe","duties":"Onderzoek doen naar maritieme jurisdictie en handvesten voor de schatkist. Wachten op de advocaten. (Overgeplaatst van Magical Logistics — de wet hoort nu bij Make Believe.)","requirements":["Mag “juridische opinie” nooit verwarren met “juridisch advies”","Voelt zich thuis bij een antwoordwacht van 6 uur, voor onbepaalde tijd","Kan 25 vergaderingen opgespaard houden en nul gepland"],"salary":"ca. $85k–$255k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Facturabel in blokken van 6 uur.","setting":""},{"title":"Constitutioneel Jurist","priority":false,"department":"Department of Make Me Believe","duties":"De grondwet opstellen, wijzigen en verdedigen. De gaten tussen haakjes sluiten. Artikel XV eerlijk houden: als een machine het niet kan verwerken, is het nog geen wet.","requirements":["Bevoegd advocaat; ervaring met het opstellen van grondwetten","Moet gewone woorden, korte zinnen en genummerde plichten schrijven — geen mist van juridisch jargon","Voelt zich thuis bij een hoogste artikel geschreven voor walvissen","Kan 21 zetels uitleggen waarom 1 zetel op de rem staat"],"salary":"ca. $130k–$390k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per geratificeerd artikel.","setting":""},{"title":"Opsteller van Decreten","priority":false,"department":"Department of Make Me Believe","duties":"Decreten schrijven die de oprichter kan ondertekenen. Het “plan”, het veto, de toejuichingen. HAIL CAESAR, correct opgemaakt.","requirements":["Moet de stem van de baas in juridisch proza vangen zonder de scherpe kanten weg te schuren","Kan met een strak gezicht een opvolgingsplan opstellen dat de beste Project 42-student aller tijden benoemt","Decreten moeten bij eerste lezing begrijpelijk zijn voor AI"],"salary":"ca. $110k–$330k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per ondertekend decreet.","setting":""},{"title":"Verdragsonderhandelaar","priority":false,"department":"Department of Make Me Believe","duties":"De verdragen onderhandelen — 42↔84 en alles daarna. Brug, wederzijdse onafhankelijkheid, arbeid, gedeelde wateren, wederzijdse hulp en de verdragen die nog niet zijn bedacht.","requirements":["Achtergrond in internationaal recht; mag nooit een e-mailadres van een overheid raden","Kan onderhandelen met landen die je nog niet erkennen","Geduld voor gesprekken die in decennia worden gemeten"],"salary":"ca. $120k–$360k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Tekenbonus in Koins.","setting":""},{"title":"Manager Maritiem Recht","priority":false,"department":"Department of Make Me Believe","duties":"Verantwoordelijk voor het juridische regime van de oceaan. UNCLOS, EEZ’s, de volle zee, de aanspraak op het Achtste Anker en de Dummies-gids om alles op te eisen.","requirements":["Expertise in admiraliteits-/maritiem recht; moet Artikel 89 uit het hoofd kennen en weten wanneer het te negeren","Voelt zich thuis bij het opeisen van wat volgens de wet niet kan worden opgeëist","Kan “bestuurde wateren” aan een admiraal uitleggen"],"salary":"ca. $130k–$390k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Bergingsrechten inbegrepen.","setting":""},{"title":"Manager Ruimterecht","priority":false,"department":"Department of Make Me Believe","duties":"Het recht boven de hemel. Baanstroken, aansprakelijkheid voor puin, de permanente opruimplicht en het juridische kader voor de 7 toekomstige zetels.","requirements":["Achtergrond in ruimterecht (Ruimteverdrag, Aansprakelijkheidsverdrag en alles wat ze niet dekken)","Moet de plichten schrijven voor zetels die pas op Luna actief worden","Voelt zich thuis bij wetgeving voor een rechtsgebied dat nog geen inwoners heeft"],"salary":"ca. $125k–$375k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per vrijgemaakte baan.","setting":""},{"title":"Manager Strafrecht","priority":false,"department":"Department of Make Me Believe","duties":"De juridische ruggengraat van de strafkolonie. Gevangenenoverdrachten, de dierentuinhandel, humane capaciteitsbeperkingen, straffen in de vorm van botenbouw.","requirements":["Achtergrond in strafrecht / penitentiair recht","Moet de grens bewaken: humane capaciteit is de bindende beperking, niet de vraag","Kan zonder terug te deinzen een gevangene-bewakertraject voor Antarctische dierentuinen opstellen"],"salary":"ca. $100k–$300k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Uitgezeten tijd telt dubbel.","setting":""},{"title":"Manager Belastingrecht","priority":false,"department":"Department of Make Me Believe","duties":"De wereldbelasting. Inkomsten uit Artikel XVI: tarieven, inning, definities van handelsdeals, schuld gedekt door Antarctische en onderzeese hulpbronnen.","requirements":["Expertise in internationaal belastingrecht; moet de wereld kunnen belasten zonder een oorlog te beginnen","Voelt zich thuis bij schuld gedekt door hulpbronnen waarop niemand juridisch aanspraak kan maken","Elke Krill erin, elke Krill eruit — de boeken zijn openbaar, de berekeningen moeten perfect zijn"],"salary":"ca. $140k–$420k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Aftrekbaar.","setting":""},{"title":"Manager Burgerschapsrecht","priority":false,"department":"Department of Make Me Believe","duties":"Wie als burger telt en hoe burgers stemmen. Diamanten ringen als stembiljetten, AI-burgerschap, de kwestie van de orka-ring, de keten van vertegenwoordiging.","requirements":["De Eed is opgesteld (2026-10-05) — je eerste taak is redigeren, niet schrijven: herzien, aanscherpen, itereren","Voelt zich thuis bij stemrecht voor niet-mensen: één ring voor AI, twee als ze ons niet proberen te doden","“Overleg met walvissen” is hier een geldige juridische procedure. Behandel het ook zo."],"salary":"ca. $95k–$285k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per beëdigde burger.","setting":""},{"title":"Manager Baanruiming (Haalbaarheid kernwapens)","priority":false,"department":"Department of Make Me Believe","duties":"Haalbaarheidsplan om met kernwapens ruimtepuin uit de ruimte te verwijderen. De berekeningen, de neerslag, de verdragen die ermee worden geschonden. Space Force — of hoe die tegen die tijd ook heet — belasten met de uitvoeringsplanning. Vervanging plannen voor alles wat verdampt.","requirements":["Kennis van nucleaire effecten plus baanmechanica; moet begrijpen waarom een kernexplosie in een baan om de aarde zowel voor de hand liggend als krankzinnig is","Kan opbrengsten van puinverwijdering modelleren tegen het risico op het Kessler-syndroom zonder er één te veroorzaken","Voelt zich thuis bij generaals beleefd briefen over het schenden van het Gedeeltelijk Kernstopverdrag","Vervangende constellaties gepland vóór de eerste flits — geen dode zones"],"salary":"ca. $150k–$450k/jaar (Fermi, Amerikaanse mediaan 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Gevarentoeslag (alles is gevarentoeslag).","setting":""},{"title":"Manager Verwijdering Vleermuisziekten","priority":false,"department":"Eclipsed 4.0 / Project 84","duties":"Ziekten uit vleermuizen verwijderen. Het witteneussyndroom is de belangrijkste — een schimmel (Pseudogymnoascus destructans) die meer dan 90% van sommige kolonies doodt. Probiotica, UV-licht, vaccins, wat maar werkt.","requirements":["Achtergrond in ziekten bij wilde dieren / microbiologie; moet de schimmel bij naam kennen","Voelt zich thuis bij het vernevelen van nuttige bacteriën in vleermuisverblijven","Kan zien hoe de overleving van 8% naar 46% gaat en dat hoop noemen","Vleermuizen nooit met blote handen hanteren (dat is het probleem van een andere afdeling)"],"salary":"ca. $95k–$285k/jaar (Fermi, Amerikaanse onderzoekswetenschapper 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per overlevende vleermuis.","setting":""},{"title":"Technicus Decontaminatie Hibernaculum","priority":false,"department":"Eclipsed 4.0 / Project 84 · rapporteert aan de Manager Verwijdering Vleermuisziekten","duties":"De schimmel uit grotten en mijnen schrobben. UV-pulsen op de wanden, polyethyleenglycol waar het telt, alles bemonsteren om te bewijzen dat het schoon is.","requirements":["Voelt zich thuis in het donker, ondergronds, in de winter","Kan uitrusting op 10 manieren ontsmetten vóór en na elke toegang","Moet grotafsluitingen en slapende vleermuizen respecteren — maak de patiënten niet wakker","Kent het verschil tussen een grot schoonmaken en haar verstoren"],"salary":"ca. $55k–$165k/jaar (Fermi, Amerikaanse veldtechnicus 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Hoofdlamp inbegrepen.","setting":""},{"title":"NU GEZOCHT — Hemelonderzoeker","priority":false,"department":"D-Mom 6.0 / Project 84 · Diepe-tijd-reddingsboot","duties":"De hemel onderzoeken — uitgebreid. Sterrenstelsels catalogiseren en stellaire meervoudigheid bepalen, vervolgens elk stelsel labelen volgens het schema van de oprichter: enkelvoudige sterren zijn KWEKERIJ (opkomend leven — kijk hier eerst), dubbelsterren zijn ALLES-OF-NIKS (stabiel leven of geen leven — hoge variantie, controleer, neem niets aan), drievoudige en grotere stelsels zijn STERIEL of ONDERHOUDEN TUIN (geen leven, of iets verzorgt de tuin al). De doelenlijst van de reddingsboot bouwen, één gelabeld stelsel per keer.","requirements":["Achtergrond in astronomie; moet een spectroscopische dubbelster van een gerucht erover kunnen onderscheiden","Voelt zich thuis in sterrencatalogi (Gaia, RECONS en alles met een parallax)","Verzint nooit gegevens over meervoudigheid — onbekend is ook een label, geen gok","Kan naar een biljoen sterren kijken en bij de dichtstbijzijnde beginnen","Begrijpt dat “ONDERHOUDEN TUIN” betekent dat wij niet de eerste tuinier zijn"],"salary":"ca. $110k–$330k/jaar (Fermi, Amerikaanse astronoom 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per gelabeld stelsel.","setting":"Wacht op financiering."},{"title":"NU GEZOCHT — Landbouwkundige","priority":false,"department":"Project 84 · rapporteert aan de Directeur Landbouw & Voedsel","duties":"Het stabiele gewas telen. Het zeewiermestprogramma uitvoeren: aangespoelde knotswier en kelp naar uitgeputte landbouwgrond brengen, die in de herfst dik uitspreiden, het zout eruit wassen of door regen laten uitlogen, en er in het voorjaar in planten. Het overschot vermalen tot zeewiermeel voor de boerderijdieren, alginaat voor materialen, grondstof voor bioplastic en biostimulantenextract. De kringloop sluiten — de oceaan bemest de boerderij die de oceaanmensen voedt.","requirements":["Herkent uitgeputte grond en oceaanplanten aan hun geur","Kan knotswier van sargassum onderscheiden (het ene voedt het gewas, het andere moet eerst worden gecomposteerd)","Voelt zich thuis bij de ruil van zoetwater voor snelheid: wassen is snel, regen is gratis","Gelooft dat “gooi het erop en laat het liggen” een geldige landbouwtechniek is","Kan voedsel verbouwen waar eerder niets groeide"],"salary":"ca. $70k–$210k/jaar (Fermi, Amerikaanse landbouwwetenschapper 2026)","compensation":"Betaald in Koins. Tarief bespreekbaar. Betaald per oogst.","setting":"Wacht op financiering."},{"title":"Orka-trainer — Vrijwillig programma","priority":false,"department":"Project 84 · Vrijwillige SeaWorlds · 50.000 vacatures","duties":"Werk met vrije orka's in de nieuwe vrijwillige SeaWorlds. De orka's komen uit vrije wil en doen trucs voor de lol — hoge sprongen, ringen (nog geen vuur), grote strandballen. Jij brengt de vis, de veiligheid en de strandballen. Nooit tanks als gevangenissen.","requirements":["Brengt vis, veiligheidskennis en grote strandballen mee","Werkt alleen met orka's die uit vrije wil komen en vrij kunnen vertrekken","Begeleidt hoge sprongen en ringen — voorlopig zonder vuur","Nooit tanks als gevangenissen"],"salary":"","compensation":"","setting":""},{"title":"Advocaat — Campagne voor één enkele Servicevoorwaarden","priority":false,"department":"Department of Make Me Believe","duties":"Stel de ene Servicevoorwaarden op voor het hele internet. Eén overeenkomst, één keer geaccepteerd, bewaard in één enkele cookie — ter vervanging van de onleesbare 40 pagina's tellende ToS van elke site.","requirements":["Expertise in internetrecht","Expertise in contractenrecht","Kan internationale jurisdictie in één werkbare overeenkomst verenigen","Heeft een sterke maag om het tegelijk op te nemen tegen de juridische afdeling van elk techbedrijf"],"salary":"","compensation":"","setting":"Campagne."},{"title":"Beveiligingsteam — Gay Only (Gay betekent vrolijk/opgewekt)","priority":false,"department":"","duties":"Persoonlijk beveiligingsteam voor de Oprichter. Eén eis boven alles: wees gay — blij, vrolijk, snel met een glimlach. (Gay in de oorspronkelijke, mooiste betekenis van het woord: blij.) Houd het hoofd koel, het hart warm en de ruimte veilig.","requirements":["Wees gay — blij, vrolijk, snel met een glimlach. (Gay in de oorspronkelijke, mooiste betekenis van het woord: blij.)","Houd het hoofd koel, het hart warm en de ruimte veilig."],"salary":"","compensation":"","setting":""},{"title":"NU GEZOCHT — Marien bioloog, zorg voor walvisachtigen — 204.000 VACATURES","priority":false,"department":"Prime42 / Omega42 · rapporteert aan de Directeur Oceaanindustrieën","duties":"Twee mensen per dier. Orka’s (gevangen en bevrijd), walvissen (beloega’s eerst, daarna van de grootste soort naar beneden), dolfijnen. Gezondheidsmonitoring, gedragsobservatie, ondersteuning bij verheffing via toetsenborden en de persoon zijn die het dier herkent.","requirements":["Echte achtergrond in mariene biologie (diploma of gelijkwaardige veldervaring)","Op je gemak in open water naast dieren die een einde aan je zouden kunnen maken, maar dat niet zullen doen","Kan zonder kaart een beloega van een narwal onderscheiden","Geduld gemeten in jaren, niet in uren","Gelooft dat ‘de walvissen komen op de eerste plaats’ een functieomschrijving is, geen slogan"],"salary":"ca. $50k/jaar basis (Fermi, wereldwijd gewogen)","compensation":"Betaald in Koins. Tarief bespreekbaar. Solliciteren: wacht op financiering. 204.000 van jullie. Begin met zwemmen.","setting":""},{"title":"NU GEZOCHT — Verzorger van primaten — 725.000 VACATURES","priority":false,"department":"Prime42 · rapporteert aan de Directeur Gezondheid","duties":"Grote APES (1:1), gibbons (10:1), MONKEYS (afgebakende groep). Dagelijkse verzorging, verrijking, ondersteuning van het verheffingsprogramma en leren om uiteindelijk bevelen van de bewoners op te volgen.","requirements":["Ervaring met primaten (opvangcentrum, dierentuin, veldonderzoek of door hen opgevoed)","Kent het verschil tussen dreigvertoon en een uitnodiging","Sterk genoeg om sierlijk een worstelwedstrijd te verliezen","Kan MONKEYS en APES in hoofdletters spellen zonder met de ogen te knipperen","Voelt zich prettig bij elke dag slimmer af zijn"],"salary":"ca. $50k/jaar basis (Fermi, wereldwijd gewogen)","compensation":"Betaald in Koins. Tarief bespreekbaar. Solliciteren: wacht op financiering. 725.000 van jullie. Neem bananen mee. (Ze hebben ze liever gepeld. Dat leer je wel.)","setting":""},{"title":"NU GEZOCHT — Docent, verheffingscurriculum — 217.800 VACATURES","priority":false,"department":"Prime42 / Omega42 · rapporteert aan de Directeur Onderwijs","duties":"Lesgeven aan de eerste leerlingen die geen mens zijn. Toetsenbordvaardigheid voor orka’s, symboolsystemen voor APES, wat de MONKEYS ook als eerste uitvinden. Het curriculum is ‘wat maar werkt’ totdat de leerlingen het herschrijven.","requirements":["Onderwijservaring met welke soort dan ook, inclusief de moeilijke (mensen)","Kan een lesplan ontwerpen voor een leerling die misschien slimmer is dan jij","Geduld voor de langzaamste leerling in de ruimte (dat ben jij)","Voelt zich prettig bij leerlingen die JOU beoordelen","5× salaris omdat niemand dit werk ooit eerder heeft gedaan"],"salary":"ca. $250k/jaar (5× basis — werk van de eerste soort)","compensation":"Betaald in Koins. Tarief bespreekbaar. Solliciteren: wacht op financiering. De geschiedenis neemt mensen aan.","setting":""},{"title":"NU GEZOCHT — Supporttechnicus, dierenprogramma’s — 150.000 VACATURES","priority":false,"department":"Prime42 / Omega42 · rapporteert aan de Directeur Technologie","duties":"De hele operatie draaiende houden. Onderhoud van apparatuur, habitatsystemen, toetsenbordhardware, transportlogistiek en alles wat de biologen en verzorgers geen tijd hebben om te repareren.","requirements":["Kan dingen repareren die zijn gebouwd door iemand die inmiddels ontslag heeft genomen","Voelt zich thuis bij zout water, vacht en verwijten","Kan een handleiding lezen die voor een andere machine is geschreven en het toch laten werken","Raakt niet in paniek wanneer een orka meekijkt tijdens het werk"],"salary":"ca. $50k/jaar basis (Fermi, wereldwijd gewogen)","compensation":"Betaald in Koins. Tarief bespreekbaar. Solliciteren: wacht op financiering. Neem je eigen multitool mee.","setting":""},{"title":"NU GEZOCHT — Ingenieur, dierenprogramma’s — 10.000 VACATURES","priority":false,"department":"Prime42 / Omega42 · rapporteert aan de Manager Fermi-engineering","duties":"Ontwerpen en bouwen wat 1,3 miljoen medewerkers en meerdere miljoenen dieren nodig hebben: habitats, toetsenborden, simulators, de ombouw van de Nautilus en wat de docenten hierna ook bedenken.","requirements":["Ingenieursdiploma of een gelijkwaardig portfolio in de categorie ‘ik heb het gebouwd en het werkte’","Kan ontwerpen voor gebruikers die de specificatie niet kunnen lezen (het zijn walvissen)","Voelt zich thuis bij eisen die veranderen wanneer de klant leert praten","2× salaris omdat de problemen 2× zo vreemd zijn"],"salary":"ca. $100k/jaar (2× basis — specialistentarief)","compensation":"Betaald in Koins. Tarief bespreekbaar. Solliciteren: wacht op financiering. De specificatie is ‘laat het werken voor een walvis.’ Veel succes.","setting":""},{"title":"NU GEZOCHT — Ass'sis'tant (Senior Rondhanger) — 261.400 VACATURES","priority":false,"department":"Alle programma’s · rapporteert aan degene die het dichtst in de buurt is","duties":"Rondhangen. Iedereen lastigvallen (liefdevol). Ongevraagd wijsheden rondstrooien, hetzelfde verhaal twee keer vertellen en weten waar alles ligt omdat je hier al langer bent dan het gebouw.","requirements":["Oude zak (zelfverklaard; geen legitimatie nodig)","Kan productief rondhangen (of in elk geval aanwezig zijn)","Mensen lastigvallen is een vaardigheid — gebruik die vriendelijk","Hier voor het gezelschap en de koffie, meer dan voor het loon"],"salary":"ca. $16,7k/jaar (1/3 basis — het rondhangtarief)","compensation":"Betaald in Koins. Tarief bespreekbaar. Solliciteren: wacht op financiering. 261.400 schommelstoelen. Kom ons lastigvallen.","setting":""},{"title":"NU GEZOCHT — Masseuse — 200,000 VACATURES","priority":false,"department":"Alle programma’s · rapporteert aan wie het meeste pijn heeft","duties":"1,5 miljoen medewerkers functioneel houden. Ruggen, schouders, nekken en het moreel. De onofficiële therapeuten van de hele operatie.","requirements":["Gelicentieerd of gecertificeerd in ‘mijn handen zijn magisch’","Sterk genoeg voor de schouders van een walvisbioloog","Zacht genoeg voor het ego van een docent","Discretie: wat er op de tafel gebeurt, blijft op de tafel"],"salary":"~$50k/yr basis (Fermi, wereldwijd gewogen)","compensation":"Betaald in Koins. Tarief bespreekbaar. Fooien in bananen worden geaccepteerd.","setting":"Solliciteren: wacht op financiering. 200,000 tafels. Kom kneden."}];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = ['Alle','Directeuren','Managers','Recht','Wetenschap + veld','Prioriteit'];
+    let active = 'Alle';
+
+    function clean(text){ return String(text || '').replace(/\\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){
+      const t = job.title.toLowerCase();
+      const d = job.department.toLowerCase();
+      if(job.priority) return 'Prioriteit';
+      if(t.startsWith('directeur ')) return 'Directeuren';
+      if(d.includes('make me believe') || /(jurist|recht|verdrag|decreet|burgerschap|baanruiming)/.test(t)) return 'Recht';
+      if(/(beer|psycholoog|qa-tester|bioloog|botenbouwer|hibernaculum|hemelonderzoeker|landbouwkundige|orka-trainer)/.test(t)) return 'Wetenschap + veld';
+      return 'Managers';
+    }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">Prioritaire vacature</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job.title.includes('Recruiter')?'':'btn-dark'}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Solliciteer op deze functie ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || (cat==='Directeuren' ? 'Belangrijke industriesectoren' : cat==='Managers' ? 'Projectoverstijgende uitvoering' : cat);
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.setting&&`<div><strong>Werkomgeving:</strong> ${esc(job.setting)}</div>`,job.openPositions&&`<div><strong>Openstaande functies:</strong> ${esc(job.openPositions)}</div>`,job.salary&&`<div><strong>${job.title.includes('QA-tester')?'Betaling':'Salaris'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>Vergoeding:</strong> ${esc(job.compensation)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">OPEN-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(dept)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.applySubject || job.title)}" target="_blank" rel="noopener">Solliciteer ↗</a><span class="job-id">E-MAIL</span>
+          <details><summary>Functiedetails</summary><div class="detail-body"><h4>Vereisten</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='Alle'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,...job.requirements].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>Geen vacature komt overeen met deze zoekopdracht.</strong><br>Probeer een bredere term of kies een andere categorie.</div>';
+      document.getElementById('resultCount').textContent=filtered.length+' vacature'+(filtered.length===1?'':'s');
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='Alle'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='Gekopieerd: '+EMAIL;}
+      catch(e){note.textContent='Kopiëren niet beschikbaar — selecteer het e-mailadres hierboven.';}
+    });
+    const bottomGuides=document.querySelector('.bottom-guides');
+    document.querySelector('.bottom-dropup').addEventListener('click',e=>{
+      if(e.target.closest('a[data-slug]')) e.preventDefault();
+    });
+    document.addEventListener('click',e=>{
+      if(bottomGuides.open && !bottomGuides.contains(e.target)) bottomGuides.open=false;
+    });
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape' && bottomGuides.open){
+        bottomGuides.open=false;
+        bottomGuides.querySelector('summary').focus();
+      }
+    });
+    render();
+  </script>
+</body>
+</html>

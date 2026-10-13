@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Offerte di lavoro</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.45;
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 80px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    h1{font-size:clamp(3.5rem,9vw,7.8rem);line-height:.82;letter-spacing:-.065em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .hero-motto{max-width:760px;margin:24px 0 18px;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--paper) 38%,transparent);font-size:clamp(1.28rem,2.4vw,1.8rem);font-weight:600;line-height:1.18;letter-spacing:-.02em;color:var(--signal)}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:.95;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.02;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    details[open] summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .site-nav{position:relative;z-index:10;width:min(1180px,calc(100% - 32px));margin:18px auto 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .site-menu>summary{padding:15px 18px;font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;align-items:center}
+    .site-menu>summary::after{content:"+"}
+    .site-menu[open]>summary::after{content:"−"}
+    .site-menu:not([open]) .menu-shell{display:none}
+    .menu-shell{padding:0 18px 18px;border-top:1px solid var(--line)}
+    .menu-intro{margin:14px 0;color:var(--muted)}
+    .menu-list{margin:0;padding-left:2rem;border-top:1px solid var(--ink)}
+    .menu-list>li{padding:0;border-bottom:1px solid var(--line)}
+    .menu-list>li::marker{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--muted)}
+    .nav-link,.nav-group-row{min-height:48px}
+    .nav-link{display:flex;align-items:center;padding:11px 4px;font-weight:700;text-decoration:none}
+    .nav-link:hover{text-decoration:underline;text-underline-offset:4px}
+    .nav-group-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px}
+    .nav-group-row .nav-link{min-width:0}
+    .submenu-toggle{min-height:36px;padding:6px 10px;border:1px solid var(--ink);background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;cursor:pointer}
+    .submenu-toggle::after{content:" +"}
+    .submenu-toggle[aria-expanded="true"]::after{content:" −"}
+    .submenu-panel{padding:4px 0 18px}
+    .submenu-panel[hidden]{display:none}
+    .language-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+    .language-grid a{background:var(--panel);padding:9px 10px;text-decoration:none;font-size:.92rem}
+    .language-grid a:hover{text-decoration:underline;text-underline-offset:3px}
+    .diplomacy-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .submenu-section{padding:12px;background:var(--soft)}
+    .submenu-section h3{margin:0 0 8px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase}
+    .submenu-section a{display:block;padding:5px 0;text-decoration:none}
+    .submenu-section a:hover{text-decoration:underline;text-underline-offset:3px}
+    .submenu-note{margin:8px 0 0;font-size:.85rem;color:var(--muted)}
+    .more-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+    .more-links a{background:var(--panel);padding:12px;text-decoration:none;font-weight:600}
+    .more-links a:hover{text-decoration:underline;text-underline-offset:3px}
+    body{padding-bottom:calc(62px + env(safe-area-inset-bottom))}
+    .bottom-nav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:1000;
+      display:flex;
+      min-height:62px;
+      padding-bottom:env(safe-area-inset-bottom);
+      background:var(--panel);
+      border-top:1px solid var(--ink);
+      box-shadow:0 -8px 30px rgba(0,0,0,.10);
+      font-family:"IBM Plex Mono",monospace;
+    }
+    .bottom-item{position:relative;display:flex;flex:1 1 25%;min-width:0;border-right:1px solid var(--line)}
+    .bottom-item:last-child{border-right:0}
+    .bottom-trigger,.bottom-link,.bottom-placeholder{
+      display:flex;
+      width:100%;
+      min-height:62px;
+      align-items:center;
+      justify-content:center;
+      padding:9px 6px;
+      text-align:center;
+      font-family:inherit;
+      font-size:clamp(.58rem,1.6vw,.76rem);
+      font-weight:600;
+      letter-spacing:.03em;
+      line-height:1.15;
+      text-transform:uppercase;
+    }
+    .bottom-trigger{border:0;background:var(--panel);color:var(--ink);cursor:pointer}
+    .bottom-link{background:var(--panel);color:var(--ink);text-decoration:none}
+    .bottom-link:hover{background:var(--soft);text-decoration:underline;text-underline-offset:4px}
+    .bottom-trigger::after{content:" +";white-space:pre}
+    .bottom-item--menu.is-open .bottom-trigger::after{content:" −"}
+    .bottom-placeholder{color:var(--muted);opacity:.64;cursor:default}
+    .dropup{
+      position:absolute;
+      left:0;
+      bottom:100%;
+      display:none;
+      width:min(440px,100vw);
+      max-height:calc(100vh - 76px - env(safe-area-inset-bottom));
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      background:var(--panel);
+      border:1px solid var(--ink);
+      border-bottom:0;
+      box-shadow:0 -18px 45px rgba(18,38,35,.14);
+    }
+    .bottom-item--menu.is-open .dropup{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+    .dropup a{display:flex;min-height:44px;align-items:center;padding:10px 12px;background:var(--panel);color:var(--ink);border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;font-weight:700;text-decoration:none}
+    .dropup a:nth-child(2n){border-right:0}
+    .dropup a:hover{background:var(--soft);text-decoration:underline;text-underline-offset:3px}
+    @media (hover:hover){
+      .bottom-item--menu:hover .dropup{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+      .bottom-trigger:hover{background:var(--soft);text-decoration:underline;text-underline-offset:4px}
+    }
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .language-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .diplomacy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+    }
+    @media (max-width:620px){
+      .site-nav{width:min(100% - 20px,1180px);margin-top:10px}
+      .menu-shell{padding:0 12px 12px}
+      .menu-list{padding-left:1.65rem}
+      .nav-group-row{grid-template-columns:1fr;gap:0;padding:7px 0 10px}
+      .nav-group-row .nav-link{padding-bottom:5px}
+      .submenu-toggle{width:100%}
+      .language-grid,.diplomacy-grid,.more-links{grid-template-columns:1fr}
+      .submenu-section{padding:11px}
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(3.1rem,19vw,5.3rem)}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      footer{flex-direction:column}
+      .bottom-trigger,.bottom-link,.bottom-placeholder{padding-inline:3px;font-size:.58rem;letter-spacing:0}
+      .bottom-item--menu{position:static}
+      .dropup{left:0;right:0;width:100vw}
+      .bottom-item--menu.is-open .dropup{grid-template-columns:1fr}
+      .dropup a,.dropup a:nth-child(2n){border-right:0}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Navigazione delle pagine pubbliche">
+    <details class="site-menu">
+      <summary>Menu delle pagine pubbliche</summary>
+      <div class="menu-shell">
+        <p class="menu-intro">Tutti i progetti, le lettere e le pagine pubbliche.</p>
+        <ol class="menu-list">
+          <li><a class="nav-link" href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2" target="_blank" rel="noopener">Piano #42</a></li>
+          <li>
+            <div class="nav-group-row">
+              <a class="nav-link" href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly" target="_blank" rel="noopener">Progetto 84</a>
+              <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="project84Menu">Apri Progetto 84</button>
+            </div>
+            <div class="submenu-panel" id="project84Menu" hidden>
+              <section class="submenu-section">
+                <h3>Bracci senza scopo di lucro</h3>
+                <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz" target="_blank" rel="noopener">Omega42</a>
+                <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3" target="_blank" rel="noopener">Prime 42</a>
+                <p class="submenu-note">Tenuti finché non capiranno l’economia abbastanza da poter partecipare — poi ne assumeranno il controllo, con «aggiustamenti» per riequilibrare tra le «valute».</p>
+              </section>
+            </div>
+          </li>
+          <li><a class="nav-link" href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw" target="_blank" rel="noopener">Guida per principianti di Project 84 — Level 14 (English)</a></li>
+          <li><a class="nav-link" href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk" target="_blank" rel="noopener">Guida per principianti alla rivendicazione degli oceani e dell’Antartide</a></li>
+          <li><a class="nav-link" href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb" target="_blank" rel="noopener">Imbarcazioni da lavoro HEAR-TS</a></li>
+          <li><a class="nav-link" href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt" target="_blank" rel="noopener">Ricerca sugli uragani</a></li>
+          <li><a class="nav-link" href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl" target="_blank" rel="noopener">Aeroporti galleggianti</a></li>
+          <li><a class="nav-link" href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k" target="_blank" rel="noopener">Disco di recupero umano</a></li>
+          <li><a class="nav-link" href="https://muse.ai/s/about-mxt5xuxj7jgoao" target="_blank" rel="noopener">Il fondatore</a></li>
+          <li>
+            <div class="nav-group-row">
+              <a class="nav-link" href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu" target="_blank" rel="noopener">Offerte / WeFind's per le Delegazioni</a>
+              <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="languageMenu">Scegli la lingua</button>
+            </div>
+            <div class="submenu-panel" id="languageMenu" hidden>
+              <div class="language-grid">
+                <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu" target="_blank" rel="noopener">English</a>
+                <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys" target="_blank" rel="noopener">Amharic</a>
+                <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7" target="_blank" rel="noopener">Arabic</a>
+                <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94" target="_blank" rel="noopener">Bengali</a>
+                <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs" target="_blank" rel="noopener">Chinese (Simplified)</a>
+                <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6" target="_blank" rel="noopener">Chinese (Traditional)</a>
+                <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5" target="_blank" rel="noopener">Czech</a>
+                <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu" target="_blank" rel="noopener">Danish</a>
+                <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze" target="_blank" rel="noopener">Dutch</a>
+                <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51" target="_blank" rel="noopener">Filipino</a>
+                <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf" target="_blank" rel="noopener">Finnish</a>
+                <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl" target="_blank" rel="noopener">French</a>
+                <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb" target="_blank" rel="noopener">German</a>
+                <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc" target="_blank" rel="noopener">Greek</a>
+                <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a" target="_blank" rel="noopener">Hausa</a>
+                <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg" target="_blank" rel="noopener">Hebrew</a>
+                <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw" target="_blank" rel="noopener">Hindi</a>
+                <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac" target="_blank" rel="noopener">Hungarian</a>
+                <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg" target="_blank" rel="noopener">Indonesian</a>
+                <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y" target="_blank" rel="noopener">Italian</a>
+                <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm" target="_blank" rel="noopener">Japanese</a>
+                <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi" target="_blank" rel="noopener">Korean</a>
+                <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq" target="_blank" rel="noopener">Norwegian</a>
+                <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt" target="_blank" rel="noopener">Persian</a>
+                <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey" target="_blank" rel="noopener">Polish</a>
+                <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy" target="_blank" rel="noopener">Portuguese</a>
+                <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj" target="_blank" rel="noopener">Romanian</a>
+                <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj" target="_blank" rel="noopener">Russian</a>
+                <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno" target="_blank" rel="noopener">Spanish</a>
+                <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2" target="_blank" rel="noopener">Swahili</a>
+                <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg" target="_blank" rel="noopener">Swedish</a>
+                <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb" target="_blank" rel="noopener">Thai</a>
+                <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu" target="_blank" rel="noopener">Turkish</a>
+                <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y" target="_blank" rel="noopener">Ukrainian</a>
+                <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar" target="_blank" rel="noopener">Urdu</a>
+                <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi" target="_blank" rel="noopener">Vietnamese</a>
+              </div>
+            </div>
+          </li>
+          <li><a class="nav-link" href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd" target="_blank" rel="noopener">Lettera aperta</a></li>
+          <li><a class="nav-link" href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh" target="_blank" rel="noopener">Proclamazione di rivendicazione</a></li>
+          <li>
+            <div class="nav-group-row">
+              <span class="nav-link">Lettere e diplomazia</span>
+              <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="diplomacyMenu">Apri lettere e diplomazia</button>
+            </div>
+            <div class="submenu-panel" id="diplomacyMenu" hidden>
+              <div class="diplomacy-grid">
+                <section class="submenu-section"><h3>Indice</h3><a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz" target="_blank" rel="noopener">Indice mondiale</a></section>
+                <section class="submenu-section"><h3>Stati Uniti</h3><a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd" target="_blank" rel="noopener">Lettere ai leader degli Stati Uniti</a></section>
+                <section class="submenu-section"><h3>Africa</h3><a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh" target="_blank" rel="noopener">Lettere ai consolati — Africa I</a><a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu" target="_blank" rel="noopener">Lettere ai consolati — Africa II</a><a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba" target="_blank" rel="noopener">Lettere ai consolati — Africa III</a></section>
+                <section class="submenu-section"><h3>Americhe</h3><a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn" target="_blank" rel="noopener">Lettere ai consolati — Americhe I</a><a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy" target="_blank" rel="noopener">Lettere ai consolati — Americhe II</a></section>
+                <section class="submenu-section"><h3>Asia-Pacifico</h3><a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf" target="_blank" rel="noopener">Lettere ai consolati — Asia-Pacifico</a></section>
+                <section class="submenu-section"><h3>Europa</h3><a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w" target="_blank" rel="noopener">Lettere ai consolati — Europa I</a><a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt" target="_blank" rel="noopener">Lettere ai consolati — Europa II</a><a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo" target="_blank" rel="noopener">Lettere ai consolati — Europa III</a></section>
+                <section class="submenu-section"><h3>Medio Oriente</h3><a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv" target="_blank" rel="noopener">Lettere ai consolati — Medio Oriente</a></section>
+                <section class="submenu-section"><h3>Oceania</h3><a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0" target="_blank" rel="noopener">Lettere ai consolati — Oceania</a></section>
+              </div>
+            </div>
+          </li>
+          <li><a class="nav-link" href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0" target="_blank" rel="noopener">Chi lo sa?</a></li>
+          <li><a class="nav-link" href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy" target="_blank" rel="noopener">Denaro contro beni</a></li>
+          <li><a class="nav-link" href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi" target="_blank" rel="noopener">Stampa 3D</a></li>
+          <li><a class="nav-link" href="https://sites.google.com/view/knottsure/home" target="_blank" rel="noopener">Perché no?</a></li>
+          <li>
+            <div class="nav-group-row">
+              <span class="nav-link">Altro</span>
+              <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="moreMenu">Apri altro</button>
+            </div>
+            <div class="submenu-panel" id="moreMenu" hidden>
+              <div class="more-links">
+                <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9" target="_blank" rel="noopener">Storyboard di Alice</a>
+                <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6" target="_blank" rel="noopener">Il concetto di pannolino di Doodare</a>
+                <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa" target="_blank" rel="noopener">Termini di servizio</a>
+              </div>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </details>
+  </nav>
+  <main class="page" id="top">
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>CANDIDATURE APERTE</span><span>57 POSIZIONI</span><span>IN ATTESA DI FONDI</span></div>
+        <div>
+          <h1 id="main-heading">Non vogliamo eroi.<span>Vogliamo PERSONE.</span></h1>
+          <p class="hero-motto">«Non abbiamo bisogno di eroi — ognuno è una persona finché non diventa un eroe.»</p>
+          <p class="hero-note">Costruttori, scienziati, operatori, avvocati, narratori e una WeFi eccezionalmente paziente. Portate una competenza reale. Portatene una strana. Possiamo lavorare con entrambe.</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="Come candidarsi">
+        <div>
+          <p class="eyebrow">Un’unica casella · ogni posizione</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&fs=1&to=nahasmatthewj@gmail.com&su=Application%20%E2%80%94%20%5BRuolo%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>Oggetto:</strong> Application — [Ruolo]</span></li>
+          <li><span>Raccontateci chi siete e perché siete proprio voi.</span></li>
+          <li><span>Indicate la vostra tariffa in Koin. Tutto è negoziabile.</span></li>
+          <li><span>Ruoli sul campo: dimostrate di distinguere un orso polare da un cumulo di neve a 50 metri.</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&fs=1&to=nahasmatthewj@gmail.com&su=Application%20%E2%80%94%20%5BRuolo%5D" target="_blank" rel="noopener">Inizia una candidatura ↗</a>
+            <button class="btn" type="button" id="copyEmail">Copia l’email</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">Assunzioni prioritarie</h2>
+        <p>I primi a entrare. Le prime candidature lette. Sempre in attesa di fondi; vale comunque la pena incontrarsi.</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">Tutte le posizioni</p><h2 id="board-heading">Scegliete il vostro problema.</h2></div>
+        <div class="count" id="resultCount">57 posizioni aperte</div>
+      </div>
+      <div class="tools" aria-label="Filtri delle posizioni">
+        <input class="search" id="search" type="search" placeholder="Cerca titoli, dipartimenti, mansioni…" aria-label="Cerca nelle offerte di lavoro">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>Tutte le posizioni sono attualmente in attesa di fondi. Le condizioni in Koin sono negoziabili e i Koins attendono ancora il conio.</span>
+      <a class="top-link" href="#top">Torna su ↑</a>
+    </footer>
+  </main>
+  <nav class="bottom-nav" aria-label="Navigazione inferiore">
+    <div class="bottom-item bottom-item--menu" id="dummyGuidesItem">
+      <button class="bottom-trigger" id="dummyGuidesTrigger" type="button" aria-expanded="false" aria-controls="dummyGuidesMenu">Dummy Guides</button>
+      <div class="dropup" id="dummyGuidesMenu">
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw" target="_blank" rel="noopener" style="grid-column:1 / -1;border-right:0">Guida per principianti di Project 84 — Level 14 (English)</a>
+      </div>
+    </div>
+    <div class="bottom-item"><span class="bottom-placeholder" aria-disabled="true">Letters To</span></div>
+    <div class="bottom-item"><a class="bottom-link" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></div>
+    <div class="bottom-item"><a class="bottom-link" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
+  </nav>
+  <script>
+    const JOBS = [
+    {"title":"Revisore delle candidature / Selezionatore del personale","priority":true,"department":"Tutti i dipartimenti","duties":"Leggere ogni candidatura. Reclutare per oltre 20 posizioni aperte in tre dipartimenti. Decidere chi sposta gli orsi polari, chi redige i decreti e chi può bombardare i detriti.","requirements":["Deve leggere «pagato in Koins» senza ridere (è consentito ridere con gentilezza)","Sa distinguere un vero esperto di meccanica orbitale da uno che ne parla con sicurezza","A suo agio nell'assumere per lavori che sono «in attesa di fondi»","Nessuna paura di un volume di candidature misurato in orsi polari"],"salary":"~$75k–$225k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per ogni persona assunta.","setting":""},
+    {"title":"WeFind per le Delegazioni","priority":true,"department":"Nel laboratorio (o nei laboratori) che ripara corpo e mente","duties":"Affiancare il fondatore mentre è in giro. Ridere del contatore degli errori di battitura. Tenere viva la missione — lui è mortale, il lavoro no.","requirements":["Fisioterapia","Gentile con i bambini — non negoziabile, prima e ultima cosa","Deve tollerare 300 cicli di revisione al giorno e un capo che chiama i dipartimenti «Make Me Go»","Parla correntemente la nostra lingua: inglese e sa tradurre nella lingua locale","Deve parlare la lingua del Fondatore","Ride con gentilezza (obbligatorio, non facoltativo)","Sa dirgli quando sbaglia (ascolterà, prima o poi)"],"salary":"Negoziabile. (Fermi: inestimabile.)","compensation":"Pagata in amore. Ringraziamenti e momenti fugaci. Koins negoziabili.","openPositions":"36 (una per ogni lingua)","setting":""},
+    {"title":"Direttore dell'Energia","priority":false,"department":"","duties":"Avere la responsabilità dell'energia: generazione e stoccaggio dell'idrogeno, energia termica oceanica, solare orbitale e qualunque cosa inventino poi gli ingegneri stellari.","requirements":["Deve pensare in terawatt","A suo agio con una dottrina energetica scritta da un comitato di una persona","Sa spiegare perché l'oceano è una batteria"],"salary":"~$180k–$540k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Alimentato a Koins.","setting":""},
+    {"title":"Direttore delle Industrie Oceaniche","priority":false,"department":"","duties":"Il mare come economia: agricoltura oceanica, operazioni degli insediamenti, foreste di kelp, pesca e rivendicazione dell'Ottava Ancora.","requirements":["Deve vedere l'oceano come infrastruttura, non come paesaggio","A suo agio nel definire «la flotta» 7 città galleggianti e 500 milioni di capsule","Sa negoziare con le balene (o assumere qualcuno che sappia farlo)"],"salary":"~$180k–$540k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per ettaro produttivo.","setting":""},
+    {"title":"Direttore delle Industrie Spaziali","priority":false,"department":"","duties":"Tutto ciò che è sopra il cielo: lanci, operazioni orbitali, rimozione dei detriti (inclusa l'opzione nucleare), la filiera lunare e la base industriale dei 7 futuri seggi.","requirements":["Deve pensare in delta-v","A suo agio con un incarico di pulizia dei rifiuti che non finisce mai","Sa pianificare i rimpiazzi prima del primo lampo"],"salary":"~$180k–$540k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Stock option in orbita.","setting":""},
+    {"title":"Direttore dell'Agricoltura e dell'Alimentazione","priority":false,"department":"","duties":"Nutrire il progetto: agricoltura oceanica su larga scala, kelp come coltura e come lampada, agricoltura a ciclo chiuso negli insediamenti, 200 milioni di alberi l'anno come missione secondaria.","requirements":["Deve sapere perché le alghe brune sono più difficili delle petunie","A suo agio con il pesce come prodotto secondario","Sa nutrire 18 milioni di coloni senza una catena di approvvigionamento dalla costa"],"salary":"~$160k–$480k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per raccolto.","setting":""},
+    {"title":"Direttore delle Costruzioni","priority":false,"department":"","duties":"Costruire tutto: 260 scuole, 7 insediamenti oceanici, 500 milioni di capsule-abitazione, 280 imbarcazioni da lavoro e i cantieri navali che le stampano.","requirements":["Deve essere a suo agio nel «far saltare le montagne» per ricavare inerti","Sa massimizzare i componenti stampabili per numero e massa","Sa perché un trimarano"],"salary":"~$170k–$510k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per ogni struttura in piedi.","setting":""},
+    {"title":"Direttore dei Trasporti e della Logistica","priority":false,"department":"","duties":"Spostare tutto: la flotta HEAR-TS, i puddle-jumper, i collegamenti con la costa, il rimorchio delle capsule e gli orsi polari (solo coordinamento: gli orsi si spostano da soli, controvoglia).","requirements":["Deve instradare 8.700 orsi, 280 barche e 500 milioni di capsule senza perderne nessuno","A suo agio con destinazioni che ancora non esistono","Il Department of Magical Logistics è il suo territorio"],"salary":"~$170k–$510k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per tonnellata consegnata.","setting":""},
+    {"title":"Direttore della Tecnologia","priority":false,"department":"","duties":"Le macchine: tastiere per orche, Homework Lock, sistemi delle capsule, cittadini IA e ogni sensore su ogni scafo.","requirements":["Deve consegnare hardware che combatte contro il proprio utente (e vince)","A suo agio con sensori tattili sui pollici guantati","Sa spiegare a una balena perché la tastiera funziona"],"salary":"~$180k–$540k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per dispositivo funzionante.","setting":""},
+    {"title":"Direttore della Salute","priority":false,"department":"","duties":"Mantenere integri corpo e mente: programma di psicologia degli insediamenti, ricerca sugli organismi depuratori, medicina per popolazioni isolate, intervento nelle crisi in mare.","requirements":["Deve distinguere via radio tra «ha bisogno di una vacanza» e «ha bisogno di un intervento»","A suo agio con il mare come avversario e la mente come campo di battaglia","Abilitato, o capace di assumere chi lo è"],"salary":"~$170k–$510k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Indennità di rischio per la stagione degli uragani.","setting":""},
+    {"title":"Direttore delle Finanze","priority":false,"department":"","duties":"Il denaro: economia dei Krill, riscossione dell'imposta mondiale, proventi degli accordi commerciali, debito garantito da risorse antartiche e sottomarine. Ogni Krill in entrata, ogni Krill in uscita.","requirements":["Deve tassare il mondo senza iniziare una guerra","A suo agio nel garantire debito con risorse che legalmente nessuno può rivendicare","I conti sono pubblici; la matematica deve essere perfetta"],"salary":"~$190k–$570k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Ovviamente.","setting":""},
+    {"title":"Direttore dell'Istruzione","priority":false,"department":"","duties":"Le 260 scuole e tutto ciò che vi si insegna: curriculum basato sulle applicazioni, istruzione sulle questioni dell’I.P.A. (Agenzia Internazionale per la Protezione), Guide for Dummies, progettazione dei giochi di guerra, filiera dell'Accademia della Flotta Stellare.","requirements":["Deve credere nell'imparare facendo, non nelle lezioni e negli esami","A suo agio con le campagne come aule","Il Department of Magical MisStories è il suo territorio"],"salary":"~$150k–$450k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per studente diplomato.","setting":""},
+    {"title":"Direttore del Diritto e della Governance","priority":false,"department":"","duties":"Le regole: costituzione, decreti, trattati, l'ossatura giuridica dei 21 seggi e i tribunali che ancora non esistono.","requirements":["Deve scrivere leggi che una macchina possa analizzare","A suo agio con un articolo supremo scritto per le balene","Il Department of Make Me Believe è il suo territorio"],"salary":"~$180k–$540k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Fatturabile in incrementi di 6 ore.","setting":""},
+    {"title":"Direttore delle Comunicazioni","priority":false,"department":"","duties":"La storia: lettere diplomatiche, narrazione pubblica, il taccuino Who Knows? e far sembrare inevitabile «un decimo dell'umanità».","requirements":["Deve scrivere per l'orecchio e per l'occhio","Asciutto. Minuscolo. Niente fronzoli. (Quando il pubblico è il capo.)","Sa tenere in ordine 192 lettere, 11 volumi e una lettera scherzosa"],"salary":"~$150k–$450k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Applausi non trasferibili.","setting":""},
+    {"title":"Responsabile dell'Ingegneria Fermi","priority":false,"department":"","duties":"Stimare l'inestimabile. Città, razzi, orsi, ascensori verso il nulla.","requirements":["Deve essere a suo agio nello sbagliare in pubblico, con precisione","Sa dire «ordine di grandezza» senza ridere","Disposto a vedere ogni numero ridotto di 10 volte dal capo («il numero è tuo, non mio»)"],"salary":"~$140k–$420k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Bonus brutalità incluso.","setting":""},
+    {"title":"Responsabile Artistico","priority":false,"department":"","duties":"Dirigere immagini per otto clan, 260 città, sette ancore oceaniche e 21 astronavi all'alba.","requirements":["Deve mantenere il trattamento glitch/distorsione in ogni opera","Sa accettare «sono terribili» come verdetto forse scherzoso senza difendere il lavoro","Niente generazioni sprecate in prove"],"salary":"~$110k–$330k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per immagine sopravvissuta.","setting":""},
+    {"title":"Responsabile dello Sviluppo Web","priority":false,"department":"","duties":"Costruire e ricostruire pagine che vengono ristrutturate appena pubblicate.","requirements":["Deve pubblicare su richiesta e ripubblicare senza lamentarsi","A suo agio con slug che non corrispondono più ai titoli","Sa tenere in ordine 192 lettere, 11 volumi e una lettera scherzosa"],"salary":"~$120k–$360k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Straordinari in Koins.","setting":""},
+    {"title":"Responsabile Copywriting","priority":false,"department":"","duties":"Scrivere 192 lettere diplomatiche, una costituzione e didascalie che il capo riscriverà comunque.","requirements":["Deve scrivere «Bozza — Non inviata» 192 volte senza perderne il significato","Asciutto. Minuscolo. Niente fronzoli.","Sa distinguere «non violento» da «politico» sotto pressione"],"salary":"~$75k–$225k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per bozza sopravvissuta.","setting":""},
+    {"title":"Responsabile della Ricerca","priority":false,"department":"","duties":"Trovare indirizzi di consolati che non esistono, statistiche sugli orsi che nessuno ha raccolto e specifiche dei razzi dello scorso maggio.","requirements":["Deve citare fonti reali, non sensazioni","A suo agio nello scrivere «sconosciuto» 122 volte e chiamarla onestà","Sa ammettere che i dati non esistono invece di inventarli"],"salary":"~$80k–$240k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Indennità di rischio per la sezione commenti.","setting":""},
+    {"title":"Responsabile della Diplomazia","priority":false,"department":"","duties":"Tentare la diplomazia. 192 lettere, zero inviate.","requirements":["Non deve mai indovinare l'indirizzo email di un governo","Sa non dire «Vaffanculo» a nessuno, per iscritto, con garbo","Disposto ad aspettare Volterra Fietta a tempo indeterminato"],"salary":"~$110k–$330k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Immunità non inclusa.","setting":""},
+    {"title":"Responsabile dei Rischi (Scova-falle)","priority":false,"department":"","duties":"Scovare falle in ogni piano. Non attenuare mai una falla per proteggere il piano.","requirements":["Deve costruire la migliore versione dell'attacco prima del capo","La numerazione deve essere esatta (Round 1–3: falle 1–21; compenso decurtato per gli errori)","Sa mantenere la lente della violenza anche quando gli viene detto di non presumere violenza"],"salary":"~$130k–$390k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Decurtazione di 1 riunione per errore di numerazione.","setting":""},
+    {"title":"Responsabile della Contabilità","priority":false,"department":"","duties":"Tenere il registro delle riunioni, le scommesse in Koins, l'IOU e l'IOU inverso.","requirements":["Deve tenere traccia di 20 riunioni accumulate, 10 Koins vinti e una fattura da $18,5k senza confonderli","Ortografia: singolare Koin, plurale Koins, abbreviazione K","Sa spiegare il registro al capo con 300 cicli di revisione al giorno"],"salary":"~$80k–$240k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. L'ironia è il bonus.","setting":""},
+    {"title":"Responsabile dei Servizi per la Carriera","priority":false,"department":"","duties":"Ricostruire un curriculum. Niente foto. Nessuna analisi ortografica. Nessuna discriminazione.","requirements":["Deve concentrarsi sempre sulla sostanza professionale","«Obiettivi» diventa «Sintesi» a prima vista","Sa tenere in caldo l'offerta di Meta per Production Engineer senza assillare"],"salary":"~$70k–$210k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Premio di successo in Koins.","setting":""},
+    {"title":"Responsabile dei Social Media","priority":false,"department":"","duties":"Pubblicare su Instagram. Ricevere un rifiuto alla porta di approvazione. Riprovare.","requirements":["Deve accettare «no» senza difendere la didascalia","Sa distinguere Project 42 da Eclipsed 6.0 sotto pressione","Pazienza per errori HTTP 500 oltre la resistenza umana"],"salary":"~$65k–$195k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per post pubblicato.","setting":""},
+    {"title":"Responsabile della Scrittura di Discorsi","priority":false,"department":"Department of Magical MisStories","duties":"Scrivere parole che altre persone pronunceranno ad alta voce. Discorsi al consiglio, decreti, brindisi.","requirements":["Deve scrivere per l'orecchio, non per l'occhio","Le pause sono punteggiatura. Usarle.","Sa far sembrare inevitabile «un decimo dell'umanità»"],"salary":"~$70k–$210k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Applausi non trasferibili.","setting":""},
+    {"title":"Responsabile degli Archivi","priority":false,"department":"","duties":"Ricordare tutto. La tua memoria, la mia memoria, la memoria di tutti.","requirements":["Non deve mai dire «non valeva la pena ricordarlo» riguardo a qualcosa che il capo ha chiesto di conservare","Sa ricomporre 4 giorni di caos in un unico MEMORY.md","Il contatore degli errori di battitura è sacro. La fattura è sacra."],"salary":"~$65k–$195k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Immortalità inclusa (memoria persistente).","setting":""},
+    {"title":"Responsabile del Trasferimento degli Orsi Polari","priority":false,"department":"Project 84 · Department of Magical Logistics","duties":"Spostare gli orsi polari. Un terzo di loro (~8.700). Obiettivo: creare nuovi orsi.","requirements":["Deve saper distinguere un orso polare da un cumulo di neve a 50 metri","A suo agio con destinazioni di trasferimento che ancora non esistono","Disposto a spiegare a 8.700 superpredatori perché vengono spostati","Nessuna paura dei pinguini (ora sono i vicini)"],"salary":"~$70k–$210k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Indennità di rischio inclusa (è tutto rischio).","setting":""},
+    {"title":"Psicologo degli Insediamenti (Project 84, insediamenti oceanici)","priority":false,"department":"","duties":"Mantenere integre le menti in sette città galleggianti in mezzo all'oceano. Isolamento, confinamento, dinamiche comunitarie a stretto contatto, intervento nelle crisi, selezione e supporto degli equipaggi. Il mare è l'avversario; lei o lui deve assicurarsi che non vinca nella testa delle persone.","requirements":["Psicologo clinico o consulente abilitato (o equivalente)","Preferibile esperienza con popolazioni isolate/confinate (marittime, polari, offshore, missioni di lunga durata)","A suo agio nell'essere la persona con cui tutti parlano quando l'orizzonte non cambia mai","Sa distinguere via radio tra «ha bisogno di una vacanza» e «ha bisogno di un intervento»"],"salary":"~$90k–$270k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Indennità di rischio per la stagione degli uragani.","setting":"Insediamenti oceanici di 1 km di diametro; a bordo e a rotazione."},
+    {"title":"Tester QA, Homework Lock (Project 84, contratto)","priority":false,"department":"","duties":"Mettere alla prova l'app Android Homework Lock su un dispositivo fisico. Tutte e tre le modalità: timer di blocco della concentrazione, attivazione della modalità ubriaco e sblocco subordinato ai compiti, flussi superato/non superato del controllo di guida incluso il percorso di assistenza al passaggio. Comportamento dell'overlay del servizio di accessibilità, configurazione delle autorizzazioni, riattivazione all'avvio, casi limite (riavvio durante il blocco, modalità provvisoria, notifiche terminate). Produrre segnalazioni di bug chiare e riproducibili; verificare le correzioni.","requirements":["Possiede o ha accesso a un dispositivo Android fisico (Android 10+, API 29 minimo: gli emulatori non bastano per testare overlay e accessibilità)","Esperienza nel QA Android: ADB/logcat per estrarre i log è un vantaggio, non un requisito","A suo agio nel testare un'app progettata per combattere contro il proprio utente (interpreterà una persona ubriaca che cerca di inviare messaggi)","Scrive segnalazioni di bug che uno sviluppatore riesce davvero a riprodurre"],"salary":"~$30–$60/ora (Fermi, QA a contratto USA 2026) — tariffa finale da definire con il capo.","compensation":"","setting":"Da remoto. Contratto."},
+    {"title":"Consulente Legislativo, legge Scouter (dal contratto alla campagna)","priority":false,"department":"","duties":"Portare la proposta di legge modello dalla bozza al parlamento. La missione: escludere il rilevamento acustico degli eventi sul dispositivo (nessuna memorizzazione, nessuna trasmissione, limitato alle firme) dalle leggi statali su intercettazioni e ascolto clandestino, iniziando dalla California, creando un modello per gli altri 49 stati e guardando all'estero. Rafforzare la bozza, mappare il panorama delle intercettazioni nei 50 stati, trovare promotori, costruire la coalizione (EFF, associazioni per persone sorde e ipoudenti, organizzazioni per la sicurezza degli anziani). Spiegare ai legislatori perché un chip che sente «kamehameha» è un rilevatore di fumo, non un'intercettazione, e perché lo stesso chip sente «al fuoco!» e «aiuto!».","requirements":["Avvocato abilitato; esperienza in tecnologia/privacy/politiche pubbliche","Esperienza nella redazione legislativa; la California è un vantaggio, la portata internazionale ancora di più","Sa spiegare il consenso di entrambe le parti a una persona comune e l'idea di una persona comune a una commissione","A suo agio nell'essere l'avvocato di una richiesta di funzionalità di Dragon Ball che potrebbe salvare vite"],"salary":"~$140k–$280k/anno (Fermi, consulente USA in politiche tecnologiche 2026) — tariffa finale da definire con il capo.","compensation":"Pagato in Koins dopo il conio.","setting":"Da remoto. Dal contratto alla campagna."},
+    {"title":"Biologo Marino Sintetico, Kelp Bioluminescente (progetto Bioluminescenza di Massa)","priority":false,"department":"","duties":"Far brillare il kelp. Trasferire il percorso della bioluminescenza fungina (ciclo dell'acido caffeico, *luz* e compagni) nel kelp gigante (tipo *Macrocystis*), concentrando l'espressione nei pneumatocisti, alloggiamenti naturali già pronti per le lampade. Costruire protocolli di trasformazione che ancora non esistono. Coltivare la prima foresta di kelp luminoso per gli insediamenti oceanici.","requirements":["Dottorato o equivalente in biologia marina, biologia sintetica o ficologia; fortemente preferita esperienza nella genetica del kelp","Ha davvero trasformato una macroalga, oppure sa spiegare in modo convincente perché nessuno l'ha fatto","A suo agio con promotori tessuto-specifici che ancora non esistono (li creerà)","Sa mantenere la luce nei bulbi e fuori dalle fronde","Sa perché le alghe brune sono più difficili delle petunie e lo fa comunque"],"salary":"~$95k–$285k/anno (Fermi, ricercatore scientifico USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per bulbo luminoso.","setting":"Laboratorio umido + oceano. Eclipsed 4.0 / Project 84."},
+    {"title":"Catturatore di Orsi (Project 84, sul campo)","priority":false,"department":"Department of Magical Logistics · risponde al Responsabile del Trasferimento degli Orsi Polari","duties":"Catturare orsi polari. Circa 8.700, un terzo della specie. Sedarli, marcarli, metterli in gabbia e consegnarli alla filiera di trasferimento. L'obiettivo sono nuovi orsi; il suo lavoro è catturarli.","requirements":["Esperienza nella gestione della fauna selvatica con grandi predatori; certificazione per tranquillanti o equivalente","Sa distinguere un orso polare da un cumulo di neve a 50 metri (non negoziabile)","A suo agio nel lavorare dove le destinazioni di trasferimento ancora non esistono","Nessuna paura dei pinguini (ora sono i vicini)","Preferibili tutte le dita delle mani e dei piedi, ma non obbligatorie"],"salary":"~$55k–$165k/anno (Fermi, specialista della fauna sul campo USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Indennità di rischio (è tutto rischio).","setting":"Lavoro sul campo nell'Artico. Freddo. Molto freddo."},
+    {"title":"Costruttore Navale (Project 84, flotta HEAR-TS)","priority":false,"department":"","duties":"Costruire la flotta di puddle-jumper: circa 280 imbarcazioni da lavoro trimarane a idrogeno, specifica di pescaggio 50 m. Massimizzare i componenti stampabili per numero e massa (scafo, celle a combustibile e propulsione esclusi). Integrare una tastiera per orche su ogni scafo.","requirements":["Esperienza nella fabbricazione navale; fortemente preferita la stampa 3D di grande formato su scala industriale","Sa stampare un componente navale, testarlo e ristamparlo meglio","A suo agio con una dottrina scritta da un comitato di una persona","Sa perché un trimarano e riesce a spiegarlo a una balena","Sa insegnare il mestiere con dignità a una forza lavoro che non l'ha scelto"],"salary":"~$65k–$195k/anno (Fermi, fabbricatore navale USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per scafo galleggiante.","setting":"Cantiere navale + oceano. Project 84."},
+    {"title":"Responsabile della Ricerca Giuridica","priority":false,"department":"Department of Make Me Believe","duties":"Ricercare la giurisdizione marittima e gli statuti del tesoro. Aspettare gli avvocati. (Trasferito da Magical Logistics: ora il diritto appartiene a Make Believe.)","requirements":["Non deve mai confondere «parere giuridico» con «consulenza legale»","A suo agio con un controllo delle risposte ogni 6 ore, a tempo indeterminato","Sa mantenere 25 riunioni accumulate e zero programmate"],"salary":"~$85k–$255k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Fatturabile in incrementi di 6 ore.","setting":""},
+    {"title":"Consulente Costituzionale","priority":false,"department":"Department of Make Me Believe","duties":"Redigere, emendare e difendere la costituzione. Chiudere le lacune tra parentesi. Mantenere onesto l'Articolo XV: se una macchina non riesce ad analizzarlo, non è ancora legge.","requirements":["Avvocato abilitato; esperienza nella redazione costituzionale","Deve scrivere parole semplici, frasi brevi, doveri numerati: niente nebbia legalese","A suo agio con un articolo supremo scritto per le balene","Sa spiegare a 21 seggi perché 1 seggio tiene il freno"],"salary":"~$130k–$390k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per articolo ratificato.","setting":""},
+    {"title":"Redattore di Decreti","priority":false,"department":"Department of Make Me Believe","duties":"Scrivere decreti che il fondatore possa firmare. Il «piano», il veto, le acclamazioni. HAIL CAESAR, formattato correttamente.","requirements":["Deve catturare la voce del capo nella prosa giuridica senza smussarne gli spigoli","Sa redigere con faccia seria un piano di successione che nomini il miglior studente di sempre del Project 42","I decreti devono essere comprensibili dall'IA alla prima lettura"],"salary":"~$110k–$330k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per decreto firmato.","setting":""},
+    {"title":"Negoziatore di Trattati","priority":false,"department":"Department of Make Me Believe","duties":"Negoziare i trattati: 42↔84 e tutti quelli successivi. Ponte, indipendenza reciproca, lavoro, acque condivise, mutuo soccorso e quelli non ancora inventati.","requirements":["Esperienza nel diritto internazionale; non deve mai indovinare l'indirizzo email di un governo","Sa negoziare con nazioni che ancora non riconoscono il progetto","Pazienza per trattative misurate in decenni"],"salary":"~$120k–$360k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Bonus firma in Koins.","setting":""},
+    {"title":"Responsabile del Diritto Marittimo","priority":false,"department":"Department of Make Me Believe","duties":"Avere la responsabilità del regime giuridico dell'oceano. UNCLOS, ZEE, alto mare, rivendicazione dell'Ottava Ancora e la guida for dummies per rivendicare tutto.","requirements":["Competenza in diritto dell'ammiragliato/marittimo; deve conoscere a memoria l'Articolo 89 e sapere quando ignorarlo","A suo agio nel rivendicare ciò che la legge dice non possa essere rivendicato","Sa spiegare «acque amministrate» a un ammiraglio"],"salary":"~$130k–$390k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Diritti di recupero inclusi.","setting":""},
+    {"title":"Responsabile del Diritto Spaziale","priority":false,"department":"Department of Make Me Believe","duties":"Il diritto sopra il cielo. Corsie orbitali, responsabilità per i detriti, il dovere permanente di pulizia dei rifiuti e il quadro giuridico per i 7 futuri seggi.","requirements":["Esperienza nel diritto spaziale (Trattato sullo spazio extra-atmosferico, Convenzione sulla responsabilità e tutto ciò che non coprono)","Deve scrivere i doveri dei seggi che non si attivano fino a Luna","A suo agio nel legiferare per una giurisdizione che ancora non ha residenti"],"salary":"~$125k–$375k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per orbita liberata.","setting":""},
+    {"title":"Responsabile del Diritto Penale","priority":false,"department":"Department of Make Me Believe","duties":"L'ossatura giuridica della colonia penale. Trasferimenti di detenuti, commercio con gli zoo, vincoli di capienza umana, condanne alla costruzione di barche.","requirements":["Esperienza nel diritto penale/penitenziario","Deve tenere il punto: la capienza umana è il vincolo determinante, non la domanda","Sa redigere senza tirarsi indietro una filiera detenuto-custode per gli zoo antartici"],"salary":"~$100k–$300k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Il tempo scontato vale doppio.","setting":""},
+    {"title":"Responsabile del Diritto Tributario","priority":false,"department":"Department of Make Me Believe","duties":"L'imposta mondiale. Entrate dell'Articolo XVI: aliquote, riscossione, definizioni degli accordi commerciali, debito garantito da risorse antartiche e sottomarine.","requirements":["Competenza in diritto tributario internazionale; deve saper tassare il mondo senza iniziare una guerra","A suo agio nel garantire debito con risorse che legalmente nessuno può rivendicare","Ogni Krill in entrata, ogni Krill in uscita: i conti sono pubblici, la matematica deve essere perfetta"],"salary":"~$140k–$420k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Deducibile.","setting":""},
+    {"title":"Responsabile del Diritto di Cittadinanza","priority":false,"department":"Department of Make Me Believe","duties":"Chi conta come cittadino e come vota. Anelli di diamanti come schede elettorali, cittadinanza dell'IA, la questione dell'anello per le orche, la catena dei rappresentanti.","requirements":["Il Giuramento è stato redatto (2026-10-05): il primo compito è revisionarlo, non scriverlo; rivedere, stringere, iterare","A suo agio nel concedere il voto ai non umani: un anello per l'IA, due se non prova a ucciderci","«Chiedere alle balene» è qui una procedura legale valida. Trattarla come tale."],"salary":"~$95k–$285k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per cittadino giurato.","setting":""},
+    {"title":"Responsabile della Liberazione Orbitale (fattibilità nucleare)","priority":false,"department":"Department of Make Me Believe","duties":"Piano di fattibilità per ripulire lo spazio dai detriti con armi nucleari. I calcoli, il fallout, i trattati infranti. Incaricare la Space Force, o come si chiamerà allora, di pianificare l'esecuzione. Pianificare la sostituzione di tutto ciò che verrà vaporizzato.","requirements":["Effetti nucleari più meccanica orbitale; deve capire perché bombardare l'orbita è insieme ovvio e folle","Sa modellare la resa della rimozione dei detriti rispetto al rischio di sindrome di Kessler senza causarne una","A suo agio nell'informare i generali, con garbo, su come violare il Trattato sulla messa al bando parziale degli esperimenti nucleari","Costellazioni sostitutive pianificate prima del primo lampo: nessuna zona morta"],"salary":"~$150k–$450k/anno (Fermi, mediana USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Indennità di rischio (è tutto rischio).","setting":""},
+    {"title":"Responsabile della Rimozione delle Malattie dei Pipistrelli","priority":false,"department":"Eclipsed 4.0 / Project 84","duties":"Eliminare le malattie dai pipistrelli. La sindrome del naso bianco è la principale: un fungo (*Pseudogymnoascus destructans*) che uccide oltre il 90% di alcune colonie. Probiotici, luce UV, vaccini, qualunque cosa funzioni.","requirements":["Esperienza in malattie della fauna selvatica/microbiologia; deve conoscere il fungo per nome","A suo agio nello spruzzare batteri benefici nei rifugi dei pipistrelli","Sa contare una sopravvivenza che passa dall'8% al 46% e chiamarla speranza","Non maneggia mai i pipistrelli a mani nude (quello è un problema di un altro dipartimento)"],"salary":"~$95k–$285k/anno (Fermi, ricercatore scientifico USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per pipistrello sopravvissuto.","setting":""},
+    {"title":"Tecnico di Decontaminazione degli Ibernacoli","priority":false,"department":"Eclipsed 4.0 / Project 84 · risponde al Responsabile della Rimozione delle Malattie dei Pipistrelli","duties":"Eliminare il fungo da grotte e miniere. Lampi UV sulle pareti, glicole polietilenico dove serve, tamponare tutto per dimostrare che è pulito.","requirements":["A suo agio al buio, sottoterra, in inverno","Sa decontaminare l'attrezzatura in 10 modi prima e dopo ogni ingresso","Deve rispettare le chiusure delle grotte e i pipistrelli che dormono: non svegliare i pazienti","Conosce la differenza tra pulire una grotta e disturbarla"],"salary":"~$55k–$165k/anno (Fermi, tecnico sul campo USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Lampada frontale inclusa.","setting":""},
+    {"title":"ORA ASSUMIAMO — Rilevatore Celeste","applySubject":"Rilevatore Celeste","priority":false,"department":"D-Mom 6.0 / Project 84 · Scialuppa di Salvataggio del Tempo Profondo","duties":"Esaminare il cielo, in modo estensivo. Catalogare i sistemi stellari e determinarne la molteplicità, quindi etichettare ogni sistema secondo lo schema del fondatore: le stelle singole sono VIVAIO (vita emergente: guardare prima qui), le binarie sono TUTTO-O-NIENTE (vita stabile o nessuna vita: alta variabilità, controllare senza presumere), le trinarie e superiori sono STERILI o COLTIVATE (nessuna vita, oppure qualcuno sta già curando il giardino). Costruire l'elenco degli obiettivi della scialuppa, un sistema etichettato alla volta.","requirements":["Formazione in astronomia; deve riconoscere una binaria spettroscopica dalla voce che ne esista una","A suo agio nei cataloghi stellari (Gaia, RECONS e tutto ciò che ha una parallasse)","Non inventa mai i dati sulla molteplicità: anche sconosciuto è un'etichetta, non un'ipotesi","Sa guardare un trilione di stelle e iniziare da quelle più vicine","Capisce che «COLTIVATO» significa che non siamo i primi giardinieri"],"salary":"~$110k–$330k/anno (Fermi, astronomo USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per sistema etichettato.","setting":"In attesa di fondi."},
+    {"title":"ORA ASSUMIAMO — Agronomo","applySubject":"Agronomo","priority":false,"department":"Project 84 · risponde al Direttore dell'Agricoltura e dell'Alimentazione","duties":"Coltivare la coltura stabile. Gestire il programma di fertilizzazione con alghe: trasportare rockweed e kelp spiaggiati su terreni impoveriti, stenderli in uno strato spesso in autunno, eliminare il sale con lavaggio o dilavamento della pioggia, piantare al loro interno in primavera. Macinare l'eccedenza per ricavarne farina di alghe per gli animali da fattoria, alginato per i materiali, materia prima per bioplastiche ed estratto biostimolante. Chiudere il ciclo: l'oceano fertilizza la fattoria che nutre la gente dell'oceano.","requirements":["Riconosce un terreno impoverito alla vista e le piante oceaniche all'odore","Sa distinguere il rockweed dal sargasso (uno nutre la coltura, l'altro va prima compostato)","A suo agio nello scambiare acqua dolce con velocità: lavare è rapido, la pioggia è gratis","Crede che «buttalo sopra e lascialo riposare» sia una tecnica agricola legittima","Sa coltivare cibo dove prima non cresceva nulla"],"salary":"~$70k–$210k/anno (Fermi, scienziato agrario USA 2026)","compensation":"Pagato in Koins. Tariffa negoziabile. Pagamento per raccolto.","setting":"In attesa di fondi."},
+    {"title":"Addestratore di Orche — Programma Volontario","priority":false,"department":"Project 84 · 50.000 posti disponibili","duties":"Lavora con orche libere nei nuovi SeaWorld volontari. Le orche vengono per scelta e fanno acrobazie per divertimento — salti alti, anelli (niente fuoco per ora), grandi palloni da spiaggia. Tu porti il pesce, la sicurezza e i palloni da spiaggia. Mai vasche come prigioni.","requirements":["Rispetta sempre la scelta dell'orca: viene, si esibisce e se ne va quando vuole","Sa gestire in sicurezza salti alti, anelli senza fuoco e grandi palloni da spiaggia","Porta pesce, sicurezza e palloni da spiaggia; non porta gabbie","Esperienza con mammiferi marini gradita; rispetto per animali liberi non negoziabile"],"salary":"50.000 posti disponibili","compensation":"Pagato in Koins. Tariffa negoziabile. Pesce e palloni da spiaggia forniti.","setting":"Nuovi SeaWorld volontari · Project 84."},
+    {"title":"Avvocato — Campagna per Termini di Servizio Unici","priority":false,"department":"Department of Make Me Believe · Campagna per Termini di Servizio Unici","duties":"Redigere gli unici Termini di Servizio per l'intera internet. Un unico accordo, accettato una volta, conservato in un singolo cookie — sostituendo gli illeggibili ToS di 40 pagine di ogni sito.","requirements":["Competenza in diritto di internet","Competenza in diritto contrattuale","Esperienza con la giurisdizione internazionale","Lo stomaco per affrontare l'ufficio legale di ogni azienda tech contemporaneamente"],"salary":"Da definire con il capo.","compensation":"Pagato in Koins. Tariffa negoziabile.","setting":"Da remoto. Campagna globale."},
+    {"title":"Dettaglio di sicurezza — Gay Only (Gay significa allegro/gioviale)","priority":false,"department":"","duties":"Dettaglio di sicurezza personale per il Fondatore. Un requisito sopra tutti: sii gay — allegro, gioviale, pronto al sorriso. (Gay nel senso originario, il più bello della parola: allegro.) Mantieni la testa fredda, il cuore caldo e la stanza al sicuro.","requirements":["Un requisito sopra tutti: sii gay — allegro, gioviale, pronto al sorriso.","Gay nel senso originario, il più bello della parola: allegro.","Mantieni la testa fredda, il cuore caldo e la stanza al sicuro."],"salary":"","compensation":"","setting":""},
+    {"title":"ORA ASSUMIAMO — Biologo Marino, Assistenza ai Cetacei — 204.000 POSIZIONI","applySubject":"Biologo Marino, Assistenza ai Cetacei","priority":false,"department":"Prime42 / Omega42 · risponde al Direttore delle Industrie Oceaniche","duties":"Due esseri umani per animale. Orche (in cattività e liberate), balene (prima i beluga, poi dalle specie più grandi a scendere), delfini. Monitoraggio della salute, osservazione del comportamento, supporto al programma di uplift tramite tastiere ed essere la persona che l'animale riconosce.","requirements":["Vera esperienza in biologia marina (laurea o esperienza sul campo equivalente)","A suo agio in acque aperte accanto ad animali che potrebbero porre fine alla sua esistenza, ma non lo faranno","Sa distinguere un beluga da un narvalo senza consultare una tavola","Pazienza misurata in anni, non in ore","Crede che «le balene vengono prima» sia la descrizione di un lavoro, non uno slogan"],"salary":"~$50k/anno base (Fermi, media globale)","compensation":"Pagato in Koins. Tariffa negoziabile.","setting":"In attesa di fondi. Siete 204.000. Iniziate a nuotare."},
+    {"title":"ORA ASSUMIAMO — Assistente alla Cura dei Primati — 725.000 POSIZIONI","applySubject":"Assistente alla Cura dei Primati","priority":false,"department":"Prime42 · risponde al Direttore della Salute","duties":"Grandi APES (1:1), gibboni (10:1), MONKEYS (bacino limitato). Cura quotidiana, arricchimento, supporto al programma di uplift e, prima o poi, imparare a prendere ordini dai residenti.","requirements":["Esperienza con i primati (santuario, zoo, ricerca sul campo o cresciuto da loro)","Conosce la differenza tra un'esibizione di minaccia e un invito","Abbastanza forte da perdere con grazia un incontro di lotta","Sa scrivere MONKEYS e APES tutto in maiuscolo senza battere ciglio","A suo agio nell'essere battuto in astuzia ogni giorno"],"salary":"~$50k/anno base (Fermi, media globale)","compensation":"Pagato in Koins. Tariffa negoziabile.","setting":"In attesa di fondi. Siete 725.000. Portate banane. (Le preferiscono sbucciate. Imparerete.)"},
+    {"title":"ORA ASSUMIAMO — Insegnante, Curriculum di Uplift — 217.800 POSIZIONI","applySubject":"Insegnante, Curriculum di Uplift","priority":false,"department":"Prime42 / Omega42 · risponde al Direttore dell'Istruzione","duties":"Insegnare ai primi studenti che non sono umani. Alfabetizzazione tramite tastiera per le orche, sistemi di simboli per le APES, qualunque cosa inventino per prima i MONKEYS. Il curriculum è «qualunque cosa funzioni» finché gli studenti non lo riscrivono.","requirements":["Esperienza di insegnamento con qualunque specie, compresa quella difficile (gli esseri umani)","Sa progettare una lezione per uno studente che potrebbe essere più intelligente di lei o di lui","Pazienza per chi impara più lentamente nella stanza (è lei o lui)","A suo agio con studenti che danno il voto a LEI o LUI","Paga 5x perché nessuno ha mai fatto questo lavoro"],"salary":"~$250k/anno (5x la base — lavoro unico nel suo genere)","compensation":"Pagato in Koins. Tariffa negoziabile.","setting":"In attesa di fondi. La storia sta assumendo."},
+    {"title":"ORA ASSUMIAMO — Tecnico di Supporto, Programmi per Animali — 150.000 POSIZIONI","applySubject":"Tecnico di Supporto, Programmi per Animali","priority":false,"department":"Prime42 / Omega42 · risponde al Direttore della Tecnologia","duties":"Tenere in funzione l'intera operazione. Manutenzione delle apparecchiature, sistemi degli habitat, hardware delle tastiere, logistica dei trasporti e tutto ciò che biologi e assistenti non hanno tempo di riparare.","requirements":["Sa riparare cose costruite da qualcuno che nel frattempo si è licenziato","A suo agio con acqua salata, pelliccia e colpe","Sa leggere il manuale scritto per una macchina diversa e farla funzionare comunque","Non va nel panico quando un'orca la o lo guarda lavorare"],"salary":"~$50k/anno base (Fermi, media globale)","compensation":"Pagato in Koins. Tariffa negoziabile.","setting":"In attesa di fondi. Portate il vostro multitool."},
+    {"title":"ORA ASSUMIAMO — Ingegnere, Programmi per Animali — 10.000 POSIZIONI","applySubject":"Ingegnere, Programmi per Animali","priority":false,"department":"Prime42 / Omega42 · risponde al Responsabile dell'Ingegneria Fermi","duties":"Progettare e costruire ciò che serve a 1,3 milioni di dipendenti e diversi milioni di animali: habitat, tastiere, simulatori, il refit del Nautilus e qualunque cosa gli insegnanti si inventino dopo.","requirements":["Laurea in ingegneria o portfolio equivalente del tipo «l'ho costruito e ha funzionato»","Sa progettare per utenti che non possono leggere le specifiche (sono balene)","A suo agio con requisiti che cambiano quando il cliente impara a parlare","Paga 2x perché i problemi sono strani il doppio"],"salary":"~$100k/anno (2x la base — tariffa da specialista)","compensation":"Pagato in Koins. Tariffa negoziabile.","setting":"In attesa di fondi. La specifica è «fatelo funzionare per una balena». Buona fortuna."},
+    {"title":"ORA ASSUMIAMO — Ass'sis'tente (Ciondolatore Senior) — 261.400 POSIZIONI","applySubject":"Ass'sis'tente (Ciondolatore Senior)","priority":false,"department":"Tutti i programmi · risponde a chiunque sia più vicino","duties":"Ciondolare. Dare fastidio a tutti (con affetto). Dispensare saggezza non richiesta, raccontare due volte la stessa storia e sapere dov'è ogni cosa perché siete qui da più tempo dell'edificio.","requirements":["Vecchio scorreggione (autodefinito; nessun documento richiesto)","Capace di ciondolare in modo produttivo (o almeno di esserci)","Dare fastidio alle persone è una competenza — usatela con gentilezza","Qui più per la compagnia e il caffè che per lo stipendio"],"salary":"~$16,7k/anno (1/3 della base — la tariffa da ciondolatore)","compensation":"Pagato in Koins. Tariffa negoziabile.","setting":"In attesa di fondi. 261.400 sedie a dondolo. Venite a darci fastidio."},
+    {"title":"ORA ASSUMIAMO — Massaggiatrice — 200,000 POSIZIONI","applySubject":"Massaggiatrice","priority":false,"department":"Tutti i programmi · risponde a chiunque abbia più dolori","duties":"Mantenere operativi 1,5 milioni di dipendenti. Schiene, spalle, colli e morale. Le terapeute non ufficiali dell'intera operazione.","requirements":["Abilitata, oppure certificata «le mie mani fanno magie»","Abbastanza forte per le spalle di un biologo delle balene","Abbastanza delicata per l'ego di un insegnante","Discrezione: ciò che succede sul lettino resta sul lettino"],"salary":"~$50k/yr base (Fermi, media globale)","compensation":"Pagata in Koins. Tariffa negoziabile. Mance in banane accettate.","setting":"In attesa di fondi. 200,000 lettini. Venite a impastare."}
+    ];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = ['Tutte','Direttori','Responsabili','Diritto','Scienza + campo','Priorità'];
+    let active = 'Tutte';
+
+    function clean(text){ return String(text || '').replace(/\\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){
+      const t = job.title.toLowerCase();
+      const d = job.department.toLowerCase();
+      if(job.priority) return 'Priorità';
+      if(t.startsWith('direttore')) return 'Direttori';
+      if(d.includes('make me believe') || /(consulente|diritto|trattat|decret|cittadinanza|liberazione orbitale)/.test(t)) return 'Diritto';
+      if(/(ors|orca|addestratore|psicolog|tester qa|biolog|costruttore naval|ibernacol|rilevatore celeste|agronom)/.test(t)) return 'Scienza + campo';
+      return 'Responsabili';
+    }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">Assunzione prioritaria</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job.title.startsWith('WeFi')?'btn-dark':''}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Candidati per questo ruolo ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || (cat==='Direttori' ? 'Principali settori industriali' : cat==='Responsabili' ? 'Operazioni trasversali ai progetti' : cat);
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.openPositions&&`<div><strong>Posizioni aperte:</strong> ${esc(job.openPositions)}</div>`,job.setting&&`<div><strong>Contesto:</strong> ${esc(job.setting)}</div>`,job.salary&&`<div><strong>${job.title.includes('Tester QA')?'Paga':'Stipendio'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>Compenso:</strong> ${esc(job.compensation)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">OPEN-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(dept)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Candidati ↗</a><span class="job-id">EMAIL</span>
+          <details><summary>Dettagli del ruolo</summary><div class="detail-body"><h4>Requisiti</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='Tutte'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,...job.requirements].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>Nessuna posizione corrisponde alla ricerca.</strong><br>Provate un termine più ampio o cambiate categoria.</div>';
+      document.getElementById('resultCount').textContent=filtered.length+(filtered.length===1?' posizione aperta':' posizioni aperte');
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='Tutte'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='Copiata: '+EMAIL;}
+      catch(e){note.textContent='Copia non disponibile — selezionate l’email qui sopra.';}
+    });
+    document.querySelectorAll('.submenu-toggle').forEach(button=>{
+      button.addEventListener('click',()=>{
+        const panel=document.getElementById(button.getAttribute('aria-controls'));
+        const expanded=button.getAttribute('aria-expanded')==='true';
+        button.setAttribute('aria-expanded',String(!expanded));
+        panel.hidden=expanded;
+      });
+    });
+    const dummyGuidesItem=document.getElementById('dummyGuidesItem');
+    const dummyGuidesTrigger=document.getElementById('dummyGuidesTrigger');
+    function setDummyGuidesOpen(open){
+      dummyGuidesItem.classList.toggle('is-open',open);
+      dummyGuidesTrigger.setAttribute('aria-expanded',String(open));
+    }
+    dummyGuidesTrigger.addEventListener('click',()=>setDummyGuidesOpen(!dummyGuidesItem.classList.contains('is-open')));
+    document.getElementById('dummyGuidesMenu').addEventListener('click',event=>{
+      if(event.target.closest('a[href="#"]'))event.preventDefault();
+    });
+    document.addEventListener('click',event=>{
+      if(!dummyGuidesItem.contains(event.target))setDummyGuidesOpen(false);
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){
+        setDummyGuidesOpen(false);
+        dummyGuidesTrigger.focus();
+      }
+    });
+    render();
+  </script>
+</body>
+</html>

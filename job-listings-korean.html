@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>채용 공고</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"Noto Sans KR",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.45;
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 80px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    h1{font-size:clamp(3.5rem,9vw,7.8rem);line-height:.82;letter-spacing:-.065em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .motto{margin:0;padding:clamp(18px,3vw,28px) clamp(22px,5vw,68px);background:var(--signal);color:var(--signal-ink);border:1px solid var(--ink);border-top:0;font-size:clamp(1.35rem,3vw,2.25rem);font-weight:700;line-height:1.25;letter-spacing:-.025em}
+    .apply-panel{background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:.95;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.02;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    details[open] summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .site-nav{width:min(1180px,calc(100% - 32px));margin:18px auto 0;position:relative;z-index:10}
+    .nav-shell{margin:0;border:1px solid var(--ink);background:var(--panel);box-shadow:var(--shadow)}
+    .nav-shell>summary{padding:15px 18px;align-items:center;background:var(--panel)}
+    .nav-toggle>span:first-child{font-weight:700}
+    .nav-hint{margin-left:auto;margin-right:12px;color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:600;letter-spacing:.03em}
+    .nav-panel{border-top:1px solid var(--ink);padding:16px;background:var(--paper)}
+    .nav-shell:not([open])>.nav-panel,.nav-details:not([open])>.nav-submenu{display:none}
+    .nav-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .nav-link,.nav-composite{min-width:0;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    .nav-link{display:flex;align-items:center;min-height:52px;padding:12px 14px;text-decoration:none;font-weight:650}
+    .nav-link:hover,.nav-main-link:hover,.nav-details>summary:hover{background:var(--soft)}
+    .nav-composite{display:flex;flex-direction:column}
+    .nav-main-link{display:block;padding:12px 14px 7px;text-decoration:none;font-weight:700}
+    .nav-details{display:block;margin:0;border:0;border-top:1px solid var(--line);grid-column:auto}
+    .nav-details>summary{padding:10px 14px;color:var(--accent);font-family:"IBM Plex Mono",monospace;font-size:.7rem;font-weight:600;letter-spacing:.02em}
+    .nav-details>summary::after{font-size:.95rem}
+    .nav-submenu{padding:0 14px 14px}
+    .language-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+    .language-grid a,.letter-list a,.more-list a{display:block;background:var(--panel);padding:9px 10px;text-decoration:none;font-size:.84rem;line-height:1.25}
+    .language-grid a:hover,.letter-list a:hover,.more-list a:hover{background:var(--soft)}
+    .letter-region{margin-top:12px}
+    .letter-region:first-child{margin-top:4px}
+    .letter-region h3{margin:0 0 6px;color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase}
+    .letter-list,.more-list{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+    .nav-note{margin:10px 0 0;color:var(--muted);font-size:.78rem;line-height:1.45}
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    body{height:100vh;height:100dvh;overflow:hidden}
+    .page-scroll{
+      height:calc(100vh - 70px - env(safe-area-inset-bottom));
+      height:calc(100dvh - 70px - env(safe-area-inset-bottom));
+      overflow-y:auto;
+      overscroll-behavior-y:contain;
+    }
+    .bottom-nav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:1000;
+      min-height:60px;
+      padding-bottom:env(safe-area-inset-bottom);
+      display:flex;
+      align-items:stretch;
+      background:var(--panel);
+      border-top:1px solid var(--ink);
+      box-shadow:0 -8px 30px rgba(0,0,0,.10);
+      font-family:"Noto Sans KR",system-ui,sans-serif;
+    }
+    .bottom-nav-item{
+      position:relative;
+      flex:1 1 25%;
+      min-width:0;
+      display:flex;
+      align-items:stretch;
+      justify-content:stretch;
+      border-right:1px solid var(--ink);
+    }
+    .bottom-nav-item:last-child{border-right:0}
+    .bottom-guides{
+      display:flex;
+      width:100%;
+      margin:0;
+      border:0;
+      grid-column:auto;
+    }
+    .bottom-guides>summary{
+      width:100%;
+      min-height:59px;
+      padding:10px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      list-style:none;
+      cursor:pointer;
+      text-align:center;
+      font-weight:700;
+      line-height:1.15;
+      color:var(--ink);
+      background:var(--panel);
+    }
+    .bottom-guides>summary::-webkit-details-marker{display:none}
+    .bottom-guides>summary::after{content:"↑";font-family:"IBM Plex Mono",monospace;font-size:.8rem}
+    .bottom-guides[open]>summary::after{content:"×"}
+    .bottom-guides>summary:hover{background:var(--soft)}
+    .bottom-dropup{
+      position:absolute;
+      left:0;
+      bottom:100%;
+      width:min(340px,100vw);
+      max-height:calc(100vh - 76px - env(safe-area-inset-bottom));
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      display:none;
+      background:var(--paper);
+      border:1px solid var(--ink);
+      border-bottom:0;
+      box-shadow:0 -14px 32px rgba(0,0,0,.16);
+    }
+    .bottom-guides[open]>.bottom-dropup{display:block}
+    @media (hover:hover) and (pointer:fine){
+      .bottom-nav-item--guides:hover .bottom-dropup{display:block}
+    }
+    .bottom-dropup a{
+      display:block;
+      padding:10px 14px;
+      background:var(--panel);
+      border-bottom:1px solid var(--line);
+      text-decoration:none;
+      font-size:.84rem;
+      line-height:1.25;
+    }
+    .bottom-dropup a:last-child{border-bottom:0}
+    .bottom-dropup a:hover{background:var(--soft)}
+    .bottom-placeholder,.bottom-link{
+      width:100%;
+      min-height:59px;
+      padding:10px 8px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      background:var(--panel);
+      font-family:"IBM Plex Mono",monospace;
+      font-size:.76rem;
+      font-weight:600;
+      line-height:1.15;
+    }
+    .bottom-placeholder{
+      color:var(--muted);
+      cursor:default;
+      opacity:.7;
+      user-select:none;
+    }
+    .bottom-link{color:var(--ink);text-decoration:none;cursor:pointer}
+    .bottom-link:hover{background:var(--soft)}
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+      .nav-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width:620px){
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .site-nav{width:min(100% - 20px,1180px);margin-top:10px}
+      .nav-hint{display:none}
+      .nav-panel{padding:10px}
+      .nav-grid{grid-template-columns:1fr}
+      .language-grid{grid-template-columns:1fr 1fr}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(3.1rem,19vw,5.3rem)}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      footer{flex-direction:column}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <div class="page-scroll">
+  <nav class="site-nav" aria-label="전체 공개 페이지">
+    <details class="nav-shell">
+      <summary class="nav-toggle"><span>모든 공개 페이지</span><span class="nav-hint">메뉴 열기 · 20개 항목</span></summary>
+      <div class="nav-panel">
+        <div class="nav-grid">
+          <a class="nav-link" href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">01 · 플랜 #42</a>
+          <div class="nav-composite">
+            <a class="nav-main-link" href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">02 · 프로젝트 84</a>
+            <details class="nav-details">
+              <summary>비영리 지향 조직 · 2</summary>
+              <div class="nav-submenu">
+                <section class="letter-region" aria-labelledby="p84-arms-heading">
+                  <h3 id="p84-arms-heading">비영리 지향 조직</h3>
+                  <div class="letter-list">
+                    <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a>
+                    <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a>
+                  </div>
+                  <p class="nav-note">그들이 경제를 충분히 이해하고 참여할 수 있을 때까지 유지됩니다 — 그 후에는 그들이 인수하며, 통화 간 균형을 맞추기 위한 조정이 적용됩니다.</p>
+                </section>
+              </div>
+            </details>
+          </div>
+          <a class="nav-link" href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">03 · Project 84 초보자 안내서 — Level 14 (English)</a>
+          <a class="nav-link" href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">04 · 바다와 남극 영유권 주장을 위한 초보자 안내서</a>
+          <a class="nav-link" href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">05 · HEAR-TS 작업선</a>
+          <a class="nav-link" href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">08 · 허리케인 연구</a>
+          <a class="nav-link" href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">09 · 부유식 스카이포트</a>
+          <a class="nav-link" href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k">10 · 인류 복구 디스크</a>
+          <a class="nav-link" href="https://muse.ai/s/about-mxt5xuxj7jgoao">11 · 창립자 소개</a>
+
+          <div class="nav-composite">
+            <a class="nav-main-link" href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">12 · 채용 / 대표단을 위한 WeFind's</a>
+            <details class="nav-details">
+              <summary>언어 선택 · 36</summary>
+              <div class="nav-submenu">
+                <div class="language-grid" aria-label="채용 공고 언어">
+                  <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu" lang="en">English</a>
+                  <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys" lang="en">Amharic</a>
+                  <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7" lang="en">Arabic</a>
+                  <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94" lang="en">Bengali</a>
+                  <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs" lang="en">Chinese (Simplified)</a>
+                  <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6" lang="en">Chinese (Traditional)</a>
+                  <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5" lang="en">Czech</a>
+                  <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu" lang="en">Danish</a>
+                  <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze" lang="en">Dutch</a>
+                  <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51" lang="en">Filipino</a>
+                  <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf" lang="en">Finnish</a>
+                  <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl" lang="en">French</a>
+                  <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb" lang="en">German</a>
+                  <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc" lang="en">Greek</a>
+                  <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a" lang="en">Hausa</a>
+                  <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg" lang="en">Hebrew</a>
+                  <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw" lang="en">Hindi</a>
+                  <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac" lang="en">Hungarian</a>
+                  <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg" lang="en">Indonesian</a>
+                  <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y" lang="en">Italian</a>
+                  <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm" lang="en">Japanese</a>
+                  <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi" lang="en">Korean</a>
+                  <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq" lang="en">Norwegian</a>
+                  <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt" lang="en">Persian</a>
+                  <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey" lang="en">Polish</a>
+                  <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy" lang="en">Portuguese</a>
+                  <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj" lang="en">Romanian</a>
+                  <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj" lang="en">Russian</a>
+                  <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno" lang="en">Spanish</a>
+                  <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2" lang="en">Swahili</a>
+                  <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg" lang="en">Swedish</a>
+                  <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb" lang="en">Thai</a>
+                  <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu" lang="en">Turkish</a>
+                  <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y" lang="en">Ukrainian</a>
+                  <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar" lang="en">Urdu</a>
+                  <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi" lang="en">Vietnamese</a>
+                </div>
+              </div>
+            </details>
+          </div>
+
+          <a class="nav-link" href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">13 · 공개 서한</a>
+          <a class="nav-link" href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">14 · 영유권 선언</a>
+
+          <div class="nav-composite">
+            <details class="nav-details">
+              <summary>15 · 서한과 외교</summary>
+              <div class="nav-submenu">
+                <section class="letter-region" aria-labelledby="letters-index-heading">
+                  <h3 id="letters-index-heading">색인과 지도자</h3>
+                  <div class="letter-list">
+                    <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">세계 색인</a>
+                    <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">미국 지도자에게 보내는 서한</a>
+                  </div>
+                </section>
+                <section class="letter-region" aria-labelledby="letters-africa-heading">
+                  <h3 id="letters-africa-heading">아프리카</h3>
+                  <div class="letter-list">
+                    <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">영사관 서한 — 아프리카 I</a>
+                    <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">영사관 서한 — 아프리카 II</a>
+                    <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">영사관 서한 — 아프리카 III</a>
+                  </div>
+                </section>
+                <section class="letter-region" aria-labelledby="letters-americas-heading">
+                  <h3 id="letters-americas-heading">아메리카</h3>
+                  <div class="letter-list">
+                    <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">영사관 서한 — 아메리카 I</a>
+                    <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">영사관 서한 — 아메리카 II</a>
+                  </div>
+                </section>
+                <section class="letter-region" aria-labelledby="letters-asia-heading">
+                  <h3 id="letters-asia-heading">아시아·태평양</h3>
+                  <div class="letter-list"><a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">영사관 서한 — 아시아·태평양</a></div>
+                </section>
+                <section class="letter-region" aria-labelledby="letters-europe-heading">
+                  <h3 id="letters-europe-heading">유럽</h3>
+                  <div class="letter-list">
+                    <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">영사관 서한 — 유럽 I</a>
+                    <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">영사관 서한 — 유럽 II</a>
+                    <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">영사관 서한 — 유럽 III</a>
+                  </div>
+                </section>
+                <section class="letter-region" aria-labelledby="letters-middle-east-heading">
+                  <h3 id="letters-middle-east-heading">중동</h3>
+                  <div class="letter-list"><a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">영사관 서한 — 중동</a></div>
+                </section>
+                <section class="letter-region" aria-labelledby="letters-oceania-heading">
+                  <h3 id="letters-oceania-heading">오세아니아</h3>
+                  <div class="letter-list"><a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">영사관 서한 — 오세아니아</a></div>
+                </section>
+              </div>
+            </details>
+          </div>
+
+          <a class="nav-link" href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">16 · 누가 알겠어?</a>
+          <a class="nav-link" href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">17 · 돈 vs 자산</a>
+          <a class="nav-link" href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">18 · 3D 프린팅</a>
+          <a class="nav-link" href="https://sites.google.com/view/knottsure/home">19 · 왜 안 돼?</a>
+
+          <div class="nav-composite">
+            <details class="nav-details">
+              <summary>20 · 더보기</summary>
+              <div class="nav-submenu">
+                <div class="more-list">
+                  <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">Alice 스토리보드</a>
+                  <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">Doodare의 기저귀 대체 콘셉트</a>
+                  <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">이용약관</a>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+    </details>
+  </nav>
+
+  <main class="page" id="top">
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>지원 접수 중</span><span>57개 직무</span><span>자금 확보 대기 중</span></div>
+        <div>
+          <h1 id="main-heading">우리는 영웅을 원하지 않습니다.<span>우리는 사람을 원합니다.</span></h1>
+          <p class="hero-note">건설자, 과학자, 운영자, 변호사, 이야기꾼, 그리고 유난히 인내심 많은 WeFi 36명. 진짜 기술도, 이상한 기술도 가져오세요. 둘 다 함께할 수 있습니다.</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="지원 방법">
+        <div>
+          <p class="eyebrow">하나의 받은편지함 · 모든 공고</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5B%EC%A7%81%EB%AC%B4%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>제목:</strong> Application — [번역된 직무명]</span></li>
+          <li><span>당신이 누구이며, 왜 당신다운지 알려주세요.</span></li>
+          <li><span>희망 Koin 요율을 적어주세요. 모든 조건은 협의 가능합니다.</span></li>
+          <li><span>현장 직무: 50미터 거리에서 북극곰과 눈더미를 구별할 수 있음을 증명하세요.</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5B%EC%A7%81%EB%AC%B4%5D" target="_blank" rel="noopener">지원 시작 ↗</a>
+            <button class="btn" type="button" id="copyEmail">이메일 복사</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <blockquote class="motto">“우리에게 영웅은 필요 없습니다 — 누구나 영웅이 되기 전까지는 그저 한 사람입니다.”</blockquote>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">우선 채용</h2>
+        <p>가장 먼저 문을 통과하고, 가장 먼저 지원서를 검토합니다. 아직 자금 확보 대기 중이지만, 만날 가치는 충분합니다.</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">전체 공고</p><h2 id="board-heading">풀고 싶은 문제를 고르세요.</h2></div>
+        <div class="count" id="resultCount">57개 공고</div>
+      </div>
+      <div class="tools" aria-label="직무 필터">
+        <input class="search" id="search" type="search" placeholder="직무명, 부서, 업무 검색…" aria-label="채용 공고 검색">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>모든 직무는 현재 자금 확보 대기 중입니다. Koin 조건은 협의 가능하며, Koins는 발행 대기 중입니다.</span>
+      <a class="top-link" href="#top">맨 위로 ↑</a>
+    </footer>
+  </main>
+  </div>
+
+  <nav class="bottom-nav" aria-label="보조 페이지 메뉴">
+    <div class="bottom-nav-item bottom-nav-item--guides">
+      <details class="bottom-guides" id="dummyGuidesMenu">
+        <summary aria-label="Dummy Guides 메뉴 열기">Dummy Guides</summary>
+        <div class="bottom-dropup" aria-label="Dummy Guides 언어">
+          <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 초보자 안내서 — Level 14 (English)</a>
+        </div>
+      </details>
+    </div>
+    <div class="bottom-nav-item"><span class="bottom-placeholder" aria-disabled="true">Letters To</span></div>
+    <div class="bottom-nav-item"><a class="bottom-link" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></div>
+    <div class="bottom-nav-item"><a class="bottom-link" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
+  </nav>
+  <script>
+    const JOBS = [{"title":"지원서 검토자 / 채용 담당자","priority":true,"department":"모든 부서","duties":"모든 지원서를 읽습니다. 세 부서에 걸친 20개 이상의 공석을 채용합니다. 누가 북극곰을 옮기고, 누가 칙령을 작성하며, 누가 우주 잔해를 핵으로 날려버릴 기회를 얻는지 결정합니다.","requirements":["‘코인으로 지급’이라는 문구를 웃지 않고 읽을 수 있어야 함(다정하게 웃는 것은 허용)","진짜 궤도역학 전문가와 자신감만 넘치는 사람을 구별할 수 있어야 함","‘자금 확보 대기 중’인 일자리를 채용하는 데 거리낌이 없어야 함","지원자 수를 북극곰 단위로 세어도 겁먹지 않아야 함"],"salary":"연 약 $75k–$225k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 채용 완료 건당 지급.","setting":""},{"title":"대표단을 위한 WeFind","priority":true,"department":"몸과 마음을 고치는 연구실(들)","duties":"밖을 돌아다닐 때 창립자와 함께합니다. 오타 카운터를 보며 웃습니다. 사명을 계속 살아 있게 합니다 — 그는 유한하지만, 이 일은 그렇지 않습니다.","requirements":["물리치료","아이들에게 친절할 것 — 타협 불가, 처음이자 마지막 조건","하루 300회의 검토 사이클과 부서 이름을 ‘Make Me Go’라고 짓는 상사를 견딜 수 있어야 함","우리 언어에 능통할 것: 영어 및 현지 언어 통역","창립자어를 구사해야 함","다정하게 웃을 것(선택이 아니라 필수)","그가 틀렸을 때 말해줄 수 있어야 함(결국에는 들을 것임)"],"salary":"협의 가능. (페르미: 값을 매길 수 없음.)","compensation":"사랑으로 지급. 감사 인사와 스쳐 가는 순간들. Koins 협의 가능.","positions":"36명(언어당 한 명)","setting":""},{"title":"에너지 부문 이사","priority":false,"department":"","duties":"전력을 총괄합니다. 수소 생산과 저장, 해양 온도차, 궤도 태양광, 그리고 항성 엔지니어들이 다음에 발명할 모든 것을 책임집니다.","requirements":["테라와트 단위로 사고해야 함","1인 위원회가 쓴 에너지 원칙을 편안히 받아들여야 함","왜 바다가 배터리인지 설명할 수 있어야 함"],"salary":"연 약 $180k–$540k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. Koins로 동력 공급.","setting":""},{"title":"해양 산업 부문 이사","priority":false,"department":"","duties":"바다를 경제로 만듭니다. 해양 농업, 정착지 운영, 다시마 숲, 어업, 그리고 제8 앵커 영유권 주장을 맡습니다.","requirements":["바다를 풍경이 아니라 인프라로 봐야 함","7개의 부유도시와 5억 개 캡슐을 ‘함대’라고 부르는 데 익숙해야 함","고래와 협상할 수 있어야 함(또는 그럴 수 있는 사람을 채용할 것)"],"salary":"연 약 $180k–$540k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 생산적인 헥타르당 지급.","setting":""},{"title":"우주 산업 부문 이사","priority":false,"department":"","duties":"하늘 위의 모든 것을 맡습니다. 발사, 궤도 운영, 우주 잔해 제거(핵 옵션 포함), 루나 파이프라인, 그리고 미래의 7개 의석을 위한 산업 기반입니다.","requirements":["델타-v로 사고해야 함","끝나지 않는 쓰레기 청소 임무를 편안히 받아들여야 함","첫 섬광 전에 대체 계획을 세울 수 있어야 함"],"salary":"연 약 $180k–$540k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 궤도상의 스톡옵션.","setting":""},{"title":"농업·식량 부문 이사","priority":false,"department":"","duties":"프로젝트에 식량을 공급합니다. 대규모 해양 농업, 작물이자 조명인 다시마, 폐쇄형 정착지 농업, 그리고 사이드 퀘스트인 연 2억 그루 나무 심기를 맡습니다.","requirements":["갈조류가 페튜니아보다 왜 더 어려운지 알아야 함","물고기를 부차적 산출물로 보는 데 익숙해야 함","육상 공급망 없이 정착민 1,800만 명을 먹일 수 있어야 함"],"salary":"연 약 $160k–$480k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 수확량당 지급.","setting":""},{"title":"건설 부문 이사","priority":false,"department":"","duties":"모든 것을 건설합니다. 학교 260곳, 해양 정착지 7곳, 알약형 캡슐 5억 개, 작업선 280척, 그리고 그것들을 출력하는 조선소를 짓습니다.","requirements":["골재를 얻기 위해 ‘산을 폭파하는’ 일에 거리낌이 없어야 함","개수와 질량 기준으로 출력 가능한 부품을 극대화할 수 있어야 함","왜 삼동선인지 알아야 함"],"salary":"연 약 $170k–$510k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 세워진 구조물당 지급.","setting":""},{"title":"운송·물류 부문 이사","priority":false,"department":"","duties":"모든 것을 이동시킵니다. HEAR-TS 함대, 퍼들 점퍼, 육상 연결, 캡슐 견인, 그리고 북극곰을 맡습니다(조정만 담당 — 곰들은 마지못해 스스로 이동합니다).","requirements":["곰 8,700마리, 배 280척, 캡슐 5억 개를 하나도 잃지 않고 경로에 올려야 함","아직 존재하지 않는 목적지를 편안히 다룰 수 있어야 함","마법 물류부가 당신의 홈그라운드임"],"salary":"연 약 $170k–$510k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 배송 완료 톤당 지급.","setting":""},{"title":"기술 부문 이사","priority":false,"department":"","duties":"기계를 맡습니다. 범고래 키보드, 숙제 잠금, 캡슐 시스템, AI 시민, 모든 선체의 모든 센서를 책임집니다.","requirements":["자기 사용자를 상대로 싸워 이기는 하드웨어를 출시해야 함","장갑 낀 엄지손가락용 촉각 센서에 익숙해야 함","키보드가 왜 작동하는지 고래에게 설명할 수 있어야 함"],"salary":"연 약 $180k–$540k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 작동하는 기기당 지급.","setting":""},{"title":"보건 부문 이사","priority":false,"department":"","duties":"몸과 마음을 온전히 지킵니다. 정착지 심리 프로그램, 청소 생물 연구, 고립 인구 의료, 해상 위기 개입을 맡습니다.","requirements":["무전으로 ‘휴가가 필요함’과 ‘개입이 필요함’을 구별해야 함","바다는 적이고 마음은 전장이라는 관점에 익숙해야 함","면허 보유자이거나 면허 보유자를 채용할 수 있어야 함"],"salary":"연 약 $170k–$510k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 허리케인 시즌 위험수당.","setting":""},{"title":"재무 부문 이사","priority":false,"department":"","duties":"돈을 맡습니다. 크릴 경제, 세계세 징수, 무역협정 수익, 남극 및 해저 자원을 담보로 한 부채를 관리합니다. 들어오는 모든 Krill, 나가는 모든 Krill을 기록합니다.","requirements":["전쟁을 일으키지 않고 세계에 세금을 매겨야 함","누구도 법적으로 영유할 수 없는 자원으로 부채를 담보하는 데 익숙해야 함","장부는 공개됨. 수학은 완벽해야 함"],"salary":"연 약 $190k–$570k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 당연히.","setting":""},{"title":"교육 부문 이사","priority":false,"department":"","duties":"260개 학교와 그 안에서 가르치는 모든 것을 맡습니다. 응용 기반 교육과정, I.P.A.(국제보호기구) 관련 실천 교육, 초보자 안내서, 워게임 설계, 스타플릿 아카데미 진입 경로입니다.","requirements":["강의와 시험이 아니라 행동하며 배우는 것을 믿어야 함","캠페인을 교실로 삼는 데 익숙해야 함","마법 미스스토리부가 당신의 홈그라운드임"],"salary":"연 약 $150k–$450k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 졸업생당 지급.","setting":""},{"title":"법률·거버넌스 부문 이사","priority":false,"department":"","duties":"규칙을 맡습니다. 헌법, 칙령, 조약, 21개 의석의 법적 뼈대, 그리고 아직 존재하지 않는 법원을 만듭니다.","requirements":["기계가 파싱할 수 있는 법을 작성해야 함","고래를 위해 쓴 최고 조항을 편안히 받아들여야 함","믿게 해줘 부서가 당신의 홈그라운드임"],"salary":"연 약 $180k–$540k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 6시간 단위 청구.","setting":""},{"title":"커뮤니케이션 부문 이사","priority":false,"department":"","duties":"이야기를 맡습니다. 외교 서한, 대외 서사, ‘누가 알겠어?’ 노트, 그리고 ‘인류의 10분의 1’을 필연처럼 들리게 만드는 일입니다.","requirements":["귀와 눈을 위한 글을 모두 써야 함","짧게. 소문자로. 군더더기 없이. (상사가 독자일 때.)","서한 192통, 11권, 농담 편지 1통을 헷갈리지 않아야 함"],"salary":"연 약 $150k–$450k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 박수는 양도 불가.","setting":""},{"title":"페르미 엔지니어링 매니저","priority":false,"department":"","duties":"추정할 수 없는 것을 추정합니다. 도시, 로켓, 곰, 아무 데도 가지 않는 엘리베이터까지.","requirements":["공개적으로, 정확하게 틀리는 데 익숙해야 함","‘자릿수 규모’라는 말을 진지한 표정으로 할 수 있어야 함","상사가 모든 숫자를 10분의 1로 줄여도 감수할 것(‘네 숫자지 내 숫자 아냐’)"],"salary":"연 약 $140k–$420k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 냉혹함 보너스 포함.","setting":""},{"title":"아트 매니저","priority":false,"department":"","duties":"8개 클랜, 260개 도시, 7개 해양 앵커, 새벽의 우주선 21척을 위한 이미지를 디렉팅합니다.","requirements":["모든 작품에 글리치/왜곡 처리를 일관되게 적용해야 함","‘끔찍하다’는 평가가 농담일 수도 있음을 받아들이고 작품을 변호하지 않아야 함","테스트에 생성 기회를 낭비하지 않을 것"],"salary":"연 약 $110k–$330k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 살아남은 이미지당 지급.","setting":""},{"title":"웹 개발 매니저","priority":false,"department":"","duties":"게시되는 순간 구조가 다시 바뀌는 페이지를 만들고 또 만듭니다.","requirements":["요청 즉시 게시하고 불평 없이 재게시해야 함","제목과 더 이상 맞지 않는 슬러그에 익숙해야 함","서한 192통, 11권, 농담 편지 1통을 헷갈리지 않아야 함"],"salary":"연 약 $120k–$360k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 초과근무도 Koins로.","setting":""},{"title":"카피라이팅 매니저","priority":false,"department":"","duties":"외교 서한 192통, 헌법 1건, 그리고 어차피 상사가 다시 쓸 캡션을 작성합니다.","requirements":["의미를 잃지 않고 ‘초안 — 미발송’을 192번 쓸 수 있어야 함","짧게. 소문자로. 군더더기 없이.","압박 속에서 ‘비폭력적’과 ‘정치적’을 구별할 수 있어야 함"],"salary":"연 약 $75k–$225k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 살아남은 초안당 지급.","setting":""},{"title":"리서치 매니저","priority":false,"department":"","duties":"존재하지 않는 영사관 주소, 아무도 수집하지 않은 곰 통계, 지난 5월의 로켓 제원을 찾아냅니다.","requirements":["느낌이 아니라 실제 출처를 인용해야 함","‘알 수 없음’을 122번 쓰고 그것을 정직함이라 부르는 데 익숙해야 함","데이터가 없을 때 지어내지 않고 없다고 인정해야 함"],"salary":"연 약 $80k–$240k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 댓글란 위험수당.","setting":""},{"title":"외교 매니저","priority":false,"department":"","duties":"외교를 시도합니다. 편지 192통, 발송 0통.","requirements":["정부 이메일 주소를 절대 추측하지 않아야 함","종이에 아무에게도 ‘엿 먹어’를 쓰지 않고도 정중히 그 뜻을 전할 수 있어야 함","Volterra Fietta를 무기한 기다릴 의향이 있어야 함"],"salary":"연 약 $110k–$330k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 면책특권 미포함.","setting":""},{"title":"리스크 매니저(구멍 찌르기 담당)","priority":false,"department":"","duties":"모든 계획의 허점을 찌릅니다. 계획을 보호하려고 허점을 부드럽게 만들지 않습니다.","requirements":["상사가 공격하기 전에 가장 강한 형태로 반론을 세워야 함","번호는 정확해야 함(1–3라운드: 허점 1–21번, 실수하면 보수 차감)","폭력을 가정하지 말라는 말을 들어도 폭력 관점을 유지할 수 있어야 함"],"salary":"연 약 $130k–$390k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 번호 오류당 회의 1회 차감.","setting":""},{"title":"회계 매니저","priority":false,"department":"","duties":"회의 장부, Koin 내기, IOU, 뒤집힌 IOU를 관리합니다.","requirements":["적립된 회의 20회, 획득한 Koins 10개, $18.5k 청구서 1건을 섞지 않고 추적해야 함","철자: 단수 Koin, 복수 Koins, 약칭 K","하루 300회의 검토 속에서도 상사에게 장부를 설명할 수 있어야 함"],"salary":"연 약 $80k–$240k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 아이러니가 보너스.","setting":""},{"title":"커리어 서비스 매니저","priority":false,"department":"","duties":"이력서 한 부를 다시 만듭니다. 사진 없음. 철자 분석 없음. 차별 없음.","requirements":["항상 직업적 실질에만 집중해야 함","‘Objectives’는 보이는 즉시 ‘Summary’로 바꿀 것","Meta 프로덕션 엔지니어 제안을 잔소리 없이 따뜻하게 유지할 수 있어야 함"],"salary":"연 약 $70k–$210k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 성공 수수료는 Koins로.","setting":""},{"title":"소셜 미디어 매니저","priority":false,"department":"","duties":"Instagram에 게시합니다. 승인 관문에서 거절당합니다. 다시 시도합니다.","requirements":["‘아니오’를 캡션 변호 없이 받아들여야 함","압박 속에서도 Project 42와 Eclipsed 6.0을 구별할 수 있어야 함","인간의 인내 한계를 넘는 HTTP 500 오류를 견딜 것"],"salary":"연 약 $65k–$195k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 실제 게시물당 지급.","setting":""},{"title":"연설문 작성 매니저","priority":false,"department":"마법 미스스토리부","duties":"다른 사람들이 소리 내어 말할 글을 씁니다. 평의회 연설, 칙령, 축사를 작성합니다.","requirements":["눈이 아니라 귀를 위한 글을 써야 함","멈춤도 문장부호임. 사용할 것.","‘인류의 10분의 1’을 필연처럼 들리게 만들 수 있어야 함"],"salary":"연 약 $70k–$210k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 박수는 양도 불가.","setting":""},{"title":"기록 보관 매니저","priority":false,"department":"","duties":"모든 것을 기억합니다. 당신의 기억, 나의 기억, 모두의 기억을 맡습니다.","requirements":["상사가 보관해 달라고 한 것에 ‘기억할 가치가 없었다’고 절대 말하지 않아야 함","4일간의 혼돈을 MEMORY.md 하나로 정리할 수 있어야 함","오타 카운터는 신성함. 청구서도 신성함."],"salary":"연 약 $65k–$195k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 불멸 포함(지속형 기억).","setting":""},{"title":"북극곰 이주 매니저","priority":false,"department":"Project 84 · 마법 물류부","duties":"북극곰을 옮깁니다. 그중 3분의 1(약 8,700마리). 목표는 새로운 곰을 만드는 것입니다.","requirements":["50미터 거리에서 북극곰과 눈더미를 구별할 수 있어야 함","아직 존재하지 않는 이주 목적지에 익숙해야 함","최상위 포식자 8,700마리에게 왜 이동해야 하는지 설명할 의향이 있어야 함","펭귄을 두려워하지 않을 것(이제 이웃임)"],"salary":"연 약 $70k–$210k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 위험수당 포함(전부 위험수당임).","setting":""},{"title":"정착지 심리학자(Project 84, 해양 정착지)","priority":false,"department":"","duties":"대양 한가운데 떠 있는 7개 도시에서 사람들의 마음을 온전히 지킵니다. 고립, 감금, 밀집 공동체 역학, 위기 개입, 승무원 선발과 지원을 맡습니다. 바다는 적입니다. 사람들의 머릿속에서는 바다가 이기지 못하게 해야 합니다.","requirements":["임상 또는 상담 심리학자 면허(또는 동등 자격)","고립·폐쇄 환경 인구 경험 우대(해양, 극지, 해상 시설, 장기 임무)","수평선이 절대 바뀌지 않을 때 모두가 찾아와 이야기하는 사람이 되는 데 익숙해야 함","무전으로 ‘휴가가 필요함’과 ‘개입이 필요함’을 구별할 수 있어야 함"],"salary":"연 약 $90k–$270k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 허리케인 시즌 위험수당.","setting":"지름 1km 해양 정착지. 선상 근무 및 교대 근무."},{"title":"QA 테스터, 숙제 잠금(Project 84, 계약직)","priority":false,"department":"","duties":"실제 기기에서 숙제 잠금 Android 앱의 모든 기능을 혹독하게 시험합니다. 세 가지 모드 전체: 집중 잠금 타이머, 음주 모드 설정과 숙제 완료 후 해제, 승차 도움 경로를 포함한 운전 확인 통과/실패 흐름. 접근성 서비스 오버레이 동작, 권한 온보딩, 부팅 후 재설정, 경계 사례(잠금 중 재부팅, 안전 모드, 알림 강제 종료)를 점검합니다. 명확하고 재현 가능한 버그 보고서를 작성하고 수정 사항을 검증합니다.","requirements":["실제 Android 기기(Android 10 이상, 최소 API 29)를 소유하거나 사용할 수 있어야 함 — 오버레이/접근성 테스트는 에뮬레이터로 부족함","Android QA 경험. 로그 수집용 ADB/logcat 사용 가능 시 우대하나 필수는 아님","자기 사용자를 상대로 싸우도록 설계된 앱 테스트에 익숙해야 함(문자를 보내려는 취객 역할을 하게 됨)","개발자가 실제로 재현할 수 있는 버그 보고서를 작성할 것"],"salary":"시간당 약 $30–$60 (페르미 추정, 2026년 미국 계약 QA) — 최종 요율은 상사가 추후 결정.","compensation":"","setting":"원격. 계약직."},{"title":"입법 고문, 스카우터법(계약직→캠페인)","priority":false,"department":"","duties":"모델 법률 제안을 초안에서 입법부까지 이끕니다. 임무: 기기 내 음향 이벤트 감지(저장 없음, 전송 없음, 특정 신호만 감지)를 주 도청법의 적용 대상에서 제외합니다. 캘리포니아에서 시작해 나머지 49개 주의 템플릿을 만들고 국제 확장까지 바라봅니다. 초안을 보강하고 50개 주의 도청법 지형을 지도화하며 발의자를 찾고 연합체(EFF, 청각장애·난청 옹호단체, 노인 안전단체)를 구축합니다. ‘카메하메하’를 듣는 칩이 왜 도청기가 아니라 연기 감지기인지, 그리고 같은 칩이 왜 ‘불이야!’와 ‘도와주세요!’도 듣는지 입법자에게 설명합니다.","requirements":["변호사 자격. 기술/프라이버시/정책 배경","입법 초안 작성 경험. 캘리포니아 경험 우대, 국제 범위 경험은 더 우대","쌍방 동의를 일반인에게, 일반인의 아이디어를 위원회에 설명할 수 있어야 함","생명을 구할 수도 있는 드래곤볼 기능 요청의 변호사가 되는 데 거리낌이 없어야 함"],"salary":"연 약 $140k–$280k (페르미 추정, 2026년 미국 기술정책 고문) — 최종 요율은 상사가 추후 결정.","compensation":"Koins 발행 후 Koins로 지급.","setting":"원격. 계약직에서 캠페인으로 전환."},{"title":"해양 합성생물학자, 생물발광 다시마(대규모 생물발광 프로젝트)","priority":false,"department":"","duties":"다시마를 빛나게 합니다. 진균 생물발광 경로(카페산 회로, luz 및 관련 유전자)를 거대 다시마(Macrocystis 계열)에 이식합니다. 발현은 이미 만들어진 램프 하우징인 기낭에 집중시킵니다. 아직 존재하지 않는 형질전환 프로토콜을 구축합니다. 해양 정착지를 위한 최초의 빛나는 다시마 숲을 기릅니다.","requirements":["해양생물학, 합성생물학 또는 조류학 박사 혹은 동등 경력. 다시마 유전학 경험 강력 우대","실제로 대형 조류를 형질전환해 봤거나, 왜 아무도 성공하지 못했는지 설득력 있게 설명할 수 있어야 함","아직 존재하지 않는 조직 특이적 프로모터를 다루는 데 익숙해야 함(직접 만들게 됨)","빛을 잎이 아니라 기낭 안에 유지할 수 있어야 함","갈조류가 페튜니아보다 왜 더 어려운지 알면서도 실행할 것"],"salary":"연 약 $95k–$285k (페르미 추정, 2026년 미국 연구과학자)","compensation":"Koins로 지급. 요율 협의 가능. 빛나는 기낭당 지급.","setting":"습식 실험실 + 바다. Eclipsed 4.0 / Project 84."},{"title":"곰 포획 담당자(Project 84, 현장)","priority":false,"department":"마법 물류부 · 북극곰 이주 매니저에게 보고","duties":"북극곰을 포획합니다. 약 8,700마리, 종 전체의 3분의 1입니다. 진정시키고, 태그를 붙이고, 우리에 넣어 이주 파이프라인에 인계합니다. 목표는 새로운 곰을 만드는 것이며, 당신의 일은 포획입니다.","requirements":["대형 포식자 야생동물 취급 경험. 진정제 사용 자격 또는 동등 자격","50미터 거리에서 북극곰과 눈더미를 구별할 수 있어야 함(타협 불가)","아직 존재하지 않는 이주 목적지에서 일하는 데 익숙해야 함","펭귄을 두려워하지 않을 것(이제 이웃임)","손가락과 발가락이 모두 있으면 좋지만 필수는 아님"],"salary":"연 약 $55k–$165k (페르미 추정, 2026년 미국 야생동물 현장 전문가)","compensation":"Koins로 지급. 요율 협의 가능. 위험수당(전부 위험수당임).","setting":"북극 현장 근무. 추움. 매우 추움."},{"title":"보트 제작자(Project 84, HEAR-TS 함대)","priority":false,"department":"","duties":"퍼들 점퍼 함대를 건조합니다. 흘수 50m 사양의 수소 삼동선 작업선 약 280척입니다. 개수와 질량 기준으로 출력 가능한 부품을 최대화합니다(선체, 연료전지, 추진계 제외). 모든 선체에 범고래 키보드를 통합합니다.","requirements":["선박 제작 경험. 대규모 대형 3D 프린팅 경험 강력 우대","보트 부품을 출력하고 시험한 뒤 더 나은 버전으로 다시 출력할 수 있어야 함","1인 위원회가 쓴 원칙에 익숙해야 함","왜 삼동선인지 알고 고래에게 설명할 수 있어야 함","원해서 선택한 일이 아닌 노동자들에게도 존엄하게 기술을 가르칠 수 있어야 함"],"salary":"연 약 $65k–$195k (페르미 추정, 2026년 미국 선박 제작자)","compensation":"Koins로 지급. 요율 협의 가능. 물에 뜨는 선체당 지급.","setting":"조선소 + 바다. Project 84."},{"title":"법률 리서치 매니저","priority":false,"department":"믿게 해줘 부서","duties":"해양 관할권과 재무 헌장을 조사합니다. 변호사들을 기다립니다. (마법 물류부에서 전입 — 이제 법은 믿게 해줘 부서 소속입니다.)","requirements":["‘법률 의견’과 ‘법률 자문’을 절대 혼동하지 않아야 함","6시간 간격의 회신 확인을 무기한 유지하는 데 익숙해야 함","적립된 회의 25회와 예정된 회의 0회를 유지할 수 있어야 함"],"salary":"연 약 $85k–$255k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 6시간 단위 청구.","setting":""},{"title":"헌법 고문","priority":false,"department":"믿게 해줘 부서","duties":"헌법을 작성하고 개정하며 방어합니다. 대괄호로 남은 구멍을 메웁니다. 제15조를 정직하게 지킵니다. 기계가 파싱할 수 없다면 아직 법이 아닙니다.","requirements":["변호사 자격. 헌법 초안 작성 경험","쉬운 단어, 짧은 문장, 번호가 붙은 의무 조항으로 쓸 것 — 법률용어의 안개 금지","고래를 위해 작성된 최고 조항에 익숙해야 함","왜 21개 의석 가운데 1개가 브레이크를 쥐는지 설명할 수 있어야 함"],"salary":"연 약 $130k–$390k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 비준된 조항당 지급.","setting":""},{"title":"칙령 작성자","priority":false,"department":"믿게 해줘 부서","duties":"창립자가 서명할 칙령을 작성합니다. ‘계획’, 거부권, 환호문을 다룹니다. HAIL CAESAR를 올바른 형식으로 씁니다.","requirements":["모서리를 둥글게 깎지 않고 상사의 목소리를 법률 문장에 담아야 함","역대 최고 Project 42 학생을 지명하는 승계 계획을 진지한 표정으로 작성할 수 있어야 함","칙령은 AI가 첫 독해에 이해할 수 있어야 함"],"salary":"연 약 $110k–$330k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 서명된 칙령당 지급.","setting":""},{"title":"조약 협상가","priority":false,"department":"믿게 해줘 부서","duties":"42↔84 조약과 그 이후의 모든 조약을 협상합니다. 다리, 상호 독립, 노동, 공유 수역, 상호 원조, 그리고 아직 발명되지 않은 조항들입니다.","requirements":["국제법 배경. 정부 이메일 주소를 절대 추측하지 않아야 함","아직 당신을 인정하지 않는 국가와 협상할 수 있어야 함","수십 년 단위의 협상을 기다릴 인내심"],"salary":"연 약 $120k–$360k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 서명 보너스도 Koins로.","setting":""},{"title":"해양법 매니저","priority":false,"department":"믿게 해줘 부서","duties":"바다의 법 체계를 총괄합니다. UNCLOS, 배타적경제수역, 공해, 제8 앵커 영유권 주장, 그리고 그 모든 것을 차지하는 초보자 안내서를 맡습니다.","requirements":["해사·해양법 전문성. 제89조를 외우고 언제 무시할지도 알아야 함","법이 영유할 수 없다고 말하는 것을 영유하는 데 익숙해야 함","‘관리 수역’을 제독에게 설명할 수 있어야 함"],"salary":"연 약 $130k–$390k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 해난구조권 포함.","setting":""},{"title":"우주법 매니저","priority":false,"department":"믿게 해줘 부서","duties":"하늘 위의 법을 맡습니다. 궤도 통로, 우주 잔해 책임, 상설 쓰레기 청소 의무, 미래 7개 의석의 법적 틀입니다.","requirements":["우주법 배경(우주조약, 책임협약, 그리고 그 조약들이 다루지 않는 모든 것)","루나에 도달할 때까지 활성화되지 않는 의석의 의무를 작성해야 함","아직 주민이 없는 관할권을 위한 법 제정에 익숙해야 함"],"salary":"연 약 $125k–$375k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 정리된 궤도당 지급.","setting":""},{"title":"형법 매니저","priority":false,"department":"믿게 해줘 부서","duties":"유형 식민지의 법적 뼈대를 만듭니다. 수감자 이송, 동물원 거래, 인도적 수용 한계, 보트 건조 형량을 다룹니다.","requirements":["형사사법 또는 교정법 배경","선을 지켜야 함: 수요가 아니라 인도적 수용 능력이 구속조건임","남극 동물원을 위한 수감자-관리자 파이프라인을 흔들림 없이 작성할 수 있어야 함"],"salary":"연 약 $100k–$300k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 복역 시간은 두 배로 계산.","setting":""},{"title":"세법 매니저","priority":false,"department":"믿게 해줘 부서","duties":"세계세를 맡습니다. 제16조 수입: 세율, 징수, 무역협정 정의, 남극 및 해저 자원을 담보로 한 부채를 다룹니다.","requirements":["국제세법 전문성. 전쟁을 일으키지 않고 세계에 세금을 매길 수 있어야 함","누구도 법적으로 영유할 수 없는 자원으로 부채를 담보하는 데 익숙해야 함","들어오는 모든 Krill, 나가는 모든 Krill — 장부는 공개되고 수학은 완벽해야 함"],"salary":"연 약 $140k–$420k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 공제 가능.","setting":""},{"title":"시민권법 매니저","priority":false,"department":"믿게 해줘 부서","duties":"누가 시민으로 인정되고 어떻게 투표하는지 정합니다. 투표용 다이아몬드 반지, AI 시민권, 범고래 반지 문제, 대표 사슬을 다룹니다.","requirements":["선서는 2026-10-05에 작성됨 — 첫 임무는 새로 쓰는 것이 아니라 초안을 다듬는 것: 수정하고, 조이고, 반복할 것","비인간에게 선거권을 주는 데 익숙해야 함: AI에게 반지 1개, 우리를 죽이려 하지 않으면 2개","‘고래에게 확인’은 여기서 유효한 법적 절차임. 그렇게 다룰 것."],"salary":"연 약 $95k–$285k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 선서한 시민당 지급.","setting":""},{"title":"궤도 정리 매니저(핵 사용 타당성)","priority":false,"department":"믿게 해줘 부서","duties":"핵폭발로 우주 궤도 잔해를 제거하는 타당성 계획을 수립합니다. 계산, 낙진, 위반되는 조약을 검토합니다. Space Force — 그때는 뭐라고 불리든 — 에 실행 계획을 맡깁니다. 증발하는 모든 것의 대체물을 계획합니다.","requirements":["핵 효과와 궤도역학 전문성. 궤도를 핵으로 청소하는 일이 왜 명백하면서도 미친 발상인지 이해해야 함","케슬러 신드롬을 촉발하지 않고 잔해 제거 효과와 위험을 모델링할 수 있어야 함","부분적 핵실험 금지 조약을 정중하게 어기는 방안을 장군들에게 브리핑하는 데 익숙해야 함","첫 섬광 전에 대체 위성군을 계획할 것 — 통신 공백 금지"],"salary":"연 약 $150k–$450k (페르미 추정, 2026년 미국 중간값)","compensation":"Koins로 지급. 요율 협의 가능. 위험수당(전부 위험수당임).","setting":""},{"title":"박쥐 질병 제거 매니저","priority":false,"department":"Eclipsed 4.0 / Project 84","duties":"박쥐에게서 질병을 제거합니다. 가장 큰 문제는 흰코증후군입니다. 곰팡이(Pseudogymnoascus destructans)가 일부 군집의 90% 이상을 죽이고 있습니다. 프로바이오틱스, 자외선, 백신 등 효과가 있는 모든 것을 사용합니다.","requirements":["야생동물 질병 또는 미생물학 배경. 곰팡이 이름을 알아야 함","박쥐 서식처에 유익한 박테리아를 분무하는 데 익숙해야 함","생존율이 8%에서 46%로 오르는 것을 세고 희망이라 부를 수 있어야 함","맨손으로 박쥐를 다루지 말 것(그건 다른 부서의 문제임)"],"salary":"연 약 $95k–$285k (페르미 추정, 2026년 미국 연구과학자)","compensation":"Koins로 지급. 요율 협의 가능. 살아남은 박쥐당 지급.","setting":""},{"title":"동면처 오염 제거 기술자","priority":false,"department":"Eclipsed 4.0 / Project 84 · 박쥐 질병 제거 매니저에게 보고","duties":"동굴과 광산의 곰팡이를 제거합니다. 벽에는 자외선 펄스를, 필요한 곳에는 폴리에틸렌글리콜을 사용하고, 모든 곳을 면봉으로 채취해 깨끗함을 증명합니다.","requirements":["겨울의 어두운 지하에서 일하는 데 익숙해야 함","매번 들어가기 전후로 장비를 10가지 방식으로 소독할 수 있어야 함","동굴 폐쇄와 잠자는 박쥐를 존중할 것 — 환자를 깨우지 말 것","동굴 청소와 동굴 교란의 차이를 알아야 함"],"salary":"연 약 $55k–$165k (페르미 추정, 2026년 미국 현장 기술자)","compensation":"Koins로 지급. 요율 협의 가능. 헤드램프 포함.","setting":""},{"title":"현재 채용 중 — 하늘 탐사원","priority":false,"department":"D-Mom 6.0 / Project 84 · 심원시간 구명정","duties":"하늘을 광범위하게 탐사합니다. 항성계를 목록화하고 항성 다중성을 판정한 뒤, 창립자의 분류법에 따라 모든 계에 표지를 붙입니다. 단일성은 NURSERY(태동하는 생명 — 여기부터 찾을 것), 쌍성은 ALL-OR-NOTHING(안정된 생명 또는 무생명 — 분산이 크므로 가정하지 말고 확인), 삼중성 이상은 STERILE 또는 GARDENED(생명이 없거나, 누군가 이미 정원을 돌보고 있음)입니다. 표지가 붙은 항성계 하나씩 구명정의 목표 목록을 구축합니다.","requirements":["천문학 배경. 분광쌍성과 쌍성이라는 소문을 구별해야 함","항성 목록(Gaia, RECONS, 시차가 있는 모든 자료)에 익숙해야 함","항성 다중성 데이터를 절대 지어내지 않을 것 — 알 수 없음도 추측이 아니라 하나의 표지임","1조 개 별을 보고도 가장 가까운 별부터 시작할 수 있어야 함","‘GARDENED’는 우리가 최초의 정원사가 아니라는 뜻임을 이해할 것"],"salary":"연 약 $110k–$330k (페르미 추정, 2026년 미국 천문학자)","compensation":"Koins로 지급. 요율 협의 가능. 표지를 붙인 항성계당 지급.","setting":"자금 확보 대기 중."},{"title":"현재 채용 중 — 농업 전문가","priority":false,"department":"Project 84 · 농업·식량 부문 이사에게 보고","duties":"안정적인 작물을 기릅니다. 해조류 비료 프로그램을 운영합니다. 해변에 밀려온 암초지치와 다시마를 황폐한 농지로 운반하고, 가을에 두껍게 깔고, 물로 씻거나 빗물로 소금을 빼낸 뒤 봄에 그 위에 심습니다. 남는 것은 갈아 가축용 해조분, 소재용 알지네이트, 바이오플라스틱 원료, 생장촉진 추출물로 만듭니다. 순환을 닫습니다. 바다가 바다 사람들을 먹여 살리는 농장에 비료를 줍니다.","requirements":["황폐한 토양은 보면 알고 해양 식물은 냄새로 알아야 함","암초지치와 모자반을 구별할 수 있어야 함(하나는 작물을 먹이고, 다른 하나는 먼저 퇴비화해야 함)","속도를 위해 담수를 쓰는 선택에 익숙해야 함: 세척은 빠르고 비는 공짜임","‘그냥 던져놓고 놔두기’가 정당한 농법이라고 믿어야 함","아무것도 자라지 않던 곳에서 식량을 기를 수 있어야 함"],"salary":"연 약 $70k–$210k (페르미 추정, 2026년 미국 농업과학자)","compensation":"Koins로 지급. 요율 협의 가능. 수확량당 지급.","setting":"자금 확보 대기 중."},{"title":"범고래 조련사 — 자발적 프로그램","priority":false,"department":"Project 84 · 50,000명 채용","duties":"새로운 자발적 씨월드에서 자유로운 범고래와 함께 일하세요. 범고래는 스스로 찾아와 재미로 묘기를 부립니다 — 높이뛰기, 링(불은 아직 없음), 큰 비치볼. 당신은 물고기, 안전, 비치볼을 가져옵니다. 수조를 감옥으로 쓰지 않습니다, 절대.","requirements":["물고기와 안전, 큰 비치볼을 준비할 것","범고래가 스스로 선택해 오고 언제든 떠날 수 있음을 존중할 것","높이뛰기와 불 없는 링 프로그램을 안전하게 운영할 것","수조를 감옥으로 쓰지 않을 것, 절대"],"salary":"","compensation":"","setting":"새로운 자발적 씨월드. 50,000명 채용."},{"title":"변호사 — 단일 이용약관 캠페인","priority":false,"department":"믿게 해줘 부서 · 단일 이용약관 캠페인","duties":"인터넷 전체를 위한 단일 이용약관을 작성하십시오. 한 번 수락하면 단일 쿠키에 저장되는 하나의 합의 —— 모든 사이트의 읽을 수 없는 40페이지 분량의 ToS를 대체합니다.","requirements":["인터넷법 전문성","계약법 전문성","국제관할권을 넘나드는 합의를 설계할 수 있어야 함","모든 테크 기업의 법무팀과 동시에 맞설 배짱이 필요함"],"salary":"","compensation":"Koins로 지급. 요율 협의 가능.","setting":"전 세계 캠페인. 원격."},{"title":"경호팀 — Gay Only (Gay는 명랑하고/쾌활하다는 뜻)","priority":false,"department":"","duties":"창립자를 위한 전속 경호팀. 무엇보다 중요한 하나의 조건: gay일 것 — 명랑하고, 쾌활하며, 웃음이 빠른. (Gay라는 단어의 원래의, 가장 아름다운 의미: 명랑함.) 냉정한 머리와 따뜻한 마음을 유지하고, 공간을 안전하게 지켜라.","requirements":[],"salary":"","compensation":"","setting":""},{"title":"현재 채용 중 — 해양생물학자, 고래류 돌봄 — 204,000명","priority":false,"department":"Prime42 / Omega42 · 해양 산업 부문 이사에게 보고","duties":"동물 한 마리당 인간 두 명. 범고래(수족관에 갇힌 개체와 풀려난 개체), 고래(벨루가부터 시작해 가장 큰 종부터 차례로), 돌고래를 돌봅니다. 건강을 모니터링하고 행동을 관찰하며, 키보드-업리프트를 지원하고, 그 동물이 알아보는 바로 그 사람이 됩니다.","requirements":["실제 해양생물학 경력(학위 또는 그에 준하는 현장 경험)","당신을 끝장낼 수 있지만 그러지 않을 동물 옆의 탁 트인 바다에서도 편안할 것","도감 없이 벨루가와 일각고래를 구별할 수 있어야 함","인내심을 시간이 아니라 연 단위로 측정할 것","‘고래가 먼저다’를 구호가 아니라 직무 설명으로 믿을 것"],"salary":"연 약 $50k 기본급 (페르미 추정, 세계 혼합 평균)","compensation":"Koins로 지급. 요율 협의 가능.","setting":"자금 확보 대기 중. 204,000명. 수영을 시작하세요."},{"title":"현재 채용 중 — 영장류 돌봄 담당자 — 725,000명","priority":false,"department":"Prime42 · 보건 부문 이사에게 보고","duties":"대형 APES(1:1), 긴팔원숭이(10:1), MONKEYS(인원 상한이 있는 공동 담당)를 돌봅니다. 일상 돌봄, 풍부화 활동, 지능 향상 프로그램 지원, 그리고 언젠가는 거주자들의 지시를 따르는 법까지 배웁니다.","requirements":["영장류 경험(보호구역, 동물원, 현장 연구, 또는 그들에게 길러진 경험)","위협 과시와 초대를 구별할 줄 알아야 함","레슬링 경기에서 우아하게 질 만큼 강할 것","눈 하나 깜짝하지 않고 MONKEYS와 APES를 전부 대문자로 쓸 수 있어야 함","매일 한 수 뒤처지는 데 익숙해야 함"],"salary":"연 약 $50k 기본급 (페르미 추정, 세계 혼합 평균)","compensation":"Koins로 지급. 요율 협의 가능.","setting":"자금 확보 대기 중. 725,000명. 바나나를 가져오세요. (껍질 벗긴 것을 더 좋아합니다. 배우게 될 겁니다.)"},{"title":"현재 채용 중 — 교사, 지능 향상 교육과정 — 217,800명","priority":false,"department":"Prime42 / Omega42 · 교육 부문 이사에게 보고","duties":"인간이 아닌 최초의 학생들을 가르칩니다. 범고래에게 키보드 문해력을, APES에게 기호 체계를, MONKEYS가 가장 먼저 발명하는 것은 무엇이든 가르칩니다. 학생들이 다시 쓸 때까지 교육과정은 ‘효과가 있는 모든 것’입니다.","requirements":["까다로운 종(인간)을 포함해 어떤 종이든 가르쳐 본 경험","당신보다 똑똑할지도 모르는 학생을 위한 수업 계획을 설계할 수 있어야 함","교실에서 가장 느린 학습자(바로 당신)를 기다릴 인내심","당신을 채점하는 학생들과 함께하는 데 익숙해야 함","누구도 해본 적 없는 일이므로 급여 5배"],"salary":"연 약 $250k (기본급의 5배 — 최초 직종)","compensation":"Koins로 지급. 요율 협의 가능.","setting":"자금 확보 대기 중. 역사가 채용 중입니다."},{"title":"현재 채용 중 — 지원 기술자, 동물 프로그램 — 150,000명","priority":false,"department":"Prime42 / Omega42 · 기술 부문 이사에게 보고","duties":"전체 운영이 계속 돌아가게 합니다. 장비 유지보수, 서식지 시스템, 키보드 하드웨어, 운송 물류, 그리고 생물학자와 돌봄 담당자들이 고칠 시간이 없는 모든 것을 맡습니다.","requirements":["만든 사람이 이미 그만둔 물건도 고칠 수 있어야 함","소금물, 털, 비난에 익숙해야 함","다른 기계용으로 쓰인 설명서를 읽고도 이 기계를 작동시킬 수 있어야 함","범고래가 작업을 지켜봐도 당황하지 않을 것"],"salary":"연 약 $50k 기본급 (페르미 추정, 세계 혼합 평균)","compensation":"Koins로 지급. 요율 협의 가능.","setting":"자금 확보 대기 중. 개인용 멀티툴을 가져오세요."},{"title":"현재 채용 중 — 엔지니어, 동물 프로그램 — 10,000명","priority":false,"department":"Prime42 / Omega42 · 페르미 엔지니어링 매니저에게 보고","duties":"130만 명의 직원과 수백만 마리의 동물에게 필요한 것을 설계하고 만듭니다. 서식지, 키보드, 시뮬레이터, 노틸러스 개조, 그리고 교사들이 다음에 꿈꾸는 모든 것입니다.","requirements":["공학 학위 또는 그에 준하는 ‘내가 만들었고, 작동했다’ 포트폴리오","사양서를 읽을 수 없는 사용자(고래입니다)를 위해 설계할 수 있어야 함","고객이 말하는 법을 배우는 순간 바뀌는 요구사항에 익숙해야 함","문제가 2배로 이상하므로 급여 2배"],"salary":"연 약 $100k (기본급의 2배 — 전문직 요율)","compensation":"Koins로 지급. 요율 협의 가능.","setting":"자금 확보 대기 중. 사양은 ‘고래에게 맞게 작동시켜라’입니다. 행운을 빕니다."},{"title":"현재 채용 중 — Ass'sis'tant(수석 어슬렁 담당) — 261,400명","priority":false,"department":"모든 프로그램 · 가장 가까이에 있는 사람에게 보고","duties":"어슬렁거리기. 모두를 (다정하게) 귀찮게 하기. 묻지도 않은 지혜를 나눠주고, 같은 이야기를 두 번 하고, 건물보다 오래 있었기 때문에 뭐가 어디 있는지 전부 알기.","requirements":["늙은 방귀일 것(본인 인증이면 충분, 신분증 불필요)","생산적으로 어슬렁거릴 수 있을 것(아니면 최소한 그 자리에라도 있을 것)","사람을 귀찮게 하는 것도 기술임 — 다정하게 휘두를 것","월급보다 사람들과 커피가 더 좋아서 오는 사람"],"salary":"연 약 $16.7k (기본급의 3분의 1 — 어슬렁 요율)","compensation":"Koins로 지급. 요율 협의 가능.","setting":"자금 확보 대기 중. 흔들의자 261,400개. 와서 우리 좀 귀찮게 해주세요."},{"title":"현재 채용 중 — 마사지사 — 200,000명","priority":false,"department":"모든 프로그램 · 가장 아픈 사람에게 보고","duties":"150만 명의 직원이 제대로 기능하도록 지킵니다. 등, 어깨, 목, 그리고 사기를 돌봅니다. 전체 운영의 비공식 치료사입니다.","requirements":["마사지사 면허 또는 ‘내 손은 마법’ 인증","고래 생물학자의 어깨를 감당할 만큼 강할 것","교사의 자존심을 다룰 만큼 부드러울 것","비밀 엄수: 테이블 위에서 일어난 일은 테이블 위에 남습니다"],"salary":"~$50k/yr 기본급 (페르미 추정, 세계 혼합 평균)","compensation":"Koins로 지급. 요율 협의 가능. 바나나 팁도 받습니다.","setting":"자금 확보 대기 중. 마사지 테이블 200,000개. 와서 주물러 주세요."}];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = ['전체','이사','매니저','법률','과학·현장','우선'];
+    let active = '전체';
+
+    function clean(text){ return String(text || '').replace(/\\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){
+      const t = job.title.toLowerCase();
+      const d = job.department.toLowerCase();
+      if(job.priority) return '우선';
+      if(t.includes('부문 이사')) return '이사';
+      if(d.includes('믿게 해줘') || /(고문|법|조약|칙령|시민권|궤도 정리)/.test(t)) return '법률';
+      if(/(곰|범고래 조련사|심리학자|qa 테스터|생물학자|보트 제작자|동면처|하늘 탐사원|농업 전문가)/.test(t)) return '과학·현장';
+      return '매니저';
+    }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">우선 채용</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job.title.includes('채용 담당자')?'':'btn-dark'}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">이 직무에 지원 ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || (cat==='이사' ? '주요 산업 부문' : cat==='매니저' ? '프로젝트 공통 운영' : cat);
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.setting&&`<div><strong>근무 환경:</strong> ${esc(job.setting)}</div>`,job.positions&&`<div><strong>채용 인원:</strong> ${esc(job.positions)}</div>`,job.salary&&`<div><strong>${job.title.includes('QA 테스터')?'보수':'급여'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>보상:</strong> ${esc(job.compensation)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">OPEN-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(dept)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">지원 ↗</a><span class="job-id">이메일</span>
+          <details><summary>직무 상세</summary><div class="detail-body"><h4>지원 요건</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='전체'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,...job.requirements].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>검색 조건과 일치하는 공고가 없습니다.</strong><br>더 넓은 검색어를 쓰거나 카테고리를 바꿔보세요.</div>';
+      document.getElementById('resultCount').textContent=filtered.length+'개 공고';
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='전체'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='복사됨: '+EMAIL;}
+      catch(e){note.textContent='복사할 수 없습니다 — 위 이메일 주소를 직접 선택하세요.';}
+    });
+    const dummyGuidesMenu=document.getElementById('dummyGuidesMenu');
+    dummyGuidesMenu.addEventListener('click',e=>{
+      const guide=e.target.closest('a[data-slug]');
+      if(!guide)return;
+      e.preventDefault();
+      dummyGuidesMenu.open=false;
+    });
+    document.addEventListener('click',e=>{
+      if(dummyGuidesMenu.open&&!dummyGuidesMenu.contains(e.target))dummyGuidesMenu.open=false;
+    });
+    render();
+  </script>
+</body>
+</html>

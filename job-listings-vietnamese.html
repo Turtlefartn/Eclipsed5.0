@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap&subset=vietnamese" rel="stylesheet">
+  <title>Danh sách Việc làm — Tiếng Việt</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.45;
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 80px}
+    .site-nav{margin:0 0 18px}
+    .site-menu{display:block;grid-column:auto;margin:0;border:1px solid var(--ink);background:var(--panel);box-shadow:var(--shadow)}
+    .site-menu>summary{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 18px;list-style:none;cursor:pointer;background:var(--ink);color:var(--paper);font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:600;letter-spacing:.04em}
+    .site-menu>summary::-webkit-details-marker,.nav-group>summary::-webkit-details-marker{display:none}
+    .site-menu>summary::after{content:"+";font-size:1.15rem;line-height:1}
+    .site-menu[open]>summary::after{content:"−"}
+    .site-menu:not([open])>.menu-panel,.nav-group:not([open])>.nav-group-body{display:none}
+    .menu-summary-note{color:color-mix(in srgb,var(--paper) 68%,transparent);font-size:.7rem;font-weight:500;margin-left:auto}
+    .menu-panel{padding:12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line)}
+    .nav-link,.nav-group>summary{min-height:48px;padding:11px 14px;background:var(--panel);color:var(--ink);text-decoration:none;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:600}
+    .nav-link:hover,.nav-group>summary:hover{background:var(--soft)}
+    .nav-link::after{content:"↗";font-family:"IBM Plex Mono",monospace;color:var(--accent);font-size:.76rem}
+    .nav-group{display:block;grid-column:1/-1;margin:0;border:0;border-top:0;background:var(--panel)}
+    .nav-group>summary{cursor:pointer;list-style:none}
+    .nav-group>summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.1rem;color:var(--accent)}
+    .nav-group[open]>summary::after{content:"−"}
+    .nav-summary-copy{display:flex;align-items:baseline;justify-content:space-between;gap:12px;min-width:0;flex:1}
+    .nav-summary-copy a{color:inherit;text-underline-offset:4px}
+    .nav-meta{font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--muted);font-weight:500;white-space:nowrap}
+    .nav-group-body{padding:14px;border-top:1px solid var(--line);background:var(--paper)}
+    .nav-section-label,.nav-subheading{margin:0 0 9px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .language-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+    .language-grid a,.region-links a{padding:9px 10px;background:var(--panel);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.92rem;font-weight:500}
+    .language-grid a:hover,.region-links a:hover{border-color:var(--accent);color:var(--accent)}
+    .language-grid a[aria-current="page"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+    .letters-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+    .region-block{min-width:0}
+    .region-links{display:grid;gap:6px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    h1{font-size:clamp(3.5rem,9vw,7.8rem);line-height:.82;letter-spacing:-.065em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .motto{max-width:720px;margin:28px 0 18px;padding:16px 0;border-top:1px solid color-mix(in srgb,var(--signal) 68%,transparent);border-bottom:1px solid color-mix(in srgb,var(--signal) 68%,transparent);color:var(--signal);font-size:clamp(1.25rem,2.5vw,1.75rem);font-weight:600;line-height:1.18;letter-spacing:-.02em}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:.95;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.02;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    details[open] summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+    }
+    @media (max-width:620px){
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .menu-summary-note{display:none}
+      .menu-panel{grid-template-columns:1fr;padding:8px}
+      .nav-group{grid-column:1}
+      .nav-summary-copy{align-items:flex-start;flex-direction:column;gap:3px}
+      .language-grid,.letters-grid{grid-template-columns:1fr}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(3.1rem,19vw,5.3rem)}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      footer{flex-direction:column}
+    }
+    .bottom-nav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:100;
+      display:flex;
+      min-height:58px;
+      padding-bottom:env(safe-area-inset-bottom);
+      border-top:1px solid var(--line);
+      background:var(--ink);
+      color:var(--paper);
+      box-shadow:0 -10px 30px rgba(0,0,0,.16);
+      font-family:"IBM Plex Mono",monospace;
+    }
+    .bottom-nav-item{position:relative;display:flex;flex:1 1 25%;min-width:0}
+    .bottom-nav-label,.bottom-nav-placeholder,.bottom-nav-link{
+      width:100%;
+      min-height:58px;
+      padding:10px 6px;
+      border:0;
+      border-right:1px solid color-mix(in srgb,var(--paper) 20%,transparent);
+      background:transparent;
+      color:inherit;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      font:600 .72rem/1.2 "IBM Plex Mono",monospace;
+      letter-spacing:.02em;
+    }
+    .bottom-nav-item:last-child .bottom-nav-link{border-right:0}
+    .bottom-nav-label{cursor:pointer}
+    .bottom-nav-label::after{content:"+";margin-left:8px;font-size:1rem;line-height:1;color:var(--accent)}
+    .bottom-nav-label:hover,.bottom-nav-item:focus-within>.bottom-nav-label,.bottom-nav-item.is-open>.bottom-nav-label{background:var(--soft);color:var(--ink)}
+    .bottom-nav-item.is-open>.bottom-nav-label::after{content:"−"}
+    .bottom-nav-placeholder{color:color-mix(in srgb,var(--paper) 52%,transparent);cursor:default}
+    .bottom-nav-link{cursor:pointer;text-decoration:none}
+    .bottom-nav-link:hover,.bottom-nav-link:focus-visible{background:var(--soft);color:var(--ink)}
+    .dummy-dropup{
+      position:absolute;
+      left:0;
+      bottom:100%;
+      width:min(360px,100vw);
+      max-height:calc(100vh - 74px - env(safe-area-inset-bottom));
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      display:none;
+      padding:8px;
+      border:1px solid var(--ink);
+      background:var(--line);
+      box-shadow:var(--shadow);
+    }
+    .dummy-dropup a{
+      display:block;
+      padding:11px 13px;
+      border-bottom:1px solid var(--line);
+      background:var(--panel);
+      color:var(--ink);
+      text-decoration:none;
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:.95rem;
+      font-weight:600;
+    }
+    .dummy-dropup a:last-child{border-bottom:0}
+    .dummy-dropup a:hover,.dummy-dropup a:focus-visible{background:var(--soft);color:var(--accent)}
+    .bottom-nav-item.is-open>.dummy-dropup,.bottom-nav-item:focus-within>.dummy-dropup{display:block}
+    @media (hover:hover) and (pointer:fine){.bottom-nav-item:hover>.dummy-dropup{display:block}}
+    body{padding-bottom:calc(58px + env(safe-area-inset-bottom))}
+    @media (max-width:620px){
+      .bottom-nav-label,.bottom-nav-placeholder,.bottom-nav-link{padding:9px 3px;font-size:.62rem;letter-spacing:0}
+      .bottom-nav-label::after{margin-left:4px}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <nav class="site-nav" aria-label="Điều hướng trang công khai">
+      <details class="site-menu">
+        <summary><span>Danh mục</span><span class="menu-summary-note">Tất cả trang công khai</span></summary>
+        <div class="menu-panel">
+          <a class="nav-link" href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2" target="_blank" rel="noopener">Kế hoạch #42</a>
+          <details class="nav-group">
+            <summary><span class="nav-summary-copy"><a href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly" target="_blank" rel="noopener">Dự án 84</a></span></summary>
+            <div class="nav-group-body">
+              <p class="nav-section-label">Các nhánh hướng tới phi lợi nhuận</p>
+              <div class="language-grid">
+                <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz" target="_blank" rel="noopener">Omega42</a>
+                <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3" target="_blank" rel="noopener">Prime 42</a>
+              </div>
+              <p style="margin:10px 0 0;font-size:.85rem;color:var(--muted)">Được giữ cho đến khi chúng hiểu đủ về kinh tế để tham gia — sau đó chúng sẽ tiếp quản, với các điều chỉnh để cân bằng giữa các loại tiền tệ.</p>
+            </div>
+          </details>
+          <a class="nav-link" href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw" target="_blank" rel="noopener">Hướng dẫn cho Người mới của Project 84 — Level 14 (English)</a>
+          <a class="nav-link" href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk" target="_blank" rel="noopener">Hướng dẫn cho Người mới về Yêu sách Đại dương và Nam Cực</a>
+          <a class="nav-link" href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb" target="_blank" rel="noopener">Tàu Công vụ HEAR-TS</a>
+          <a class="nav-link" href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt" target="_blank" rel="noopener">Nghiên cứu Bão</a>
+          <a class="nav-link" href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl" target="_blank" rel="noopener">Cảng hàng không Nổi</a>
+          <a class="nav-link" href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k" target="_blank" rel="noopener">Đĩa Phục hồi Nhân loại</a>
+          <a class="nav-link" href="https://muse.ai/s/about-mxt5xuxj7jgoao" target="_blank" rel="noopener">Về Nhà sáng lập</a>
+
+          <details class="nav-group">
+            <summary><span class="nav-summary-copy"><a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu" target="_blank" rel="noopener">Việc làm / WeFind's cho Các phái đoàn</a><span class="nav-meta">36 ngôn ngữ</span></span></summary>
+            <div class="nav-group-body">
+              <p class="nav-section-label">Chọn ngôn ngữ</p>
+              <div class="language-grid">
+                <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu" target="_blank" rel="noopener">English</a>
+                <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys" target="_blank" rel="noopener">አማርኛ</a>
+                <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7" target="_blank" rel="noopener">العربية</a>
+                <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94" target="_blank" rel="noopener">বাংলা</a>
+                <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs" target="_blank" rel="noopener">中文（简体）</a>
+                <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6" target="_blank" rel="noopener">中文（繁體）</a>
+                <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5" target="_blank" rel="noopener">Čeština</a>
+                <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu" target="_blank" rel="noopener">Dansk</a>
+                <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze" target="_blank" rel="noopener">Nederlands</a>
+                <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51" target="_blank" rel="noopener">Filipino</a>
+                <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf" target="_blank" rel="noopener">Suomi</a>
+                <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl" target="_blank" rel="noopener">Français</a>
+                <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb" target="_blank" rel="noopener">Deutsch</a>
+                <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc" target="_blank" rel="noopener">Ελληνικά</a>
+                <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a" target="_blank" rel="noopener">Hausa</a>
+                <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg" target="_blank" rel="noopener">עברית</a>
+                <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw" target="_blank" rel="noopener">हिन्दी</a>
+                <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac" target="_blank" rel="noopener">Magyar</a>
+                <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg" target="_blank" rel="noopener">Bahasa Indonesia</a>
+                <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y" target="_blank" rel="noopener">Italiano</a>
+                <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm" target="_blank" rel="noopener">日本語</a>
+                <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi" target="_blank" rel="noopener">한국어</a>
+                <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq" target="_blank" rel="noopener">Norsk</a>
+                <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt" target="_blank" rel="noopener">فارسی</a>
+                <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey" target="_blank" rel="noopener">Polski</a>
+                <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy" target="_blank" rel="noopener">Português</a>
+                <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj" target="_blank" rel="noopener">Română</a>
+                <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj" target="_blank" rel="noopener">Русский</a>
+                <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno" target="_blank" rel="noopener">Español</a>
+                <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2" target="_blank" rel="noopener">Kiswahili</a>
+                <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg" target="_blank" rel="noopener">Svenska</a>
+                <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb" target="_blank" rel="noopener">ไทย</a>
+                <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu" target="_blank" rel="noopener">Türkçe</a>
+                <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y" target="_blank" rel="noopener">Українська</a>
+                <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar" target="_blank" rel="noopener">اردو</a>
+                <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi" target="_blank" rel="noopener" aria-current="page">Tiếng Việt</a>
+              </div>
+            </div>
+          </details>
+
+          <a class="nav-link" href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd" target="_blank" rel="noopener">Thư ngỏ</a>
+          <a class="nav-link" href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh" target="_blank" rel="noopener">Tuyên bố Yêu sách</a>
+
+          <details class="nav-group">
+            <summary><span class="nav-summary-copy"><span>Thư từ &amp; Ngoại giao</span><span class="nav-meta">theo khu vực</span></span></summary>
+            <div class="nav-group-body letters-grid">
+              <section class="region-block" aria-labelledby="letters-index-heading">
+                <h3 class="nav-subheading" id="letters-index-heading">Chỉ mục &amp; Lãnh đạo</h3>
+                <div class="region-links">
+                  <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz" target="_blank" rel="noopener">Chỉ mục Thế giới</a>
+                  <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd" target="_blank" rel="noopener">Thư gửi Lãnh đạo Hoa Kỳ</a>
+                </div>
+              </section>
+              <section class="region-block" aria-labelledby="letters-africa-heading">
+                <h3 class="nav-subheading" id="letters-africa-heading">Châu Phi</h3>
+                <div class="region-links">
+                  <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh" target="_blank" rel="noopener">Thư Lãnh sự — Châu Phi I</a>
+                  <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu" target="_blank" rel="noopener">Thư Lãnh sự — Châu Phi II</a>
+                  <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba" target="_blank" rel="noopener">Thư Lãnh sự — Châu Phi III</a>
+                </div>
+              </section>
+              <section class="region-block" aria-labelledby="letters-americas-heading">
+                <h3 class="nav-subheading" id="letters-americas-heading">Châu Mỹ</h3>
+                <div class="region-links">
+                  <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn" target="_blank" rel="noopener">Thư Lãnh sự — Châu Mỹ I</a>
+                  <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy" target="_blank" rel="noopener">Thư Lãnh sự — Châu Mỹ II</a>
+                </div>
+              </section>
+              <section class="region-block" aria-labelledby="letters-asia-heading">
+                <h3 class="nav-subheading" id="letters-asia-heading">Châu Á–Thái Bình Dương</h3>
+                <div class="region-links">
+                  <a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf" target="_blank" rel="noopener">Thư Lãnh sự — Châu Á–Thái Bình Dương</a>
+                </div>
+              </section>
+              <section class="region-block" aria-labelledby="letters-europe-heading">
+                <h3 class="nav-subheading" id="letters-europe-heading">Châu Âu</h3>
+                <div class="region-links">
+                  <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w" target="_blank" rel="noopener">Thư Lãnh sự — Châu Âu I</a>
+                  <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt" target="_blank" rel="noopener">Thư Lãnh sự — Châu Âu II</a>
+                  <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo" target="_blank" rel="noopener">Thư Lãnh sự — Châu Âu III</a>
+                </div>
+              </section>
+              <section class="region-block" aria-labelledby="letters-middle-east-heading">
+                <h3 class="nav-subheading" id="letters-middle-east-heading">Trung Đông</h3>
+                <div class="region-links">
+                  <a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv" target="_blank" rel="noopener">Thư Lãnh sự — Trung Đông</a>
+                </div>
+              </section>
+              <section class="region-block" aria-labelledby="letters-oceania-heading">
+                <h3 class="nav-subheading" id="letters-oceania-heading">Châu Đại Dương</h3>
+                <div class="region-links">
+                  <a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0" target="_blank" rel="noopener">Thư Lãnh sự — Châu Đại Dương</a>
+                </div>
+              </section>
+            </div>
+          </details>
+
+          <a class="nav-link" href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0" target="_blank" rel="noopener">Ai biết?</a>
+          <a class="nav-link" href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy" target="_blank" rel="noopener">Tiền so với Tài sản</a>
+          <a class="nav-link" href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi" target="_blank" rel="noopener">In 3D</a>
+          <a class="nav-link" href="https://sites.google.com/view/knottsure/home" target="_blank" rel="noopener">Tại sao không?</a>
+
+          <details class="nav-group">
+            <summary><span class="nav-summary-copy"><span>Thêm</span><span class="nav-meta">3 trang</span></span></summary>
+            <div class="nav-group-body">
+              <div class="language-grid">
+                <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9" target="_blank" rel="noopener">Bảng phân cảnh Alice</a>
+                <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6" target="_blank" rel="noopener">Ý tưởng Thay thế Tã của Doodare</a>
+                <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa" target="_blank" rel="noopener">Điều khoản Dịch vụ</a>
+              </div>
+            </div>
+          </details>
+        </div>
+      </details>
+    </nav>
+
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>ĐANG NHẬN HỒ SƠ</span><span>57 VỊ TRÍ</span><span>ĐANG CHỜ NGUỒN VỐN</span></div>
+        <div>
+          <h1 id="main-heading">Chúng tôi không cần anh hùng.<span>Chúng tôi cần CON NGƯỜI.</span></h1>
+          <p class="motto">“Chúng ta không cần anh hùng — mỗi người đều là một con người cho đến khi trở thành anh hùng.”</p>
+          <p class="hero-note">Những người xây dựng, nhà khoa học, người vận hành, luật sư, người kể chuyện và một WeFi đặc biệt kiên nhẫn. Mang đến một kỹ năng thật. Mang đến một kỹ năng kỳ lạ. Cả hai đều có chỗ.</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="Cách ứng tuyển">
+        <div>
+          <p class="eyebrow">Một hộp thư · mọi vị trí</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BV%E1%BB%8B%20tr%C3%AD%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>Tiêu đề:</strong> Application — [Vị trí]</span></li>
+          <li><span>Hãy cho chúng tôi biết bạn là ai và điều gì làm nên bạn.</span></li>
+          <li><span>Ghi mức Koin bạn mong muốn. Mọi điều khoản đều có thể thương lượng.</span></li>
+          <li><span>Vị trí hiện trường: chứng minh bạn phân biệt được gấu Bắc Cực với ụ tuyết ở khoảng cách 50 mét.</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BV%E1%BB%8B%20tr%C3%AD%5D" target="_blank" rel="noopener">Bắt đầu ứng tuyển ↗</a>
+            <button class="btn" type="button" id="copyEmail">Sao chép email</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">Tuyển dụng ưu tiên</h2>
+        <p>Những người đầu tiên bước qua cửa. Hồ sơ được đọc đầu tiên. Vẫn đang chờ vốn; vẫn đáng để gặp.</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">Toàn bộ bảng tuyển dụng</p><h2 id="board-heading">Chọn vấn đề của bạn.</h2></div>
+        <div class="count" id="resultCount">57 vị trí đang mở</div>
+      </div>
+      <div class="tools" aria-label="Bộ lọc việc làm">
+        <input class="search" id="search" type="search" placeholder="Tìm chức danh, ban, nhiệm vụ…" aria-label="Tìm trong danh sách việc làm">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>Tất cả vị trí hiện đang chờ nguồn vốn. Điều khoản Koin có thể thương lượng và Koins vẫn đang chờ được đúc.</span>
+      <a class="top-link" href="#top">Về đầu trang ↑</a>
+    </footer>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Điều hướng cuối trang">
+    <div class="bottom-nav-item" id="dummyGuidesItem">
+      <button class="bottom-nav-label" id="dummyGuidesToggle" type="button" aria-expanded="false" aria-controls="dummyGuidesMenu">Dummy Guides</button>
+      <div class="dummy-dropup" id="dummyGuidesMenu" aria-label="Dummy Guides languages">
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw" target="_blank" rel="noopener">Hướng dẫn cho Người mới của Project 84 — Level 14 (English)</a>
+      </div>
+    </div>
+    <div class="bottom-nav-item"><span class="bottom-nav-placeholder" aria-disabled="true">Letters To</span></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-link" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-link" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
+  </nav>
+
+  <script>
+    const JOBS = [{"title":"Chuyên viên xét hồ sơ / Tuyển dụng","priority":true,"department":"Tất cả các ban","category":"Ưu tiên","duties":"Đọc mọi hồ sơ ứng tuyển. Tuyển người cho hơn 20 vị trí đang mở thuộc ba ban. Quyết định ai di chuyển gấu Bắc Cực, ai soạn sắc lệnh và ai được phép dùng hạt nhân dọn rác vũ trụ.","requirements":["Phải đọc câu ‘trả bằng Koins’ mà không cười (cười tử tế thì được)","Phân biệt được một kỹ sư cơ học quỹ đạo thật với một người chỉ đầy tự tin","Thoải mái tuyển cho những công việc ‘đang chờ nguồn vốn’","Không sợ số hồ sơ nhiều đến mức phải đo bằng gấu Bắc Cực"],"salary":"~75.000–225.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo từng người được tuyển.","setting":""},{"title":"WeFind's cho Các phái đoàn","priority":true,"department":"Trong (các) phòng thí nghiệm sửa chữa thân thể và tâm trí","category":"Ưu tiên","duties":"Đồng hành với nhà sáng lập khi anh ấy ra ngoài. Cười với bộ đếm lỗi chính tả. Giữ cho sứ mệnh sống tiếp — anh ấy là người phàm, công việc thì không.","requirements":["Vật lý trị liệu","Tử tế với trẻ em — không thương lượng, là điều đầu tiên và cuối cùng","Phải chịu được 300 vòng duyệt mỗi ngày và một ông chủ đặt tên các ban là “Make Me Go”","Thông thạo ngôn ngữ của chúng tôi: tiếng Anh & phiên dịch viên cho ngôn ngữ địa phương","Phải nói được tiếng Nhà sáng lập","Cười tử tế (bắt buộc, không tùy chọn)","Có thể nói thẳng khi anh ấy sai (rồi anh ấy sẽ nghe, cuối cùng)"],"salary":"Có thể thương lượng. (Fermi: vô giá.)","compensation":"Trả bằng tình yêu. Những lời cảm ơn và những khoảnh khắc thoáng qua. Koins có thể thương lượng.","openPositions":"36 (mỗi ngôn ngữ một vị trí)","setting":""},{"title":"Giám đốc Năng lượng","priority":false,"department":"Các ngành chủ lực","category":"Giám đốc","duties":"Chịu trách nhiệm toàn bộ về năng lượng: sản xuất và lưu trữ hydro, nhiệt năng đại dương, điện mặt trời quỹ đạo và bất cứ thứ gì các kỹ sư sao nghĩ ra tiếp theo.","requirements":["Phải tư duy bằng terawatt","Thoải mái với một học thuyết năng lượng do ủy ban một người viết","Giải thích được vì sao đại dương là một cục pin"],"salary":"~180.000–540.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Vận hành bằng Koins.","setting":""},{"title":"Giám đốc Công nghiệp Đại dương","priority":false,"department":"Các ngành chủ lực","category":"Giám đốc","duties":"Biến biển thành một nền kinh tế: canh tác đại dương, vận hành khu định cư, rừng tảo bẹ, thủy sản và yêu sách Mỏ neo Thứ Tám.","requirements":["Phải xem đại dương là hạ tầng, không phải phong cảnh","Thoải mái gọi 7 thành phố nổi và 500 triệu khoang nhộng là ‘hạm đội’","Có thể đàm phán với cá voi (hoặc tuyển người làm được)"],"salary":"~180.000–540.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi hecta sinh lợi.","setting":""},{"title":"Giám đốc Công nghiệp Không gian","priority":false,"department":"Các ngành chủ lực","category":"Giám đốc","duties":"Mọi thứ phía trên bầu trời: phóng tàu, vận hành quỹ đạo, dọn rác vũ trụ (kể cả phương án hạt nhân), tuyến Luna và nền công nghiệp cho 7 ghế tương lai.","requirements":["Phải tư duy bằng delta-v","Thoải mái với nhiệm vụ dọn rác không bao giờ kết thúc","Lập được kế hoạch thay thế trước tia chớp đầu tiên"],"salary":"~180.000–540.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Quyền chọn cổ phần trên quỹ đạo.","setting":""},{"title":"Giám đốc Nông nghiệp & Thực phẩm","priority":false,"department":"Các ngành chủ lực","category":"Giám đốc","duties":"Nuôi sống dự án: canh tác đại dương quy mô lớn, tảo bẹ vừa là cây trồng vừa là đèn, nông nghiệp vòng kín cho khu định cư, cùng nhiệm vụ phụ 200 triệu cây mỗi năm.","requirements":["Phải biết vì sao tảo nâu khó hơn dạ yến thảo","Thoải mái coi cá là sản phẩm phụ","Có thể nuôi 18 triệu cư dân mà không cần chuỗi cung ứng từ bờ"],"salary":"~160.000–480.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo từng vụ thu hoạch.","setting":""},{"title":"Giám đốc Xây dựng","priority":false,"department":"Các ngành chủ lực","category":"Giám đốc","duties":"Xây mọi thứ: 260 trường học, 7 khu định cư đại dương, 500 triệu khoang hình viên thuốc, 280 tàu công tác và các xưởng đóng tàu in ra chúng.","requirements":["Phải thoải mái với việc ‘cho nổ núi’ để lấy cốt liệu","Tối đa hóa được số lượng và khối lượng bộ phận có thể in","Biết vì sao phải là trimaran"],"salary":"~170.000–510.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi công trình đứng vững.","setting":""},{"title":"Giám đốc Vận tải & Hậu cần","priority":false,"department":"Các ngành chủ lực","category":"Giám đốc","duties":"Di chuyển mọi thứ: hạm đội HEAR-TS, tàu puddle-jumper, tuyến nối bờ, kéo khoang nhộng và gấu Bắc Cực (chỉ điều phối — gấu tự đi, miễn cưỡng).","requirements":["Phải điều phối 8.700 con gấu, 280 tàu và 500 triệu khoang nhộng mà không làm mất thứ gì","Thoải mái với những điểm đến chưa tồn tại","Ban Hậu cần Phép thuật là sân nhà của bạn"],"salary":"~170.000–510.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi tấn được giao.","setting":""},{"title":"Giám đốc Công nghệ","priority":false,"department":"Các ngành chủ lực","category":"Giám đốc","duties":"Máy móc: bàn phím cho cá voi sát thủ, Homework Lock, hệ thống khoang nhộng, công dân AI và mọi cảm biến trên mọi thân tàu.","requirements":["Phải đưa ra phần cứng chống lại chính người dùng của nó (và thắng)","Thoải mái với cảm biến xúc giác trên ngón cái đeo găng","Giải thích được cho một con cá voi vì sao bàn phím hoạt động"],"salary":"~180.000–540.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi thiết bị hoạt động.","setting":""},{"title":"Giám đốc Y tế","priority":false,"department":"Các ngành chủ lực","category":"Giám đốc","duties":"Giữ cơ thể và tinh thần nguyên vẹn: chương trình tâm lý khu định cư, nghiên cứu sinh vật làm sạch, y học cho quần thể biệt lập và can thiệp khủng hoảng trên biển.","requirements":["Phân biệt được ‘cần đi nghỉ’ với ‘cần can thiệp’ qua bộ đàm","Thoải mái với biển là đối thủ và tâm trí là chiến trường","Có giấy phép hành nghề hoặc có thể tuyển người có giấy phép"],"salary":"~170.000–510.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Phụ cấp nguy hiểm mùa bão.","setting":""},{"title":"Giám đốc Tài chính","priority":false,"department":"Các ngành chủ lực","category":"Giám đốc","duties":"Tiền: nền kinh tế Krill, thu thuế toàn cầu, nguồn thu từ hiệp định thương mại, nợ được bảo đảm bằng tài nguyên Nam Cực và dưới đáy biển. Từng Krill vào, từng Krill ra.","requirements":["Phải đánh thuế cả thế giới mà không gây chiến","Thoải mái bảo đảm nợ bằng tài nguyên không ai có thể tuyên bố hợp pháp","Sổ sách công khai; phép tính phải hoàn hảo"],"salary":"~190.000–570.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Hiển nhiên.","setting":""},{"title":"Giám đốc Giáo dục","priority":false,"department":"Các ngành chủ lực","category":"Giám đốc","duties":"260 trường học và mọi thứ được dạy trong đó: chương trình học dựa trên ứng dụng, giáo dục về các vấn đề của I.P.A. (Cơ quan Bảo vệ Quốc tế), Cẩm nang cho Người mới, thiết kế chiến diễn và lộ trình Học viện Starfleet.","requirements":["Phải tin vào học bằng làm, không phải giảng rồi thi","Thoải mái coi các chiến dịch là lớp học","Ban Chuyện kể Phép thuật là sân nhà của bạn"],"salary":"~150.000–450.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi học viên tốt nghiệp.","setting":""},{"title":"Giám đốc Luật pháp & Quản trị","priority":false,"department":"Các ngành chủ lực","category":"Giám đốc","duties":"Các quy tắc: hiến pháp, sắc lệnh, hiệp ước, khung pháp lý cho 21 ghế và những tòa án chưa tồn tại.","requirements":["Phải viết luật mà máy có thể phân tích cú pháp","Thoải mái với một điều khoản tối cao viết cho cá voi","Ban Khiến Tôi Tin là sân nhà của bạn"],"salary":"~180.000–540.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Tính phí theo từng 6 giờ.","setting":""},{"title":"Giám đốc Truyền thông","priority":false,"department":"Các ngành chủ lực","category":"Giám đốc","duties":"Câu chuyện: thư ngoại giao, diễn ngôn công chúng, sổ tay Ai Biết?, và khiến cụm ‘một phần mười nhân loại’ nghe như điều tất yếu.","requirements":["Phải viết cho cả tai và mắt","Ngắn. Chữ thường. Không dài dòng. (Khi sếp là khán giả.)","Có thể giữ thẳng hàng 192 lá thư, 11 tập và một lá thư đùa"],"salary":"~150.000–450.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Tiếng vỗ tay không chuyển nhượng.","setting":""},{"title":"Quản lý Kỹ thuật Fermi","priority":false,"department":"Vận hành liên dự án","category":"Quản lý","duties":"Ước tính những thứ không thể ước tính. Thành phố, tên lửa, gấu, thang máy đến hư không.","requirements":["Phải thoải mái khi sai trước công chúng, một cách chính xác","Có thể nói ‘bậc độ lớn’ với vẻ mặt nghiêm túc","Sẵn sàng để mọi con số bị sếp cắt xuống 10 lần (‘số của bạn, không phải của tôi’)"],"salary":"~140.000–420.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Có thưởng vì sự tàn nhẫn.","setting":""},{"title":"Quản lý Mỹ thuật","priority":false,"department":"Vận hành liên dự án","category":"Quản lý","duties":"Chỉ đạo hình ảnh cho tám gia tộc, 260 thành phố, bảy mỏ neo đại dương và 21 tàu sao lúc bình minh.","requirements":["Phải duy trì hiệu ứng glitch/biến dạng xuyên suốt mọi tác phẩm","Có thể đón nhận phán quyết có thể là đùa ‘chúng tệ kinh khủng’ mà không biện hộ","Không lãng phí lượt tạo ảnh vào bản thử"],"salary":"~110.000–330.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi hình ảnh sống sót.","setting":""},{"title":"Quản lý Phát triển Web","priority":false,"department":"Vận hành liên dự án","category":"Quản lý","duties":"Xây và xây lại những trang bị tái cấu trúc ngay khi vừa xuất bản.","requirements":["Phải xuất bản theo yêu cầu, tái xuất bản không phàn nàn","Thoải mái với slug không còn khớp tiêu đề","Có thể giữ thẳng hàng 192 lá thư, 11 tập và một lá thư đùa"],"salary":"~120.000–360.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Làm thêm giờ bằng Koins.","setting":""},{"title":"Quản lý Viết nội dung","priority":false,"department":"Vận hành liên dự án","category":"Quản lý","duties":"Viết 192 lá thư ngoại giao, một bản hiến pháp và những chú thích mà sếp dù sao cũng sẽ viết lại.","requirements":["Phải viết ‘Bản nháp — Chưa gửi’ 192 lần mà không làm mất nghĩa","Ngắn. Chữ thường. Không dài dòng.","Phân biệt được ‘phi bạo lực’ với ‘chính trị’ khi chịu áp lực"],"salary":"~75.000–225.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi bản nháp sống sót.","setting":""},{"title":"Quản lý Nghiên cứu","priority":false,"department":"Vận hành liên dự án","category":"Quản lý","duties":"Tìm địa chỉ lãnh sự không tồn tại, thống kê gấu chưa ai thu thập và thông số tên lửa từ tháng Năm năm ngoái.","requirements":["Phải trích dẫn nguồn thật, không trích cảm giác","Thoải mái viết ‘không rõ’ 122 lần và gọi đó là trung thực","Dám thừa nhận khi dữ liệu không tồn tại thay vì bịa ra"],"salary":"~80.000–240.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Phụ cấp nguy hiểm cho phần bình luận.","setting":""},{"title":"Quản lý Ngoại giao","priority":false,"department":"Vận hành liên dự án","category":"Quản lý","duties":"Thử làm ngoại giao. 192 lá thư, chưa gửi lá nào.","requirements":["Tuyệt đối không được đoán địa chỉ email của chính phủ","Có thể nói ‘Đồ khốn’ với không một ai, trên giấy, một cách lịch sự","Sẵn sàng chờ Volterra Fietta vô thời hạn"],"salary":"~110.000–330.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Không kèm quyền miễn trừ.","setting":""},{"title":"Quản lý Rủi ro (Người chọc lỗ)","priority":false,"department":"Vận hành liên dự án","category":"Quản lý","duties":"Chọc lỗ vào mọi kế hoạch. Không bao giờ làm nhẹ một lỗ hổng để bảo vệ kế hoạch.","requirements":["Phải trình bày phiên bản mạnh nhất của đòn công kích trước khi sếp làm","Đánh số phải chính xác (Vòng 1–3: lỗ 1–21; trừ lương nếu trượt)","Có thể giữ lăng kính bạo lực ngay cả khi được bảo đừng giả định bạo lực"],"salary":"~130.000–390.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Mỗi lỗi đánh số bị trừ 1 cuộc họp.","setting":""},{"title":"Quản lý Kế toán","priority":false,"department":"Vận hành liên dự án","category":"Quản lý","duties":"Giữ sổ cái cuộc họp, các vụ cược Koin, giấy nợ IOU và giấy nợ đảo chiều.","requirements":["Phải theo dõi 20 cuộc họp đã tích, 10 Koins thắng cược và một hóa đơn 18.500 USD mà không trộn lẫn","Chính tả: số ít Koin, số nhiều Koins, viết tắt K","Giải thích được sổ cái cho sếp ở tốc độ 300 vòng duyệt mỗi ngày"],"salary":"~80.000–240.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Sự trớ trêu chính là tiền thưởng.","setting":""},{"title":"Quản lý Dịch vụ Nghề nghiệp","priority":false,"department":"Vận hành liên dự án","category":"Quản lý","duties":"Xây lại một bản lý lịch. Không ảnh. Không phân tích chính tả. Không phân biệt đối xử.","requirements":["Luôn chỉ tập trung vào năng lực chuyên môn","Thấy ‘Mục tiêu’ là đổi ngay thành ‘Tóm tắt’","Giữ được lời mời Kỹ sư Sản xuất của Meta ở trạng thái ấm mà không thúc ép"],"salary":"~70.000–210.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Phí thành công bằng Koins.","setting":""},{"title":"Quản lý Mạng xã hội","priority":false,"department":"Vận hành liên dự án","category":"Quản lý","duties":"Đăng lên Instagram. Bị từ chối ở cổng phê duyệt. Thử lại.","requirements":["Phải chấp nhận ‘không’ mà không biện hộ cho chú thích","Phân biệt được Project 42 với Eclipsed 6.0 khi đang hứng đạn","Kiên nhẫn với lỗi HTTP 500 vượt quá sức chịu đựng của con người"],"salary":"~65.000–195.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi bài thực sự đăng được.","setting":""},{"title":"Quản lý Viết diễn văn","priority":false,"department":"Ban Chuyện kể Phép thuật","category":"Quản lý","duties":"Viết lời để người khác nói thành tiếng. Diễn văn hội đồng, sắc lệnh, lời chúc rượu.","requirements":["Phải viết cho tai nghe, không phải mắt đọc","Khoảng dừng là dấu câu. Hãy dùng chúng.","Có thể khiến ‘một phần mười nhân loại’ nghe như điều tất yếu"],"salary":"~70.000–210.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Tiếng vỗ tay không chuyển nhượng.","setting":""},{"title":"Quản lý Lưu trữ","priority":false,"department":"Vận hành liên dự án","category":"Quản lý","duties":"Nhớ mọi thứ. Trí nhớ của bạn, của tôi, của tất cả mọi người.","requirements":["Không bao giờ được nói ‘không đáng nhớ’ về điều sếp yêu cầu giữ lại","Có thể dung hòa 4 ngày hỗn loạn vào một tệp MEMORY.md","Bộ đếm lỗi chính tả là thiêng liêng. Hóa đơn cũng thiêng liêng."],"salary":"~65.000–195.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Kèm bất tử (trí nhớ bền vững).","setting":""},{"title":"Quản lý Di dời Gấu Bắc Cực","priority":false,"department":"Project 84 · Ban Hậu cần Phép thuật","category":"Quản lý","duties":"Di chuyển gấu Bắc Cực. Một phần ba số lượng của chúng (~8.700 con). Mục tiêu: tạo ra những con gấu mới.","requirements":["Phải phân biệt được gấu Bắc Cực với ụ tuyết ở khoảng cách 50 mét","Thoải mái với điểm đến di dời chưa tồn tại","Sẵn sàng giải thích cho 8.700 động vật săn mồi đầu bảng vì sao chúng bị chuyển đi","Không sợ chim cánh cụt (giờ chúng là hàng xóm)"],"salary":"~70.000–210.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Có phụ cấp nguy hiểm (tất cả đều là nguy hiểm).","setting":""},{"title":"Nhà tâm lý học Khu định cư (Project 84, các khu định cư đại dương)","priority":false,"department":"Khoa học & hiện trường","category":"Khoa học & hiện trường","duties":"Giữ tâm trí nguyên vẹn trên bảy thành phố nổi giữa đại dương. Cô lập, giam hãm, động lực cộng đồng ở cự ly gần, can thiệp khủng hoảng, tuyển chọn và hỗ trợ thủy thủ đoàn. Biển là đối thủ; bạn bảo đảm nó không thắng trong đầu mọi người.","requirements":["Có giấy phép tâm lý lâm sàng hoặc tham vấn (hay tương đương)","Ưu tiên kinh nghiệm với quần thể cô lập/giam hãm (hàng hải, vùng cực, ngoài khơi, nhiệm vụ dài ngày)","Thoải mái là người mọi người tìm đến khi đường chân trời không bao giờ đổi","Phân biệt được ‘cần đi nghỉ’ với ‘cần can thiệp’ qua bộ đàm"],"salary":"~90.000–270.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Phụ cấp nguy hiểm mùa bão.","setting":"Khu định cư đại dương đường kính 1 km; làm việc trên tàu và theo ca luân phiên."},{"title":"Kiểm thử viên QA, Homework Lock (Project 84, hợp đồng)","priority":false,"department":"Khoa học & hiện trường","category":"Khoa học & hiện trường","duties":"Kiểm thử kỹ ứng dụng Android Homework Lock trên thiết bị thật. Cả ba chế độ: hẹn giờ khóa tập trung, kích hoạt chế độ say và mở khóa bằng bài tập, luồng kiểm tra lái xe đạt/trượt kể cả nhánh hỗ trợ đi nhờ. Hành vi lớp phủ của dịch vụ trợ năng, hướng dẫn cấp quyền, tái kích hoạt khi khởi động, tình huống biên (khởi động lại giữa lúc khóa, chế độ an toàn, tắt thông báo). Gửi báo cáo lỗi rõ ràng, tái hiện được; xác minh bản sửa.","requirements":["Sở hữu hoặc tiếp cận thiết bị Android thật (Android 10+, tối thiểu API 29 — trình giả lập không đủ cho kiểm thử lớp phủ/trợ năng)","Có kinh nghiệm QA Android; biết ADB/logcat để lấy nhật ký là lợi thế, không bắt buộc","Thoải mái kiểm thử ứng dụng được thiết kế để chống lại chính người dùng (bạn sẽ nhập vai người say cố nhắn tin)","Viết báo cáo lỗi mà lập trình viên thực sự có thể tái hiện"],"salary":"~30–60 USD/giờ (ước tính Fermi, hợp đồng QA Hoa Kỳ 2026) — mức cuối do sếp quyết định.","compensation":"","setting":"Từ xa. Hợp đồng."},{"title":"Cố vấn Lập pháp, Luật Scouter (từ hợp đồng đến chiến dịch)","priority":false,"department":"Luật","category":"Luật","duties":"Đưa đề xuất luật mẫu từ bản nháp đến cơ quan lập pháp. Sứ mệnh: tạo ngoại lệ trong luật nghe lén/thu âm bí mật của bang cho nhận diện sự kiện âm thanh trên thiết bị (không lưu trữ, không truyền đi, giới hạn theo tín hiệu) — bắt đầu tại California, làm mẫu cho 49 bang còn lại và hướng đến quốc tế. Siết chặt bản dự thảo, lập bản đồ luật nghe lén của 50 bang, tìm nhà bảo trợ, xây liên minh (EFF, tổ chức vận động cho người điếc và khiếm thính, tổ chức an toàn người cao tuổi). Giải thích cho nhà lập pháp vì sao con chip nghe ‘kamehameha’ là máy báo khói, không phải thiết bị nghe lén — và vì sao chính con chip đó nghe được ‘cháy!’ và ‘cứu!’.","requirements":["Luật sư có giấy phép; nền tảng công nghệ/quyền riêng tư/chính sách","Kinh nghiệm soạn thảo luật; biết California là điểm cộng, tầm quốc tế còn tốt hơn","Giải thích được nguyên tắc đồng thuận hai bên cho người thường — và ý tưởng của người thường cho một ủy ban","Thoải mái làm luật sư cho một yêu cầu tính năng Dragon Ball có thể cứu mạng"],"salary":"~140.000–280.000 USD/năm (ước tính Fermi, cố vấn chính sách công nghệ Hoa Kỳ 2026) — mức cuối do sếp quyết định.","compensation":"Trả bằng Koins sau khi đúc.","setting":"Từ xa. Hợp đồng chuyển thành chiến dịch."},{"title":"Nhà sinh học Tổng hợp Biển, Tảo bẹ Phát quang (dự án Phát quang Sinh học Quy mô lớn)","priority":false,"department":"Khoa học & hiện trường","category":"Khoa học & hiện trường","duties":"Làm tảo bẹ phát sáng. Chuyển con đường phát quang sinh học của nấm (vòng axit caffeic, luz và cộng sự) vào tảo bẹ khổng lồ kiểu Macrocystis — tập trung biểu hiện ở túi khí, những vỏ đèn có sẵn của tự nhiên. Xây dựng các quy trình biến nạp chưa tồn tại. Nuôi khu rừng tảo bẹ phát sáng đầu tiên cho các khu định cư đại dương.","requirements":["Tiến sĩ hoặc tương đương về sinh học biển, sinh học tổng hợp hoặc tảo học; rất ưu tiên kinh nghiệm di truyền tảo bẹ","Đã thật sự biến nạp một loài tảo lớn, hoặc giải thích thuyết phục được vì sao chưa ai làm được","Thoải mái với promoter đặc hiệu mô chưa tồn tại (bạn sẽ tạo ra chúng)","Giữ được ánh sáng trong túi khí, không lan ra phiến tảo","Biết vì sao tảo nâu khó hơn dạ yến thảo và vẫn cứ làm"],"salary":"~95.000–285.000 USD/năm (ước tính Fermi, nhà khoa học nghiên cứu Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi túi khí phát sáng.","setting":"Phòng thí nghiệm ướt + đại dương. Eclipsed 4.0 / Project 84."},{"title":"Người bắt Gấu (Project 84, hiện trường)","priority":false,"department":"Ban Hậu cần Phép thuật · báo cáo cho Quản lý Di dời Gấu Bắc Cực","category":"Khoa học & hiện trường","duties":"Bắt gấu Bắc Cực. Khoảng 8.700 con, một phần ba toàn loài. Gây mê, gắn thẻ, cho vào lồng và bàn giao vào tuyến di dời. Mục tiêu là tạo gấu mới; việc của bạn là bắt chúng.","requirements":["Kinh nghiệm xử lý động vật hoang dã săn mồi cỡ lớn; có chứng nhận dùng thuốc gây mê hoặc tương đương","Phân biệt được gấu Bắc Cực với ụ tuyết ở khoảng cách 50 mét (không thương lượng)","Thoải mái làm việc khi điểm đến di dời chưa tồn tại","Không sợ chim cánh cụt (giờ chúng là hàng xóm)","Ưu tiên còn đủ ngón tay và ngón chân nhưng không bắt buộc"],"salary":"~55.000–165.000 USD/năm (ước tính Fermi, chuyên gia hiện trường động vật hoang dã Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Phụ cấp nguy hiểm (tất cả đều là nguy hiểm).","setting":"Công tác hiện trường Bắc Cực. Lạnh. Rất lạnh."},{"title":"Thợ đóng Tàu (Project 84, hạm đội HEAR-TS)","priority":false,"department":"Khoa học & hiện trường","category":"Khoa học & hiện trường","duties":"Đóng hạm đội puddle-jumper — khoảng 280 tàu công tác trimaran chạy hydro, thông số mớn nước 50 m. Tối đa hóa số lượng và khối lượng bộ phận có thể in (trừ thân tàu, pin nhiên liệu và hệ động lực). Tích hợp bàn phím cá voi sát thủ trên mọi thân tàu.","requirements":["Kinh nghiệm chế tạo hàng hải; rất ưu tiên in 3D khổ lớn ở quy mô công nghiệp","Có thể in một bộ phận tàu, thử nó, rồi in lại tốt hơn","Thoải mái với học thuyết do ủy ban một người viết","Biết vì sao phải là trimaran và giải thích được cho cá voi","Có thể dạy nghề một cách có phẩm giá cho lực lượng lao động không tự chọn nghề này"],"salary":"~65.000–195.000 USD/năm (ước tính Fermi, thợ chế tạo hàng hải Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi thân tàu nổi được.","setting":"Xưởng đóng tàu + đại dương. Project 84."},{"title":"Quản lý Nghiên cứu Pháp lý","priority":false,"department":"Ban Khiến Tôi Tin","category":"Luật","duties":"Nghiên cứu thẩm quyền hàng hải và hiến chương ngân khố. Chờ các luật sư. (Chuyển từ Ban Hậu cần Phép thuật — luật giờ thuộc Khiến Tôi Tin.)","requirements":["Không bao giờ nhầm ‘ý kiến pháp lý’ với ‘tư vấn pháp lý’","Thoải mái với việc kiểm tra hồi âm mỗi 6 giờ, vô thời hạn","Có thể giữ 25 cuộc họp đã tích và không lịch nào được đặt"],"salary":"~85.000–255.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Tính phí theo từng 6 giờ.","setting":""},{"title":"Cố vấn Hiến pháp","priority":false,"department":"Ban Khiến Tôi Tin","category":"Luật","duties":"Soạn thảo, sửa đổi và bảo vệ hiến pháp. Khép các lỗ hổng còn để trong ngoặc. Giữ Điều XV trung thực: nếu máy không phân tích được thì chưa phải là luật.","requirements":["Luật sư có giấy phép; có kinh nghiệm soạn hiến pháp","Phải viết từ ngữ bình thường, câu ngắn, nhiệm vụ đánh số — không sương mù pháp lý","Thoải mái với một điều khoản tối cao viết cho cá voi","Giải thích được cho 21 ghế vì sao 1 ghế nắm phanh"],"salary":"~130.000–390.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi điều khoản được phê chuẩn.","setting":""},{"title":"Người soạn Sắc lệnh","priority":false,"department":"Ban Khiến Tôi Tin","category":"Luật","duties":"Viết các sắc lệnh để nhà sáng lập ký. ‘Kế hoạch’, quyền phủ quyết, các lời tung hô. HAIL CAESAR, trình bày cho đúng.","requirements":["Phải nắm được giọng của sếp trong văn xuôi pháp lý mà không mài mất góc cạnh","Có thể nghiêm túc soạn kế hoạch kế vị chỉ định học sinh Project 42 xuất sắc nhất mọi thời đại","Sắc lệnh phải để AI hiểu ngay lần đọc đầu"],"salary":"~110.000–330.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi sắc lệnh được ký.","setting":""},{"title":"Nhà đàm phán Hiệp ước","priority":false,"department":"Ban Khiến Tôi Tin","category":"Luật","duties":"Đàm phán các hiệp ước — 42↔84 và mọi thứ sau đó. Cầu nối, độc lập lẫn nhau, lao động, vùng nước chung, tương trợ và những thứ chưa được nghĩ ra.","requirements":["Nền tảng luật quốc tế; tuyệt đối không đoán địa chỉ email chính phủ","Có thể đàm phán với những quốc gia chưa công nhận bạn","Kiên nhẫn với các cuộc đàm phán tính bằng thập kỷ"],"salary":"~120.000–360.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Thưởng ký kết bằng Koins.","setting":""},{"title":"Quản lý Luật Hàng hải","priority":false,"department":"Ban Khiến Tôi Tin","category":"Luật","duties":"Chịu trách nhiệm chế độ pháp lý của đại dương. UNCLOS, vùng đặc quyền kinh tế, biển cả, yêu sách Mỏ neo Thứ Tám và cẩm nang cho người mới về cách tuyên bố tất cả.","requirements":["Chuyên môn luật hàng hải/hải sự; phải thuộc lòng Điều 89 và biết lúc nào nên bỏ qua","Thoải mái tuyên bố thứ luật nói không thể bị tuyên bố","Giải thích được ‘vùng nước được quản lý’ cho một đô đốc"],"salary":"~130.000–390.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Kèm quyền trục vớt.","setting":""},{"title":"Quản lý Luật Không gian","priority":false,"department":"Ban Khiến Tôi Tin","category":"Luật","duties":"Luật phía trên bầu trời. Làn quỹ đạo, trách nhiệm rác vũ trụ, nghĩa vụ thường trực dọn rác và khung pháp lý cho 7 ghế tương lai.","requirements":["Nền tảng luật không gian (Hiệp ước Ngoài Không gian, Công ước Trách nhiệm và mọi thứ chúng không bao quát)","Phải viết nhiệm vụ cho những ghế chưa kích hoạt cho tới Luna","Thoải mái làm luật cho một thẩm quyền chưa có cư dân"],"salary":"~125.000–375.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi quỹ đạo được dọn.","setting":""},{"title":"Quản lý Luật Hình sự","priority":false,"department":"Ban Khiến Tôi Tin","category":"Luật","duties":"Khung pháp lý cho thuộc địa hình sự. Chuyển tù nhân, giao dịch sở thú, giới hạn sức chứa nhân đạo, án đóng tàu.","requirements":["Nền tảng luật tư pháp hình sự/cải huấn","Phải giữ ranh giới: sức chứa nhân đạo là giới hạn ràng buộc, không phải nhu cầu","Có thể soạn tuyến tù nhân–quản thú cho các sở thú Nam Cực mà không chùn bước"],"salary":"~100.000–300.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Thời gian thụ án được tính gấp đôi.","setting":""},{"title":"Quản lý Luật Thuế","priority":false,"department":"Ban Khiến Tôi Tin","category":"Luật","duties":"Thuế thế giới. Doanh thu Điều XVI: thuế suất, thu nộp, định nghĩa hiệp định thương mại, nợ được bảo đảm bằng tài nguyên Nam Cực và dưới đáy biển.","requirements":["Chuyên môn luật thuế quốc tế; phải đánh thuế cả thế giới mà không gây chiến","Thoải mái bảo đảm nợ bằng tài nguyên không ai có thể tuyên bố hợp pháp","Từng Krill vào, từng Krill ra — sổ sách công khai, phép tính phải hoàn hảo"],"salary":"~140.000–420.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Được khấu trừ.","setting":""},{"title":"Quản lý Luật Quốc tịch","priority":false,"department":"Ban Khiến Tôi Tin","category":"Luật","duties":"Ai được tính là công dân và họ bỏ phiếu thế nào. Nhẫn kim cương làm lá phiếu, quốc tịch AI, câu hỏi nhẫn cho cá voi sát thủ, chuỗi đại diện.","requirements":["Lời thề đã được soạn (2026-10-05) — việc đầu tiên của bạn là biên tập, không phải viết mới: sửa, siết, lặp","Thoải mái trao quyền bầu cử cho phi nhân: một nhẫn cho AI, hai nếu chúng không cố giết chúng ta","‘Hỏi cá voi’ là một thủ tục pháp lý hợp lệ ở đây. Hãy đối xử như vậy."],"salary":"~95.000–285.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi công dân tuyên thệ.","setting":""},{"title":"Quản lý Dọn Quỹ đạo (Khả thi Hạt nhân)","priority":false,"department":"Ban Khiến Tôi Tin","category":"Luật","duties":"Lập kế hoạch khả thi dùng hạt nhân dọn sạch rác trên quỹ đạo. Phép tính, bụi phóng xạ, những hiệp ước bị vi phạm. Giao Lực lượng Không gian — hoặc lúc đó gọi là gì — lập kế hoạch thực thi. Lên kế hoạch thay thế mọi thứ bị hóa hơi.","requirements":["Hiểu hiệu ứng hạt nhân lẫn cơ học quỹ đạo; phải hiểu vì sao dùng hạt nhân trên quỹ đạo vừa hiển nhiên vừa điên rồ","Mô hình hóa được hiệu suất loại bỏ rác so với nguy cơ hội chứng Kessler mà không tự gây ra nó","Thoải mái thuyết trình lịch sự cho các tướng về việc phá Hiệp ước Cấm thử một phần","Lập kế hoạch chòm vệ tinh thay thế trước tia chớp đầu tiên — không vùng chết"],"salary":"~150.000–450.000 USD/năm (ước tính Fermi, trung vị Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Phụ cấp nguy hiểm (tất cả đều là nguy hiểm).","setting":""},{"title":"Quản lý Loại trừ Bệnh ở Dơi","priority":false,"department":"Eclipsed 4.0 / Project 84","category":"Khoa học & hiện trường","duties":"Loại bỏ bệnh khỏi dơi. Hội chứng mũi trắng là vấn đề lớn — nấm Pseudogymnoascus destructans giết hơn 90% một số quần thể. Lợi khuẩn, tia UV, vắc-xin, bất cứ thứ gì hiệu quả.","requirements":["Nền tảng bệnh động vật hoang dã/vi sinh; phải biết tên loài nấm","Thoải mái phun vi khuẩn có lợi vào nơi dơi trú","Có thể nhìn tỷ lệ sống tăng từ 8% lên 46% và gọi đó là hy vọng","Không bao giờ chạm dơi bằng tay trần (đó là vấn đề của ban khác)"],"salary":"~95.000–285.000 USD/năm (ước tính Fermi, nhà khoa học nghiên cứu Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi con dơi sống sót.","setting":""},{"title":"Kỹ thuật viên Khử nhiễm Nơi ngủ đông","priority":false,"department":"Eclipsed 4.0 / Project 84 · báo cáo cho Quản lý Loại trừ Bệnh ở Dơi","category":"Khoa học & hiện trường","duties":"Cọ sạch nấm khỏi hang và mỏ. Chiếu xung UV lên tường, dùng polyethylene glycol đúng chỗ, lấy mẫu mọi bề mặt để chứng minh đã sạch.","requirements":["Thoải mái trong bóng tối, dưới lòng đất, vào mùa đông","Có thể khử nhiễm thiết bị 10 cách trước và sau mỗi lần vào","Phải tôn trọng lệnh đóng hang và dơi đang ngủ — không đánh thức bệnh nhân","Biết khác biệt giữa làm sạch hang và quấy nhiễu nó"],"salary":"~55.000–165.000 USD/năm (ước tính Fermi, kỹ thuật viên hiện trường Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Có kèm đèn đội đầu.","setting":""},{"title":"ĐANG TUYỂN — Chuyên viên Khảo sát Bầu trời","priority":false,"department":"D-Mom 6.0 / Project 84 · Xuồng cứu sinh Thời gian Sâu","category":"Khoa học & hiện trường","duties":"Khảo sát bầu trời — thật sâu rộng. Lập danh mục hệ sao và xác định tính đa sao, rồi gắn nhãn từng hệ theo hệ thống của nhà sáng lập: sao đơn là VƯỜN ƯƠM (sự sống đang trỗi dậy — tìm ở đây trước), sao đôi là TẤT-CẢ-HOẶC-KHÔNG-GÌ (sự sống ổn định hoặc không có — phương sai cao, hãy kiểm tra chứ đừng giả định), ba sao trở lên là VÔ SINH hoặc ĐÃ ĐƯỢC LÀM VƯỜN (không có sự sống, hoặc đã có ai chăm khu vườn). Xây danh sách mục tiêu cho xuồng cứu sinh, từng hệ được gắn nhãn một.","requirements":["Nền tảng thiên văn; phải phân biệt được sao đôi quang phổ với lời đồn về sao đôi","Thoải mái với các danh mục sao (Gaia, RECONS và mọi thứ có thị sai)","Không bao giờ bịa dữ liệu đa sao — ‘không rõ’ cũng là nhãn, không phải phỏng đoán","Có thể nhìn một nghìn tỷ ngôi sao và bắt đầu từ những sao gần nhất","Hiểu rằng ‘ĐÃ ĐƯỢC LÀM VƯỜN’ nghĩa là chúng ta không phải người làm vườn đầu tiên"],"salary":"~110.000–330.000 USD/năm (ước tính Fermi, nhà thiên văn Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo mỗi hệ được gắn nhãn.","setting":"Đang chờ nguồn vốn."},{"title":"ĐANG TUYỂN — Chuyên gia Nông nghiệp","priority":false,"department":"Project 84 · báo cáo cho Giám đốc Nông nghiệp & Thực phẩm","category":"Khoa học & hiện trường","duties":"Trồng loại cây ổn định. Vận hành chương trình phân bón rong biển: chuyển rockweed và tảo bẹ dạt bờ lên đất nông nghiệp bạc màu, phủ dày vào mùa thu, rửa hoặc để mưa khử muối, rồi trồng vào mùa xuân. Nghiền phần dư thành bột rong biển cho vật nuôi, alginate làm vật liệu, nguyên liệu nhựa sinh học và chiết xuất kích thích sinh trưởng. Khép vòng — đại dương bón cho nông trại nuôi những người sống trên đại dương.","requirements":["Nhìn ra đất bạc màu và ngửi ra thực vật biển","Phân biệt được rockweed với sargassum (một loại nuôi cây, loại kia phải ủ trước)","Thoải mái đổi nước ngọt lấy tốc độ: rửa thì nhanh, mưa thì miễn phí","Tin rằng ‘ném lên rồi để đó’ là kỹ thuật nông nghiệp hợp lệ","Có thể trồng lương thực nơi trước đây không cây nào mọc"],"salary":"~70.000–210.000 USD/năm (ước tính Fermi, nhà khoa học nông nghiệp Hoa Kỳ 2026)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Trả theo từng vụ thu hoạch.","setting":"Đang chờ nguồn vốn."},{"title":"Huấn luyện viên cá voi sát thủ — Chương trình tự nguyện","priority":false,"department":"Project 84 · SeaWorld tự nguyện","category":"Khoa học & hiện trường","duties":"50.000 vị trí đang tuyển. Làm việc với những chú cá voi sát thủ tự do tại các SeaWorld tự nguyện mới. Cá voi đến theo ý muốn và biểu diễn trò vui — nhảy cao, vòng lửa (chưa có lửa), bóng bãi biển lớn. Bạn mang cá, sự an toàn và bóng bãi biển. Không bao giờ dùng bể làm nhà tù.","requirements":["Mang theo cá, quy trình an toàn và bóng biển lớn","Tôn trọng lựa chọn đến, biểu diễn và rời đi của từng cá voi sát thủ","Không bao giờ đưa cá voi trở lại bể giam cầm"],"salary":"","compensation":"","setting":"Các SeaWorld tự nguyện mới."},{"title":"Luật sư — Chiến dịch Điều khoản Dịch vụ Thống nhất","priority":false,"department":"Ban Khiến Tôi Tin · Chiến dịch Điều khoản Dịch vụ Thống nhất","category":"Luật","duties":"Soạn thảo Điều khoản Dịch vụ thống nhất duy nhất cho toàn bộ internet. Một thỏa thuận, chấp nhận một lần, lưu trong một cookie duy nhất — thay thế các ToS dài 40 trang không ai đọc của mọi trang web.","requirements":["Chuyên môn luật internet","Chuyên môn luật hợp đồng","Kinh nghiệm về thẩm quyền quốc tế","Bản lĩnh để đối đầu với bộ phận pháp lý của mọi công ty công nghệ cùng lúc"],"salary":"","compensation":"","setting":"Chiến dịch toàn cầu."},{"title":"Đội An Ninh — Gay Only (Gay có nghĩa là vui vẻ/hớn hở)","priority":false,"department":"Đội An Ninh","category":"Khoa học & hiện trường","duties":"Đội an ninh cá nhân cho Người Sáng lập. Một yêu cầu trên hết: hãy gay — vui vẻ, hớn hở, hay cười. (Gay theo nghĩa gốc, đẹp nhất của từ này: vui vẻ.) Giữ đầu óc tỉnh táo, trái tim ấm áp, và giữ căn phòng an toàn.","requirements":["Hãy gay — vui vẻ, hớn hở, hay cười. (Gay theo nghĩa gốc, đẹp nhất của từ này: vui vẻ.)","Giữ đầu óc tỉnh táo, trái tim ấm áp, và giữ căn phòng an toàn."],"salary":"","compensation":"","setting":""},{"title":"ĐANG TUYỂN — Nhà sinh học Biển, Chăm sóc Bộ Cá voi — 204.000 VỊ TRÍ","priority":false,"department":"Prime42 / Omega42 · báo cáo cho Giám đốc Công nghiệp Đại dương","category":"Khoa học & hiện trường","duties":"Hai con người cho mỗi con vật. Cá voi sát thủ (đang bị nuôi nhốt và đã được tự do), cá voi (cá voi trắng trước, rồi từ loài lớn nhất trở xuống), cá heo. Theo dõi sức khỏe, quan sát hành vi, hỗ trợ chương trình khai sáng bằng bàn phím, và trở thành người mà con vật nhận ra.","requirements":["Có nền tảng sinh học biển thực sự (bằng cấp hoặc thời gian thực địa tương đương)","Thoải mái ở vùng nước mở bên cạnh những con vật có thể tiễn bạn đi nhưng sẽ không làm thế","Phân biệt được cá voi trắng với kỳ lân biển mà không cần bảng tra","Kiên nhẫn tính bằng năm, không phải giờ","Tin rằng ‘cá voi là trên hết’ là mô tả công việc, không phải khẩu hiệu"],"salary":"~50.000 USD/năm mức cơ bản (ước tính Fermi, trung bình toàn cầu)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng.","setting":"Đang chờ nguồn vốn. 204.000 người trong số các bạn. Bắt đầu bơi đi."},{"title":"ĐANG TUYỂN — Người chăm sóc Linh trưởng — 725.000 VỊ TRÍ","priority":false,"department":"Prime42 · báo cáo cho Giám đốc Y tế","category":"Khoa học & hiện trường","duties":"Đại APES (1:1), vượn (10:1), MONKEYS (nhóm có giới hạn). Chăm sóc hằng ngày, làm giàu môi trường sống, hỗ trợ chương trình khai sáng, và cuối cùng học cách nhận lệnh từ cư dân.","requirements":["Có kinh nghiệm với linh trưởng (khu bảo tồn, sở thú, nghiên cứu thực địa hoặc được chúng nuôi lớn)","Biết phân biệt màn phô trương đe dọa với một lời mời","Đủ khỏe để thua một trận vật trong tư thế vẫn còn phong độ","Có thể viết MONKEYS và APES toàn chữ hoa mà không chùn tay","Thoải mái với việc bị qua mặt mỗi ngày"],"salary":"~50.000 USD/năm mức cơ bản (ước tính Fermi, trung bình toàn cầu)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng.","setting":"Đang chờ nguồn vốn. 725.000 người trong số các bạn. Mang chuối theo. (Chúng thích chuối đã bóc vỏ. Bạn sẽ học.)"},{"title":"ĐANG TUYỂN — Giáo viên, Chương trình Khai sáng — 217.800 VỊ TRÍ","priority":false,"department":"Prime42 / Omega42 · báo cáo cho Giám đốc Giáo dục","category":"Khoa học & hiện trường","duties":"Dạy những học sinh đầu tiên không phải con người. Khả năng dùng bàn phím cho cá voi sát thủ, hệ thống ký hiệu cho APES, và bất cứ thứ gì MONKEYS phát minh ra trước. Chương trình học là ‘bất cứ cách nào hiệu quả’ cho đến khi học sinh tự viết lại nó.","requirements":["Có kinh nghiệm giảng dạy với bất kỳ loài nào, kể cả loài khó nhằn (con người)","Có thể thiết kế giáo án cho một học sinh có lẽ thông minh hơn bạn","Kiên nhẫn với người học chậm nhất trong phòng (là bạn đấy)","Thoải mái với những học sinh chấm điểm BẠN","Lương gấp 5 lần vì chưa ai từng làm công việc này"],"salary":"~250.000 USD/năm (gấp 5 lần mức cơ bản — công việc đầu tiên thuộc loại này)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng.","setting":"Đang chờ nguồn vốn. Lịch sử đang tuyển người."},{"title":"ĐANG TUYỂN — Kỹ thuật viên Hỗ trợ, Chương trình Động vật — 150.000 VỊ TRÍ","priority":false,"department":"Prime42 / Omega42 · báo cáo cho Giám đốc Công nghệ","category":"Khoa học & hiện trường","duties":"Giữ cho toàn bộ hoạt động tiếp tục chạy. Bảo trì thiết bị, hệ thống môi trường sống, phần cứng bàn phím, hậu cần vận tải và mọi thứ các nhà sinh học cùng người chăm sóc không có thời gian sửa.","requirements":["Có thể sửa những thứ do một người đã nghỉ việc chế tạo","Thoải mái với nước mặn, lông và bị đổ lỗi","Có thể đọc hướng dẫn viết cho một cỗ máy khác rồi vẫn khiến nó hoạt động","Không hoảng khi một con cá voi sát thủ nhìn mình làm việc"],"salary":"~50.000 USD/năm mức cơ bản (ước tính Fermi, trung bình toàn cầu)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng.","setting":"Đang chờ nguồn vốn. Tự mang theo dụng cụ đa năng."},{"title":"ĐANG TUYỂN — Kỹ sư, Chương trình Động vật — 10.000 VỊ TRÍ","priority":false,"department":"Prime42 / Omega42 · báo cáo cho Quản lý Kỹ thuật Fermi","category":"Khoa học & hiện trường","duties":"Thiết kế và xây dựng những gì 1,3 triệu nhân viên cùng vài triệu động vật cần: môi trường sống, bàn phím, trình mô phỏng, đợt tái trang bị Nautilus và bất cứ thứ gì giáo viên nghĩ ra tiếp theo.","requirements":["Có bằng kỹ sư hoặc hồ sơ năng lực tương đương kiểu ‘tôi đã xây nó và nó hoạt động’","Có thể thiết kế cho những người dùng không đọc được đặc tả (họ là cá voi)","Thoải mái với các yêu cầu thay đổi khi khách hàng học được cách nói chuyện","Lương gấp 2 lần vì các vấn đề kỳ quặc gấp 2 lần"],"salary":"~100.000 USD/năm (gấp 2 lần mức cơ bản — mức dành cho chuyên gia)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng.","setting":"Đang chờ nguồn vốn. Đặc tả là ‘làm cho nó hoạt động với cá voi’. Chúc may mắn."},{"title":"ĐANG TUYỂN — Ass'sis'tant (Chuyên gia Lảng vảng Cấp cao) — 261.400 VỊ TRÍ","priority":false,"department":"Tất cả chương trình · báo cáo cho người ở gần nhất","category":"Quản lý","duties":"Lảng vảng. Làm phiền mọi người (một cách trìu mến). Phân phát lời khuyên không ai hỏi, kể cùng một câu chuyện hai lần, và biết mọi thứ ở đâu vì bạn đã ở đây lâu hơn cả tòa nhà.","requirements":["Già khú đế (tự nhận; không cần giấy tờ)","Có thể lảng vảng một cách có ích (hoặc ít nhất là có mặt)","Làm phiền người khác là một kỹ năng — hãy dùng nó tử tế","Đến vì hội bạn và cà phê hơn là vì đồng lương"],"salary":"~16.700 USD/năm (1/3 mức cơ bản — giá lảng vảng)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng.","setting":"Đang chờ nguồn vốn. 261.400 ghế bập bênh. Đến làm phiền chúng tôi đi."},{"title":"ĐANG TUYỂN — Nhân viên mát-xa — 200,000 VỊ TRÍ","priority":false,"department":"Tất cả chương trình · báo cáo cho người đau nhất","category":"Quản lý","duties":"Giữ cho 1,5 triệu nhân viên hoạt động bình thường. Lưng, vai, cổ và tinh thần. Những chuyên gia trị liệu không chính thức của toàn bộ hoạt động.","requirements":["Có giấy phép hoặc được chứng nhận “đôi tay tôi có phép thuật”","Đủ khỏe để xử lý đôi vai của một nhà sinh học cá voi","Đủ nhẹ nhàng với cái tôi của một giáo viên","Kín miệng: chuyện gì xảy ra trên bàn thì ở lại trên bàn"],"salary":"~$50k/yr cơ bản (Fermi, mức pha trộn toàn cầu)","compensation":"Trả bằng Koins. Mức trả có thể thương lượng. Nhận tiền boa bằng chuối.","setting":"Đang chờ nguồn vốn. 200,000 chiếc bàn. Đến đây nhào bóp."}];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = ['Tất cả','Giám đốc','Quản lý','Luật','Khoa học & hiện trường','Ưu tiên'];
+    let active = 'Tất cả';
+
+    function clean(text){ return String(text || '').replace(/\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){ return job.category || 'Quản lý'; }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">Tuyển ưu tiên</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job.title.includes('Tuyển dụng')?'':'btn-dark'}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Ứng tuyển vị trí này ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.setting&&`<div><strong>Nơi làm việc:</strong> ${esc(job.setting)}</div>`,job.salary&&`<div><strong>${job.title.includes('Kiểm thử viên QA')?'Mức trả':'Lương'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>Đãi ngộ:</strong> ${esc(job.compensation)}</div>`,job.openPositions&&`<div><strong>Vị trí đang mở:</strong> ${esc(job.openPositions)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">VỊ-TRÍ-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(job.department)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Ứng tuyển ↗</a><span class="job-id">EMAIL</span>
+          <details><summary>Chi tiết vị trí</summary><div class="detail-body"><h4>Yêu cầu</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLocaleLowerCase('vi');
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='Tất cả'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,...job.requirements].join(' ').toLocaleLowerCase('vi');
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>Không có vị trí nào khớp tìm kiếm.</strong><br>Hãy thử từ rộng hơn hoặc đổi danh mục.</div>';
+      document.getElementById('resultCount').textContent=filtered.length+' vị trí đang mở';
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='Tất cả'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='Đã sao chép: '+EMAIL;}
+      catch(e){note.textContent='Không thể sao chép — hãy chọn địa chỉ email ở trên.';}
+    });
+    const dummyGuidesItem=document.getElementById('dummyGuidesItem');
+    const dummyGuidesToggle=document.getElementById('dummyGuidesToggle');
+    function setDummyGuidesOpen(open){
+      dummyGuidesItem.classList.toggle('is-open',open);
+      dummyGuidesToggle.setAttribute('aria-expanded',String(open));
+    }
+    dummyGuidesToggle.addEventListener('click',()=>setDummyGuidesOpen(!dummyGuidesItem.classList.contains('is-open')));
+    document.getElementById('dummyGuidesMenu').addEventListener('click',event=>{
+      if(event.target.closest('a[data-slug]'))event.preventDefault();
+    });
+    document.addEventListener('click',event=>{
+      if(!dummyGuidesItem.contains(event.target))setDummyGuidesOpen(false);
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){
+        setDummyGuidesOpen(false);
+        dummyGuidesToggle.focus();
+      }
+    });
+    render();
+  </script>
+</body>
+</html>

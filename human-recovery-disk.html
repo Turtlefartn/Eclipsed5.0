@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:," />
+  <title>Human Recovery Disk</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,700&family=Public+Sans:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      color-scheme: light dark;
+      --paper: #eef3f1;
+      --paper-2: #e2ebe8;
+      --ink: #10211f;
+      --muted: #4c625e;
+      --rule: #b8c8c4;
+      --deep: #0a2f31;
+      --deep-2: #10484a;
+      --aqua: #7ee3d6;
+      --aqua-soft: #c8f4ed;
+      --signal: #ef5b3d;
+      --signal-soft: #ffd9d0;
+      --white: #f9fffd;
+      --shadow: 0 22px 60px rgba(8, 42, 40, .12);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #0d1716;
+        --paper-2: #152321;
+        --ink: #edf7f4;
+        --muted: #a7bcb7;
+        --rule: #344b47;
+        --deep: #071f20;
+        --deep-2: #0d393a;
+        --aqua: #73d9cc;
+        --aqua-soft: #173f3b;
+        --signal: #ff7658;
+        --signal-soft: #52271f;
+        --white: #f5fffc;
+        --shadow: 0 22px 60px rgba(0, 0, 0, .28);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Public Sans", sans-serif;
+      font-size: 17px;
+      line-height: 1.55;
+      text-rendering: optimizeLegibility;
+    }
+    main { overflow: hidden; }
+    .wrap { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
+    .mono { font-family: "IBM Plex Mono", monospace; }
+    .eyebrow {
+      margin: 0 0 22px;
+      color: var(--deep-2);
+      font: 600 12px/1.2 "IBM Plex Mono", monospace;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    @media (prefers-color-scheme: dark) { .eyebrow { color: var(--aqua); } }
+
+    .hero {
+      min-height: 92vh;
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(390px, .92fr);
+      align-items: center;
+      gap: 70px;
+      padding: 78px 0 86px;
+      border-bottom: 1px solid var(--rule);
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      margin-bottom: 28px;
+      max-width: 760px;
+      font: 700 clamp(54px, 7.5vw, 104px)/.91 "Newsreader", serif;
+      letter-spacing: -.055em;
+    }
+    .hero-copy {
+      max-width: 660px;
+      font-size: clamp(19px, 2vw, 24px);
+      line-height: 1.46;
+      color: var(--muted);
+    }
+    .hero-copy strong { color: var(--ink); font-weight: 700; }
+    .one-shot {
+      display: inline-block;
+      margin-top: 22px;
+      padding-bottom: 4px;
+      border-bottom: 4px solid var(--signal);
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .specimen {
+      position: relative;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      max-width: 490px;
+      justify-self: end;
+    }
+    .specimen svg { width: 100%; height: 100%; filter: drop-shadow(0 24px 35px rgba(6, 42, 40, .18)); }
+    .orbit-note {
+      position: absolute;
+      padding: 9px 12px;
+      border: 1px solid var(--rule);
+      background: var(--paper);
+      font: 500 11px/1.25 "IBM Plex Mono", monospace;
+      letter-spacing: .04em;
+      box-shadow: var(--shadow);
+    }
+    .orbit-note.top { top: 9%; right: 1%; }
+    .orbit-note.bottom { left: 0; bottom: 12%; }
+
+    section { padding: 112px 0; border-bottom: 1px solid var(--rule); }
+    .section-head {
+      display: grid;
+      grid-template-columns: .75fr 1.25fr;
+      gap: 64px;
+      margin-bottom: 62px;
+      align-items: start;
+    }
+    h2 {
+      margin-bottom: 18px;
+      font: 700 clamp(40px, 5.2vw, 72px)/.98 "Newsreader", serif;
+      letter-spacing: -.035em;
+    }
+    .lede { max-width: 710px; font-size: 21px; color: var(--muted); }
+
+    .window-grid {
+      display: grid;
+      grid-template-columns: 1.18fr .82fr;
+      gap: 18px;
+    }
+    .window-card {
+      position: relative;
+      min-height: 330px;
+      padding: 38px;
+      background: var(--deep);
+      color: var(--white);
+      overflow: hidden;
+    }
+    .window-card.secondary {
+      background: var(--paper-2);
+      color: var(--ink);
+      border: 1px solid var(--rule);
+    }
+    .window-card .number {
+      font: 500 12px/1 "IBM Plex Mono", monospace;
+      letter-spacing: .14em;
+      color: var(--aqua);
+    }
+    .window-card.secondary .number { color: var(--deep-2); }
+    .window-card h3 {
+      margin: 70px 0 18px;
+      font: 700 clamp(34px, 4vw, 54px)/1 "Newsreader", serif;
+      letter-spacing: -.025em;
+    }
+    .window-card p { max-width: 570px; margin: 0; color: #c9dcda; font-size: 18px; }
+    .window-card.secondary p { color: var(--muted); }
+    .rings {
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border: 1px solid rgba(126, 227, 214, .27);
+      border-radius: 50%;
+      right: -70px;
+      top: -92px;
+    }
+    .rings::before, .rings::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(126, 227, 214, .25);
+      border-radius: 50%;
+      inset: 35px;
+    }
+    .rings::after { inset: 72px; background: rgba(126, 227, 214, .08); }
+
+    .protocol {
+      counter-reset: step;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+    .step {
+      counter-increment: step;
+      padding: 30px 24px 34px;
+      border-right: 1px solid var(--rule);
+    }
+    .step:last-child { border-right: 0; }
+    .step::before {
+      content: "0" counter(step);
+      display: block;
+      margin-bottom: 54px;
+      color: var(--signal);
+      font: 600 12px/1 "IBM Plex Mono", monospace;
+    }
+    .step h3 { margin-bottom: 12px; font-size: 18px; line-height: 1.2; }
+    .step p { margin: 0; color: var(--muted); font-size: 15px; }
+
+    .killer { background: var(--deep); color: var(--white); border: 0; }
+    .killer .wrap {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .killer .eyebrow { color: var(--aqua); }
+    .killer h2 { font-size: clamp(52px, 7vw, 94px); }
+    .killer p { color: #c8ddda; }
+    .promise {
+      padding-top: 12px;
+      display: grid;
+      gap: 0;
+      border-top: 1px solid #426363;
+    }
+    .promise-row {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: 16px;
+      padding: 21px 0;
+      border-bottom: 1px solid #426363;
+      font-size: 21px;
+      font-weight: 700;
+    }
+    .promise-row span:first-child { color: var(--aqua); font-family: "IBM Plex Mono", monospace; }
+
+    .ledger {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--rule);
+      box-shadow: var(--shadow);
+    }
+    .ledger > div { padding: 42px; }
+    .ledger > div + div { border-left: 1px solid var(--rule); background: var(--paper-2); }
+    .ledger .label {
+      color: var(--signal);
+      font: 600 12px/1 "IBM Plex Mono", monospace;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .ledger h3 { margin: 56px 0 12px; font: 700 35px/1 "Newsreader", serif; }
+    .ledger p { margin: 0; color: var(--muted); }
+    .log-lines { margin-top: 34px; border-top: 1px solid var(--rule); }
+    .log-line {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 18px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--rule);
+      font: 500 13px/1.3 "IBM Plex Mono", monospace;
+    }
+    .log-line span:first-child { color: var(--muted); }
+
+    .guardrail {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 42px;
+      padding: 44px 0;
+      border-top: 6px solid var(--signal);
+      border-bottom: 1px solid var(--rule);
+    }
+    .guardrail-mark {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--signal);
+      color: #fff;
+      font: 800 34px/1 "Public Sans", sans-serif;
+    }
+    .guardrail h2 { font-size: clamp(40px, 5vw, 68px); }
+    .guardrail p { max-width: 760px; font-size: 20px; }
+    .bright-line { font-weight: 800; color: var(--signal); }
+
+    .species-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .species-grid blockquote {
+      margin: 0;
+      font: 700 clamp(40px, 5vw, 68px)/1.02 "Newsreader", serif;
+      letter-spacing: -.035em;
+    }
+    .species-grid .copy { color: var(--muted); font-size: 19px; }
+    .species-grid .copy strong { color: var(--ink); }
+
+    .choice {
+      padding: 34px 0 0;
+      margin-top: 54px;
+      border-top: 1px solid var(--rule);
+      display: grid;
+      grid-template-columns: .7fr 1.3fr;
+      gap: 42px;
+    }
+    .choice h3 { font-size: 23px; }
+    .choice p { margin: 0; color: var(--muted); }
+
+    .closing {
+      padding: 120px 0 56px;
+      background: var(--aqua-soft);
+      border-bottom: 0;
+    }
+    .closing blockquote {
+      max-width: 940px;
+      margin: 0;
+      font: 700 clamp(58px, 9vw, 126px)/.87 "Newsreader", serif;
+      letter-spacing: -.055em;
+    }
+    .closing .tag {
+      margin-top: 56px;
+      display: flex;
+      justify-content: space-between;
+      gap: 32px;
+      align-items: end;
+      padding-top: 20px;
+      border-top: 1px solid var(--ink);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .09em;
+    }
+    footer {
+      padding: 28px 0 calc(28px + env(safe-area-inset-bottom));
+      background: var(--deep);
+      color: #b7cfcb;
+      font-size: 13px;
+    }
+    footer p { max-width: 820px; margin: 0; }
+
+    .t42-nav { position: relative; z-index: 9999; background: #0f172a; color: #f8fafc; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.4; }
+    .t42-toggle { display: none; background: none; border: 0; color: #f8fafc; font-size: 1.6rem; padding: .7rem 1rem; cursor: pointer; }
+    .t42-list { display: flex; flex-wrap: wrap; align-items: stretch; justify-content: center; list-style: none; margin: 0; padding: 0; }
+    .t42-item { position: relative; }
+    .t42-link { display: block; padding: .9rem 1.1rem; color: #f8fafc; text-decoration: none; font-weight: 600; font-size: .95rem; background: none; border: 0; cursor: pointer; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; white-space: nowrap; }
+    .t42-link:hover, .t42-link:focus-visible { background: #1e293b; color: #fff; outline: none; }
+    .t42-cluster { display: flex; align-items: stretch; }
+    .t42-cluster > .t42-link:first-child { padding-right: .45rem; }
+    .t42-expander { width: 2.1rem; padding-left: .25rem; padding-right: .45rem; }
+    .t42-drop-btn::after { content: "\25BE"; font-size: .8em; }
+    .t42-drop { display: none; position: absolute; top: 100%; left: 0; min-width: 280px; max-height: min(72vh, 620px); overflow-y: auto; background: #0f172a; list-style: none; margin: 0; padding: .4rem 0; box-shadow: 0 8px 24px rgba(0, 0, 0, .35); border-top: 1px solid #1e293b; }
+    .t42-has-drop:hover > .t42-drop, .t42-has-drop:focus-within > .t42-drop, .t42-has-drop.t42-open > .t42-drop { display: block; }
+    .t42-sublink { display: block; padding: .6rem 1.15rem; color: #e2e8f0; text-decoration: none; font-size: .9rem; white-space: nowrap; }
+    .t42-sublink:hover, .t42-sublink:focus-visible { background: #1e293b; color: #fff; outline: none; }
+    .t42-link.t42-active, .t42-sublink.t42-active { background: #2563eb; color: #fff; }
+    .t42-p84 > .t42-drop { z-index: 20; }
+    .t42-drop-head { padding: .55rem 1.15rem .3rem; color: #94a3b8; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+    .t42-drop-note { padding: .45rem 1.15rem .6rem; color: #94a3b8; font-size: .78rem; line-height: 1.45; max-width: 280px; }
+
+    @media (max-width: 760px) {
+      .t42-toggle { display: block; }
+      .t42-nav { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; }
+      .t42-list { display: none; flex-direction: column; width: 100%; align-items: stretch; }
+      .t42-nav.t42-mobile-open .t42-list { display: flex; }
+      .t42-has-drop:hover > .t42-drop, .t42-has-drop:focus-within > .t42-drop { display: none; }
+      .t42-has-drop.t42-open > .t42-drop { display: block; }
+      .t42-cluster { width: 100%; }
+      .t42-cluster > .t42-link:first-child { flex: 1; min-width: 0; }
+      .t42-drop { position: static; width: 100%; max-height: none; box-shadow: none; min-width: 0; border-top: 0; border-left: 3px solid #2563eb; }
+      .t42-sublink { white-space: normal; }
+    }
+
+    @media (max-width: 860px) {
+      .wrap { width: min(100% - 32px, 680px); }
+      .hero { min-height: auto; grid-template-columns: 1fr; gap: 34px; padding: 58px 0 70px; }
+      h1 { font-size: clamp(54px, 15vw, 78px); }
+      .specimen { max-width: 440px; justify-self: center; }
+      section { padding: 78px 0; }
+      .section-head, .killer .wrap, .species-grid { grid-template-columns: 1fr; gap: 28px; }
+      .window-grid { grid-template-columns: 1fr; }
+      .protocol { grid-template-columns: 1fr 1fr; }
+      .step:nth-child(2) { border-right: 0; }
+      .step:nth-child(-n+2) { border-bottom: 1px solid var(--rule); }
+      .killer .wrap { gap: 48px; }
+      .ledger { grid-template-columns: 1fr; }
+      .ledger > div + div { border-left: 0; border-top: 1px solid var(--rule); }
+      .choice { grid-template-columns: 1fr; gap: 8px; }
+    }
+
+    @media (max-width: 520px) {
+      body { font-size: 16px; }
+      .wrap { width: calc(100% - 28px); }
+      .hero { padding-top: 42px; }
+      h1 { font-size: clamp(48px, 15vw, 66px); }
+      .hero-copy { font-size: 18px; }
+      .specimen { width: 108%; margin-left: -4%; }
+      .orbit-note { font-size: 9px; }
+      .window-card { min-height: 300px; padding: 28px; }
+      .window-card h3 { margin-top: 62px; }
+      .protocol { grid-template-columns: 1fr; }
+      .step, .step:nth-child(2) { border-right: 0; border-bottom: 1px solid var(--rule); }
+      .step:last-child { border-bottom: 0; }
+      .step::before { margin-bottom: 30px; }
+      .ledger > div { padding: 30px 24px; }
+      .guardrail { grid-template-columns: 1fr; gap: 24px; }
+      .guardrail-mark { width: 58px; height: 58px; }
+      .closing { padding-top: 86px; }
+      .closing .tag { align-items: start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+<style>
+/* ---- uniform fixed bottom bar (mirrors project-84) ---- */
+:root { --bottom-nav-height: 64px; }
+body { padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom)); }
+.site-bottom-nav { position: fixed; right: 0; bottom: 0; left: 0; z-index: 100; min-height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom)); padding-bottom: env(safe-area-inset-bottom); background: var(--deep); color: #e2edf0; border-top: 1px solid #294351; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+.site-bottom-nav__items { display: flex; width: 100%; min-height: var(--bottom-nav-height); }
+.site-bottom-nav__item { position: relative; flex: 1 1 25%; min-width: 0; border-right: 1px solid #294351; }
+.site-bottom-nav__item:last-child { border-right: 0; }
+.site-bottom-nav__button, .site-bottom-nav__link, .site-bottom-nav__placeholder { width: 100%; min-height: var(--bottom-nav-height); padding: 10px 14px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 0; background: transparent; color: #e2edf0; font-size: .9rem; font-weight: 700; line-height: 1.2; font-family: inherit; text-align: center; }
+.site-bottom-nav__button { cursor: pointer; }
+.site-bottom-nav__link { text-decoration: none; }
+.site-bottom-nav__button:hover, .site-bottom-nav__button:focus-visible, .site-bottom-nav__link:hover, .site-bottom-nav__link:focus-visible, .site-bottom-nav__item.is-open > .site-bottom-nav__button { background: #123747; color: #fff; outline: 2px solid #fff; outline-offset: -3px; }
+.site-bottom-nav__link[aria-current="page"] { background: #123747; color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+.site-bottom-nav__chevron { flex: 0 0 auto; width: 14px; height: 14px; transition: transform .18s ease; }
+.site-bottom-nav__item.is-open .site-bottom-nav__chevron { transform: rotate(180deg); }
+.site-bottom-nav__placeholder { color: #8fa5ad; cursor: default; pointer-events: none; user-select: none; }
+.site-bottom-nav__dropup { position: absolute; left: 0; bottom: 100%; width: min(360px, 100vw); max-height: calc(100svh - var(--bottom-nav-height) - env(safe-area-inset-bottom) - 16px); overflow-y: auto; overscroll-behavior: contain; background: var(--deep); border: 1px solid #294351; border-bottom: 0; box-shadow: 0 -16px 38px rgba(0,0,0,.24); opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(8px); transition: opacity .16s ease, transform .16s ease, visibility 0s linear .16s; scrollbar-color: var(--aqua) var(--deep); }
+.site-bottom-nav__item.is-open .site-bottom-nav__dropup { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); transition-delay: 0s; }
+.site-bottom-nav__dropup-label { padding: 12px 16px 8px; color: #7ee3d6; font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border-bottom: 1px solid #294351; }
+.site-bottom-nav__dropup a { display: flex; align-items: center; min-height: 44px; padding: 10px 16px; color: #e2edf0; text-decoration: none; font-size: .88rem; font-weight: 600; line-height: 1.25; border-bottom: 1px solid #294351; }
+.site-bottom-nav__dropup a:last-child { border-bottom: 0; }
+.site-bottom-nav__dropup a:hover, .site-bottom-nav__dropup a:focus-visible { background: #123747; color: #fff; outline: 2px solid #fff; outline-offset: -3px; }
+@media (hover: hover) and (pointer: fine) {
+  .site-bottom-nav__item--menu:hover .site-bottom-nav__dropup { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); transition-delay: 0s; }
+  .site-bottom-nav__item--menu:hover > .site-bottom-nav__button { background: #123747; color: #fff; }
+}
+@media (max-width: 620px) {
+  .site-bottom-nav__button, .site-bottom-nav__link, .site-bottom-nav__placeholder { padding: 8px 5px; font-size: .75rem; }
+  .site-bottom-nav__button { gap: 4px; }
+  .site-bottom-nav__dropup { position: fixed; right: 0; left: 0; width: 100%; bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion: reduce) { .site-bottom-nav__chevron, .site-bottom-nav__dropup { transition: none; } }
+@media print { .site-bottom-nav { display: none !important; } body { padding-bottom: 0; } }
+</style>
+</head>
+<body>
+  <nav class="t42-nav" id="t42-shared-nav" aria-label="Site navigation">
+    <button class="t42-toggle" type="button" aria-expanded="false" aria-controls="t42-nav-list" aria-label="Menu">&#9776;</button>
+    <ul class="t42-list" id="t42-nav-list">
+      <li class="t42-item"><a class="t42-link" href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">Plan #42</a></li>
+      <li class="t42-item t42-has-drop t42-p84">
+        <div class="t42-cluster">
+          <a class="t42-link" href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">Project 84</a>
+          <button class="t42-link t42-drop-btn t42-expander" type="button" aria-expanded="false" aria-label="Project 84 non-profit aimed arms"></button>
+        </div>
+        <ul class="t42-drop">
+          <li class="t42-drop-head">Non-profit aimed arms</li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a></li>
+          <li class="t42-drop-note">Held until they can understand economics enough to participate — then they take over, with adjustments to equalize between currencies.</li>
+        </ul>
+      </li>
+      <li class="t42-item"><a class="t42-link" href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Dummies Guide — Level 14 (English)</a></li>
+      <li class="t42-item"><a class="t42-link" href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">Claiming Oceans &amp; Antarctica</a></li>
+      <li class="t42-item"><a class="t42-link" href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">HEAR-TS Work Boats</a></li>
+      <li class="t42-item"><a class="t42-link" href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">Hurricane Research</a></li>
+      <li class="t42-item"><a class="t42-link" href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">Floating Skyports</a></li>
+      <li class="t42-item"><a class="t42-link t42-active" href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k" aria-current="page">Human Recovery Disk</a></li>
+      <li class="t42-item"><a class="t42-link" href="https://muse.ai/s/about-the-founder-ym5xspl6ktpxc">About the Founder</a></li>
+      <li class="t42-item t42-has-drop">
+        <div class="t42-cluster">
+          <a class="t42-link" href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">Jobs / WeFind's for Delegations</a>
+          <button class="t42-link t42-drop-btn t42-expander" type="button" aria-expanded="false" aria-label="Choose job-listing language"></button>
+        </div>
+        <ul class="t42-drop">
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">English</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys">Amharic</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7">Arabic</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94">Bengali</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs">Chinese (Simplified)</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6">Chinese (Traditional)</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5">Czech</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu">Danish</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze">Dutch</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51">Filipino</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf">Finnish</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl">French</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb">German</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc">Greek</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a">Hausa</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg">Hebrew</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw">Hindi</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac">Hungarian</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg">Indonesian</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y">Italian</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm">Japanese</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi">Korean</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq">Norwegian</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt">Persian</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey">Polish</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy">Portuguese</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj">Romanian</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj">Russian</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno">Spanish</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2">Swahili</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg">Swedish</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb">Thai</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu">Turkish</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y">Ukrainian</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar">Urdu</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi">Vietnamese</a></li>
+        </ul>
+      </li>
+      <li class="t42-item"><a class="t42-link" href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">Open Letter</a></li>
+      <li class="t42-item"><a class="t42-link" href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">Proclamation of Claim</a></li>
+      <li class="t42-item t42-has-drop">
+        <button class="t42-link t42-drop-btn" type="button" aria-expanded="false">Letters &amp; Diplomacy</button>
+        <ul class="t42-drop">
+          <li><a class="t42-sublink" href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">World Index</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">Letters to US Leaders</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">Consulate Letters — Africa I</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">Consulate Letters — Africa II</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">Consulate Letters — Africa III</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">Consulate Letters — Americas I</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">Consulate Letters — Americas II</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">Consulate Letters — Asia-Pacific</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">Consulate Letters — Europe I</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">Consulate Letters — Europe II</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">Consulate Letters — Europe III</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">Consulate Letters — Middle East</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">Consulate Letters — Oceania</a></li>
+        </ul>
+      </li>
+      <li class="t42-item"><a class="t42-link" href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">Who Knows?</a></li>
+      <li class="t42-item"><a class="t42-link" href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">Money vs Assets</a></li>
+      <li class="t42-item"><a class="t42-link" href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">3D Printing</a></li>
+      <li class="t42-item"><a class="t42-link" href="https://sites.google.com/view/knottsure/home">Why Not? (external manifesto)</a></li>
+      <li class="t42-item t42-has-drop">
+        <button class="t42-link t42-drop-btn" type="button" aria-expanded="false">More</button>
+        <ul class="t42-drop">
+          <li><a class="t42-sublink" href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">Alice Storyboard</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">Doodare's Diaper Concept</a></li>
+          <li><a class="t42-sublink" href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">Terms of Service</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+  <script>
+    (function () {
+      function init() {
+        var nav = document.getElementById('t42-shared-nav');
+        if (!nav) return;
+        var toggle = nav.querySelector('.t42-toggle');
+        if (toggle) {
+          toggle.addEventListener('click', function () {
+            var open = nav.classList.toggle('t42-mobile-open');
+            toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          });
+        }
+        nav.querySelectorAll('.t42-drop-btn').forEach(function (btn) {
+          btn.addEventListener('click', function (event) {
+            var item = btn.closest('.t42-has-drop');
+            var wasOpen = item.classList.contains('t42-open');
+            nav.querySelectorAll('.t42-has-drop.t42-open').forEach(function (openItem) {
+              openItem.classList.remove('t42-open');
+              var openButton = openItem.querySelector('.t42-drop-btn');
+              if (openButton) openButton.setAttribute('aria-expanded', 'false');
+            });
+            if (!wasOpen) {
+              item.classList.add('t42-open');
+              btn.setAttribute('aria-expanded', 'true');
+            }
+            event.stopPropagation();
+          });
+        });
+        document.addEventListener('click', function (event) {
+          if (!nav.contains(event.target)) {
+            nav.querySelectorAll('.t42-has-drop.t42-open').forEach(function (openItem) {
+              openItem.classList.remove('t42-open');
+              var openButton = openItem.querySelector('.t42-drop-btn');
+              if (openButton) openButton.setAttribute('aria-expanded', 'false');
+            });
+          }
+        });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+  <main>
+    <div class="wrap">
+      <div class="hero">
+        <div>
+          <p class="eyebrow">Lifeboat infrastructure / biological continuity</p>
+          <h1>Every birth throws away a once-only backup.</h1>
+          <p class="hero-copy">Every baby is born with a placenta. Then we discard it. That is insane. It may be the most valuable biological material that person will ever produce: <strong>young cells, long telomeres, and more divisions left ahead of them.</strong></p>
+          <p class="one-shot">You get one clean shot at collecting it: birth.</p>
+        </div>
+        <figure class="specimen" aria-label="Diagram of one biological sample divided into redundant stored backups">
+          <svg viewBox="0 0 520 520" role="img" aria-labelledby="specimen-title specimen-desc">
+            <title id="specimen-title">Redundant biological recovery disk</title>
+            <desc id="specimen-desc">A central cell sample branches into four sealed storage samples.</desc>
+            <defs>
+              <radialGradient id="core" cx="38%" cy="34%" r="70%">
+                <stop offset="0" stop-color="#d9fff8"/>
+                <stop offset=".48" stop-color="#7ee3d6"/>
+                <stop offset="1" stop-color="#159e94"/>
+              </radialGradient>
+            </defs>
+            <circle cx="260" cy="260" r="228" fill="#0a2f31"/>
+            <circle cx="260" cy="260" r="186" fill="none" stroke="#7ee3d6" stroke-opacity=".26"/>
+            <circle cx="260" cy="260" r="127" fill="none" stroke="#7ee3d6" stroke-opacity=".38" stroke-dasharray="3 8"/>
+            <g stroke="#7ee3d6" stroke-width="2" stroke-opacity=".7">
+              <path d="M260 190V104"/><path d="M329 260H416"/><path d="M260 330V416"/><path d="M191 260H104"/>
+            </g>
+            <g fill="#eef3f1" stroke="#7ee3d6" stroke-width="4">
+              <rect x="231" y="60" width="58" height="48" rx="8"/><rect x="412" y="236" width="48" height="58" rx="8"/>
+              <rect x="231" y="412" width="58" height="48" rx="8"/><rect x="60" y="236" width="48" height="58" rx="8"/>
+            </g>
+            <g fill="#159e94">
+              <rect x="240" y="73" width="40" height="8" rx="4"/><rect x="425" y="246" width="22" height="8" rx="4"/>
+              <rect x="240" y="425" width="40" height="8" rx="4"/><rect x="73" y="246" width="22" height="8" rx="4"/>
+            </g>
+            <circle cx="260" cy="260" r="71" fill="url(#core)" stroke="#effffc" stroke-width="5"/>
+            <path d="M226 271c17-48 38-66 65-53 26 13 25 47 3 66-22 19-52 16-68-13Z" fill="#0a2f31" fill-opacity=".28"/>
+            <circle cx="243" cy="239" r="9" fill="#effffc" fill-opacity=".62"/>
+          </svg>
+          <span class="orbit-note top">sample 03 / remote site</span>
+          <span class="orbit-note bottom">no single point of failure</span>
+        </figure>
+      </div>
+    </div>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">The source</p>
+            <h2>Start at birth. Catch up after.</h2>
+          </div>
+          <p class="lede">The placenta is the ideal collection window: a young, once-only source that already exists. For people who missed that window, bone marrow is probably the best catch-up option—its stem cells are among the most studied and are already used clinically.</p>
+        </div>
+        <div class="window-grid">
+          <article class="window-card">
+            <div class="rings" aria-hidden="true"></div>
+            <span class="number">01 / IDEAL WINDOW</span>
+            <h3>Placenta at birth</h3>
+            <p>Collect what is normally discarded. Preserve the youngest practical version of the person before time, disease, and damage accumulate.</p>
+          </article>
+          <article class="window-card secondary">
+            <span class="number">02 / CATCH-UP</span>
+            <h3>Bone marrow later</h3>
+            <p>Already born? You did not miss the whole idea. Bank a strong, clinically familiar cell source now. It is not the birth sample—but it gets cells in the bank.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">The product</p>
+            <h2>Bank the cells. Bank the code.</h2>
+          </div>
+          <p class="lede">A recovery disk is not one vial in one freezer. It is a redundant biological archive: divided, distributed, sequenced, and connected to a lifelong record.</p>
+        </div>
+        <div class="protocol">
+          <article class="step"><h3>Collect</h3><p>Recover viable cells at birth—or use bone marrow as the catch-up source.</p></article>
+          <article class="step"><h3>Divide</h3><p>Split the material into independent samples. One accident cannot erase the backup.</p></article>
+          <article class="step"><h3>Distribute</h3><p>Store samples across separate sites, under separate failure domains.</p></article>
+          <article class="step"><h3>Sequence</h3><p>File the full genetic blueprint beside the tissue. Cells plus source code.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="killer">
+      <div class="wrap">
+        <div>
+          <p class="eyebrow">The killer app</p>
+          <h2>Grow the replacement from you.</h2>
+          <p>When regenerative medicine can reliably turn banked cells into transplantable organs, the recovery disk becomes more than an archive. It becomes a repair system.</p>
+        </div>
+        <div class="promise" aria-label="Potential advantages of organs grown from a person's own cells">
+          <div class="promise-row"><span>—</span><span>No donor waiting list.</span></div>
+          <div class="promise-row"><span>—</span><span>No immune rejection.</span></div>
+          <div class="promise-row"><span>—</span><span>No lifetime of immunosuppressants.</span></div>
+          <div class="promise-row"><span>—</span><span>Your cells. Your organ. Your repair.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">The lifelong record</p>
+            <h2>Code stored once. Features logged for life.</h2>
+          </div>
+          <p class="lede">The genome is the starting blueprint. The phenotype log records what actually happens across a 200-year life: what failed, what held, what healed, and what changed.</p>
+        </div>
+        <div class="ledger">
+          <div>
+            <span class="label">Genotype / baseline</span>
+            <h3>Frozen at birth.</h3>
+            <p>The sequence stays fixed as the reference copy—the code the body began with.</p>
+          </div>
+          <div>
+            <span class="label">Phenotype / changelog</span>
+            <h3>Updated through life.</h3>
+            <p>Not just diagnoses. Outcomes. Responses. The difference between what the code promised and what the body did.</p>
+            <div class="log-lines" aria-label="Illustrative phenotype log entries">
+              <div class="log-line"><span>BIRTH</span><span>baseline established</span></div>
+              <div class="log-line"><span>YEAR 40</span><span>bad liver / damage logged</span></div>
+              <div class="log-line"><span>LATER</span><span>good liver / repair logged</span></div>
+              <div class="log-line"><span>ONGOING</span><span>everything that matters</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="guardrail">
+          <div class="guardrail-mark" aria-hidden="true">!</div>
+          <div>
+            <p class="eyebrow">The hard rule</p>
+            <h2>Do not create <em>The Island.</em></h2>
+            <p>The 2005 movie gives the warning plainly: never grow people as inventories of spare parts. <span class="bright-line">Organs from your own banked cells only. Never clones grown for harvest.</span></p>
+            <p>This is not a footnote. It is a permanent watch condition. The moment the technology drifts toward harvest farms, the project has crossed the line.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="species-grid">
+          <div>
+            <p class="eyebrow">The species backup</p>
+            <blockquote>Individual recovery disks become a database of our genetic code.</blockquote>
+          </div>
+          <div class="copy">
+            <p>Every backup sequenced. Every sequence filed. Not to sort people into winners and losers—but to understand the variation we carry, the failures we repeat, and the repairs that work.</p>
+            <p><strong>The purpose is simple: fix us.</strong></p>
+            <p>The fear is that “superhumans” replace everybody else. The answer is <em>Machina sapiens</em>: you are not being replaced; you are becoming. None of us chose the genetic lottery at birth. Better genes are not a new violation. They are a better draw—if the benefits are open to everyone.</p>
+          </div>
+        </div>
+        <div class="choice">
+          <h3>No coercion. The door stays open.</h3>
+          <p>Participation is opt-in. If someone does not want to bank a placenta now, fine. Nobody is forced. But for everyone who wants the option, the smart move is obvious: get some cells in the bank. Preserve the choice before the window closes.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="wrap">
+        <p class="eyebrow">The whole pitch</p>
+        <blockquote>It’s a human recovery disk.</blockquote>
+        <div class="tag"><span>Bank the code. Fix us.</span><span>Lifeboat infrastructure / 200-year life</span></div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <p>This is a direction for research and infrastructure—not a claim that whole replacement organs can be grown safely from banked placental or marrow cells today. Collection, consent, storage, sequencing, access, clinical use, and genetic intervention all require evidence, regulation, and durable public safeguards.</p>
+    </div>
+  </footer>
+  <nav class="site-bottom-nav" aria-label="Secondary pages">
+    <div class="site-bottom-nav__items">
+      <div class="site-bottom-nav__item site-bottom-nav__item--menu" id="dummy-guides-menu">
+        <button class="site-bottom-nav__button" type="button" aria-expanded="false" aria-controls="dummy-guides-dropup">
+          <span>Dummy Guides</span>
+          <svg class="site-bottom-nav__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 10.5 8 5.5l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="site-bottom-nav__dropup" id="dummy-guides-dropup" aria-label="Dummy Guides languages" hidden>
+          <div class="site-bottom-nav__dropup-label">Project 84 Dummy Guide:</div>
+          <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Dummies Guide — Level 14 (English)</a>
+        </div>
+      </div>
+      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">Letters To</a></div>
+      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="https://muse.ai/s/goal-briefs-xbt5xuxmw1aumxh">Goal Briefs</a></div>
+      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="https://muse.ai/s/homo-e-s-m-xvxm5xuxmvr4xg11">HOMO-E/S/M</a></div>
+    </div>
+  </nav>
+
+  <script>
+    (function () {
+      var menu = document.getElementById('dummy-guides-menu');
+      var button = menu.querySelector('.site-bottom-nav__button');
+      var dropup = document.getElementById('dummy-guides-dropup');
+      var guideLinks = dropup.querySelectorAll('a');
+      var hoverOpen = false;
+      function renderOpen() {
+        var open = hoverOpen || menu.classList.contains('is-open');
+        dropup.hidden = !open;
+        button.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+      function setOpen(open) {
+        menu.classList.toggle('is-open', open);
+        renderOpen();
+      }
+      button.addEventListener('click', function () { setOpen(!menu.classList.contains('is-open')); });
+      menu.addEventListener('mouseenter', function () { hoverOpen = true; renderOpen(); });
+      menu.addEventListener('mouseleave', function () { hoverOpen = false; renderOpen(); });
+      guideLinks.forEach(function (link) {
+        link.addEventListener('click', function () { hoverOpen = false; setOpen(false); });
+      });
+      document.addEventListener('click', function (event) {
+        if (!menu.contains(event.target)) { hoverOpen = false; setOpen(false); }
+      });
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && !dropup.hidden) { hoverOpen = false; setOpen(false); button.focus(); }
+      });
+    })();
+  </script>
+</body>
+</html>

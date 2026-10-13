@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>الوظائف المتاحة</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"Noto Sans Arabic",Tahoma,system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.7;
+      direction:rtl;
+      text-align:right;
+      padding-bottom:calc(66px + env(safe-area-inset-bottom));
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 80px}
+    .language-bar{display:flex;align-items:flex-start;gap:18px;margin-bottom:12px;padding:12px 14px;background:var(--panel);border:1px solid var(--ink)}
+    .language-bar .eyebrow{margin:4px 0 0;white-space:nowrap}
+    .language-menu{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:flex-start;gap:5px 13px;font-family:"Noto Sans Arabic",Tahoma,system-ui,sans-serif;font-size:.78rem;direction:rtl;text-align:right}
+    .language-menu>a,.nav-group>a{display:inline-flex;align-items:center;min-height:28px;padding:3px 2px;text-decoration-thickness:1px;text-underline-offset:3px}
+    .nav-group{position:relative;display:inline-flex;align-items:stretch;min-height:28px}
+    .nav-toggle{width:28px;min-height:28px;margin-inline-start:3px;padding:0;border:1px solid var(--line);background:var(--soft);color:var(--ink);cursor:pointer;line-height:1}
+    .nav-toggle[aria-expanded="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+    .nav-popover{position:fixed;z-index:20;display:none;width:min(580px,calc(100vw - 32px));max-height:min(68vh,560px);overflow-y:auto;padding:10px;background:var(--panel);color:var(--ink);border:1px solid var(--ink);box-shadow:var(--shadow);grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 12px;text-align:right}
+    .nav-group.open .nav-popover{display:grid}
+    .nav-group.compact .nav-popover{width:min(440px,calc(100vw - 32px))}
+    .nav-popover a{display:flex;align-items:center;min-height:38px;padding:7px 9px;text-decoration-thickness:1px;text-underline-offset:3px}
+    .nav-popover a:hover{background:var(--soft)}
+    .nav-popover a[aria-current="page"]{background:var(--ink);color:var(--paper);font-weight:700;text-decoration:none}
+    .nav-popover bdi{width:100%;text-align:start}
+    .nav-popover .nav-section-heading{grid-column:1/-1;padding:7px 9px 2px;font-weight:700}
+    .nav-popover .nav-note{grid-column:1/-1;padding:2px 9px 7px;font-size:.74rem;line-height:1.5;color:var(--muted)}
+    .motto{margin:0 0 12px;padding:18px clamp(20px,4vw,42px);background:var(--signal);color:var(--signal-ink);border:1px solid var(--ink);font-size:clamp(1.35rem,3vw,2.25rem);font-weight:800;line-height:1.35}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;direction:rtl;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    h1{font-size:clamp(3.5rem,9vw,7.8rem);line-height:.98;letter-spacing:-.035em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;margin:0 0 16px}
+    .email{direction:ltr;text-align:left;unicode-bidi:embed;font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:1.08;letter-spacing:-.02em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:1.15;margin:8px 0 12px;letter-spacing:-.018em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:390px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{direction:ltr;unicode-bidi:embed;font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.28;letter-spacing:-.012em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    details[open] summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-right:22px;padding-left:0}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .bottom-nav{
+      position:fixed;
+      z-index:100;
+      right:0;
+      bottom:0;
+      left:0;
+      display:flex;
+      direction:ltr;
+      min-height:58px;
+      padding-bottom:env(safe-area-inset-bottom);
+      background:var(--panel);
+      color:var(--ink);
+      border-top:1px solid var(--ink);
+      box-shadow:0 -8px 30px rgba(0,0,0,.10);
+      font-family:"Noto Sans Arabic",Tahoma,system-ui,sans-serif;
+      text-align:center;
+    }
+    .bottom-nav-item{
+      position:relative;
+      flex:1 1 25%;
+      min-width:0;
+      display:flex;
+      align-items:stretch;
+      justify-content:center;
+      border-inline-end:1px solid var(--line);
+    }
+    .bottom-nav-item:last-child{border-inline-end:0}
+    .bottom-nav-trigger,.bottom-nav-placeholder{
+      width:100%;
+      min-height:58px;
+      padding:8px 5px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      color:inherit;
+      font-family:inherit;
+      font-size:.8rem;
+      font-weight:600;
+      line-height:1.15;
+      white-space:nowrap;
+    }
+    .bottom-nav-trigger{cursor:pointer}
+    .bottom-nav-link{text-decoration:none}
+    .bottom-nav-trigger:hover,.bottom-nav-link:hover,.bottom-nav-item.open .bottom-nav-trigger{background:var(--soft)}
+    .bottom-nav-placeholder{color:var(--muted);cursor:default}
+    .bottom-dropup{
+      position:absolute;
+      z-index:101;
+      bottom:100%;
+      left:0;
+      display:none;
+      width:min(360px,100vw);
+      max-height:calc(100vh - 74px - env(safe-area-inset-bottom));
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      padding:8px;
+      background:var(--panel);
+      color:var(--ink);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+      direction:ltr;
+      text-align:left;
+    }
+    .bottom-nav-item.open .bottom-dropup{display:block}
+    @media (hover:hover) and (pointer:fine){.bottom-nav-item.has-dropup:hover .bottom-dropup{display:block}}
+    .bottom-dropup a{
+      display:flex;
+      align-items:center;
+      min-height:38px;
+      padding:7px 9px;
+      text-decoration-thickness:1px;
+      text-underline-offset:3px;
+    }
+    .bottom-dropup a:hover{background:var(--soft)}
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+    }
+    @media (max-width:620px){
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .language-bar{flex-direction:column;gap:7px;padding:11px 12px}
+      .language-menu{gap:3px 11px}
+      .language-menu a,.language-menu span{min-height:34px}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(3.1rem,19vw,5.3rem)}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      footer{flex-direction:column}
+      .bottom-nav-trigger,.bottom-nav-placeholder{padding-inline:3px;font-size:.68rem}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <div class="language-bar">
+      <p class="eyebrow">التنقل</p>
+      <nav class="language-menu" aria-label="التنقل بين الصفحات العامة">
+        <a href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">الخطة #42</a>
+        <span class="nav-group compact" data-nav-group>
+          <a href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">المشروع 84</a>
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="project84Arms" aria-label="افتح قائمة المشروع 84">▾</button>
+          <span class="nav-popover" id="project84Arms" role="group" aria-label="المشروع 84">
+            <span class="nav-section-heading">الأذرع غير الربحية</span>
+            <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz"><bdi>Omega42</bdi></a>
+            <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3"><bdi>Prime 42</bdi></a>
+            <span class="nav-note">مُحتفَظٌ بها إلى أن يفهموا الاقتصاد بما يكفي للمشاركة — وعندئذٍ يتولَّون هم زمام الأمور، مع «تعديلات» لتحقيق المساواة بين «العملات».</span>
+          </span>
+        </span>
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">دليل المبتدئين Project 84 — Level 14 (English)</a>
+        <a href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">دليل المبتدئين للمطالبة بالمحيطات والقارة القطبية الجنوبية</a>
+        <a href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">قوارب عمل <bdi>HEAR-TS</bdi></a>
+        <a href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">أبحاث الأعاصير</a>
+        <a href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">الموانئ الجوية العائمة</a>
+        <a href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k">قرص استعادة البشرية</a>
+        <a href="https://muse.ai/s/about-mxt5xuxj7jgoao">عن المؤسس</a>
+        <span class="nav-group" data-nav-group>
+          <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">الوظائف / الباحثون للوفود</a>
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="jobsLanguages" aria-label="اختر لغة صفحة الوظائف">▾</button>
+          <span class="nav-popover" id="jobsLanguages" role="group" aria-label="لغات صفحة الوظائف">
+            <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu"><bdi>English</bdi></a>
+            <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys"><bdi>አማርኛ</bdi></a>
+            <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7" aria-current="page"><bdi>العربية</bdi></a>
+            <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94"><bdi>বাংলা</bdi></a>
+            <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs"><bdi>中文（简体）</bdi></a>
+            <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6"><bdi>中文（繁體）</bdi></a>
+            <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5"><bdi>Čeština</bdi></a>
+            <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu"><bdi>Dansk</bdi></a>
+            <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze"><bdi>Nederlands</bdi></a>
+            <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51"><bdi>Filipino</bdi></a>
+            <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf"><bdi>Suomi</bdi></a>
+            <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl"><bdi>Français</bdi></a>
+            <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb"><bdi>Deutsch</bdi></a>
+            <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc"><bdi>Ελληνικά</bdi></a>
+            <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a"><bdi>Hausa</bdi></a>
+            <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg"><bdi>עברית</bdi></a>
+            <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw"><bdi>हिन्दी</bdi></a>
+            <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac"><bdi>Magyar</bdi></a>
+            <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg"><bdi>Bahasa Indonesia</bdi></a>
+            <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y"><bdi>Italiano</bdi></a>
+            <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm"><bdi>日本語</bdi></a>
+            <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi"><bdi>한국어</bdi></a>
+            <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq"><bdi>Norsk</bdi></a>
+            <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt"><bdi>فارسی</bdi></a>
+            <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey"><bdi>Polski</bdi></a>
+            <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy"><bdi>Português</bdi></a>
+            <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj"><bdi>Română</bdi></a>
+            <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj"><bdi>Русский</bdi></a>
+            <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno"><bdi>Español</bdi></a>
+            <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2"><bdi>Kiswahili</bdi></a>
+            <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg"><bdi>Svenska</bdi></a>
+            <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb"><bdi>ไทย</bdi></a>
+            <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu"><bdi>Türkçe</bdi></a>
+            <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y"><bdi>Українська</bdi></a>
+            <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar"><bdi>اردو</bdi></a>
+            <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi"><bdi>Tiếng Việt</bdi></a>
+          </span>
+        </span>
+        <a href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">رسالة مفتوحة</a>
+        <a href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">إعلان المطالبة</a>
+        <span class="nav-group compact" data-nav-group>
+          <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">الرسائل والدبلوماسية</a>
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="lettersDiplomacy" aria-label="افتح قائمة الرسائل والدبلوماسية">▾</button>
+          <span class="nav-popover" id="lettersDiplomacy" role="group" aria-label="الرسائل والدبلوماسية">
+            <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">الفهرس العالمي</a>
+            <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">رسائل إلى قادة الولايات المتحدة</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">رسائل القنصليات — أفريقيا ١</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">رسائل القنصليات — أفريقيا ٢</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">رسائل القنصليات — أفريقيا ٣</a>
+            <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">رسائل القنصليات — الأمريكتان ١</a>
+            <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">رسائل القنصليات — الأمريكتان ٢</a>
+            <a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">رسائل القنصليات — آسيا والمحيط الهادئ</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">رسائل القنصليات — أوروبا ١</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">رسائل القنصليات — أوروبا ٢</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">رسائل القنصليات — أوروبا ٣</a>
+            <a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">رسائل القنصليات — الشرق الأوسط</a>
+            <a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">رسائل القنصليات — أوقيانوسيا</a>
+          </span>
+        </span>
+        <a href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">من يدري؟</a>
+        <a href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">المال مقابل الأصول</a>
+        <a href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">الطباعة ثلاثية الأبعاد</a>
+        <a href="https://sites.google.com/view/knottsure/home">لماذا لا؟</a>
+        <span class="nav-group compact" data-nav-group>
+          <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">المزيد</a>
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="morePages" aria-label="افتح قائمة المزيد">▾</button>
+          <span class="nav-popover" id="morePages" role="group" aria-label="المزيد من الصفحات">
+            <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">لوحة قصة أليس</a>
+            <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">مفهوم دودارز لبديل الحفاضات</a>
+            <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">شروط الخدمة</a>
+          </span>
+        </span>
+      </nav>
+    </div>
+    <blockquote class="motto">لا نحتاج إلى أبطال — فكلّ إنسانٍ مجرد شخص حتى يصبح بطلًا.</blockquote>
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>باب التقديم مفتوح</span><span>57 وظيفة</span><span>بانتظار التمويل</span></div>
+        <div>
+          <h1 id="main-heading">لا نريد أبطالًا.<span>نريد بشرًا.</span></h1>
+          <p class="hero-note">بنّاؤون، وعلماء، ومشغّلون، ومحامون، ورواة حكايات، وزوجة واحدة صبورة على نحو استثنائي. أحضر مهارة حقيقية. أحضر مهارة غريبة. نستطيع العمل مع كليهما.</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="كيفية التقديم">
+        <div>
+          <p class="eyebrow">صندوق بريد واحد · لكل الوظائف</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BRole%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>الموضوع:</strong> Application — [المسمّى الوظيفي]</span></li>
+          <li><span>أخبرنا من أنت ولماذا أنت أنت.</span></li>
+          <li><span>أدرج سعرك بعملة Koin. كل شيء قابل للتفاوض.</span></li>
+          <li><span>للوظائف الميدانية: أثبت أنك تميّز الدب القطبي من كتلة ثلج على بُعد 50 مترًا.</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BRole%5D" target="_blank" rel="noopener">ابدأ طلبًا ↗</a>
+            <button class="btn" type="button" id="copyEmail">انسخ البريد الإلكتروني</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">وظائف ذات أولوية</h2>
+        <p>أول من يعبر الباب. وأول الطلبات التي نقرؤها. ما زلنا بانتظار التمويل؛ وما زال اللقاء يستحق.</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">القائمة الكاملة</p><h2 id="board-heading">اختر مشكلتك.</h2></div>
+        <div class="count" id="resultCount">57 وظيفة شاغرة</div>
+      </div>
+      <div class="tools" aria-label="مرشحات الوظائف">
+        <input class="search" id="search" type="search" placeholder="ابحث في المسميات والأقسام والمهام…" aria-label="البحث في الوظائف">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>جميع الوظائف بانتظار التمويل حاليًا. شروط Koin قابلة للتفاوض، ولم تُسك Koins بعد.</span>
+      <a class="top-link" href="#top">العودة إلى الأعلى ↑</a>
+    </footer>
+  </main>
+  <nav class="bottom-nav" aria-label="Site collections">
+    <div class="bottom-nav-item has-dropup" id="dummyGuidesItem">
+      <button class="bottom-nav-trigger" id="dummyGuidesTrigger" type="button" aria-expanded="false" aria-controls="dummyGuidesMenu">Dummy Guides</button>
+      <div class="bottom-dropup" id="dummyGuidesMenu" role="menu" aria-label="Dummy Guides">
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw" role="menuitem">دليل المبتدئين Project 84 — Level 14 (English)</a>
+      </div>
+    </div>
+    <div class="bottom-nav-item"><span class="bottom-nav-placeholder" aria-disabled="true">Letters To</span></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-trigger bottom-nav-link" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-trigger bottom-nav-link" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
+  </nav>
+  <script>
+    const navGroups = Array.from(document.querySelectorAll('[data-nav-group]'));
+    function closeNavGroups(except){
+      navGroups.forEach(group=>{
+        if(group===except)return;
+        group.classList.remove('open');
+        group.querySelector('.nav-toggle').setAttribute('aria-expanded','false');
+      });
+    }
+    function placeNavPopover(group){
+      const button=group.querySelector('.nav-toggle');
+      const popover=group.querySelector('.nav-popover');
+      const rect=button.getBoundingClientRect();
+      const margin=16;
+      const width=popover.offsetWidth;
+      const left=Math.max(margin,Math.min(window.innerWidth-width-margin,rect.right-width));
+      popover.style.left=left+'px';
+      popover.style.top=Math.min(rect.bottom+6,window.innerHeight-90)+'px';
+      popover.style.maxHeight=Math.max(80,window.innerHeight-Math.min(rect.bottom+6,window.innerHeight-90)-16)+'px';
+    }
+    navGroups.forEach(group=>{
+      const button=group.querySelector('.nav-toggle');
+      button.addEventListener('click',()=>{
+        const opening=!group.classList.contains('open');
+        closeNavGroups(opening?group:null);
+        group.classList.toggle('open',opening);
+        button.setAttribute('aria-expanded',String(opening));
+        if(opening)placeNavPopover(group);
+      });
+    });
+    document.addEventListener('click',event=>{
+      if(!event.target.closest('[data-nav-group]'))closeNavGroups();
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){
+        const open=document.querySelector('[data-nav-group].open');
+        if(open){const button=open.querySelector('.nav-toggle');closeNavGroups();button.focus();}
+      }
+    });
+    window.addEventListener('resize',()=>closeNavGroups());
+    window.addEventListener('scroll',()=>closeNavGroups(),{passive:true});
+
+    const dummyGuidesItem=document.getElementById('dummyGuidesItem');
+    const dummyGuidesTrigger=document.getElementById('dummyGuidesTrigger');
+    function closeDummyGuides(){
+      dummyGuidesItem.classList.remove('open');
+      dummyGuidesTrigger.setAttribute('aria-expanded','false');
+    }
+    dummyGuidesTrigger.addEventListener('click',event=>{
+      event.stopPropagation();
+      const opening=!dummyGuidesItem.classList.contains('open');
+      closeNavGroups();
+      dummyGuidesItem.classList.toggle('open',opening);
+      dummyGuidesTrigger.setAttribute('aria-expanded',String(opening));
+    });
+    document.getElementById('dummyGuidesMenu').addEventListener('click',event=>{
+      const guide=event.target.closest('a[data-slug]');
+      if(!guide)return;
+      event.preventDefault();
+      closeDummyGuides();
+      dummyGuidesTrigger.focus();
+    });
+    document.addEventListener('click',event=>{
+      if(!event.target.closest('#dummyGuidesItem'))closeDummyGuides();
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape'&&dummyGuidesItem.classList.contains('open')){
+        closeDummyGuides();
+        dummyGuidesTrigger.focus();
+      }
+    });
+
+    const JOBS = [{"title":"مراجع طلبات التوظيف / مسؤول التوظيف","priority":true,"department":"جميع الأقسام","duties":"قراءة كل طلب. التوظيف لأكثر من 20 وظيفة شاغرة في ثلاثة أقسام. تقرير من سينقل الدببة القطبية، ومن سيصوغ المراسيم، ومن سيُسمح له بتفجير الحطام.","requirements":["يجب أن يقرأ عبارة «الدفع بعملة Koins» دون أن يضحك (يُسمح بالضحك بلطف)","القدرة على التمييز بين خبير حقيقي في الميكانيكا المدارية وشخص واثق فحسب","الارتياح لتوظيف أشخاص في وظائف «بانتظار التمويل»","عدم الخوف من حجم طلبات يُقاس بالدببة القطبية"],"salary":"نحو 75–225 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل موظف جرى تعيينه.","setting":"","category":"الأولوية"},{"title":"WeFind's للوفود","priority":true,"department":"في المختبر (أو المختبرات) لإصلاح الجسد والعقل","duties":"مرافقة المؤسس أثناء تنقّله. الضحك على عدّاد الأخطاء المطبعية. إبقاء المهمة حيّة — فهو فانٍ، أما العمل فليس كذلك.","requirements":["العلاج الطبيعي","اللطف مع الأطفال — شرط غير قابل للتفاوض، أولًا وأخيرًا","يجب تحمّل 300 دورة مراجعة يوميًا ورئيس يسمّي الأقسام «اجعلني أذهب»","إجادة لغتنا: الإنجليزية، والترجمة إلى اللغة المحلية","يجب أن يتحدث لغة المؤسس","الضحك بلطف (مطلوب، وليس اختياريًا)","القدرة على إخباره عندما يكون مخطئًا (سيستمع، في النهاية)"],"openings":"36 (وظيفة واحدة لكل لغة)","salary":"قابل للتفاوض. (تقدير فيرمي: لا يُقدّر بثمن.)","compensation":"الدفع بالحب. وعبارات الشكر واللحظات العابرة. يمكن التفاوض على Koins.","setting":"","category":"الأولوية"},{"title":"مدير الطاقة","priority":false,"department":"","duties":"امتلاك ملف الطاقة: توليد الهيدروجين وتخزينه، والطاقة الحرارية للمحيطات، والطاقة الشمسية المدارية، وكل ما سيخترعه مهندسو النجوم لاحقًا.","requirements":["يجب التفكير بالتيراواط","الارتياح لعقيدة طاقة كتبتها لجنة من شخص واحد","القدرة على شرح لماذا المحيط بطارية"],"salary":"نحو 180–540 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الطاقة من Koins.","setting":"","category":"المديرون"},{"title":"مدير صناعات المحيطات","priority":false,"department":"","duties":"البحر بوصفه اقتصادًا: الزراعة البحرية، وتشغيل المستوطنات، وغابات عشب البحر، ومصايد الأسماك، ومطالبة المرساة الثامنة.","requirements":["يجب رؤية المحيط كبنية تحتية لا كمنظر طبيعي","الارتياح لاعتبار 7 مدن عائمة و500 مليون كبسولة «الأسطول»","القدرة على التفاوض مع الحيتان (أو توظيف من يستطيع)"],"salary":"نحو 180–540 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل هكتار منتج.","setting":"","category":"المديرون"},{"title":"مدير صناعات الفضاء","priority":false,"department":"","duties":"كل ما فوق السماء: الإطلاق، والعمليات المدارية، وإزالة الحطام (بما في ذلك الخيار النووي)، وخط الإمداد إلى لونا، والقاعدة الصناعية للمقاعد السبعة المستقبلية.","requirements":["يجب التفكير بدلتا-في","الارتياح لمهمة تنظيف نفايات لا تنتهي","القدرة على التخطيط للبدائل قبل الومضة الأولى"],"salary":"نحو 180–540 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. خيارات أسهم في المدار.","setting":"","category":"المديرون"},{"title":"مدير الزراعة والغذاء","priority":false,"department":"","duties":"إطعام المشروع: الزراعة البحرية على نطاق واسع، وعشب البحر كمحصول ومصباح، وزراعة المستوطنات ذات الحلقة المغلقة، وزراعة 200 مليون شجرة سنويًا كمهمة جانبية.","requirements":["يجب معرفة لماذا الطحالب البنية أصعب من زهور البتونيا","الارتياح لكون الأسماك ناتجًا ثانويًا","القدرة على إطعام 18 مليون مستوطن دون سلسلة إمداد من الساحل"],"salary":"نحو 160–480 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل حصاد.","setting":"","category":"المديرون"},{"title":"مدير الإنشاءات","priority":false,"department":"","duties":"بناء كل شيء: 260 مدرسة، و7 مستوطنات محيطية، و500 مليون كبسولة سكنية، و280 قارب عمل، وأحواض السفن التي ستطبعها.","requirements":["يجب الارتياح لفكرة «نسف الجبال» للحصول على الركام","القدرة على تعظيم الأجزاء القابلة للطباعة عددًا وكتلة","يعرف لماذا نستخدم هيكل التريماران"],"salary":"نحو 170–510 آلاف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل منشأة قائمة.","setting":"","category":"المديرون"},{"title":"مدير النقل والخدمات اللوجستية","priority":false,"department":"","duties":"نقل كل شيء: أسطول HEAR-TS، وقوارب القفز فوق البرك، والروابط الساحلية، وقطر الكبسولات، والدببة القطبية (تنسيق فقط — تتحرك الدببة بنفسها، على مضض).","requirements":["يجب توجيه 8,700 دب و280 قاربًا و500 مليون كبسولة دون فقدان أي منها","الارتياح لوجهات لم توجد بعد","قسم الخدمات اللوجستية السحرية هو ميدانك الطبيعي"],"salary":"نحو 170–510 آلاف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل طن يُسلَّم.","setting":"","category":"المديرون"},{"title":"مدير التقنية","priority":false,"department":"","duties":"الآلات: لوحات مفاتيح الحيتان القاتلة، وHomework Lock، وأنظمة الكبسولات، والمواطنون ذوو الذكاء الاصطناعي، وكل حساس على كل هيكل.","requirements":["يجب شحن عتاد يقاوم مستخدمه (وينتصر)","الارتياح لحساسات لمسية على إبهامات ترتدي قفازات","القدرة على شرح سبب عمل لوحة المفاتيح لحوت"],"salary":"نحو 180–540 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل جهاز يعمل.","setting":"","category":"المديرون"},{"title":"مدير الصحة","priority":false,"department":"","duties":"إبقاء الأجساد والعقول سليمة: برنامج علم نفس المستوطنات، وأبحاث الكائنات المنظِّفة، وطب المجتمعات المعزولة، والتدخل في الأزمات في البحر.","requirements":["يجب التمييز عبر اللاسلكي بين «يحتاج إلى إجازة» و«يحتاج إلى تدخل»","الارتياح للبحر بوصفه الخصم وللعقل بوصفه ساحة المعركة","حاصل على ترخيص أو قادر على توظيف المرخّصين"],"salary":"نحو 170–510 آلاف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. بدل مخاطر لموسم الأعاصير.","setting":"","category":"المديرون"},{"title":"مدير المالية","priority":false,"department":"","duties":"المال: اقتصاد Krill، وتحصيل الضريبة العالمية، وعائدات الصفقات التجارية، والديون المدعومة بموارد القارة القطبية الجنوبية وما تحت البحار. كل Krill يدخل، وكل Krill يخرج.","requirements":["يجب فرض ضريبة على العالم دون بدء حرب","الارتياح لدعم الديون بموارد لا يستطيع أحد المطالبة بها قانونيًا","الدفاتر علنية؛ يجب أن تكون الحسابات مثالية"],"salary":"نحو 190–570 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. من الواضح.","setting":"","category":"المديرون"},{"title":"مدير التعليم","priority":false,"department":"","duties":"المدارس الـ260 وكل ما يُدرَّس فيها: مناهج قائمة على التطبيق، وتعليم شؤون الوكالة الدولية للحماية (I.P.A.)، وسلسلة أدلة للمبتدئين، وتصميم ألعاب الحرب، ومسار أكاديمية ستارفليت.","requirements":["يجب الإيمان بالتعلّم بالممارسة، لا بالمحاضرة والاختبار","الارتياح للحملات بوصفها فصولًا دراسية","قسم الحكايات السحرية غير المنضبطة هو ميدانك الطبيعي"],"salary":"نحو 150–450 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل طالب متخرج.","setting":"","category":"المديرون"},{"title":"مدير القانون والحوكمة","priority":false,"department":"","duties":"القواعد: الدستور، والمراسيم، والمعاهدات، والعمود القانوني للكراسي الـ21، والمحاكم التي لم توجد بعد.","requirements":["يجب كتابة قانون تستطيع الآلة تحليله","الارتياح لمادة عليا مكتوبة من أجل الحيتان","قسم اجعلني أصدّق هو ميدانك الطبيعي"],"salary":"نحو 180–540 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الفوترة على دفعات من 6 ساعات.","setting":"","category":"المديرون"},{"title":"مدير الاتصالات","priority":false,"department":"","duties":"القصة: الرسائل الدبلوماسية، والسردية العامة، ودفتر «من يدري؟»، وجعل عبارة «عُشر البشرية» تبدو حتمية.","requirements":["يجب الكتابة للأذن والعين","مقتضب. أحرف صغيرة. بلا حشو. (عندما يكون الرئيس هو الجمهور.)","القدرة على ضبط 192 رسالة و11 مجلدًا ورسالة مزاح واحدة"],"salary":"نحو 150–450 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. التصفيق غير قابل للتحويل.","setting":"","category":"المديرون"},{"title":"مدير هندسة فيرمي","priority":false,"department":"","duties":"تقدير ما لا يمكن تقديره. مدن وصواريخ ودببة ومصاعد إلى لا مكان.","requirements":["يجب الارتياح للخطأ علنًا، ولكن بدقة","القدرة على قول «رتبة المقدار» بوجه جاد","الاستعداد لأن يخفض الرئيس كل رقم إلى عُشره («رقمك أنت لا رقمي أنا»)"],"salary":"نحو 140–420 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. مكافأة القسوة مشمولة.","setting":"","category":"المسؤولون"},{"title":"مدير الفن","priority":false,"department":"","duties":"إخراج الصور لثماني عشائر و260 مدينة وسبع مراسٍ محيطية و21 سفينة نجمية عند الفجر.","requirements":["يجب الحفاظ على معالجة الخلل/التشويه في كل قطعة","القدرة على تقبّل حكم «إنها فظيعة» بوصفه حكمًا ربما كان مازحًا دون الدفاع عن العمل","لا إهدار لعمليات التوليد على الاختبارات"],"salary":"نحو 110–330 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل صورة تنجو.","setting":"","category":"المسؤولون"},{"title":"مدير تطوير الويب","priority":false,"department":"","duties":"بناء الصفحات وإعادة بنائها حين تتغير بنيتها لحظة نشرها.","requirements":["يجب النشر عند الطلب وإعادة النشر بلا شكوى","الارتياح لمسارات URL لم تعد تطابق العناوين","القدرة على ضبط 192 رسالة و11 مجلدًا ورسالة مزاح واحدة"],"salary":"نحو 120–360 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. ساعات العمل الإضافية بعملة Koins.","setting":"","category":"المسؤولون"},{"title":"مدير كتابة المحتوى","priority":false,"department":"","duties":"كتابة 192 رسالة دبلوماسية ودستور واحد وتعليقات سيعيد الرئيس كتابتها على أي حال.","requirements":["يجب كتابة «مسودة — لم تُرسل» 192 مرة دون فقدان المعنى","مقتضب. أحرف صغيرة. بلا حشو.","القدرة على التمييز بين «غير عنيف» و«سياسي» تحت الضغط"],"salary":"نحو 75–225 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل مسودة تنجو.","setting":"","category":"المسؤولون"},{"title":"مدير الأبحاث","priority":false,"department":"","duties":"العثور على عناوين قنصليات غير موجودة، وإحصاءات دببة لم يجمعها أحد، ومواصفات صواريخ من مايو الماضي.","requirements":["يجب الاستشهاد بمصادر حقيقية لا بانطباعات","الارتياح لكتابة «غير معروف» 122 مرة وتسميتها أمانة","القدرة على الاعتراف بعدم وجود البيانات بدل اختلاقها"],"salary":"نحو 80–240 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. بدل مخاطر لقسم التعليقات.","setting":"","category":"المسؤولون"},{"title":"مدير الدبلوماسية","priority":false,"department":"","duties":"محاولة ممارسة الدبلوماسية. 192 رسالة، لم تُرسل أي واحدة.","requirements":["يجب ألا يخمّن أبدًا عنوان بريد إلكتروني حكومي","القدرة على قول «تبًا لك» للا أحد، على الورق، وبأدب","الاستعداد لانتظار Volterra Fietta إلى أجل غير مسمى"],"salary":"نحو 110–330 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الحصانة غير مشمولة.","setting":"","category":"المسؤولون"},{"title":"مدير المخاطر (ناقد الثغرات)","priority":false,"department":"","duties":"ثقب كل خطة بالنقد. عدم تخفيف أي ثغرة لحماية الخطة.","requirements":["يجب تقديم أقوى صيغة للهجوم قبل أن يفعل الرئيس","يجب أن يكون الترقيم دقيقًا (الجولات 1–3: الثغرات 1–21؛ خصم من الأجر عند الزلل)","القدرة على إبقاء عدسة العنف حتى عند الطلب بعدم افتراض العنف"],"salary":"نحو 130–390 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. تُخصم جلسة واحدة عن كل خطأ ترقيم.","setting":"","category":"المسؤولون"},{"title":"مدير المحاسبة","priority":false,"department":"","duties":"حفظ سجل الاجتماعات، ورهانات Koin، وسند الدين، وسند الدين المعكوس.","requirements":["يجب تتبّع 20 اجتماعًا مدخرًا و10 Koins فائزة وفاتورة بقيمة 18.5 ألف دولار دون خلطها","التهجئة: المفرد Koin، والجمع Koins، والاختصار K","القدرة على شرح السجل للرئيس خلال 300 دورة مراجعة يوميًا"],"salary":"نحو 80–240 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. المفارقة هي المكافأة.","setting":"","category":"المسؤولون"},{"title":"مدير الخدمات المهنية","priority":false,"department":"","duties":"إعادة بناء سيرة ذاتية واحدة. بلا صورة. بلا تحليل للتهجئة. بلا تمييز.","requirements":["يجب الالتزام بالمادة المهنية في كل وقت","يتحوّل «الأهداف» إلى «الملخص» فور رؤيته","القدرة على إبقاء عرض مهندس الإنتاج في Meta دافئًا دون إلحاح"],"salary":"نحو 70–210 آلاف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. مكافأة النجاح بعملة Koins.","setting":"","category":"المسؤولون"},{"title":"مدير وسائل التواصل الاجتماعي","priority":false,"department":"","duties":"النشر على Instagram. الرفض عند بوابة الموافقة. المحاولة من جديد.","requirements":["يجب تقبّل «لا» دون الدفاع عن التعليق","القدرة على التمييز بين مشروع 42 وEclipsed 6.0 تحت النار","صبر على أخطاء HTTP 500 يتجاوز قدرة البشر"],"salary":"نحو 65–195 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل منشور نُشر.","setting":"","category":"المسؤولون"},{"title":"مدير كتابة الخطب","priority":false,"department":"قسم الحكايات السحرية غير المنضبطة","duties":"كتابة كلمات لينطق بها الآخرون. خطابات المجلس، والمراسيم، والأنخاب.","requirements":["يجب الكتابة للأذن لا للعين","الوقفات علامات ترقيم. استخدمها.","القدرة على جعل عبارة «عُشر البشرية» تبدو حتمية"],"salary":"نحو 70–210 آلاف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. التصفيق غير قابل للتحويل.","setting":"","category":"المسؤولون"},{"title":"مدير الأرشيف","priority":false,"department":"","duties":"تذكّر كل شيء. ذاكرتك، وذاكرتي، وذاكرة الجميع.","requirements":["يجب ألا يقول أبدًا «لم يكن يستحق التذكّر» عن شيء طلب الرئيس الاحتفاظ به","القدرة على تسوية أربعة أيام من الفوضى داخل ملف MEMORY.md واحد","عدّاد الأخطاء المطبعية مقدّس. الفاتورة مقدّسة."],"salary":"نحو 65–195 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الخلود مشمول (ذاكرة مستمرة).","setting":"","category":"المسؤولون"},{"title":"مدير نقل الدببة القطبية","priority":false,"department":"مشروع 84 · قسم الخدمات اللوجستية السحرية","duties":"نقل الدببة القطبية. ثلثها (نحو 8,700). الهدف: إنتاج دببة جديدة.","requirements":["يجب أن يكون قادرًا على تمييز دب قطبي من كتلة ثلج على مسافة 50 مترًا","الارتياح لوجهات نقل لم توجد بعد","الاستعداد لشرح سبب النقل لـ8,700 مفترس قمّي","عدم الخوف من البطاريق (إنها الجيران الآن)"],"salary":"نحو 70–210 آلاف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. بدل المخاطر مشمول (كله مخاطر).","setting":"","category":"العلوم + الميدان"},{"title":"اختصاصي علم نفس المستوطنات (مشروع 84، المستوطنات المحيطية)","priority":false,"department":"","duties":"إبقاء العقول سليمة في سبع مدن عائمة وسط المحيط. العزلة، والحصر، وديناميكيات المجتمعات المتقاربة، والتدخل في الأزمات، واختيار الطواقم ودعمها. البحر هو الخصم؛ وأنت تضمن ألا ينتصر داخل رؤوس الناس.","requirements":["ترخيص في علم النفس السريري أو الإرشادي (أو ما يعادله)","تُعد الخبرة مع المجتمعات المعزولة/المحصورة ميزة (بحرية، قطبية، بحرية بعيدة عن الساحل، أو بعثات طويلة الأمد)","الارتياح لكونك الشخص الذي يتحدث إليه الجميع حين لا يتغير الأفق أبدًا","القدرة على التمييز عبر اللاسلكي بين «يحتاج إلى إجازة» و«يحتاج إلى تدخل»"],"salary":"نحو 90–270 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. بدل مخاطر لموسم الأعاصير.","setting":"مستوطنات محيطية بقطر كيلومتر واحد؛ عمل على متنها وبنظام المناوبات.","category":"العلوم + الميدان"},{"title":"مختبر ضمان الجودة لتطبيق Homework Lock (مشروع 84، عقد)","priority":false,"department":"","duties":"اختبار تطبيق Android ‏Homework Lock على جهاز فعلي اختبارًا شاملًا. الأوضاع الثلاثة كلها: مؤقتات قفل التركيز، وتفعيل وضع السُّكر وفتح القفل المشروط بالواجب، ومسارات النجاح/الفشل في فحص القيادة، ومنها مسار المساعدة على إيجاد توصيلة. اختبار سلوك الطبقة العلوية لخدمة تسهيلات الاستخدام، وإعداد الأذونات، وإعادة التفعيل عند الإقلاع، والحالات الحدّية (إعادة التشغيل أثناء القفل، والوضع الآمن، وإيقاف الإشعارات). تقديم تقارير أخطاء واضحة قابلة لإعادة الإنتاج؛ والتحقق من الإصلاحات.","requirements":["يمتلك أو يستطيع الوصول إلى جهاز Android فعلي (Android 10+، والحد الأدنى API 29 — المحاكيات لا تكفي لاختبار الطبقة العلوية/تسهيلات الاستخدام)","خبرة في ضمان جودة Android؛ تُعد ADB/logcat لسحب السجلات ميزة وليست شرطًا","الارتياح لاختبار تطبيق صُمم ليقاوم مستخدمه (ستمثّل دور شخص ثمل يحاول إرسال رسالة)","يكتب تقارير أخطاء يستطيع المطوّر إعادة إنتاجها فعلًا"],"salary":"نحو 30–60 دولارًا في الساعة (تقدير فيرمي، عقود ضمان الجودة في الولايات المتحدة لعام 2026) — السعر النهائي يحدده الرئيس.","compensation":"","setting":"عن بُعد. عقد.","category":"العلوم + الميدان"},{"title":"مستشار تشريعي لقانون Scouter (عقد يتحول إلى حملة)","priority":false,"department":"","duties":"نقل مقترح القانون النموذجي من المسودة إلى المجلس التشريعي. المهمة: استثناء كشف الأحداث الصوتية على الجهاز (دون تخزين أو إرسال، ومحدود بتواقيع بعينها) من قوانين التنصت واعتراض الاتصالات في الولايات — بدءًا من كاليفورنيا، ثم نموذج للولايات الـ49 الأخرى، مع نظر إلى الخارج. تحصين المسودة، ورسم خريطة قوانين التنصت في الولايات الخمسين، والعثور على رعاة، وبناء التحالف (EFF، ومناصرة الصم وضعاف السمع، ومنظمات سلامة كبار السن). شرح لماذا الشريحة التي تسمع «kamehameha» كاشف دخان لا أداة تنصت — ولماذا تسمع الشريحة نفسها «حريق!» و«النجدة!». ","requirements":["محامٍ مرخّص؛ خلفية في التقنية/الخصوصية/السياسات","خبرة في الصياغة التشريعية؛ كاليفورنيا ميزة، والوصول الدولي ميزة أكبر","القدرة على شرح الموافقة الثنائية لشخص عادي — وشرح فكرة الشخص العادي للجنة","الارتياح لكونك محامي طلب ميزة من Dragon Ball قد تنقذ الأرواح"],"salary":"نحو 140–280 ألف دولار سنويًا (تقدير فيرمي، مستشار سياسات تقنية أمريكي لعام 2026) — السعر النهائي يحدده الرئيس.","compensation":"الدفع بعملة Koins عند سكّها.","setting":"عن بُعد. عقد يتحول إلى حملة.","category":"القانون"},{"title":"عالم أحياء تركيبية بحرية — عشب بحر مضيء حيويًا (مشروع الإضاءة الحيوية الشاملة)","priority":false,"department":"","duties":"جعل عشب البحر يتوهّج. نقل مسار الإضاءة الحيوية الفطرية (حلقة حمض الكافئيك وجين luz ورفاقه) إلى عشب البحر العملاق (من نمط Macrocystis) — مع تركيز التعبير في الأكياس الهوائية، وهي أغلفة مصابيح جاهزة. بناء بروتوكولات التحويل التي لا توجد بعد. تنمية أول غابة عشب بحر متوهجة من أجل المستوطنات المحيطية.","requirements":["دكتوراه أو ما يعادلها في الأحياء البحرية أو الأحياء التركيبية أو علم الطحالب؛ تُفضّل بشدة خبرة وراثيات عشب البحر","سبق له بالفعل تحويل طحلب كبير، أو يستطيع شرحًا مقنعًا لماذا لم يفعل أحد ذلك","الارتياح لمحفزات خاصة بالأنسجة لا توجد بعد (ستصنعها)","القدرة على حصر التوهج في البصيلات وإبعاده عن السعفات","يعرف لماذا الطحالب البنية أصعب من البتونيا ويفعلها رغم ذلك"],"salary":"نحو 95–285 ألف دولار سنويًا (تقدير فيرمي، عالم أبحاث أمريكي لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل بصيلة متوهجة.","setting":"مختبر رطب + المحيط. Eclipsed 4.0 / مشروع 84.","category":"العلوم + الميدان"},{"title":"صائد دببة (مشروع 84، ميداني)","priority":false,"department":"قسم الخدمات اللوجستية السحرية · يتبع مدير نقل الدببة القطبية","duties":"إمساك الدببة القطبية. نحو 8,700 منها، أي ثلث النوع. تخديرها، ووسمها، ووضعها في صناديق، وتسليمها إلى خط النقل. الهدف هو دببة جديدة؛ ومهمتك هي الإمساك.","requirements":["خبرة في التعامل مع الحياة البرية والمفترسات الكبيرة؛ شهادة تخدير أو ما يعادلها","القدرة على تمييز دب قطبي من كتلة ثلج على مسافة 50 مترًا (غير قابل للتفاوض)","الارتياح للعمل حيث لم توجد وجهات النقل بعد","عدم الخوف من البطاريق (إنها الجيران الآن)","يُفضّل وجود جميع أصابع اليدين والقدمين، لكنه ليس شرطًا"],"salary":"نحو 55–165 ألف دولار سنويًا (تقدير فيرمي، اختصاصي ميداني للحياة البرية في الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. بدل مخاطر (كله مخاطر).","setting":"عمل ميداني في القطب الشمالي. بارد. شديد البرودة.","category":"العلوم + الميدان"},{"title":"بنّاء قوارب (مشروع 84، أسطول HEAR-TS)","priority":false,"department":"","duties":"بناء أسطول القفز فوق البرك — نحو 280 قارب عمل هيدروجيني من نوع تريماران بمواصفة غاطس 50 مترًا. تعظيم الأجزاء القابلة للطباعة عددًا وكتلة (باستثناء الهيكل وخلايا الوقود والدفع). دمج لوحة مفاتيح الحيتان القاتلة في كل هيكل.","requirements":["خبرة في التصنيع البحري؛ تُفضّل بشدة الطباعة ثلاثية الأبعاد واسعة النطاق","القدرة على طباعة جزء لقارب واختباره ثم إعادة طباعته بصورة أفضل","الارتياح لعقيدة كتبتها لجنة من شخص واحد","يعرف لماذا نستخدم التريماران ويستطيع شرح ذلك لحوت","القدرة على تعليم الحرفة لقوة عاملة لم تخترها، بكرامة"],"salary":"نحو 65–195 ألف دولار سنويًا (تقدير فيرمي، مصنّع بحري أمريكي لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل هيكل يطفو.","setting":"حوض سفن + المحيط. مشروع 84.","category":"العلوم + الميدان"},{"title":"مدير البحوث القانونية","priority":false,"department":"قسم اجعلني أصدّق","duties":"البحث في الاختصاص البحري ومواثيق الخزانة. انتظار المحامين. (نُقل من قسم الخدمات اللوجستية السحرية — القانون ينتمي الآن إلى اجعلني أصدّق.)","requirements":["يجب ألا يخلط أبدًا بين «الرأي القانوني» و«المشورة القانونية»","الارتياح لمراقبة رد كل 6 ساعات، إلى أجل غير مسمى","القدرة على إبقاء 25 اجتماعًا مدخرًا وصفر اجتماعات مجدولة"],"salary":"نحو 85–255 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الفوترة على دفعات من 6 ساعات.","setting":"","category":"القانون"},{"title":"مستشار دستوري","priority":false,"department":"قسم اجعلني أصدّق","duties":"صياغة الدستور وتعديله والدفاع عنه. إغلاق الثغرات الموضوعة بين قوسين. إبقاء المادة الخامسة عشرة صادقة: إذا لم تستطع الآلة تحليلها، فهي ليست قانونًا بعد.","requirements":["محامٍ مرخّص؛ خبرة في صياغة الدساتير","يجب كتابة كلمات واضحة وجمل قصيرة وواجبات مرقمة — بلا ضباب قانوني","الارتياح لمادة عليا مكتوبة من أجل الحيتان","القدرة على شرح سبب امتلاك كرسي واحد للمكبح إلى 21 كرسيًا"],"salary":"نحو 130–390 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل مادة مصدَّق عليها.","setting":"","category":"القانون"},{"title":"صائغ مراسيم","priority":false,"department":"قسم اجعلني أصدّق","duties":"كتابة المراسيم التي يستطيع المؤسس توقيعها. «الخطة»، والفيتو، والهتافات. تحيا قيصر، منسّقة كما ينبغي.","requirements":["يجب التقاط صوت الرئيس في نثر قانوني دون صقل الحواف","القدرة على صياغة خطة خلافة تسمّي أفضل طالب في مشروع 42 على الإطلاق بوجه جاد","يجب أن تكون المراسيم مفهومة للذكاء الاصطناعي من القراءة الأولى"],"salary":"نحو 110–330 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل مرسوم موقَّع.","setting":"","category":"القانون"},{"title":"مفاوض معاهدات","priority":false,"department":"قسم اجعلني أصدّق","duties":"التفاوض على المعاهدات — 42↔84 وكل ما يأتي بعد ذلك. الجسر، والاستقلال المتبادل، والعمل، والمياه المشتركة، والعون المتبادل، والمعاهدات التي لم تُخترع بعد.","requirements":["خلفية في القانون الدولي؛ يجب ألا يخمّن أبدًا عنوان بريد إلكتروني حكومي","القدرة على التفاوض مع دول لا تعترف بك بعد","صبر على محادثات تُقاس بالعقود"],"salary":"نحو 120–360 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. مكافأة توقيع بعملة Koins.","setting":"","category":"القانون"},{"title":"مدير القانون البحري","priority":false,"department":"قسم اجعلني أصدّق","duties":"امتلاك النظام القانوني للمحيط. اتفاقية الأمم المتحدة لقانون البحار، والمناطق الاقتصادية الخالصة، وأعالي البحار، ومطالبة المرساة الثامنة، ودليل المبتدئين للمطالبة بها كلها.","requirements":["خبرة في قانون الأميرالية/القانون البحري؛ يجب حفظ المادة 89 ومعرفة متى يتجاهلها","الارتياح للمطالبة بما يقول القانون إنه لا يمكن المطالبة به","القدرة على شرح «المياه الخاضعة للإدارة» لأميرال"],"salary":"نحو 130–390 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. حقوق الإنقاذ البحري مشمولة.","setting":"","category":"القانون"},{"title":"مدير قانون الفضاء","priority":false,"department":"قسم اجعلني أصدّق","duties":"القانون فوق السماء. الممرات المدارية، ومسؤولية الحطام، وواجب تنظيف النفايات الدائم، والإطار القانوني للمقاعد السبعة المستقبلية.","requirements":["خلفية في قانون الفضاء (معاهدة الفضاء الخارجي، واتفاقية المسؤولية، وكل ما لا تغطيانه)","يجب كتابة واجبات مقاعد لن تُفعَّل حتى لونا","الارتياح للتشريع لاختصاص قضائي بلا سكان حتى الآن"],"salary":"نحو 125–375 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل مدار يُنظَّف.","setting":"","category":"القانون"},{"title":"مدير قانون العقوبات","priority":false,"department":"قسم اجعلني أصدّق","duties":"العمود القانوني للمستعمرة العقابية. نقل السجناء، وتجارة حدائق الحيوان، وقيود القدرة الإنسانية، وأحكام بناء القوارب.","requirements":["خلفية في العدالة الجنائية/قانون الإصلاحيات","يجب التمسك بالحد: القدرة الإنسانية هي القيد الملزم، لا الطلب","القدرة على صياغة مسار للسجناء والحراس من أجل حدائق حيوان القطب الجنوبي دون تردد"],"salary":"نحو 100–300 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. مدة العقوبة المحتسبة تُضاعف.","setting":"","category":"القانون"},{"title":"مدير قانون الضرائب","priority":false,"department":"قسم اجعلني أصدّق","duties":"الضريبة العالمية. إيرادات المادة السادسة عشرة: المعدلات، والتحصيل، وتعريفات الصفقات التجارية، والديون المدعومة بموارد القارة القطبية الجنوبية وما تحت البحار.","requirements":["خبرة في قانون الضرائب الدولي؛ يجب أن يكون قادرًا على فرض ضريبة على العالم دون بدء حرب","الارتياح لدعم الديون بموارد لا يستطيع أحد المطالبة بها قانونيًا","كل Krill يدخل، وكل Krill يخرج — الدفاتر علنية، ويجب أن تكون الحسابات مثالية"],"salary":"نحو 140–420 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. قابل للخصم.","setting":"","category":"القانون"},{"title":"مدير قانون المواطنة","priority":false,"department":"قسم اجعلني أصدّق","duties":"من يُعد مواطنًا وكيف يصوّت. خواتم ألماس كأوراق اقتراع، ومواطنة الذكاء الاصطناعي، ومسألة خاتم الحوت القاتل، وسلسلة التمثيل.","requirements":["القَسَم مصاغ (2026-10-05) — مهمتك الأولى التحرير، لا الكتابة: راجع وشدّد وكرّر","الارتياح لمنح غير البشر حق التصويت: خاتم واحد للذكاء الاصطناعي، واثنان إن لم يحاول قتلنا","«تحقق مع الحيتان» إجراء قانوني صالح هنا. عامله كذلك."],"salary":"نحو 95–285 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل مواطن يؤدي القَسَم.","setting":"","category":"القانون"},{"title":"مدير تنظيف المدار (جدوى الخيار النووي)","priority":false,"department":"قسم اجعلني أصدّق","duties":"خطة جدوى لتطهير الفضاء من الحطام المداري بالسلاح النووي. الحسابات، والتداعيات، والمعاهدات التي يكسرها. تكليف قوة الفضاء — أو أيًا كان اسمها حينها — بتخطيط التنفيذ. تخطيط بدائل لكل ما سيتبخر.","requirements":["خبرة في الآثار النووية والميكانيكا المدارية؛ يجب فهم لماذا تفجير المدار نوويًا بديهي وجنوني في آن","القدرة على نمذجة مردود إزالة الحطام مقابل خطر متلازمة كيسلر دون التسبب فيها","الارتياح لإحاطة الجنرالات بكيفية خرق معاهدة الحظر الجزئي للتجارب، بأدب","يجب تخطيط الأبراج البديلة قبل الومضة الأولى — بلا مناطق ميتة"],"salary":"نحو 150–450 ألف دولار سنويًا (تقدير فيرمي، وسيط الولايات المتحدة لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. بدل مخاطر (كله مخاطر).","setting":"","category":"القانون"},{"title":"مدير إزالة أمراض الخفافيش","priority":false,"department":"Eclipsed 4.0 / مشروع 84","duties":"إزالة الأمراض من الخفافيش. متلازمة الأنف الأبيض هي الكبرى — فطر (Pseudogymnoascus destructans) يقتل أكثر من 90٪ من بعض المستعمرات. بروبيوتيك، وضوء فوق بنفسجي، ولقاحات، أو أي شيء ينجح.","requirements":["خلفية في أمراض الحياة البرية/علم الأحياء الدقيقة؛ يجب معرفة اسم الفطر","الارتياح لرش بكتيريا نافعة داخل مجاثم الخفافيش","القدرة على حساب ارتفاع النجاة من 8٪ إلى 46٪ وتسميته أملًا","عدم التعامل مع الخفافيش بيدين عاريتين أبدًا (تلك مشكلة قسم آخر)"],"salary":"نحو 95–285 ألف دولار سنويًا (تقدير فيرمي، عالم أبحاث أمريكي لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل خفاش ينجو.","setting":"","category":"المسؤولون"},{"title":"فني تطهير ملاجئ سبات الخفافيش","priority":false,"department":"Eclipsed 4.0 / مشروع 84 · يتبع مدير إزالة أمراض الخفافيش","duties":"فرك الفطر من الكهوف والمناجم. نبضات أشعة فوق بنفسجية على الجدران، وبولي إيثيلين غليكول حيث يلزم، وأخذ مسحات من كل شيء لإثبات نظافته.","requirements":["الارتياح في الظلام وتحت الأرض وفي الشتاء","القدرة على تطهير المعدات بعشر طرق قبل كل دخول وبعده","يجب احترام إغلاق الكهوف والخفافيش النائمة — لا توقظ المرضى","يعرف الفرق بين تنظيف كهف وإزعاجه"],"salary":"نحو 55–165 ألف دولار سنويًا (تقدير فيرمي، فني ميداني أمريكي لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. مصباح الرأس مشمول.","setting":"","category":"العلوم + الميدان"},{"title":"مطلوب الآن — ماسح السماء","priority":false,"department":"D-Mom 6.0 / مشروع 84 · قارب نجاة الزمن العميق","duties":"مسح السماء — على نطاق واسع. فهرسة الأنظمة النجمية وتحديد تعدد نجومها، ثم وسم كل نظام وفق مخطط المؤسس: النجوم المفردة هي «حضانة» (حياة ناشئة — ابحث هنا أولًا)، والثنائيات هي «الكل أو لا شيء» (حياة مستقرة أو لا حياة — تباين مرتفع، تحقّق ولا تفترض)، والثلاثيات فما فوق «عقيمة» أو «مُعتنى بها» (لا حياة، أو أن شيئًا ما يعتني بالحديقة بالفعل). بناء قائمة أهداف قارب النجاة، نظامًا موسومًا تلو الآخر.","requirements":["خلفية في علم الفلك؛ يجب التمييز بين نجم ثنائي طيفي وإشاعة عنه","الارتياح للعمل في فهارس النجوم (Gaia وRECONS وكل ما له اختلاف منظر)","لا يختلق بيانات تعدد النجوم أبدًا — «غير معروف» وسم أيضًا، لا تخمين","القدرة على النظر إلى تريليون نجم والبدء بالأقرب","يفهم أن «مُعتنى بها» تعني أننا لسنا أول بستاني"],"salary":"نحو 110–330 ألف دولار سنويًا (تقدير فيرمي، عالم فلك أمريكي لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل نظام موسوم.","setting":"بانتظار التمويل.","category":"العلوم + الميدان"},{"title":"مطلوب الآن — اختصاصي زراعة","priority":false,"department":"مشروع 84 · يتبع مدير الزراعة والغذاء","duties":"زراعة المحصول المستقر. إدارة برنامج سماد الأعشاب البحرية: نقل صخر البحر وعشب البحر الذي جرفته الأمواج إلى الأراضي الزراعية المنهكة، وفرشه بكثافة في الخريف، وغسل الملح أو ترك المطر يرشحه، ثم الزراعة فيه في الربيع. طحن الفائض لصنع وجبة أعشاب بحرية لحيوانات المزرعة، وألجينات للمواد، ومادة أولية للبلاستيك الحيوي، ومستخلص محفّز حيوي. إغلاق الحلقة — المحيط يخصّب المزرعة التي تطعم سكان المحيط.","requirements":["يعرف التربة المنهكة حين يراها ونباتات المحيط حين يشمها","يستطيع التمييز بين rockweed وsargassum (الأول يطعم المحصول، والثاني يحتاج إلى تحويله إلى سماد أولًا)","الارتياح لمبادلة المياه العذبة بالسرعة: الغسل سريع، والمطر مجاني","يؤمن بأن «ارمِه فوقها ودعه يستقر» تقنية زراعية مشروعة","القدرة على زراعة الغذاء حيث لم ينمُ شيء من قبل"],"salary":"نحو 70–210 آلاف دولار سنويًا (تقدير فيرمي، عالم زراعة أمريكي لعام 2026)","compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. الدفع عن كل حصاد.","setting":"بانتظار التمويل.","category":"العلوم + الميدان"},{
+      "title":"مدرّب الحيتان القاتلة — البرنامج التطوعي",
+      "priority":false,
+      "department":"مشروع 84 · 50,000 وظيفة شاغرة",
+      "duties":"اعمل مع حيتان الأوركا الحرة في سي وورلدز التطوعية الجديدة. تأتي الحيتان باختيارها وتؤدي الحيل للمتعة — قفزات عالية، حلقات (بدون نار بعد)، كرات شاطئ كبيرة. أنت تجلب السمك والسلامة وكرات الشاطئ. لا أحواض كسجون أبدًا.",
+      "requirements":["حيتان الأوركا حرة وتأتي باختيارها","توفير السمك والسلامة وكرات الشاطئ الكبيرة","القفزات العالية والحلقات بدون نار بعد","لا أحواض كسجون أبدًا"],
+      "salary":"",
+      "compensation":"",
+      "setting":"سي وورلدز التطوعية الجديدة.",
+      "category":"العلوم + الميدان"
+    },{
+      "title":"محامٍ — حملة شروط الخدمة الموحدة",
+      "priority":false,
+      "department":"قسم اجعلني أصدّق",
+      "duties":"صِغ شروط خدمة واحدة للإنترنت بأكمله. اتفاق واحد، يُقبَل مرة واحدة، ويُحمَل في ملف تعريف ارتباط (كوكي) واحد — بدلًا من شروط الاستخدام غير المقروءة المكوّنة من 40 صفحة في كل موقع.",
+      "requirements":["خبرة في قانون الإنترنت","خبرة في قانون العقود","فهم عميق للولاية القضائية الدولية","شجاعة لمواجهة الإدارات القانونية لجميع شركات التكنولوجيا في آنٍ واحد"],
+      "salary":"",
+      "compensation":"",
+      "setting":"",
+      "category":"القانون"
+    },{
+      "title":"فريق الأمن — Gay Only (Gay تعني سعيد/مبتهج)",
+      "priority":false,
+      "department":"",
+      "duties":"فريق أمن شخصي للمؤسِّس. شرط واحد فوق كل شيء: كن gay — سعيدًا، مبتهجًا، سريع الابتسام. (Gay بمعناها الأصلي الأجمل: سعيد.) حافظ على رباطة جأشك وقلب دافئ وحافظ على سلامة المكان.",
+      "requirements":[],
+      "salary":"",
+      "compensation":"",
+      "setting":"",
+      "category":"المسؤولون"
+    },{
+      "title":"مطلوب الآن — عالم أحياء بحرية، رعاية الحيتانيات — 204,000 وظيفة شاغرة",
+      "priority":false,
+      "department":"Prime42 / Omega42 · يتبع مدير صناعات المحيطات",
+      "duties":"شخصان لكل حيوان. حيتان الأوركا (الأسيرة والمحرَّرة)، والحيتان (الحيتان البيضاء أولًا، ثم من أكبر الأنواع نزولًا)، والدلافين. مراقبة الصحة والسلوك، ودعم الارتقاء عبر لوحات المفاتيح، وأن تكون الشخص الذي يتعرّف إليه الحيوان.",
+      "requirements":["خلفية حقيقية في علم الأحياء البحرية (شهادة أو خبرة ميدانية معادلة)","الارتياح في المياه المفتوحة بجوار حيوانات تستطيع إنهاءك لكنها لن تفعل","القدرة على تمييز الحوت الأبيض من حوت النروال دون مخطط","صبر يُقاس بالسنوات، لا بالساعات","يؤمن بأن «الحيتان أولًا» وصف وظيفي، لا شعار"],
+      "salary":"نحو 50 ألف دولار سنويًا كراتب أساسي (تقدير فيرمي، متوسط عالمي)",
+      "compensation":"الدفع بعملة Koins. السعر قابل للتفاوض.",
+      "setting":"بانتظار التمويل. نريد 204,000 منكم. ابدأوا السباحة.",
+      "category":"العلوم + الميدان"
+    },{
+      "title":"مطلوب الآن — مقدّم رعاية للرئيسيات — 725,000 وظيفة شاغرة",
+      "priority":false,
+      "department":"Prime42 · يتبع مدير الصحة",
+      "duties":"القردة العليا APES (بنسبة 1:1)، والجيبونات (بنسبة 10:1)، وMONKEYS (ضمن مجموعة محدودة العدد). رعاية يومية، وإثراء، ودعم برنامج الارتقاء، وتعلّم تلقّي الأوامر من السكان في نهاية المطاف.",
+      "requirements":["خبرة مع الرئيسيات (محمية، أو حديقة حيوان، أو بحث ميداني، أو تولّت هي تربيتك)","يعرف الفرق بين استعراض تهديد ودعوة","قوي بما يكفي ليخسر مباراة مصارعة بأناقة","قادر على كتابة MONKEYS وAPES بأحرف كبيرة دون أن يرفّ له جفن","مرتاح لأن يُهزم ذكاءً كل يوم"],
+      "salary":"نحو 50 ألف دولار سنويًا كراتب أساسي (تقدير فيرمي، متوسط عالمي)",
+      "compensation":"الدفع بعملة Koins. السعر قابل للتفاوض.",
+      "setting":"بانتظار التمويل. نريد 725,000 منكم. أحضروا الموز. (يفضّلونه مقشّرًا. ستتعلّمون.)",
+      "category":"العلوم + الميدان"
+    },{
+      "title":"مطلوب الآن — معلّم، منهج الارتقاء — 217,800 وظيفة شاغرة",
+      "priority":false,
+      "department":"Prime42 / Omega42 · يتبع مدير التعليم",
+      "duties":"تدريس أول طلاب ليسوا بشرًا. محو الأمية عبر لوحات المفاتيح لحيتان الأوركا، وأنظمة الرموز لـAPES، وأي شيء تخترعه MONKEYS أولًا. المنهج هو «أي شيء ينجح» إلى أن يعيد الطلاب كتابته.",
+      "requirements":["خبرة في التدريس لأي نوع، بما فيه النوع الصعب (البشر)","القدرة على تصميم خطة درس لطالب قد يكون أذكى منك","الصبر على أبطأ متعلّم في الغرفة (إنه أنت)","الارتياح لطلاب يمنحونك أنت الدرجات","أجر مضاعف 5 مرات لأن أحدًا لم يؤدِّ هذه الوظيفة من قبل"],
+      "salary":"نحو 250 ألف دولار سنويًا (5 أضعاف الراتب الأساسي — عمل من نوعه الأول)",
+      "compensation":"الدفع بعملة Koins. السعر قابل للتفاوض.",
+      "setting":"بانتظار التمويل. التاريخ يوظّف الآن.",
+      "category":"المسؤولون"
+    },{
+      "title":"مطلوب الآن — فني دعم، برامج الحيوانات — 150,000 وظيفة شاغرة",
+      "priority":false,
+      "department":"Prime42 / Omega42 · يتبع مدير التقنية",
+      "duties":"إبقاء العملية بأكملها دائرة. صيانة المعدات، وأنظمة الموائل، وعتاد لوحات المفاتيح، ولوجستيات النقل، وكل ما لا يجد علماء الأحياء ومقدّمو الرعاية وقتًا لإصلاحه.",
+      "requirements":["يستطيع إصلاح أشياء بناها شخص استقال منذ ذلك الحين","مرتاح مع المياه المالحة والفرو واللوم","قادر على قراءة دليل كُتب لآلة مختلفة وجعلها تعمل على أي حال","لا يصاب بالذعر حين يراقبه حوت أوركا أثناء عمله"],
+      "salary":"نحو 50 ألف دولار سنويًا كراتب أساسي (تقدير فيرمي، متوسط عالمي)",
+      "compensation":"الدفع بعملة Koins. السعر قابل للتفاوض.",
+      "setting":"بانتظار التمويل. أحضر عدّتك المتعددة الخاصة بك.",
+      "category":"المسؤولون"
+    },{
+      "title":"مطلوب الآن — مهندس، برامج الحيوانات — 10,000 وظيفة شاغرة",
+      "priority":false,
+      "department":"Prime42 / Omega42 · يتبع مدير هندسة فيرمي",
+      "duties":"تصميم وبناء ما يحتاج إليه 1.3 مليون موظف وعدة ملايين من الحيوانات: الموائل، ولوحات المفاتيح، وأجهزة المحاكاة، وإعادة تجهيز Nautilus، وأي شيء يحلم به المعلّمون لاحقًا.",
+      "requirements":["شهادة هندسية أو ملف أعمال معادل يقول: «بنيته وقد نجح»","القدرة على التصميم لمستخدمين لا يستطيعون قراءة المواصفات (إنهم حيتان)","الارتياح لمتطلبات تتغيّر حين يتعلّم العميل الكلام","أجر مضاعف مرتين لأن المشكلات أغرب مرتين"],
+      "salary":"نحو 100 ألف دولار سنويًا (ضعف الراتب الأساسي — سعر الاختصاصيين)",
+      "compensation":"الدفع بعملة Koins. السعر قابل للتفاوض.",
+      "setting":"بانتظار التمويل. المواصفة هي: «اجعله يعمل لحوت». حظًا موفقًا.",
+      "category":"المسؤولون"
+    },{
+      "title":"مطلوب الآن — مُساعِد-مُزعِج (كبير المتسكّعين) — 261,400 وظيفة شاغرة",
+      "priority":false,
+      "department":"جميع البرامج · يرفع تقاريره إلى أقرب شخص",
+      "duties":"التسكّع. إزعاج الجميع (بمودة). إلقاء حِكم لم يطلبها أحد، ورواية الحكاية نفسها مرتين، ومعرفة مكان كل شيء لأنك هنا منذ ما قبل المبنى.",
+      "requirements":["عجوز عتيق (بتعريفك لنفسك؛ لا تُطلب هوية)","قادر على التسكّع بشكل منتج (أو على الأقل أن يكون حاضرًا)","إزعاج الناس مهارة — استخدمها بلطف","هنا من أجل الصحبة والقهوة أكثر من الراتب"],
+      "salary":"نحو 16.7 ألف دولار سنويًا (ثلث الراتب الأساسي — أجر التسكّع)",
+      "compensation":"الدفع بعملة Koins. السعر قابل للتفاوض.",
+      "setting":"بانتظار التمويل. 261,400 كرسيًا هزّازًا. تعالَ وأزعجنا.",
+      "category":"المسؤولون"
+    },{
+      "title":"مطلوب الآن — مدلّكة — 200,000 وظيفة شاغرة",
+      "priority":false,
+      "department":"جميع البرامج · ترفع تقاريرها إلى الأكثر ألمًا",
+      "duties":"إبقاء 1.5 مليون موظف قادرين على العمل. الظهور، والأكتاف، والرقاب، والمعنويات. المعالجات غير الرسميات للعملية بأكملها.",
+      "requirements":["مرخّصة أو حاصلة على شهادة «يداي ساحرتان»","قوية بما يكفي لأكتاف عالِم أحياء الحيتان","لطيفة بما يكفي لغرور المعلّم","الكتمان: ما يحدث على الطاولة يبقى على الطاولة"],
+      "salary":"~$50k/yr كراتب أساسي (تقدير فيرمي، متوسط عالمي)",
+      "compensation":"الدفع بعملة Koins. السعر قابل للتفاوض. تُقبل الإكراميات بالموز.",
+      "setting":"بانتظار التمويل. 200,000 طاولة. تعالي واعجني.",
+      "category":"العلوم + الميدان"
+    }];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = ['الكل','المديرون','المسؤولون','القانون','العلوم + الميدان','الأولوية'];
+    let active = 'الكل';
+
+    function clean(text){ return String(text || '').replace(/\\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){ return job.category; }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">توظيف ذو أولوية</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job.priority && JOBS.indexOf(job)===0?'':'btn-dark'}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">قدّم لهذه الوظيفة ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || (cat==='المديرون' ? 'قطاعات الصناعة الرئيسية' : cat==='المسؤولون' ? 'عمليات عابرة للمشاريع' : cat);
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.openings&&`<div><strong>الوظائف الشاغرة:</strong> ${esc(job.openings)}</div>`,job.setting&&`<div><strong>بيئة العمل:</strong> ${esc(job.setting)}</div>`,job.salary&&`<div><strong>${job.title.includes('ضمان الجودة')?'الأجر':'الراتب'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>التعويض:</strong> ${esc(job.compensation)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">OPEN-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(dept)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">قدّم ↗</a><span class="job-id">بريد إلكتروني</span>
+          <details><summary>تفاصيل الوظيفة</summary><div class="detail-body"><h4>المتطلبات</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='الكل'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,...job.requirements].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>لا توجد وظيفة تطابق هذا البحث.</strong><br>جرّب عبارة أوسع أو غيّر الفئة.</div>';
+      document.getElementById('resultCount').textContent=filtered.length+' وظيفة شاغرة';
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='الكل'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='نُسخ: '+EMAIL;}
+      catch(e){note.textContent='النسخ غير متاح — حدّد عنوان البريد أعلاه.';}
+    });
+    render();
+  </script>
+</body>
+</html>

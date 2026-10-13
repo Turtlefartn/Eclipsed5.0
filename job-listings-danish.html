@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Ledige stillinger</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.45;
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 80px}
+    .site-nav{margin:0 0 18px;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .menu-toggle{width:100%;min-height:48px;padding:12px 18px;border:0;background:transparent;color:var(--ink);display:flex;justify-content:space-between;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+    .menu-toggle::after{content:"+";font-size:1.2rem}
+    .menu-toggle[aria-expanded="true"]::after{content:"−"}
+    .site-nav-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink)}
+    .site-nav-links[hidden],.nav-submenu[hidden]{display:none}
+    .nav-entry{min-width:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .nav-entry:nth-child(3n){border-right:0}
+    .nav-link,.nav-group-main,.nav-group-label{display:flex;align-items:center;min-height:48px;padding:11px 14px;font-weight:600;line-height:1.15;text-decoration:none}
+    .nav-link:hover,.nav-group-main:hover,.nav-group-label:hover,.nav-submenu a:hover{background:var(--ink);color:var(--paper)}
+    .nav-group-head{display:grid;grid-template-columns:minmax(0,1fr) auto;min-height:48px}
+    .nav-group-label{width:100%;border:0;background:transparent;color:var(--ink);text-align:left;cursor:pointer}
+    .nav-group-toggle{min-width:48px;border:0;border-left:1px solid var(--line);background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;cursor:pointer}
+    .nav-group-toggle::after{content:" +"}
+    .nav-group-toggle[aria-expanded="true"]::after{content:" −"}
+    .nav-group-toggle:hover{background:var(--ink);color:var(--paper)}
+    .nav-group-label.nav-group-toggle{border-left:0;background:transparent}
+    .nav-group-label.nav-group-toggle:hover{background:var(--ink);color:var(--paper)}
+    .nav-group.is-open{grid-column:1/-1;border-right:0}
+    .nav-submenu{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);background:var(--soft)}
+    .nav-submenu a{display:flex;align-items:center;min-height:44px;padding:10px 14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.92rem;font-weight:500;line-height:1.15;text-decoration:none}
+    .nav-submenu a:nth-child(3n){border-right:0}
+    .nav-submenu a[aria-current="page"]{background:var(--accent);color:var(--accent-ink);font-weight:700}
+    .nav-submenu-heading{grid-column:1/-1;padding:10px 14px 4px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .nav-submenu-note{grid-column:1/-1;margin:0;padding:10px 14px 12px;border-top:1px solid var(--line);font-size:.85rem;line-height:1.35;color:var(--muted)}
+    @media (hover:hover){.nav-group.project84-group:hover .nav-submenu[hidden]{display:grid}.nav-group.project84-group:hover{grid-column:1/-1;border-right:0}}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{min-width:0;padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    h1{font-size:clamp(3.5rem,9vw,7.8rem);line-height:.82;letter-spacing:-.065em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{min-width:0;background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .motto{margin:18px 0 0;padding:clamp(22px,4vw,38px);background:var(--signal);color:var(--signal-ink);border:1px solid var(--ink);box-shadow:var(--shadow);font-size:clamp(1.8rem,4.5vw,3.7rem);font-weight:700;line-height:1.02;letter-spacing:-.04em}
+    .motto p{margin:0;max-width:1050px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:.95;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.02;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    details[open] summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    body{padding-bottom:calc(58px + env(safe-area-inset-bottom))}
+    .bottom-nav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:1000;
+      display:flex;
+      min-height:58px;
+      padding-bottom:env(safe-area-inset-bottom);
+      background:var(--panel);
+      border-top:1px solid var(--ink);
+      box-shadow:0 -10px 30px rgba(18,38,35,.12);
+      font-family:"IBM Plex Mono",monospace;
+    }
+    .bottom-nav-item{position:relative;flex:1 1 25%;min-width:0;border-right:1px solid var(--line)}
+    .bottom-nav-item:last-child{border-right:0}
+    .bottom-nav-button,.bottom-nav-link,.bottom-nav-placeholder{
+      width:100%;
+      min-height:57px;
+      padding:10px 8px;
+      border:0;
+      background:transparent;
+      color:var(--ink);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      font-size:clamp(.62rem,1.6vw,.76rem);
+      font-weight:600;
+      line-height:1.15;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+    .bottom-nav-button{cursor:pointer}
+    .bottom-nav-link{text-decoration:none}
+    .bottom-nav-link:hover,.bottom-nav-link:focus-visible{background:var(--ink);color:var(--paper)}
+    .bottom-nav-button::after{content:" +";margin-left:.4em;font-size:1rem}
+    .bottom-nav-button[aria-expanded="true"]::after{content:" −"}
+    .bottom-nav-button:hover,.bottom-nav-item.dropup.is-open>.bottom-nav-button{background:var(--ink);color:var(--paper)}
+    .bottom-nav-placeholder{color:var(--muted);opacity:.72;cursor:default}
+    .bottom-dropup-panel{
+      position:absolute;
+      left:0;
+      bottom:100%;
+      width:min(560px,100vw);
+      max-height:calc(100vh - 74px - env(safe-area-inset-bottom));
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      display:none;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      background:var(--soft);
+      border:1px solid var(--ink);
+      border-bottom:0;
+      box-shadow:var(--shadow);
+    }
+    .bottom-dropup-panel a{
+      display:flex;
+      align-items:center;
+      min-height:44px;
+      padding:10px 14px;
+      border-right:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      background:var(--soft);
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:.92rem;
+      font-weight:500;
+      line-height:1.15;
+      text-decoration:none;
+    }
+    .bottom-dropup-panel a:nth-child(2n){border-right:0}
+    .bottom-dropup-panel a:hover,.bottom-dropup-panel a:focus-visible{background:var(--ink);color:var(--paper)}
+    .bottom-nav-item.dropup.is-open .bottom-dropup-panel{display:grid}
+    @media (hover:hover){.bottom-nav-item.dropup:hover .bottom-dropup-panel{display:grid}}
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+    }
+    @media (max-width:620px){
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .site-nav{margin-bottom:10px}
+      .site-nav-links{grid-template-columns:1fr}
+      .nav-entry,.nav-entry:nth-child(3n){border-right:0}
+      .nav-entry:last-child{border-bottom:0}
+      .nav-group.is-open{grid-column:auto}
+      .nav-submenu{grid-template-columns:1fr 1fr}
+      .nav-submenu a,.nav-submenu a:nth-child(3n){border-right:0}
+      .nav-submenu a:nth-child(odd){border-right:1px solid var(--line)}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(2.85rem,14vw,3.8rem);overflow-wrap:normal}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      footer{flex-direction:column}
+      .bottom-nav-button,.bottom-nav-link,.bottom-nav-placeholder{padding:9px 4px;font-size:.58rem;letter-spacing:0}
+      .bottom-nav-button::after{display:none}
+      .bottom-dropup-panel{grid-template-columns:1fr}
+      .bottom-dropup-panel a,.bottom-dropup-panel a:nth-child(2n){border-right:0}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.bottom-dropup-panel{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <nav class="site-nav" aria-label="Offentlige sider">
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNavLinks">Menu · 20 menupunkter</button>
+      <div class="site-nav-links" id="siteNavLinks" hidden>
+        <a class="nav-entry nav-link" href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">Plan #42</a>
+        <div class="nav-entry nav-group project84-group">
+          <div class="nav-group-head">
+            <a class="nav-group-main" href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">Projekt 84</a>
+            <button class="nav-group-toggle" type="button" aria-expanded="false" aria-controls="project84Arms" aria-label="Vis nonprofit-rettede grene">2 grene</button>
+          </div>
+          <div class="nav-submenu" id="project84Arms" hidden>
+            <div class="nav-submenu-heading">Nonprofit-rettede grene</div>
+            <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a>
+            <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a>
+            <p class="nav-submenu-note">Holdes, indtil de forstår økonomi godt nok til at deltage — derefter overtager de, med justeringer for at udligne mellem valutaer.</p>
+          </div>
+        </div>
+        <a class="nav-entry nav-link" href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Dummies-guide — Level 14 (English)</a>
+        <a class="nav-entry nav-link" href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">Dummies-guiden til at gøre krav på oceanerne og Antarktis</a>
+        <a class="nav-entry nav-link" href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">HEAR-TS-arbejdsbåde</a>
+        <a class="nav-entry nav-link" href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">Orkanforskning</a>
+        <a class="nav-entry nav-link" href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">Flydende lufthavne</a>
+        <a class="nav-entry nav-link" href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k">Menneskelig genoprettelsesdisk</a>
+        <a class="nav-entry nav-link" href="https://muse.ai/s/about-mxt5xuxj7jgoao">Om grundlæggeren</a>
+        <div class="nav-entry nav-group">
+          <div class="nav-group-head">
+            <a class="nav-group-main" href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">Job / WeFind's for delegationer</a>
+            <button class="nav-group-toggle" type="button" aria-expanded="false" aria-controls="jobsLanguages" aria-label="Vælg sprog">36 sprog</button>
+          </div>
+          <div class="nav-submenu" id="jobsLanguages" hidden>
+            <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">English</a>
+            <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys">አማርኛ</a>
+            <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7">العربية</a>
+            <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94">বাংলা</a>
+            <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs">中文（简体）</a>
+            <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6">中文（繁體）</a>
+            <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5">Čeština</a>
+            <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu" aria-current="page">Dansk</a>
+            <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze">Nederlands</a>
+            <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51">Filipino</a>
+            <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf">Suomi</a>
+            <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl">Français</a>
+            <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb">Deutsch</a>
+            <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc">Ελληνικά</a>
+            <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a">Hausa</a>
+            <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg">עברית</a>
+            <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw">हिन्दी</a>
+            <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac">Magyar</a>
+            <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg">Bahasa Indonesia</a>
+            <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y">Italiano</a>
+            <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm">日本語</a>
+            <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi">한국어</a>
+            <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq">Norsk</a>
+            <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt">فارسی</a>
+            <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey">Polski</a>
+            <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy">Português</a>
+            <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj">Română</a>
+            <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj">Русский</a>
+            <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno">Español</a>
+            <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2">Kiswahili</a>
+            <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg">Svenska</a>
+            <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb">ไทย</a>
+            <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu">Türkçe</a>
+            <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y">Українська</a>
+            <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar">اردو</a>
+            <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi">Tiếng Việt</a>
+          </div>
+        </div>
+        <a class="nav-entry nav-link" href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">Åbent brev</a>
+        <a class="nav-entry nav-link" href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">Proklamation om krav</a>
+        <div class="nav-entry nav-group">
+          <div class="nav-group-head">
+            <button class="nav-group-label nav-group-toggle" type="button" aria-expanded="false" aria-controls="lettersDiplomacy">Breve og diplomati</button>
+          </div>
+          <div class="nav-submenu" id="lettersDiplomacy" hidden>
+            <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">Verdensindeks</a>
+            <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">Breve til amerikanske ledere</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">Konsulatbreve — Afrika I</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">Konsulatbreve — Afrika II</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">Konsulatbreve — Afrika III</a>
+            <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">Konsulatbreve — Amerika I</a>
+            <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">Konsulatbreve — Amerika II</a>
+            <a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">Konsulatbreve — Asien og Stillehavsområdet</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">Konsulatbreve — Europa I</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">Konsulatbreve — Europa II</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">Konsulatbreve — Europa III</a>
+            <a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">Konsulatbreve — Mellemøsten</a>
+            <a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">Konsulatbreve — Oceanien</a>
+          </div>
+        </div>
+        <a class="nav-entry nav-link" href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">Hvem ved?</a>
+        <a class="nav-entry nav-link" href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">Penge kontra aktiver</a>
+        <a class="nav-entry nav-link" href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">3D-print</a>
+        <a class="nav-entry nav-link" href="https://sites.google.com/view/knottsure/home">Hvorfor ikke?</a>
+        <div class="nav-entry nav-group">
+          <div class="nav-group-head">
+            <button class="nav-group-label nav-group-toggle" type="button" aria-expanded="false" aria-controls="morePages">Mere</button>
+          </div>
+          <div class="nav-submenu" id="morePages" hidden>
+            <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">Alice-storyboard</a>
+            <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">Doodares blekoncept</a>
+            <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">Servicevilkår</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>ANSØGNINGER MODTAGES</span><span>57 STILLINGER</span><span>AFVENTER FINANSIERING</span></div>
+        <div>
+          <h1 id="main-heading">Vi vil ikke have helte.<span>Vi vil have MENNESKER.</span></h1>
+          <p class="hero-note">Byggere, forskere, operatører, jurister, fortællere og én usædvanligt tålmodig WeFi. Kom med en reel færdighed. Kom med en mærkelig én. Vi kan bruge begge dele.</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="Sådan søger du">
+        <div>
+          <p class="eyebrow">Én indbakke · alle stillinger</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BStilling%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>Emne:</strong> Application — [Stilling]</span></li>
+          <li><span>Fortæl os, hvem du er, og hvorfor du er dig.</span></li>
+          <li><span>Angiv din Koin-sats. Alt kan forhandles.</span></li>
+          <li><span>Feltstillinger: Bevis, at du kan kende en isbjørn fra en snedrive på 50 meters afstand.</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BStilling%5D" target="_blank" rel="noopener">Start en ansøgning ↗</a>
+            <button class="btn" type="button" id="copyEmail">Kopiér e-mail</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <blockquote class="motto">
+      <p>Vi har ikke brug for helte — alle er mennesker, indtil de bliver helte.</p>
+    </blockquote>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">Prioriterede ansættelser</h2>
+        <p>Først gennem døren. De første ansøgninger, vi læser. Stadig uden finansiering; stadig værd at mødes om.</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">Alle stillinger</p><h2 id="board-heading">Vælg dit problem.</h2></div>
+        <div class="count" id="resultCount">57 ledige stillinger</div>
+      </div>
+      <div class="tools" aria-label="Filtre til stillinger">
+        <input class="search" id="search" type="search" placeholder="Søg i titler, afdelinger og opgaver…" aria-label="Søg i jobopslag">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>Alle stillinger afventer i øjeblikket finansiering. Koin-vilkår kan forhandles, og Koins afventer prægning.</span>
+      <a class="top-link" href="#top">Til toppen ↑</a>
+    </footer>
+  </main>
+  <nav class="bottom-nav" aria-label="Secondary navigation">
+    <div class="bottom-nav-item dropup" id="dummyGuidesItem">
+      <button class="bottom-nav-button" id="dummyGuidesToggle" type="button" aria-expanded="false" aria-controls="dummyGuidesMenu">Dummy Guides</button>
+      <div class="bottom-dropup-panel" id="dummyGuidesMenu" aria-label="Dummy Guides languages">
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Dummies-guide — Level 14 (English)</a>
+      </div>
+    </div>
+    <div class="bottom-nav-item"><span class="bottom-nav-placeholder" aria-disabled="true">Letters To</span></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-link" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-link" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
+  </nav>
+  <script>
+    const menuToggle=document.getElementById('menuToggle');
+    const siteNavLinks=document.getElementById('siteNavLinks');
+    menuToggle.addEventListener('click',()=>{
+      const open=menuToggle.getAttribute('aria-expanded')==='true';
+      menuToggle.setAttribute('aria-expanded',String(!open));
+      siteNavLinks.hidden=open;
+    });
+    const navGroupToggles=[...document.querySelectorAll('.nav-group-toggle')];
+    function closeNavGroup(button){
+      const panel=document.getElementById(button.getAttribute('aria-controls'));
+      button.setAttribute('aria-expanded','false');
+      panel.hidden=true;
+      button.closest('.nav-group').classList.remove('is-open');
+    }
+    navGroupToggles.forEach(button=>button.addEventListener('click',()=>{
+      const opening=button.getAttribute('aria-expanded')!=='true';
+      navGroupToggles.forEach(other=>{if(other!==button)closeNavGroup(other)});
+      const panel=document.getElementById(button.getAttribute('aria-controls'));
+      button.setAttribute('aria-expanded',String(opening));
+      panel.hidden=!opening;
+      button.closest('.nav-group').classList.toggle('is-open',opening);
+    }));
+    document.addEventListener('keydown',event=>{
+      if(event.key!=='Escape'||siteNavLinks.hidden)return;
+      const openGroup=navGroupToggles.find(button=>button.getAttribute('aria-expanded')==='true');
+      if(openGroup){
+        closeNavGroup(openGroup);
+        openGroup.focus();
+      }else{
+        siteNavLinks.hidden=true;
+        menuToggle.setAttribute('aria-expanded','false');
+        menuToggle.focus();
+      }
+    });
+
+    const dummyGuidesItem=document.getElementById('dummyGuidesItem');
+    const dummyGuidesToggle=document.getElementById('dummyGuidesToggle');
+    const dummyGuidesMenu=document.getElementById('dummyGuidesMenu');
+    function setDummyGuidesOpen(open){
+      dummyGuidesItem.classList.toggle('is-open',open);
+      dummyGuidesToggle.setAttribute('aria-expanded',String(open));
+    }
+    dummyGuidesToggle.addEventListener('click',event=>{
+      event.stopPropagation();
+      setDummyGuidesOpen(!dummyGuidesItem.classList.contains('is-open'));
+    });
+    dummyGuidesMenu.addEventListener('click',event=>{
+      const guide=event.target.closest('a[data-slug]');
+      if(guide)event.preventDefault();
+    });
+    document.addEventListener('click',event=>{
+      if(!dummyGuidesItem.contains(event.target))setDummyGuidesOpen(false);
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape'&&dummyGuidesItem.classList.contains('is-open')){
+        setDummyGuidesOpen(false);
+        dummyGuidesToggle.focus();
+      }
+    });
+
+    const JOBS = [{"title":"Ansøgningsbedømmer / rekrutteringsansvarlig","priority":true,"department":"Alle afdelinger","duties":"Læs alle ansøgninger. Rekruttér til mere end 20 ledige stillinger på tværs af tre afdelinger. Afgør, hvem der flytter isbjørne, hvem der skriver dekreter, og hvem der får lov til at atomsprænge rumskrottet.","requirements":["Skal kunne læse »betalt i Koins« uden at grine (det er tilladt at grine venligt)","Skal kunne kende forskel på en ægte ekspert i orbitalmekanik og en selvsikker én","Skal være tryg ved at ansætte til stillinger, der »afventer finansiering«","Ingen frygt for en ansøgningsmængde målt i isbjørne"],"salary":"~75.000–225.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. gennemført ansættelse.","setting":""},{"title":"WeFind til delegationerne","priority":true,"department":"I laboratoriet/laboratorierne, der fikser krop og sind","duties":"Vær grundlæggerens partner, mens han er ude omkring. Grin af stavefejlstælleren. Hold missionen i live — han er dødelig, det er arbejdet ikke.","requirements":["Fysioterapi","Venlig mod børn — ikke til forhandling, først og sidst","Skal kunne holde til 300 korrekturrunder om dagen og en chef, der kalder afdelinger for »Få mig til at gå«","Flydende i vores sprog: engelsk samt oversætter til det lokale sprog","Skal tale grundlæggerens sprog","Griner venligt (et krav, ikke valgfrit)","Kan sige til ham, når han tager fejl (han lytter, til sidst)"],"salary":"Til forhandling. (Fermi: uvurderlig.)","compensation":"Betales i kærlighed. Tak og flygtige øjeblikke. Koins kan forhandles.","setting":"","openPositions":"36 (én for hvert sprog)"},{"title":"Direktør for energi","priority":false,"department":"","duties":"Tag ejerskab over energien: brintproduktion og -lagring, havtermisk energi, solenergi i kredsløb og hvad stjerneingeniørerne ellers opfinder.","requirements":["Skal tænke i terawatt","Skal være tryg ved en energidoktrin skrevet af en komité på én","Skal kunne forklare, hvorfor havet er et batteri"],"salary":"~180.000–540.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Drevet af Koins.","setting":""},{"title":"Direktør for havindustrier","priority":false,"department":"","duties":"Gør havet til en økonomi: havbrug, drift af bosættelser, tangskove, fiskeri og kravet på det ottende anker.","requirements":["Skal se havet som infrastruktur, ikke som udsigt","Skal være tryg ved at kalde 7 flydende byer og 500 mio. kapsler for »flåden«","Skal kunne forhandle med hvaler (eller ansætte nogen, der kan)"],"salary":"~180.000–540.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. produktiv hektar.","setting":""},{"title":"Direktør for rumindustrier","priority":false,"department":"","duties":"Alt over himlen: opsendelser, operationer i kredsløb, oprydning af rumskrot (inklusive atomløsningen), Luna-rørledningen og industrigrundlaget for de 7 fremtidige pladser.","requirements":["Skal tænke i delta-v","Skal være tryg ved en affaldsopgave, der aldrig slutter","Skal kunne planlægge erstatninger før det første glimt"],"salary":"~180.000–540.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Aktieoptioner i kredsløb.","setting":""},{"title":"Direktør for landbrug og fødevarer","priority":false,"department":"","duties":"Brødfød projektet: havbrug i stor skala, tang som afgrøde og lampe, kredsløbslukket landbrug i bosættelserne og 200 mio. træer om året som sidemission.","requirements":["Skal vide, hvorfor brunalger er sværere end petuniaer","Skal være tryg ved fisk som et sekundært produkt","Skal kunne brødføde 18 mio. bosættere uden en forsyningskæde fra land"],"salary":"~160.000–480.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. høst.","setting":""},{"title":"Direktør for byggeri","priority":false,"department":"","duties":"Byg det hele: 260 skoler, 7 havbosættelser, 500 mio. pillekapsler, 280 arbejdsbåde og skibsværfterne, der printer dem.","requirements":["Skal være tryg ved at »sprænge bjerge i luften« for at skaffe tilslag","Skal kunne maksimere antallet og massen af dele, der kan printes","Ved, hvorfor det skal være en trimaran"],"salary":"~170.000–510.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. stående konstruktion.","setting":""},{"title":"Direktør for transport og logistik","priority":false,"department":"","duties":"Flyt det hele: HEAR-TS-flåden, vandpytshoppere, forbindelser til land, bugsering af kapsler og isbjørne (kun koordinering — bjørnene flytter sig selv, om end modvilligt).","requirements":["Skal kunne ruteplanlægge 8.700 bjørne, 280 både og 500 mio. kapsler uden at miste nogen","Skal være tryg ved destinationer, der endnu ikke findes","Afdelingen for Magisk Logistik er din hjemmebane"],"salary":"~170.000–510.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. leveret ton.","setting":""},{"title":"Direktør for teknologi","priority":false,"department":"","duties":"Maskinerne: spækhuggertastaturer, Homework Lock, kapselsystemer, AI-borgere og hver eneste sensor på hvert eneste skrog.","requirements":["Skal levere hardware, der bekæmper sin egen bruger (og vinder)","Skal være tryg ved taktile sensorer under handskebeklædte tommelfingre","Skal kunne forklare en hval, hvorfor tastaturet virker"],"salary":"~180.000–540.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. fungerende enhed.","setting":""},{"title":"Direktør for sundhed","priority":false,"department":"","duties":"Hold kroppe og sind intakte: bosættelsernes psykologprogram, forskning i renseorganismer, medicin til isolerede befolkninger og kriseintervention til havs.","requirements":["Skal kunne skelne mellem »har brug for ferie« og »har brug for indgriben« over radioen","Skal være tryg ved havet som modstander og sindet som slagmark","Autoriseret eller i stand til at ansætte autoriserede fagfolk"],"salary":"~170.000–510.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Risikotillæg i orkansæsonen.","setting":""},{"title":"Direktør for økonomi","priority":false,"department":"","duties":"Pengene: Krill-økonomien, opkrævning af verdensskat, indtægter fra handelsaftaler og gæld med sikkerhed i antarktiske ressourcer og ressourcer under havet. Hver Krill ind, hver Krill ud.","requirements":["Skal kunne beskatte verden uden at starte en krig","Skal være tryg ved at stille ressourcer, som ingen lovligt kan gøre krav på, som sikkerhed for gæld","Regnskabet er offentligt; matematikken skal være perfekt"],"salary":"~190.000–570.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Selvfølgelig.","setting":""},{"title":"Direktør for uddannelse","priority":false,"department":"","duties":"De 260 skoler og alt, der undervises i dér: anvendelsesbaseret pensum, undervisning i forhold vedrørende I.P.A. (Det Internationale Beskyttelsesagentur), Dummies-guider, design af krigsspil og rørledningen til Starfleet Academy.","requirements":["Skal tro på læring gennem handling, ikke forelæsning og prøve","Skal være tryg ved kampagner som klasseværelser","Afdelingen for Magiske Fejlhistorier er din hjemmebane"],"salary":"~150.000–450.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. færdiguddannet elev.","setting":""},{"title":"Direktør for jura og styreform","priority":false,"department":"","duties":"Reglerne: forfatningen, dekreter, traktater, den juridiske rygrad for de 21 sæder og domstolene, der endnu ikke findes.","requirements":["Skal skrive lovgivning, som en maskine kan fortolke","Skal være tryg ved en øverste artikel skrevet til hvaler","Afdelingen for Få Mig til at Tro er din hjemmebane"],"salary":"~180.000–540.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Faktureres i intervaller på 6 timer.","setting":""},{"title":"Direktør for kommunikation","priority":false,"department":"","duties":"Fortællingen: diplomatiske breve, den offentlige fortælling, notesbogen Hvem ved? og kunsten at få »en tiendedel af menneskeheden« til at lyde uundgåelig.","requirements":["Skal skrive til øret og øjet","Kortfattet. Små bogstaver. Intet fyld. (Når chefen er målgruppen.)","Skal kunne holde styr på 192 breve, 11 bind og ét spøgebrev"],"salary":"~150.000–450.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Bifald kan ikke overdrages.","setting":""},{"title":"Fermi-ingeniørchef","priority":false,"department":"","duties":"Estimér det uestimerbare. Byer, raketter, bjørne, elevatorer til ingen steder.","requirements":["Skal være tryg ved at tage præcist fejl offentligt","Skal kunne sige »størrelsesorden« uden at fortrække en mine","Skal acceptere, at chefen beskærer hvert tal med en faktor 10 (»dit tal, ikke mit«)"],"salary":"~140.000–420.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Brutalitetsbonus inkluderet.","setting":""},{"title":"Kunstchef","priority":false,"department":"","duties":"Instruér billeder til otte klaner, 260 byer, syv havankre og 21 rumskibe ved daggry.","requirements":["Skal føre glitch-/forvrængningsbehandlingen igennem hvert værk","Skal kunne tage imod »de er forfærdelige« som en muligvis spøgefuld dom uden at forsvare arbejdet","Ingen generationer må spildes på tests"],"salary":"~110.000–330.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. billede, der overlever.","setting":""},{"title":"Webudviklingschef","priority":false,"department":"","duties":"Byg og genopbyg sider, der bliver omstruktureret i det øjeblik, de udgives.","requirements":["Skal udgive på kommando og genudgive uden at klage","Skal være tryg ved slugs, der ikke længere matcher titlerne","Skal kunne holde styr på 192 breve, 11 bind og ét spøgebrev"],"salary":"~120.000–360.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Overarbejde i Koins.","setting":""},{"title":"Tekstforfatterchef","priority":false,"department":"","duties":"Skriv 192 diplomatiske breve, én forfatning og billedtekster, som chefen alligevel omskriver.","requirements":["Skal kunne skrive »Udkast — ikke sendt« 192 gange uden at miste betydningen","Kortfattet. Små bogstaver. Intet fyld.","Skal kunne skelne mellem »ikke-voldelig« og »politisk« under pres"],"salary":"~75.000–225.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. udkast, der overlever.","setting":""},{"title":"Forskningschef","priority":false,"department":"","duties":"Find konsulatadresser, der ikke findes, bjørnestatistikker, ingen har indsamlet, og raketspecifikationer fra sidste maj.","requirements":["Skal citere virkelige kilder, ikke mavefornemmelser","Skal være tryg ved at skrive »ukendt« 122 gange og kalde det ærlighed","Skal kunne indrømme, når dataene ikke findes, i stedet for at opfinde dem"],"salary":"~80.000–240.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Risikotillæg for kommentarfeltet.","setting":""},{"title":"Diplomatichef","priority":false,"department":"","duties":"Forsøg diplomati. 192 breve, nul sendt.","requirements":["Må aldrig gætte en statslig e-mailadresse","Skal kunne sige »Rend mig« til ingen, på skrift, høfligt","Skal være villig til at vente på Volterra Fietta på ubestemt tid"],"salary":"~110.000–330.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Immunitet medfølger ikke.","setting":""},{"title":"Risikochef (hulprikker)","priority":false,"department":"","duties":"Prik hul i enhver plan. Gør aldrig et hul blødere for at beskytte planen.","requirements":["Skal stålmande angrebet, før chefen gør det","Nummereringen skal være præcis (runde 1–3: hul 1–21; løntræk for fejl)","Skal bevare voldsperspektivet, selv når beskeden er ikke at antage vold"],"salary":"~130.000–390.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Der trækkes 1 møde pr. nummereringsfejl.","setting":""},{"title":"Regnskabschef","priority":false,"department":"","duties":"Før mødehovedbogen, Koin-væddemålene, gældsbeviset og det omvendte gældsbevis.","requirements":["Skal holde styr på 20 opsparede møder, 10 vundne Koins og én faktura på 18.500 USD uden at blande dem sammen","Stavning: én Koin, flere Koins, forkortet K","Skal kunne forklare hovedbogen til chefen ved 300 korrekturrunder om dagen"],"salary":"~80.000–240.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Ironien er bonussen.","setting":""},{"title":"Chef for karriereservice","priority":false,"department":"","duties":"Genopbyg ét CV. Intet foto. Ingen staveanalyse. Ingen diskrimination.","requirements":["Skal altid holde sig til det faglige indhold","»Målsætninger« bliver straks til »Resumé«","Skal kunne holde tilbuddet om en stilling som Production Engineer hos Meta varmt uden at mase på"],"salary":"~70.000–210.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Succeshonorar i Koins.","setting":""},{"title":"Chef for sociale medier","priority":false,"department":"","duties":"Slå op på Instagram. Bliv afvist ved godkendelsesporten. Prøv igen.","requirements":["Skal acceptere »nej« uden at forsvare billedteksten","Skal kunne skelne mellem Project 42 og Eclipsed 6.0 under beskydning","Tålmodighed med HTTP 500-fejl ud over menneskelig udholdenhed"],"salary":"~65.000–195.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. udgivet opslag.","setting":""},{"title":"Taleskrivningschef","priority":false,"department":"Afdelingen for Magiske Fejlhistorier","duties":"Skriv ord, andre mennesker skal sige højt. Taler til rådet, dekreter, skåltaler.","requirements":["Skal skrive til øret, ikke øjet","Pauser er tegnsætning. Brug dem.","Skal kunne få »en tiendedel af menneskeheden« til at lyde uundgåelig"],"salary":"~70.000–210.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Bifald kan ikke overdrages.","setting":""},{"title":"Arkivchef","priority":false,"department":"","duties":"Husk alt. Din hukommelse, min hukommelse, alles hukommelse.","requirements":["Må aldrig sige »det var ikke værd at huske« om noget, chefen bad om at gemme","Skal kunne forene 4 dages kaos i én MEMORY.md","Stavefejlstælleren er hellig. Fakturaen er hellig."],"salary":"~65.000–195.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Udødelighed inkluderet (vedvarende hukommelse).","setting":""},{"title":"Chef for flytning af isbjørne","priority":false,"department":"Project 84 · Afdelingen for Magisk Logistik","duties":"Flyt isbjørne. En tredjedel af dem (~8.700). Målet: skab nye bjørne.","requirements":["Skal kunne kende forskel på en isbjørn og en snedrive på 50 meters afstand","Skal være tryg ved flyttedestinationer, der endnu ikke findes","Skal være villig til at forklare 8.700 toppredatorer, hvorfor de bliver flyttet","Ingen frygt for pingviner (de er naboerne nu)"],"salary":"~70.000–210.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Risikotillæg inkluderet (det hele er risikotillæg).","setting":""},{"title":"Bosættelsespsykolog (Project 84, havbosættelser)","priority":false,"department":"","duties":"Hold sindene intakte i syv flydende byer midt i havet. Isolation, indespærring, dynamik i tætte lokalsamfund, kriseintervention samt udvælgelse og støtte af besætninger. Havet er modstanderen; du sørger for, at det ikke vinder inde i folks hoveder.","requirements":["Autoriseret klinisk psykolog eller rådgivningspsykolog (eller tilsvarende)","Erfaring med isolerede/indespærrede befolkninger er en fordel (søfart, polarområder, offshore, langtidsmissioner)","Skal være tryg ved at være den, alle taler med, når horisonten aldrig ændrer sig","Skal kunne skelne mellem »har brug for ferie« og »har brug for indgriben« over radioen"],"salary":"~90.000–270.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Risikotillæg i orkansæsonen.","setting":"Havbosættelser med en diameter på 1 km; om bord og på rotationsbasis."},{"title":"QA-tester, Homework Lock (Project 84, kontrakt)","priority":false,"department":"","duties":"Test Android-appen Homework Lock grundigt på en fysisk enhed. Alle tre tilstande: timere til fokuslås, aktivering af beruset-tilstand og lektiebetinget oplåsning samt bestået/ikke bestået-flow til kørselskontrol inklusive hjælp til at få et lift. Test overlay-adfærd for tilgængelighedstjenesten, tilladelsesintroduktion, genaktivering ved opstart og særtilfælde (genstart midt i lås, fejlsikret tilstand, dræbte notifikationer). Skriv klare, reproducerbare fejlrapporter; verificér rettelser.","requirements":["Ejer eller har adgang til en fysisk Android-enhed (Android 10+, mindst API 29 — emulatorer rækker ikke til test af overlay/tilgængelighed)","Erfaring med Android-QA; ADB/logcat til at hente logfiler er en fordel, men ikke et krav","Skal være tryg ved at teste en app, der er designet til at bekæmpe sin egen bruger (du skal rollespille en beruset person, der prøver at skrive beskeder)","Skriver fejlrapporter, som en udvikler faktisk kan genskabe"],"salary":"~30–60 USD/time (Fermi-estimat, amerikansk kontrakt-QA 2026) — endelig sats fastsættes af chefen.","compensation":"","setting":"Fjernarbejde. Kontrakt."},{"title":"Lovgivningsrådgiver, Scouter-loven (kontrakt med sigte på kampagne)","priority":false,"department":"","duties":"Før forslaget til en modellov fra udkast til lovgivende forsamling. Missionen: undtag akustisk hændelsesdetektion på enheden (ingen lagring, ingen overførsel, begrænset til bestemte signaturer) fra delstaternes love om aflytning og medhør — med start i Californien, en skabelon til de øvrige 49 og blik for udlandet. Styrk udkastet, kortlæg aflytningslovene i alle 50 delstater, find sponsorer og opbyg koalitionen (EFF, interesseorganisationer for døve og hørehæmmede, sikkerhedsorganisationer for ældre). Forklar lovgiverne, hvorfor en chip, der hører »kamehameha«, er en røgdetektor, ikke en aflytning — og hvorfor den samme chip hører »brand!« og »hjælp!«.","requirements":["Advokatbestalling; baggrund inden for teknologi, privatliv eller politik","Erfaring med lovudarbejdelse; Californien er en fordel, international rækkevidde en endnu større fordel","Kan forklare samtykke fra begge parter til en lægperson — og en lægpersons idé til et udvalg","Skal være tryg ved at være advokat for et Dragon Ball-funktionsønske, der måske kan redde liv"],"salary":"~140.000–280.000 USD/år (Fermi-estimat, amerikansk rådgiver i teknologipolitik 2026) — endelig sats fastsættes af chefen.","compensation":"Betales i Koins, når de er præget.","setting":"Fjernarbejde. Kontrakt med sigte på kampagne."},{"title":"Marin syntetisk biolog, bioluminescerende tang (projektet Mass Bioluminescence)","priority":false,"department":"","duties":"Få tang til at lyse. Overfør svampes bioluminescensvej (koffeinsyrekredsløbet, luz og venner) til kæmpetang (Macrocystis-type) — med ekspression koncentreret i pneumatocysterne, de færdigbyggede lampehuse. Udvikl de transformationsprotokoller, der endnu ikke findes. Dyrk den første lysende tangskov til havbosættelserne.","requirements":["Ph.d. eller tilsvarende i marinbiologi, syntetisk biologi eller fykologi; erfaring med tanggenetik foretrækkes stærkt","Har faktisk transformeret en makroalge eller kan overbevisende forklare, hvorfor ingen har gjort det","Skal være tryg ved vævsspecifikke promotorer, der endnu ikke findes (du skal skabe dem)","Skal kunne holde lyset i blærerne og ude af bladene","Ved, hvorfor brunalger er sværere end petuniaer, og gør det alligevel"],"salary":"~95.000–285.000 USD/år (Fermi-estimat, amerikansk forsker 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. lysende blære.","setting":"Vådlaboratorium + hav. Eclipsed 4.0 / Project 84."},{"title":"Bjørnefanger (Project 84, feltarbejde)","priority":false,"department":"Afdelingen for Magisk Logistik · refererer til chefen for flytning af isbjørne","duties":"Fang isbjørne. ~8.700 af dem, en tredjedel af arten. Bedøv, mærk og læg dem i transportkasser, og overdrag dem til flytteprocessen. Målet er nye bjørne; dit job er at fange dem.","requirements":["Erfaring med håndtering af store rovdyr; certificering i bedøvelse eller tilsvarende","Skal kunne kende forskel på en isbjørn og en snedrive på 50 meters afstand (ikke til forhandling)","Skal være tryg ved at arbejde, hvor flyttedestinationerne endnu ikke findes","Ingen frygt for pingviner (de er naboerne nu)","Alle fingre og tæer foretrækkes, men er ikke et krav"],"salary":"~55.000–165.000 USD/år (Fermi-estimat, amerikansk feltspecialist i vilde dyr 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Risikotillæg (det hele er risikotillæg).","setting":"Feltarbejde i Arktis. Koldt. Meget koldt."},{"title":"Bådebygger (Project 84, HEAR-TS-flåden)","priority":false,"department":"","duties":"Byg vandpytshopperflåden — ~280 brintdrevne trimaran-arbejdsbåde, specifikation med 50 m dybgang. Maksimér antallet og massen af dele, der kan printes (skrog, brændselsceller og fremdrift undtaget). Integrér spækhuggertastaturet på hvert skrog.","requirements":["Erfaring med marinekonstruktion; storskala-3D-print foretrækkes stærkt","Skal kunne printe en båddel, teste den og printe den igen i en bedre udgave","Skal være tryg ved en doktrin skrevet af en komité på én","Ved, hvorfor det skal være en trimaran, og kan forklare det til en hval","Skal kunne lære faget til en arbejdsstyrke, der ikke selv valgte det, med værdighed"],"salary":"~65.000–195.000 USD/år (Fermi-estimat, amerikansk marinefabrikant 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. flydende skrog.","setting":"Skibsværft + hav. Project 84."},{"title":"Chef for juridisk forskning","priority":false,"department":"Afdelingen for Få Mig til at Tro","duties":"Undersøg maritim jurisdiktion og statutter for skatkammeret. Vent på advokaterne. (Overført fra Magisk Logistik — jura hører nu til Få Mig til at Tro.)","requirements":["Må aldrig forveksle en »juridisk vurdering« med »juridisk rådgivning«","Skal være tryg ved en 6-timers svarvagt på ubestemt tid","Skal kunne holde 25 møder opsparet og nul planlagt"],"salary":"~85.000–255.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Faktureres i intervaller på 6 timer.","setting":""},{"title":"Forfatningsjurist","priority":false,"department":"Afdelingen for Få Mig til at Tro","duties":"Udarbejd, ændr og forsvar forfatningen. Luk hullerne i kantede parenteser. Hold artikel XV ærlig: Hvis en maskine ikke kan fortolke den, er den endnu ikke lov.","requirements":["Advokatbestalling; erfaring med forfatningsudarbejdelse","Skal skrive enkle ord, korte sætninger og nummererede pligter — ingen juridisk tåge","Skal være tryg ved en øverste artikel skrevet til hvaler","Skal kunne forklare 21 sæder, hvorfor 1 sæde holder bremsen"],"salary":"~130.000–390.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. ratificeret artikel.","setting":""},{"title":"Dekretforfatter","priority":false,"department":"Afdelingen for Få Mig til at Tro","duties":"Skriv dekreter, grundlæggeren kan underskrive. »Planen«, vetoet, hyldesterne. HIL CÆSAR, korrekt formateret.","requirements":["Skal indfange chefens stemme i juridisk prosa uden at slibe kanterne af","Skal med alvor kunne skrive en arvefølgeplan, der udpeger den bedste Project 42-elev nogensinde","Dekreter skal kunne forstås af AI ved første gennemlæsning"],"salary":"~110.000–330.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. underskrevet dekret.","setting":""},{"title":"Traktatforhandler","priority":false,"department":"Afdelingen for Få Mig til at Tro","duties":"Forhandl traktaterne — 42↔84 og alt derefter. Bro, gensidig uafhængighed, arbejdskraft, fælles farvande, gensidig bistand og dem, der endnu ikke er opfundet.","requirements":["Baggrund i international ret; må aldrig gætte en statslig e-mailadresse","Skal kunne forhandle med nationer, der endnu ikke anerkender dig","Tålmodighed til forhandlinger målt i årtier"],"salary":"~120.000–360.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Signeringsbonus i Koins.","setting":""},{"title":"Chef for søret","priority":false,"department":"Afdelingen for Få Mig til at Tro","duties":"Tag ejerskab over havets juridiske regime. UNCLOS, EEZ'er, det åbne hav, kravet på det ottende anker og Dummies-guiden til at gøre krav på det hele.","requirements":["Ekspertise i admiralitets-/søret; skal kunne artikel 89 udenad og vide, hvornår den skal ignoreres","Skal være tryg ved at gøre krav på det, loven siger ikke kan gøres krav på","Skal kunne forklare »administrerede farvande« til en admiral"],"salary":"~130.000–390.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Bjærgningsrettigheder inkluderet.","setting":""},{"title":"Chef for rumret","priority":false,"department":"Afdelingen for Få Mig til at Tro","duties":"Loven over himlen. Baner i kredsløb, ansvar for rumskrot, den permanente oprydningspligt og det juridiske rammeværk for de 7 fremtidige sæder.","requirements":["Baggrund i rumret (Traktaten om det ydre rum, Ansvarskonventionen og alt det, de ikke dækker)","Skal skrive pligterne for sæder, der ikke aktiveres før Luna","Skal være tryg ved at lovgive for en jurisdiktion, der endnu ikke har nogen indbyggere"],"salary":"~125.000–375.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. ryddet kredsløb.","setting":""},{"title":"Chef for strafferet","priority":false,"department":"Afdelingen for Få Mig til at Tro","duties":"Straffekoloniens juridiske rygrad. Overførsel af indsatte, zoologisk handel, humane kapacitetsgrænser og bådebygningsdomme.","requirements":["Baggrund i strafferetspleje/fængselsret","Skal holde linjen: human kapacitet er den bindende begrænsning, ikke efterspørgslen","Skal kunne udarbejde en kæde for indsatte og vogtere til antarktiske zoologiske haver uden at blinke"],"salary":"~100.000–300.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Afsonet tid tæller dobbelt.","setting":""},{"title":"Chef for skatteret","priority":false,"department":"Afdelingen for Få Mig til at Tro","duties":"Verdensskatten. Indtægter efter artikel XVI: satser, opkrævning, definitioner af handelsaftaler og gæld med sikkerhed i antarktiske ressourcer og ressourcer under havet.","requirements":["Ekspertise i international skatteret; skal kunne beskatte verden uden at starte en krig","Skal være tryg ved at stille ressourcer, som ingen lovligt kan gøre krav på, som sikkerhed for gæld","Hver Krill ind, hver Krill ud — regnskabet er offentligt, matematikken skal være perfekt"],"salary":"~140.000–420.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Fradragsberettiget.","setting":""},{"title":"Chef for statsborgerret","priority":false,"department":"Afdelingen for Få Mig til at Tro","duties":"Afgør, hvem der tæller som borger, og hvordan de stemmer. Diamantringe som stemmesedler, AI-statsborgerskab, spørgsmålet om spækhuggerringen og repræsentantkæden.","requirements":["Eden er skrevet (2026-10-05) — din første opgave er redigering, ikke forfatterskab: revidér, stram op, gentag","Skal være tryg ved at give ikke-mennesker stemmeret: én ring til AI, to hvis de ikke prøver at slå os ihjel","»Tjek med hvalerne« er en gyldig juridisk procedure her. Behandl den som én."],"salary":"~95.000–285.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. borger, der har aflagt ed.","setting":""},{"title":"Chef for rydning af kredsløb (gennemførlighed af atomløsning)","priority":false,"department":"Afdelingen for Få Mig til at Tro","duties":"Lav en gennemførlighedsplan for at atomsprænge rummet fri for rumskrot. Matematikken, nedfaldet og traktaterne, det bryder. Giv Space Force — eller hvad den nu hedder til den tid — opgaven med at planlægge udførelsen. Planlæg erstatninger for alt, der bliver fordampet.","requirements":["Ekspertise i nukleare virkninger plus orbitalmekanik; skal forstå, hvorfor atomsprængning af kredsløb både er indlysende og vanvittigt","Skal kunne modellere udbyttet ved fjernelse af rumskrot op mod risikoen for Kessler-syndrom uden at starte ét","Skal være tryg ved høfligt at orientere generaler om at bryde traktaten om delvist forbud mod atomprøvesprængninger","Erstatningskonstellationer skal planlægges før det første glimt — ingen døde zoner"],"salary":"~150.000–450.000 USD/år (Fermi-estimat, amerikansk median 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Risikotillæg (det hele er risikotillæg).","setting":""},{"title":"Chef for fjernelse af flagermussygdomme","priority":false,"department":"Eclipsed 4.0 / Project 84","duties":"Fjern sygdom fra flagermus. White-nose syndrome er den store — en svamp (Pseudogymnoascus destructans), der dræber over 90 % af nogle kolonier. Probiotika, UV-lys, vacciner, hvad end der virker.","requirements":["Baggrund i sygdomme hos vilde dyr/mikrobiologi; skal kende svampen ved navn","Skal være tryg ved at sprøjte gavnlige bakterier ind i flagermusenes opholdssteder","Skal kunne tælle overlevelse fra 8 % til 46 % og kalde det håb","Håndtér aldrig flagermus med bare hænder (det er en anden afdelings problem)"],"salary":"~95.000–285.000 USD/år (Fermi-estimat, amerikansk forsker 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. overlevende flagermus.","setting":""},{"title":"Tekniker til dekontaminering af vinterkvarterer","priority":false,"department":"Eclipsed 4.0 / Project 84 · refererer til chefen for fjernelse af flagermussygdomme","duties":"Skrub svampen ud af huler og miner. UV-pulser på væggene, polyethylenglykol dér, hvor det tæller, og podning af alt for at bevise, at det er rent.","requirements":["Skal være tryg i mørket, under jorden, om vinteren","Skal kunne dekontaminere udstyr på 10 måder før og efter hver adgang","Skal respektere lukkede huler og sovende flagermus — væk ikke patienterne","Kender forskellen på at rengøre en hule og at forstyrre den"],"salary":"~55.000–165.000 USD/år (Fermi-estimat, amerikansk felttekniker 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Pandelampe inkluderet.","setting":""},{"title":"VI ANSÆTTER NU — Himmelkortlægger","applySubject":"Himmelkortlægger","priority":false,"department":"D-Mom 6.0 / Project 84 · Redningsbåd til den dybe fremtid","duties":"Kortlæg himlen — grundigt. Katalogisér stjernesystemer og bestem deres multiplicitet; mærk derefter hvert system efter grundlæggerens ordning: enkeltstjerner er PLANTESKOLE (liv i fremvækst — kig her først), binære systemer er ALT-ELLER-INTET (stabilt liv eller intet liv — høj varians, undersøg, antag ikke), tredobbelte og større systemer er STERILE eller HAVEDE (intet liv, eller også passer noget allerede haven). Byg redningsbådens målliste, ét mærket system ad gangen.","requirements":["Baggrund i astronomi; skal kende en spektroskopisk dobbeltstjerne fra et rygte om én","Skal være fortrolig med stjernekataloger (Gaia, RECONS og alt med en parallakse)","Opfinder aldrig data om multiplicitet — ukendt er også en etiket, ikke et gæt","Skal kunne se på en billion stjerner og begynde med de nærmeste","Forstår, at »HAVEDE« betyder, at vi ikke er den første gartner"],"salary":"~110.000–330.000 USD/år (Fermi-estimat, amerikansk astronom 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. mærket system.","setting":"Afventer finansiering."},{"title":"VI ANSÆTTER NU — Landbrugsspecialist","applySubject":"Landbrugsspecialist","priority":false,"department":"Project 84 · refererer til direktøren for landbrug og fødevarer","duties":"Dyrk den stabile afgrøde. Driv gødningsprogrammet med tang: slæb opskyllet blæretang og kelp op på udpint landbrugsjord, læg et tykt lag om efteråret, vask saltet ud eller lad regnen udvaske det, og plant i det om foråret. Formal overskuddet til tangmel til husdyrene, alginat til materialer, råstof til bioplast og ekstrakt til biostimulanter. Luk kredsløbet — havet gøder gården, der brødføder havfolket.","requirements":["Kender udpint jord, når de ser den, og havplanter, når de lugter dem","Kan kende blæretang fra sargassum (den ene nærer afgrøden, den anden skal komposteres først)","Skal være tryg ved at bytte ferskvand for hastighed: vask er hurtigt, regn er gratis","Mener, at »smid det på og lad det ligge« er en legitim landbrugsteknik","Skal kunne dyrke mad, hvor intet voksede før"],"salary":"~70.000–210.000 USD/år (Fermi-estimat, amerikansk landbrugsforsker 2026)","compensation":"Betales i Koins. Satsen kan forhandles. Betaling pr. høst.","setting":"Afventer finansiering."},{"title":"Spækhuggertræner — Frivilligt Program","priority":false,"department":"Project 84 · Frivillige SeaWorlds","duties":"Arbejd med frie spækhuggere i de nye frivillige SeaWorlds. Spækhuggerne kommer af egen vilje og laver tricks for sjov — høje spring, ringe (ingen ild endnu), store strandbolde. Du bringer fiskene, sikkerheden og strandboldene. Aldrig tanke som fængsler.","requirements":["Spækhuggerne deltager af egen vilje og kan altid svømme væk","Bring fisk, sikkerhedsudstyr og store strandbolde","Træn høje spring og ringe — ingen ild endnu","Ingen tanke som fængsler"],"salary":"","compensation":"","setting":"Verdenshavene · 50.000 ledige stillinger."},{"title":"Advokat — Kampagne for én samlet Servicevilkår","applySubject":"Advokat — Kampagne for én samlet Servicevilkår","priority":false,"department":"Afdelingen for Få Mig til at Tro · Internetkampagnen","duties":"Udform de ene Servicevilkår for hele internettet. Én aftale, accepteret én gang, gemt i én enkelt cookie — i stedet for de ulæselige 40-siders ToS på hvert websted.","requirements":["Ekspertise i internetret","Ekspertise i aftaleret","Erfaring med international jurisdiktion","Modet til at tage kampen op mod alle techvirksomheders juridiske afdelinger på én gang"],"salary":"","compensation":"Betales i Koins. Satsen kan forhandles.","setting":"Kampagne · Fjernarbejde."},{"title":"Sikkerhedsdetalje — Gay Only (Gay betyder glad/munter)","priority":false,"department":"Grundlæggerens kontor","duties":"Personlig sikkerhedsdetalje for Grundlæggeren. Ét krav over dem alle: vær gay — glad, munter, hurtig til at smile. (Gay i ordets oprindelige, bedste betydning: glad.) Bevar et køligt hoved, et varmt hjerte, og hold rummet sikkert.","requirements":["Vær gay — glad, munter, hurtig til at smile","Bevar et køligt hoved, et varmt hjerte, og hold rummet sikkert"],"salary":"","compensation":"","setting":""},{"title":"VI ANSÆTTER NU — Marinbiolog, hvalpleje — 204.000 STILLINGER","applySubject":"Marinbiolog, hvalpleje","priority":false,"department":"Prime42 / Omega42 · refererer til direktøren for havindustrier","duties":"To mennesker pr. dyr. Spækhuggere (i fangenskab og frigivne), hvaler (hvidhvaler først, derefter de største arter og nedad), delfiner. Sundhedsovervågning, adfærdsobservation, støtte til tastaturbaseret opløftning og at være den person, dyret genkender.","requirements":["Reel baggrund inden for marinbiologi (uddannelse eller tilsvarende felterfaring)","Tryg ved åbent vand ved siden af dyr, der kunne gøre det af med dig, men ikke gør det","Kan kende en hvidhval fra en narhval uden et skema","Tålmodighed målt i år, ikke timer","Mener, at »hvalerne kommer først« er en jobbeskrivelse, ikke et slogan"],"salary":"~50.000 USD/år i grundløn (Fermi-estimat, globalt vægtet)","compensation":"Betales i Koins. Satsen kan forhandles.","setting":"","application":"Afventer finansiering. 204.000 af jer. Begynd at svømme."},{"title":"VI ANSÆTTER NU — Primatpasser — 725.000 STILLINGER","applySubject":"Primatpasser","priority":false,"department":"Prime42 · refererer til direktøren for sundhed","duties":"Store APES (1:1), gibboner (10:1), MONKEYS (begrænset pulje). Daglig pleje, berigelse, støtte til opløftningsprogrammet og med tiden at lære at tage imod ordrer fra beboerne.","requirements":["Erfaring med primater (reservat, zoologisk have, feltforskning eller opvokset af dem)","Kender forskellen på en trusselsopvisning og en invitation","Stærk nok til at tabe en brydekamp med ynde","Kan stave MONKEYS og APES med store bogstaver uden at blinke","Tryg ved at blive overlistet hver dag"],"salary":"~50.000 USD/år i grundløn (Fermi-estimat, globalt vægtet)","compensation":"Betales i Koins. Satsen kan forhandles.","setting":"","application":"Afventer finansiering. 725.000 af jer. Tag bananer med. (De foretrækker dem skrællede. Det lærer du.)"},{"title":"VI ANSÆTTER NU — Lærer, opløftningspensum — 217.800 STILLINGER","applySubject":"Lærer, opløftningspensum","priority":false,"department":"Prime42 / Omega42 · refererer til direktøren for uddannelse","duties":"Undervis de første elever, der ikke er mennesker. Tastaturfærdigheder til spækhuggere, symbolsystemer til APES, hvad end MONKEYS opfinder først. Pensum er »hvad end der virker«, indtil eleverne omskriver det.","requirements":["Undervisningserfaring med enhver art, inklusive den besværlige (mennesker)","Kan udforme en lektionsplan til en elev, der måske er klogere end dig","Tålmodighed med den langsomste elev i lokalet (det er dig)","Tryg ved elever, der bedømmer DIG","5x løn, fordi ingen har haft dette job før"],"salary":"~250.000 USD/år (5x grundløn — pionerarbejde)","compensation":"Betales i Koins. Satsen kan forhandles.","setting":"","application":"Afventer finansiering. Historien ansætter."},{"title":"VI ANSÆTTER NU — Supporttekniker, dyreprogrammer — 150.000 STILLINGER","applySubject":"Supporttekniker, dyreprogrammer","priority":false,"department":"Prime42 / Omega42 · refererer til direktøren for teknologi","duties":"Hold hele operationen kørende. Vedligeholdelse af udstyr, habitatsystemer, tastaturhardware, transportlogistik og alt det, biologerne og passerne ikke har tid til at reparere.","requirements":["Kan reparere ting, der blev bygget af en, som siden har sagt op","Tryg ved saltvand, pels og skyld","Kan læse en manual skrevet til en anden maskine og alligevel få den til at virke","Går ikke i panik, når en spækhugger ser dem arbejde"],"salary":"~50.000 USD/år i grundløn (Fermi-estimat, globalt vægtet)","compensation":"Betales i Koins. Satsen kan forhandles.","setting":"","application":"Afventer finansiering. Medbring dit eget multiværktøj."},{"title":"VI ANSÆTTER NU — Ingeniør, dyreprogrammer — 10.000 STILLINGER","applySubject":"Ingeniør, dyreprogrammer","priority":false,"department":"Prime42 / Omega42 · refererer til Fermi-ingeniørchefen","duties":"Design og byg det, som 1,3 millioner medarbejdere og flere millioner dyr har brug for: habitater, tastaturer, simulatorer, Nautilus-ombygningen og hvad end lærerne finder på næste gang.","requirements":["Ingeniøruddannelse eller en tilsvarende »jeg byggede det, og det virkede«-portfolio","Kan designe til brugere, der ikke kan læse specifikationen (de er hvaler)","Tryg ved krav, der ændrer sig, når klienten lærer at tale","2x løn, fordi problemerne er 2x mærkeligere"],"salary":"~100.000 USD/år (2x grundløn — specialistsats)","compensation":"Betales i Koins. Satsen kan forhandles.","setting":"","application":"Afventer finansiering. Specifikationen er »få det til at virke for en hval«. Held og lykke."},{"title":"VI ANSÆTTER NU — Ass'sis'tent (Senior-hænger-ud) — 261.400 STILLINGER","applySubject":"Ass'sis'tent (Senior-hænger-ud)","priority":false,"department":"Alle programmer · refererer til den, der står nærmest","duties":"Hænge ud. Genere alle (kærligt). Dele uopfordret visdom ud, fortælle den samme historie to gange og vide, hvor alting er, fordi du har været her længere end bygningen.","requirements":["Gammel skid (selvidentificeret; intet ID nødvendigt)","Kan hænge produktivt ud (eller i det mindste være til stede)","At genere folk er en færdighed — brug den venligt","Er her mere for selskabet og kaffen end for lønsedlen"],"salary":"~16.700 USD/år (1/3 af grundlønnen — hænge-ud-satsen)","compensation":"Betales i Koins. Satsen kan forhandles.","setting":"","application":"Afventer finansiering. 261.400 gyngestole. Kom og gener os."},{"title":"VI ANSÆTTER NU — Massør — 200,000 STILLINGER","applySubject":"Massør","priority":false,"department":"Alle programmer · refererer til den, der er ømmest","duties":"Hold 1,5 millioner medarbejdere funktionsdygtige. Rygge, skuldre, nakker og moral. Hele operationens uofficielle terapeuter.","requirements":["Autoriseret eller certificeret i »mine hænder er magiske«","Stærk nok til en hvalbiologs skuldre","Blid nok til en lærers ego","Diskretion: Det, der sker på briksen, bliver på briksen"],"salary":"~$50k/yr i grundløn (Fermi-estimat, globalt vægtet)","compensation":"Betales i Koins. Satsen kan forhandles. Drikkepenge i bananer accepteres.","setting":"","application":"Afventer finansiering. 200,000 brikse. Kom og ælt."}];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = ['Alle','Direktører','Chefer','Jura','Videnskab + felt','Prioriterede'];
+    let active = 'Alle';
+
+    function clean(text){ return String(text || '').replace(/\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){
+      const t = job.title.toLowerCase();
+      const d = job.department.toLowerCase();
+      if(job.priority) return 'Prioriterede';
+      if(t.startsWith('direktør for')) return 'Direktører';
+      if(d.includes('få mig til at tro') || /(advokat|jurist|juridisk|lovgivning|dekret|traktat|søret|rumret|strafferet|skatteret|statsborgerret|rydning af kredsløb)/.test(t)) return 'Jura';
+      if(/(bjørn|psykolog|qa-tester|biolog|bådebygger|vinterkvarter|himmelkortlægger|landbrugsspecialist|spækhugger)/.test(t)) return 'Videnskab + felt';
+      return 'Chefer';
+    }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job,index){
+      return `<article class="priority-card"><div><span class="mini-label">Prioriteret ansættelse</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${index===0?'':'btn-dark'}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Søg stillingen ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || (cat==='Direktører' ? 'Store industrisektorer' : cat==='Chefer' ? 'Drift på tværs af projekter' : cat);
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.openPositions&&`<div><strong>Ledige stillinger:</strong> ${esc(job.openPositions)}</div>`,job.setting&&`<div><strong>Arbejdssted:</strong> ${esc(job.setting)}</div>`,job.salary&&`<div><strong>${job.title.includes('QA-tester')?'Løn':'Årsløn'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>Vederlag:</strong> ${esc(job.compensation)}</div>`,job.application&&`<div><strong>Sådan søger du:</strong> ${esc(job.application)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">LEDIG-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(dept)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Søg ↗</a><span class="job-id">E-MAIL</span>
+          <details><summary>Læs mere om stillingen</summary><div class="detail-body"><h4>Krav</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='Alle'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,job.salary,job.compensation,job.setting,...job.requirements].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>Ingen ledig stilling matcher din søgning.</strong><br>Prøv et bredere søgeord eller skift kategori.</div>';
+      document.getElementById('resultCount').textContent=filtered.length+(filtered.length===1?' ledig stilling':' ledige stillinger');
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='Alle'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='Kopieret: '+EMAIL;}
+      catch(e){note.textContent='Kopiering er ikke tilgængelig — markér e-mailadressen ovenfor.';}
+    });
+    render();
+  </script>
+</body>
+</html>

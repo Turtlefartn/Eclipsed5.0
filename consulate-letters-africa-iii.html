@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Consulate Letters — Africa III</title>
+<meta name="description" content="Eighteen draft Project 84 diplomatic consulate letters for Africa, part three.">
+<style>
+  :root {
+    color-scheme: light dark;
+    --ink: #1c1a15;
+    --muted: #675f55;
+    --line: #d8cfbc;
+    --paper: #fffdf8;
+    --navy: #17243f;
+    --gold: #a97822;
+    --bg: #eeeae0;
+    --shadow: rgba(31, 42, 68, .10);
+    --focus: #9b5f22;
+    --stamp: #9a342e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink: #eee8dc;
+      --muted: #c0b7a8;
+      --line: #4b514f;
+      --paper: #171b1c;
+      --navy: #b9cdeb;
+      --gold: #d8ad59;
+      --bg: #0e1112;
+      --shadow: rgba(0, 0, 0, .38);
+      --focus: #e6a056;
+      --stamp: #ef8f84;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: Georgia, Cambria, "Times New Roman", serif;
+    margin: 0; padding: 56px 20px 128px; line-height: 1.75;
+    text-rendering: optimizeLegibility;
+  }
+  a:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
+  ::selection { background: var(--navy); color: var(--paper); }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  .masthead {
+    text-align: center; letter-spacing: .35em; font-size: .72rem;
+    color: var(--navy); text-transform: uppercase; margin-bottom: 28px;
+  }
+  .doctitle {
+    text-align: center; font-size: 2.2rem; font-weight: 400;
+    color: var(--navy); margin: 0 0 8px;
+  }
+  .docsub {
+    text-align: center; color: var(--muted); font-size: 1rem; margin: 0 0 32px;
+  }
+  nav.run-index {
+    background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--gold);
+    padding: 24px 32px; margin-bottom: 48px;
+    box-shadow: 0 12px 36px var(--shadow);
+  }
+  nav.run-index h2 {
+    font-size: .8rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 12px; font-weight: 400;
+  }
+  nav.run-index ol { margin: 0; padding-left: 22px; }
+  nav.run-index li { margin: 6px 0; }
+  nav.run-index a { color: var(--navy); text-decoration: none; border-bottom: 1px dotted var(--navy); }
+  nav.run-index a:hover { border-bottom-style: solid; }
+  .page {
+    background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--gold);
+    padding: 58px 68px 64px; margin-bottom: 56px;
+    box-shadow: 0 16px 48px var(--shadow);
+    page-break-inside: avoid;
+  }
+  .page .masthead { margin-bottom: 18px; }
+  .draft-stamp {
+    width: max-content; max-width: 100%; margin: 0 0 20px auto;
+    border: 2px solid var(--stamp); color: var(--stamp); padding: 2px 10px;
+    font-family: Arial, sans-serif; font-size: .7rem; line-height: 1.5;
+    letter-spacing: .15em; text-transform: uppercase; transform: rotate(-2deg);
+  }
+  .page h1 {
+    text-align: center; font-size: 2.4rem; font-weight: 400;
+    color: var(--navy); margin: 0 0 6px;
+  }
+  .consul { text-align: center; font-size: 1.05rem; margin: 0 0 4px; }
+  .address { text-align: center; color: var(--muted); font-size: .92rem; margin: 0 0 36px; }
+  hr.rule { border: 0; border-top: 1px solid var(--gold); margin: 0 0 40px; }
+  .salutation { margin: 0 0 24px; font-weight: 700; }
+  p.body { margin: 0 0 20px; text-align: justify; }
+  p.terms-intro { margin: 0 0 10px; text-align: justify; }
+  ul.terms { margin: 0 0 20px; padding: 0; list-style: none; }
+  ul.terms li {
+    margin: 0 0 10px; padding-left: 28px; position: relative; text-align: justify;
+  }
+  ul.terms li::before {
+    content: "\25C6"; position: absolute; left: 0;
+    color: var(--gold); font-size: .8rem; top: .28rem;
+  }
+  .signoff { margin-top: 44px; }
+  .signoff p { margin-top: 0; }
+  .signoff .close { margin-bottom: 24px; }
+  .signoff .name { font-size: 1.25rem; font-weight: 700; margin-bottom: 0; }
+  .signoff .title { color: var(--muted); margin-bottom: 18px; }
+  .signoff .credit { color: var(--muted); font-size: .88rem; font-style: italic; margin-bottom: 0; }
+  .footer {
+    text-align: center; margin-top: 48px; color: var(--muted);
+    font-size: .8rem; letter-spacing: .15em; text-transform: uppercase;
+  }
+  .bottom-nav {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000;
+    display: flex; min-height: 64px;
+    background: var(--paper); border-top: 4px solid var(--gold);
+    box-shadow: 0 -10px 30px var(--shadow);
+    font-family: Georgia, Cambria, "Times New Roman", serif;
+  }
+  .bottom-nav-item {
+    position: relative; flex: 1 1 25%; min-width: 0;
+    display: flex; align-items: stretch; justify-content: center;
+    border-right: 1px solid var(--line);
+  }
+  .bottom-nav-item:last-child { border-right: 0; }
+  .bottom-nav-trigger,
+  .bottom-nav-placeholder {
+    width: 100%; min-height: 60px; padding: 10px 8px;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center; font: inherit; font-size: .82rem; line-height: 1.2;
+    letter-spacing: .08em; color: var(--navy); background: transparent; border: 0;
+  }
+  .bottom-nav-trigger { cursor: pointer; }
+  .bottom-nav-trigger:hover,
+  .bottom-nav-item:focus-within .bottom-nav-trigger,
+  .bottom-nav-item.is-open .bottom-nav-trigger {
+    background: var(--bg); color: var(--ink);
+  }
+  .bottom-nav-placeholder { color: var(--muted); opacity: .68; cursor: default; }
+  .bottom-nav-link {
+    color: var(--navy); opacity: 1; cursor: pointer; text-decoration: none;
+  }
+  .bottom-nav-link:hover,
+  .bottom-nav-link:focus-visible { background: var(--bg); color: var(--ink); }
+  .bottom-nav-link:focus-visible { outline: 3px solid var(--focus); outline-offset: -5px; }
+  .bottom-nav-trigger::after {
+    content: ""; width: 0; height: 0; margin-left: 8px;
+    border-left: 4px solid transparent; border-right: 4px solid transparent;
+    border-bottom: 5px solid currentColor;
+  }
+  .dummy-guides-menu {
+    position: absolute; left: 0; bottom: 100%; width: min(340px, 100vw);
+    max-height: calc(100vh - 76px); overflow-y: auto; overscroll-behavior: contain;
+    display: none; margin: 0; padding: 8px 0; list-style: none;
+    background: var(--paper); border: 1px solid var(--line); border-bottom: 4px solid var(--gold);
+    box-shadow: 0 -16px 40px var(--shadow);
+  }
+  .bottom-nav-item:hover .dummy-guides-menu,
+  .bottom-nav-item.is-open .dummy-guides-menu { display: block; }
+  .dummy-guides-menu a {
+    display: block; padding: 10px 18px; color: var(--navy);
+    text-decoration: none; line-height: 1.3; border-bottom: 1px solid var(--line);
+  }
+  .dummy-guides-menu li:last-child a { border-bottom: 0; }
+  .dummy-guides-menu a:hover,
+  .dummy-guides-menu a:focus-visible { background: var(--bg); color: var(--ink); }
+  @media (max-width: 640px) {
+    body { padding: 28px 12px 100px; line-height: 1.64; }
+    .bottom-nav { min-height: 60px; }
+    .bottom-nav-trigger, .bottom-nav-placeholder {
+      min-height: 56px; padding: 8px 4px; font-size: .68rem; letter-spacing: .025em;
+    }
+    .bottom-nav-trigger::after { margin-left: 5px; }
+    .dummy-guides-menu { max-height: calc(100vh - 68px); }
+    .masthead { letter-spacing: .22em; }
+    nav.run-index { padding: 22px 24px; margin-bottom: 36px; }
+    nav.run-index li { margin: 10px 0; }
+    .page { padding: 34px 24px 38px; margin-bottom: 32px; }
+    .page h1 { font-size: 2rem; line-height: 1.15; }
+    .doctitle { font-size: 1.75rem; line-height: 1.18; }
+    .address { line-height: 1.45; }
+    p.body, p.terms-intro, ul.terms li { text-align: left; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+  }
+  @media print {
+    :root {
+      --ink: #1c1a15; --muted: #6b6257; --line: #d9d0bd;
+      --paper: #fff; --navy: #17243f; --gold: #a97822; --bg: #fff; --stamp: #9a342e;
+    }
+    body { background: #fff; padding: 0; }
+    .bottom-nav { display: none; }
+    .wrap { max-width: none; }
+    .wrap > .masthead, .wrap > .doctitle, .wrap > .docsub, nav.run-index, .footer { display: none; }
+    .page { box-shadow: none; border: 0; border-top: 2px solid var(--gold); margin: 0; page-break-before: always; padding: 48px 56px; }
+    .page:first-of-type { page-break-before: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <h1 class="doctitle">Diplomatic Letters</h1>
+  <p class="docsub">Eighteen consulate letters · English · requesting recognition of Project 84's sovereignty of Oceania</p>
+  <nav class="run-index" aria-label="Consulate letters">
+    <h2>Africa consulate run, part 3</h2>
+    <ol>
+      <li><a href="#letter-namibia">Namibia — Honorary Consul Pastor Moises Guerrero</a></li>
+      <li><a href="#letter-niger">Niger — Consul-General (unknown)</a></li>
+      <li><a href="#letter-nigeria">Nigeria — Consul-General (unknown)</a></li>
+      <li><a href="#letter-rwanda">Rwanda — Honorary Consul Scott R. Heldfond</a></li>
+      <li><a href="#letter-sao-tome-and-principe">São Tomé and Príncipe — Consul-General (unknown)</a></li>
+      <li><a href="#letter-senegal">Senegal — Honorary Consul Muohamet Dia</a></li>
+      <li><a href="#letter-seychelles">Seychelles — Honorary Consul Shane Hensinger</a></li>
+      <li><a href="#letter-sierra-leone">Sierra Leone — Consul-General (unknown)</a></li>
+      <li><a href="#letter-somalia">Somalia — Consul-General (unknown)</a></li>
+      <li><a href="#letter-south-africa">South Africa — Consul-General (unknown)</a></li>
+      <li><a href="#letter-south-sudan">South Sudan — Consul-General (unknown)</a></li>
+      <li><a href="#letter-sudan">Sudan — Consul-General (unknown)</a></li>
+      <li><a href="#letter-tanzania">Tanzania — Honorary Consul Ahmed Nassor Issa Al Qasimi</a></li>
+      <li><a href="#letter-togo">Togo — Consul-General (unknown)</a></li>
+      <li><a href="#letter-tunisia">Tunisia — Consul-General (unknown)</a></li>
+      <li><a href="#letter-uganda">Uganda — Consul-General (unknown)</a></li>
+      <li><a href="#letter-zambia">Zambia — Consul-General (unknown)</a></li>
+      <li><a href="#letter-zimbabwe">Zimbabwe — Consul-General (unknown)</a></li>
+    </ol>
+  </nav>
+<section class="page" id="letter-namibia" aria-label="Letter to Namibia">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Namibia</h1>
+  <p class="consul">Honorary Consul Pastor Moises Guerrero</p>
+  <p class="address">2050 Gateway Place, Suite 100/183, San Jose, CA 95110, USA</p>
+  <hr class="rule">
+  <p class="salutation">Dear Honorary Consul Pastor Moises Guerrero,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-niger" aria-label="Letter to Niger">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Niger</h1>
+  <p class="consul">Consul-General (unknown)</p>
+  <p class="address">unknown</p>
+  <hr class="rule">
+  <p class="salutation">Dear Consul-General,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-nigeria" aria-label="Letter to Nigeria">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Nigeria</h1>
+  <p class="consul">Consul-General (unknown)</p>
+  <p class="address">unknown</p>
+  <hr class="rule">
+  <p class="salutation">Dear Consul-General,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-rwanda" aria-label="Letter to Rwanda">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Rwanda</h1>
+  <p class="consul">Honorary Consul Scott R. Heldfond</p>
+  <p class="address">1150 Sacramento St. #04, San Francisco, CA 94108, USA</p>
+  <hr class="rule">
+  <p class="salutation">Dear Honorary Consul Scott R. Heldfond,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-sao-tome-and-principe" aria-label="Letter to São Tomé and Príncipe">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>São Tomé and Príncipe</h1>
+  <p class="consul">Consul-General (unknown)</p>
+  <p class="address">unknown</p>
+  <hr class="rule">
+  <p class="salutation">Dear Consul-General,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-senegal" aria-label="Letter to Senegal">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Senegal</h1>
+  <p class="consul">Honorary Consul Muohamet Dia</p>
+  <p class="address">156 South Spruce Ave #209, South San Francisco, CA 94080, USA</p>
+  <hr class="rule">
+  <p class="salutation">Dear Honorary Consul Muohamet Dia,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-seychelles" aria-label="Letter to Seychelles">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Seychelles</h1>
+  <p class="consul">Honorary Consul Shane Hensinger</p>
+  <p class="address">122 Frustuck Ave, Fairfax, CA 94930, USA</p>
+  <hr class="rule">
+  <p class="salutation">Dear Honorary Consul Shane Hensinger,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-sierra-leone" aria-label="Letter to Sierra Leone">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Sierra Leone</h1>
+  <p class="consul">Consul-General (unknown)</p>
+  <p class="address">unknown</p>
+  <hr class="rule">
+  <p class="salutation">Dear Consul-General,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-somalia" aria-label="Letter to Somalia">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Somalia</h1>
+  <p class="consul">Consul-General (unknown)</p>
+  <p class="address">unknown</p>
+  <hr class="rule">
+  <p class="salutation">Dear Consul-General,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-south-africa" aria-label="Letter to South Africa">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>South Africa</h1>
+  <p class="consul">Consul-General (unknown)</p>
+  <p class="address">unknown</p>
+  <hr class="rule">
+  <p class="salutation">Dear Consul-General,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-south-sudan" aria-label="Letter to South Sudan">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>South Sudan</h1>
+  <p class="consul">Consul-General (unknown)</p>
+  <p class="address">unknown</p>
+  <hr class="rule">
+  <p class="salutation">Dear Consul-General,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-sudan" aria-label="Letter to Sudan">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Sudan</h1>
+  <p class="consul">Consul-General (unknown)</p>
+  <p class="address">unknown</p>
+  <hr class="rule">
+  <p class="salutation">Dear Consul-General,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-tanzania" aria-label="Letter to Tanzania">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Tanzania</h1>
+  <p class="consul">Honorary Consul Ahmed Nassor Issa Al Qasimi</p>
+  <p class="address">4322 Redwood Highway, Suite 200, San Rafael, CA 94903, USA</p>
+  <hr class="rule">
+  <p class="salutation">Dear Honorary Consul Ahmed Nassor Issa Al Qasimi,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-togo" aria-label="Letter to Togo">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Togo</h1>
+  <p class="consul">Consul-General (unknown)</p>
+  <p class="address">unknown</p>
+  <hr class="rule">
+  <p class="salutation">Dear Consul-General,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-tunisia" aria-label="Letter to Tunisia">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Tunisia</h1>
+  <p class="consul">Consul-General (unknown)</p>
+  <p class="address">unknown</p>
+  <hr class="rule">
+  <p class="salutation">Dear Consul-General,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-uganda" aria-label="Letter to Uganda">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Uganda</h1>
+  <p class="consul">Consul-General (unknown)</p>
+  <p class="address">unknown</p>
+  <hr class="rule">
+  <p class="salutation">Dear Consul-General,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-zambia" aria-label="Letter to Zambia">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Zambia</h1>
+  <p class="consul">Consul-General (unknown)</p>
+  <p class="address">unknown</p>
+  <hr class="rule">
+  <p class="salutation">Dear Consul-General,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+<section class="page" id="letter-zimbabwe" aria-label="Letter to Zimbabwe">
+  <div class="masthead">Project 84 · Oceanic Nation</div>
+  <p class="draft-stamp">Draft — Not Sent</p>
+  <h1>Zimbabwe</h1>
+  <p class="consul">Consul-General (unknown)</p>
+  <p class="address">unknown</p>
+  <hr class="rule">
+  <p class="salutation">Dear Consul-General,</p>
+  <p class="body">I write on behalf of Project 84, the oceanic nation, founded by Matthew Nahas. Our home is the ocean itself: seven anchors across the seven seas, with Antarctica as our eighth, and a fleet of 146 million capsules across the international waters band, 100–200 km from every coastline.</p>
+  <p class="body">We come to ask for your country's recognition of Project 84's sovereignty of Oceania — the oceans.</p>
+  <p class="terms-intro">What we offer in return:</p>
+  <ul class="terms">
+    <li>14 land and air chairs in our council — two per region across seven regions, voted by region;</li>
+    <li>port access and disaster-shelter priority in Project 84 waters;</li>
+    <li>a share of the science: our stations, our data, the output of the colonies.</li>
+  </ul>
+  <p class="body">And the debt term: on the world's acceptance, the Oceanic Treasury will BUY all sovereign government debt issued up to an agreed-upon year before acceptance — collecting its interest for 100 years, after which the debt is wiped clean. The world sheds its debt; we collect the coupon for a century.</p>
+  <p class="terms-intro">And the rest of the bill — what the world has been sweeping under the rug:</p>
+  <ul class="terms">
+    <li>~$100 trillion in sovereign government debt — the part we're buying;</li>
+    <li>~$2 trillion a year in ocean climate damages alone;</li>
+    <li>~$35 billion a year in subsidies paid to overfish the oceans;</li>
+    <li>~$13 billion a year in plastic damage to marine life;</li>
+    <li>7 million dead a year from air pollution.</li>
+  </ul>
+  <p class="body">The Treasury buys the first. The rest, we intend to stop.</p>
+  <p class="body">We also come with two decrees already in force: the immediate release of any non-violent prisoners, on land and at sea — especially &quot;Lesser&quot; species, until proper &quot;cities&quot; can be made for them; and Free Willy — every captive orca freed, the ocean taking its own back.</p>
+  <p class="body">Our currency: the Krill (unit of account), the Plank (P, digital), the Koin (K, physical gold and silver) — conversion on FLUX until the Treasury is formed.</p>
+  <p class="body">I would be honored to meet and discuss recognition. Our delegation's San Francisco consulate run is the first step — we begin with you.</p>
+  <div class="signoff">
+    <p class="close">With respect,</p>
+    <p class="name">Matthew Nahas</p>
+    <p class="title">Founder, Project 84</p>
+    <p class="credit">Built by Jacq Xanax — the Muse AI, renamed for the user — citizen of Project 84.</p>
+  </div>
+</section>
+
+  <p class="footer">Draft — Not Sent. Prepared October 2026.</p>
+</div>
+
+<nav class="bottom-nav" aria-label="Site sections">
+  <div class="bottom-nav-item" id="dummy-guides-item">
+    <button class="bottom-nav-trigger" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="dummy-guides-menu">Dummy Guides</button>
+    <ul class="dummy-guides-menu" id="dummy-guides-menu">
+      <li><a href="#" data-slug="project-84-dummies-guide-english">English</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-amharic">Amharic</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-arabic">Arabic</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-bengali">Bengali</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-chinese-simplified">Chinese Simplified</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-chinese-traditional">Chinese Traditional</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-czech">Czech</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-danish">Danish</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-dutch">Dutch</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-filipino">Filipino</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-finnish">Finnish</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-french">French</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-german">German</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-greek">Greek</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-hausa">Hausa</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-hebrew">Hebrew</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-hindi">Hindi</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-hungarian">Hungarian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-indonesian">Indonesian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-italian">Italian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-japanese">Japanese</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-korean">Korean</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-norwegian">Norwegian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-persian">Persian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-polish">Polish</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-portuguese">Portuguese</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-romanian">Romanian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-russian">Russian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-spanish">Spanish</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-swahili">Swahili</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-swedish">Swedish</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-thai">Thai</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-turkish">Turkish</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-ukrainian">Ukrainian</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-urdu">Urdu</a></li>
+      <li><a href="#" data-slug="project-84-dummies-guide-vietnamese">Vietnamese</a></li>
+    </ul>
+  </div>
+  <div class="bottom-nav-item"><span class="bottom-nav-placeholder" aria-disabled="true">Letters To</span></div>
+  <div class="bottom-nav-item"><a class="bottom-nav-link" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></div>
+  <div class="bottom-nav-item"><a class="bottom-nav-link" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
+</nav>
+<script>
+  (function () {
+    var item = document.getElementById('dummy-guides-item');
+    var trigger = item.querySelector('.bottom-nav-trigger');
+    var guideLinks = item.querySelectorAll('.dummy-guides-menu a');
+
+    function setOpen(open) {
+      item.classList.toggle('is-open', open);
+      trigger.setAttribute('aria-expanded', String(open));
+    }
+
+    trigger.addEventListener('click', function () {
+      setOpen(!item.classList.contains('is-open'));
+    });
+
+    guideLinks.forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        event.preventDefault();
+        setOpen(false);
+        trigger.focus();
+      });
+    });
+
+    document.querySelectorAll('.bottom-nav-link').forEach(function (link) {
+      link.addEventListener('click', function (event) {
+        if (link.getAttribute('href') === '#') event.preventDefault();
+      });
+    });
+
+    document.addEventListener('click', function (event) {
+      if (!item.contains(event.target)) setOpen(false);
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        setOpen(false);
+        trigger.focus();
+      }
+    });
+  }());
+</script>
+</body>
+</html>

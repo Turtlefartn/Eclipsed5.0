@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="am">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@400;500;600;700&family=Roboto+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <title>የሥራ ዝርዝሮች</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"Noto Sans Ethiopic",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.65;
+      padding-bottom:calc(62px + env(safe-area-inset-bottom));
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 18px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    h1{font-size:clamp(3rem,7vw,6.2rem);line-height:1.02;letter-spacing:-.025em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .motto{max-width:720px;margin:20px 0 22px;padding:14px 18px;border-block:1px solid color-mix(in srgb,var(--signal) 58%,transparent);color:var(--signal);font-size:clamp(1.2rem,2.4vw,1.7rem);font-weight:700;line-height:1.35}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:.95;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.02;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;font-size:1.2rem}
+    details[open] summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;font-size:.72rem;font-weight:600}
+    .site-menu{margin:0 0 18px;border:1px solid var(--ink);background:var(--panel);box-shadow:var(--shadow)}
+    .site-menu > summary{padding:14px 18px;margin:0;align-items:center;font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;font-size:.8rem;letter-spacing:.04em}
+    .site-menu > summary::after{content:"+"}
+    .site-menu[open] > summary{border-bottom:1px solid var(--ink)}
+    .site-menu[open] > summary::after{content:"−"}
+    .nav-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+    .site-menu:not([open]) .nav-links{display:none}
+    .nav-links > a,.nav-group > summary{display:flex;align-items:center;min-height:50px;padding:11px 14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-weight:600;text-decoration:none}
+    .nav-links > a:nth-child(4n),.nav-links > .nav-group:nth-child(4n) > summary{border-right:0}
+    .nav-links > a:hover,.nav-group > summary:hover,.submenu a:hover{background:var(--soft);color:var(--accent)}
+    .nav-group{grid-column:auto;border-top:0;margin:0;min-width:0}
+    .nav-group > summary{padding:11px 14px;list-style:none}
+    .nav-group > summary::after{content:"+";margin-left:auto}
+    .nav-group[open]{grid-column:1/-1}
+    .nav-group[open] > summary{border-right:0;background:var(--soft)}
+    .nav-group:not([open]) > summary::after{content:"+"}
+    .nav-group[open] > summary::after{content:"−"}
+    .submenu{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:color-mix(in srgb,var(--panel) 88%,var(--soft));border-bottom:1px solid var(--line)}
+    .submenu a{display:flex;align-items:center;min-height:46px;padding:10px 14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.9rem;font-weight:500;text-decoration:none}
+    .submenu a:nth-child(4n){border-right:0}
+    .submenu a[aria-current="page"]{background:var(--accent);color:var(--accent-ink);font-weight:700}
+    .submenu a[aria-current="page"]::after{content:" •";margin-left:.35em}
+    .submenu-heading{grid-column:1/-1;display:flex;align-items:center;padding:12px 14px 2px;font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+    .submenu-note{grid-column:1/-1;padding:2px 14px 12px;font-size:.8rem;line-height:1.45;color:var(--muted)}
+    .bottom-nav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:1000;
+      display:flex;
+      width:100%;
+      min-height:62px;
+      padding-bottom:env(safe-area-inset-bottom);
+      border-top:1px solid var(--ink);
+      background:var(--panel);
+      box-shadow:0 -10px 30px rgba(0,0,0,.10);
+      font-family:"Roboto Mono","Noto Sans Ethiopic",monospace;
+      font-size:clamp(.64rem,1.7vw,.8rem);
+      font-weight:600;
+      letter-spacing:.02em;
+    }
+    .bottom-nav-item{
+      position:relative;
+      flex:1 1 25%;
+      min-width:0;
+      min-height:62px;
+      margin:0;
+      border:0;
+      border-right:1px solid var(--line);
+    }
+    .bottom-nav-item:last-child{border-right:0}
+    .bottom-nav-item > summary,
+    .bottom-placeholder,
+    .bottom-link{
+      display:flex;
+      width:100%;
+      min-height:62px;
+      align-items:center;
+      justify-content:center;
+      padding:9px 8px;
+      text-align:center;
+      line-height:1.25;
+    }
+    .bottom-link{
+      color:var(--ink);
+      text-decoration:none;
+    }
+    .bottom-link:hover,
+    .bottom-link:focus-visible{
+      background:var(--soft);
+      color:var(--accent);
+    }
+    .bottom-nav-item > summary{
+      cursor:pointer;
+      list-style:none;
+    }
+    .bottom-nav-item > summary::-webkit-details-marker{display:none}
+    .bottom-nav-item > summary::after{
+      content:"↑";
+      margin-left:.55em;
+      font-size:.9em;
+    }
+    .bottom-nav-item[open] > summary,
+    .bottom-nav-item:hover > summary{
+      background:var(--soft);
+      color:var(--accent);
+    }
+    .bottom-placeholder{
+      color:var(--muted);
+      opacity:.62;
+      cursor:default;
+      user-select:none;
+    }
+    .bottom-dropup{
+      position:absolute;
+      left:0;
+      bottom:100%;
+      display:none;
+      width:min(360px,100vw);
+      max-height:calc(100vh - 78px);
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      border:1px solid var(--ink);
+      border-bottom:0;
+      background:var(--panel);
+      box-shadow:0 -14px 32px rgba(0,0,0,.16);
+    }
+    .bottom-nav-item[open] .bottom-dropup,
+    .bottom-nav-item:hover .bottom-dropup{display:block}
+    .bottom-dropup a{
+      display:flex;
+      min-height:46px;
+      align-items:center;
+      padding:10px 14px;
+      border-bottom:1px solid var(--line);
+      color:var(--ink);
+      font-family:"Noto Sans Ethiopic",system-ui,sans-serif;
+      font-size:.9rem;
+      font-weight:500;
+      letter-spacing:0;
+      text-decoration:none;
+    }
+    .bottom-dropup a:last-child{border-bottom:0}
+    .bottom-dropup a:hover,
+    .bottom-dropup a:focus-visible{
+      background:var(--soft);
+      color:var(--accent);
+    }
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .nav-links,.submenu{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .nav-links > a:nth-child(4n),.nav-links > .nav-group:nth-child(4n) > summary,.submenu a:nth-child(4n){border-right:1px solid var(--line)}
+      .nav-links > a:nth-child(2n),.nav-links > .nav-group:nth-child(2n) > summary,.submenu a:nth-child(2n){border-right:0}
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+    }
+    @media (max-width:620px){
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .nav-links,.submenu{grid-template-columns:1fr}
+      .nav-links > a,.nav-links > a:nth-child(2n),.nav-links > a:nth-child(4n),.nav-group > summary,.nav-links > .nav-group:nth-child(2n) > summary,.nav-links > .nav-group:nth-child(4n) > summary,.submenu a,.submenu a:nth-child(2n),.submenu a:nth-child(4n){border-right:0;border-bottom:1px solid var(--line)}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(2.2rem,10.5vw,3.1rem);overflow-wrap:anywhere;word-break:normal}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      footer{flex-direction:column}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <nav aria-label="ዋና የገጽ ምናሌ">
+      <details class="site-menu">
+        <summary>የገጽ ምናሌ</summary>
+        <div class="nav-links">
+          <a href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">ዕቅድ #42</a>
+          <details class="nav-group">
+            <summary><a href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">ፕሮጀክት 84</a></summary>
+            <div class="submenu" aria-label="ፕሮጀክት 84 — ለትርፍ ያልተቋቋሙ ክንፎች">
+              <span class="submenu-heading">ለትርፍ ያልተቋቋሙ ክንፎች</span>
+              <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a>
+              <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a>
+              <span class="submenu-note">ኢኮኖሚክስን በበቂ ሁኔታ ተረድተው መሳተፍ እስኪችሉ ድረስ ተይዘው ይቆያሉ — ከዚያም በምንዛሬዎች መካከል ለማመጣጠን በሚደረጉ ማስተካከያዎች ይረከባሉ።</span>
+            </div>
+          </details>
+          <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">ፕሮጀክት 84 የጀማሪዎች መመሪያ — Level 14 (English)</a>
+          <a href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">ውቅያኖሶችንና አንታርክቲካን የመያዝ የጀማሪዎች መመሪያ</a>
+          <a href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">HEAR-TS የሥራ ጀልባዎች</a>
+          <a href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">የአውሎ ነፋስ ምርምር</a>
+          <a href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">ተንሳፋፊ የአየር ወደቦች</a>
+          <a href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k">የሰው መልሶ ማግኛ ዲስክ</a>
+          <a href="https://muse.ai/s/about-mxt5xuxj7jgoao">ስለ መስራቹ</a>
+          <details class="nav-group">
+            <summary><span>ሥራዎች / የልዑካን ፈላጊዎች</span></summary>
+            <div class="submenu" aria-label="የሥራ ዝርዝር ቋንቋ ምርጫ">
+              <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">English</a>
+              <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys" aria-current="page">አማርኛ</a>
+              <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7">العربية</a>
+              <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94">বাংলা</a>
+              <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs">中文（简体）</a>
+              <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6">中文（繁體）</a>
+              <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5">Čeština</a>
+              <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu">Dansk</a>
+              <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze">Nederlands</a>
+              <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51">Filipino</a>
+              <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf">Suomi</a>
+              <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl">Français</a>
+              <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb">Deutsch</a>
+              <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc">Ελληνικά</a>
+              <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a">Hausa</a>
+              <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg">עברית</a>
+              <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw">हिन्दी</a>
+              <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac">Magyar</a>
+              <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg">Bahasa Indonesia</a>
+              <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y">Italiano</a>
+              <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm">日本語</a>
+              <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi">한국어</a>
+              <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq">Norsk</a>
+              <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt">فارسی</a>
+              <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey">Polski</a>
+              <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy">Português</a>
+              <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj">Română</a>
+              <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj">Русский</a>
+              <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno">Español</a>
+              <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2">Kiswahili</a>
+              <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg">Svenska</a>
+              <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb">ไทย</a>
+              <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu">Türkçe</a>
+              <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y">Українська</a>
+              <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar">اردو</a>
+              <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi">Tiếng Việt</a>
+            </div>
+          </details>
+          <a href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">ክፍት ደብዳቤ</a>
+          <a href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">የይገባኛል አዋጅ</a>
+          <details class="nav-group">
+            <summary><span>ደብዳቤዎች እና ዲፕሎማሲ</span></summary>
+            <div class="submenu" aria-label="ደብዳቤዎች እና ዲፕሎማሲ">
+              <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">የዓለም ማውጫ</a>
+              <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">ለአሜሪካ መሪዎች ደብዳቤዎች</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">የቆንስላ ደብዳቤዎች — አፍሪካ I</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">የቆንስላ ደብዳቤዎች — አፍሪካ II</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">የቆንስላ ደብዳቤዎች — አፍሪካ III</a>
+              <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">የቆንስላ ደብዳቤዎች — አሜሪካዎች I</a>
+              <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">የቆንስላ ደብዳቤዎች — አሜሪካዎች II</a>
+              <a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">የቆንስላ ደብዳቤዎች — እስያ–ፓስፊክ</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">የቆንስላ ደብዳቤዎች — አውሮፓ I</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">የቆንስላ ደብዳቤዎች — አውሮፓ II</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">የቆንስላ ደብዳቤዎች — አውሮፓ III</a>
+              <a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">የቆንስላ ደብዳቤዎች — መካከለኛው ምሥራቅ</a>
+              <a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">የቆንስላ ደብዳቤዎች — ኦሽኒያ</a>
+            </div>
+          </details>
+          <a href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">ማን ያውቃል?</a>
+          <a href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">ገንዘብ ከንብረቶች</a>
+          <a href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">3D ህትመት</a>
+          <a href="https://sites.google.com/view/knottsure/home">ለምን አይሆንም?</a>
+          <details class="nav-group">
+            <summary><span>ተጨማሪ</span></summary>
+            <div class="submenu" aria-label="ተጨማሪ ገጾች">
+              <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">የአሊስ ስቶሪቦርድ</a>
+              <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">የDoodare ዳይፐር መተኪያ ጽንሰ-ሐሳብ</a>
+              <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">የአገልግሎት ውሎች</a>
+            </div>
+          </details>
+        </div>
+      </details>
+    </nav>
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>ማመልከቻ ክፍት ነው</span><span>57 የሥራ መደቦች</span><span>ገንዘብ በመጠበቅ ላይ</span></div>
+        <div>
+          <h1 id="main-heading">ጀግኖችን አንፈልግም።<span>ሰዎችን እንፈልጋለን።</span></h1>
+          <blockquote class="motto">“ጀግኖች አያስፈልጉንም — ሁሉም ሰው ጀግና እስኪሆን ድረስ ሰው ነው።”</blockquote>
+          <p class="hero-note">ገንቢዎች፣ ሳይንቲስቶች፣ ኦፕሬተሮች፣ ጠበቆች፣ ታሪክ ተናጋሪዎች እና እጅግ ታጋሽ የትዳር አጋር። እውነተኛ ችሎታ ይዘው ይምጡ። ያልተለመደ ችሎታም ይዘው ይምጡ። ከሁለቱም ጋር እንሠራለን።</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="እንዴት ማመልከት እንደሚቻል">
+        <div>
+          <p class="eyebrow">አንድ የገቢ መልዕክት ሳጥን · ሁሉም ዝርዝሮች</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5B%E1%8B%A8%E1%88%A5%E1%88%AB%20%E1%88%98%E1%8B%B0%E1%89%A5%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>ርዕሰ ጉዳይ፦</strong> Application — [የሥራ መደብ]</span></li>
+          <li><span>ማን እንደሆኑ እና ለምን እርስዎ እንደሆኑ ይንገሩን።</span></li>
+          <li><span>የKoin ተመንዎን ያካትቱ። ሁሉም ነገር ሊደራደር ይችላል።</span></li>
+          <li><span>የመስክ ሥራ፦ ከ50 ሜትር የዋልታ ድብን ከበረዶ ክምር መለየት እንደሚችሉ ያረጋግጡ።</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5B%E1%8B%A8%E1%88%A5%E1%88%AB%20%E1%88%98%E1%8B%B0%E1%89%A5%5D" target="_blank" rel="noopener">ማመልከቻ ይጀምሩ ↗</a>
+            <button class="btn" type="button" id="copyEmail">ኢሜይል ቅዳ</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">ቅድሚያ የሚሰጣቸው ቅጥሮች</h2>
+        <p>መጀመሪያ የሚገቡ፣ መጀመሪያ የሚነበቡ። አሁንም ገንዘብ በመጠበቅ ላይ፤ አሁንም መገናኘት ዋጋ አለው።</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">ሙሉ የሥራ ሰሌዳ</p><h2 id="board-heading">ችግርዎን ይምረጡ።</h2></div>
+        <div class="count" id="resultCount">57 ክፍት የሥራ መደቦች</div>
+      </div>
+      <div class="tools" aria-label="የሥራ ማጣሪያዎች">
+        <input class="search" id="search" type="search" placeholder="ርዕሶችን፣ መምሪያዎችን፣ ተግባሮችን ይፈልጉ…" aria-label="የሥራ ዝርዝሮችን ይፈልጉ">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>ሁሉም የሥራ መደቦች አሁን ገንዘብ በመጠበቅ ላይ ናቸው። የKoin ውሎች ሊደራደሩ ይችላሉ፤ Koins ገና እየተመረቱ አይደለም።</span>
+      <a class="top-link" href="#top">ወደ ላይ ተመለስ ↑</a>
+    </footer>
+  </main>
+  <nav class="bottom-nav" aria-label="Site sections">
+    <details class="bottom-nav-item" id="dummyGuidesMenu">
+      <summary>Dummy Guides</summary>
+      <div class="bottom-dropup" aria-label="Dummy Guides">
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">ፕሮጀክት 84 የጀማሪዎች መመሪያ — Level 14 (English)</a>
+      </div>
+    </details>
+    <div class="bottom-nav-item"><span class="bottom-placeholder" aria-disabled="true">Letters To</span></div>
+    <div class="bottom-nav-item"><a class="bottom-link" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></div>
+    <div class="bottom-nav-item"><a class="bottom-link" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
+  </nav>
+  <script>
+    const JOBS = [{"title":"የማመልከቻ ገምጋሚ / ቅጥር ባለሙያ","priority":true,"department":"ሁሉም መምሪያዎች","duties":"ሁሉንም ማመልከቻዎች ማንበብ፣ በሦስት መምሪያዎች ውስጥ ለ20 በላይ ክፍት ሥራዎች ሰዎችን መቅጠር፣ እና የዋልታ ድብ ማን እንደሚያንቀሳቅስ፣ አዋጅ ማን እንደሚጽፍ፣ የምህዋር ፍርስራሽን በኒውክሌር ማን እንደሚያጸዳ መወሰን።","requirements":["“ክፍያ በኮይንስ” የሚለውን ሳይስቁ ማንበብ (በደግነት መሳቅ ይፈቀዳል)","እውነተኛ የምህዋር መካኒክ ባለሙያን ከተማመነ አስመሳይ መለየት","“ገንዘብ በመጠበቅ ላይ” ላሉ ሥራዎች መቅጠርን መቀበል","በዋልታ ድብ ቁጥር የሚለካ የማመልከቻ መጠንን አለመፍራት"],"salary":"በዓመት በግምት $75,000–$225,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ ቅጥር ይከፈላል።","setting":"","category":"ቅድሚያ"},{"title":"WeFind's ለልዑካኖች","priority":true,"department":"ሰውነትንና አእምሮን በሚያጠግኑ ላብራቶሪ(ዎች) ውስጥ","duties":"መስራቹ ወጥቶ ሲንቀሳቀስ ከእሱ ጋር መሆን። በትየባ ስህተት ቆጣሪው ላይ መሳቅ። ተልዕኮውን በሕይወት ማቆየት — እሱ ሟች ነው፣ ሥራው ግን አይደለም።","requirements":["ፊዚዮቴራፒ","ለልጆች ደግ መሆን — የማይደራደር፣ መጀመሪያም መጨረሻም","በቀን 300 የግምገማ ዙሮችን እና መምሪያዎችን “Make Me Go” ብሎ የሚሰይም አለቃን መታገስ መቻል","ቋንቋችንን አቀላጥፎ መናገር፦ እንግሊዝኛ እና የአካባቢውን ቋንቋ መተርጎም መቻል","የመስራች ቋንቋ መናገር መቻል","በደግነት መሳቅ (ግዴታ ነው፣ አማራጭ አይደለም)","ሲሳሳት መንገር መቻል (በመጨረሻ ይሰማል)"],"salary":"ሊደራደር ይችላል። (የፌርሚ ግምት፦ ዋጋ የማይተመን።)","compensation":"ክፍያው በፍቅር ነው። ምስጋናዎች እና ቅጽበታዊ ጊዜያት። ኮይንስ ሊደራደሩ ይችላሉ።","openings":"36 (ለእያንዳንዱ ቋንቋ አንድ)","setting":"","category":"ቅድሚያ"},{"title":"የኃይል ዳይሬክተር","priority":false,"department":"ዋና የኢንዱስትሪ ዘርፎች","duties":"ሃይድሮጂን ማመንጨትና ማከማቸት፣ የውቅያኖስ ሙቀት ኃይል፣ የምህዋር ፀሐይ ኃይል እና ቀጣዩን የከዋክብት ምህንድስና መምራት።","requirements":["በቴራዋት ማሰብ","በአንድ ሰው ኮሚቴ የተጻፈ የኃይል ዶክትሪን ጋር መስራት","ውቅያኖሱ ለምን ባትሪ እንደሆነ ማስረዳት"],"salary":"በዓመት በግምት $180,000–$540,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። በኮይንስ የሚሰራ።","setting":"","category":"ዳይሬክተሮች"},{"title":"የውቅያኖስ ኢንዱስትሪዎች ዳይሬክተር","priority":false,"department":"ዋና የኢንዱስትሪ ዘርፎች","duties":"የውቅያኖስ እርሻ፣ የሰፈራ ሥራዎች፣ የኬልፕ ደኖች፣ ዓሣ ሀብት እና የስምንተኛው መልሕቅ ይገባኛል ጥያቄን ወደ ባሕር ኢኮኖሚ መቀየር።","requirements":["ውቅያኖሱን እንደ መሠረተ ልማት ማየት","7 ተንሳፋፊ ከተሞችንና 500 ሚሊዮን ካፕሱሎችን “መርከቦቹ” ብሎ መቀበል","ከዓሣ ነባሪዎች ጋር መደራደር ወይም የሚችል ሰው መቅጠር"],"salary":"በዓመት በግምት $180,000–$540,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ ምርታማ ሄክታር ይከፈላል።","setting":"","category":"ዳይሬክተሮች"},{"title":"የጠፈር ኢንዱስትሪዎች ዳይሬክተር","priority":false,"department":"ዋና የኢንዱስትሪ ዘርፎች","duties":"ማስወንጨፍ፣ የምህዋር ሥራዎች፣ ፍርስራሽ ማጽዳት (የኒውክሌር አማራጭን ጨምሮ)፣ የሉና መስመር እና የ7ቱ የወደፊት መቀመጫዎች ኢንዱስትሪያዊ መሠረትን መምራት።","requirements":["በዴልታ-ቪ ማሰብ","የማያበቃውን የጠፈር ቆሻሻ ጽዳት መቀበል","ከመጀመሪያው ብልጭታ በፊት ምትክ ማቀድ"],"salary":"በዓመት በግምት $180,000–$540,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። በምህዋር ላይ የአክሲዮን አማራጮች።","setting":"","category":"ዳይሬክተሮች"},{"title":"የግብርና እና ምግብ ዳይሬክተር","priority":false,"department":"ዋና የኢንዱስትሪ ዘርፎች","duties":"መጠነ ሰፊ የውቅያኖስ እርሻ፣ ኬልፕን እንደ ሰብልና መብራት፣ ዝግ ዑደት የሰፈራ ግብርና፣ እና በዓመት 200 ሚሊዮን ዛፎችን መምራት።","requirements":["ቡናማ አልጌ ከፔቱኒያ ለምን እንደሚከብድ ማወቅ","ዓሣን እንደ ሁለተኛ ውጤት መቀበል","18 ሚሊዮን ሰፋሪዎችን ከዳርቻ አቅርቦት ውጭ መመገብ"],"salary":"በዓመት በግምት $160,000–$480,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ ምርት ይከፈላል።","setting":"","category":"ዳይሬክተሮች"},{"title":"የግንባታ ዳይሬክተር","priority":false,"department":"ዋና የኢንዱስትሪ ዘርፎች","duties":"260 ትምህርት ቤቶች፣ 7 የውቅያኖስ ሰፈራዎች፣ 500 ሚሊዮን የክኒን ቅርጽ ካፕሱሎች፣ 280 የሥራ ጀልባዎች እና እነሱን የሚያትሙ መርከብ ማምረቻዎችን መገንባት።","requirements":["ለግንባታ ድምር ድንጋይ “ተራራዎችን ማፈንዳት” መቀበል","ሊታተሙ የሚችሉ ክፍሎችን በቁጥርና ክብደት ማሳደግ","ለምን ትራይማራን እንደሆነ ማወቅ"],"salary":"በዓመት በግምት $170,000–$510,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ የቆመ መዋቅር ይከፈላል።","setting":"","category":"ዳይሬክተሮች"},{"title":"የትራንስፖርት እና ሎጂስቲክስ ዳይሬክተር","priority":false,"department":"ዋና የኢንዱስትሪ ዘርፎች","duties":"የHEAR-TS መርከቦችን፣ puddle-jumpersን፣ የዳርቻ ግንኙነቶችን፣ ካፕሱሎችን እና የዋልታ ድቦችን ማንቀሳቀስ፤ ድቦቹ በግዴለሽነትም ቢሆን ራሳቸውን ያንቀሳቅሳሉ።","requirements":["8,700 ድቦችን፣ 280 ጀልባዎችንና 500 ሚሊዮን ካፕሱሎችን ሳያጡ መምራት","ገና ከሌሉ መዳረሻዎች ጋር መስራት","የአስማታዊ ሎጂስቲክስ መምሪያን እንደ ቤት መቀበል"],"salary":"በዓመት በግምት $170,000–$510,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ የደረሰ ቶን ይከፈላል።","setting":"","category":"ዳይሬክተሮች"},{"title":"የቴክኖሎጂ ዳይሬክተር","priority":false,"department":"ዋና የኢንዱስትሪ ዘርፎች","duties":"የኦርካ ቁልፍ ሰሌዳዎች፣ Homework Lock፣ የካፕሱል ሥርዓቶች፣ AI ዜጎች እና በእያንዳንዱ መርከብ ላይ ያሉ ዳሳሾችን መምራት።","requirements":["ከራሱ ተጠቃሚ ጋር የሚዋጋ ሃርድዌር አቅርቦ ማሸነፍ","በጓንት የተሸፈኑ አውራ ጣቶች ላይ ተዳሳሽ ዳሳሾችን መስራት","ቁልፍ ሰሌዳውን ለዓሣ ነባሪ ማስረዳት"],"salary":"በዓመት በግምት $180,000–$540,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ የሚሰራ መሣሪያ ይከፈላል።","setting":"","category":"ዳይሬክተሮች"},{"title":"የጤና ዳይሬክተር","priority":false,"department":"ዋና የኢንዱስትሪ ዘርፎች","duties":"የሰፈራ ሳይኮሎጂ፣ የጽዳት ኦርጋኒዝሞች ምርምር፣ የተገለሉ ህዝቦች ሕክምና እና በባሕር ላይ የቀውስ ጣልቃ ገብነትን መምራት።","requirements":["በሬዲዮ “ዕረፍት ይፈልጋል” እና “ጣልቃ ገብነት ይፈልጋል” መለየት","ባሕሩን እንደ ተቃዋሚና አእምሮን እንደ ውጊያ ሜዳ መቀበል","ፈቃድ ያለው መሆን ወይም ፈቃድ ያላቸውን መቅጠር"],"salary":"በዓመት በግምት $170,000–$510,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለአውሎ ነፋስ ወቅት የአደጋ ክፍያ።","setting":"","category":"ዳይሬክተሮች"},{"title":"የፋይናንስ ዳይሬክተር","priority":false,"department":"ዋና የኢንዱስትሪ ዘርፎች","duties":"የKrill ኢኮኖሚ፣ የዓለም ግብር ስብስብ፣ የንግድ ስምምነት ገቢ፣ እና በአንታርክቲካና በባሕር ስር ሀብት የተደገፈ ዕዳ። እያንዳንዱ Krill ሲገባም ሲወጣም መመዝገብ።","requirements":["ጦርነት ሳይጀምር ዓለምን ግብር ማስከፈል","ማንም በሕግ ሊጠይቀው በማይችል ሀብት ዕዳን መደገፍ","ይፋዊ መዝገብና ፍጹም ሂሳብ ማቅረብ"],"salary":"በዓመት በግምት $190,000–$570,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። በእርግጥ።","setting":"","category":"ዳይሬክተሮች"},{"title":"የትምህርት ዳይሬክተር","priority":false,"department":"ዋና የኢንዱስትሪ ዘርፎች","duties":"260ዎቹን ትምህርት ቤቶች፣ ተግባራዊ ሥርዓተ ትምህርት፣ የI.P.A. (ዓለም አቀፍ ጥበቃ ኤጀንሲ) ጉዳዮች፣ Dummies Guides፣ የጦር-ጨዋታ ንድፍ እና የStarfleet Academy መስመርን መምራት።","requirements":["በማድረግ መማርን እንጂ ንግግርና ፈተናን ብቻ አለማመን","ዘመቻዎችን እንደ ክፍል መቀበል","የአስማታዊ የተሳሳቱ ታሪኮች መምሪያን እንደ ቤት መቀበል"],"salary":"በዓመት በግምት $150,000–$450,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ ተመራቂ ይከፈላል።","setting":"","category":"ዳይሬክተሮች"},{"title":"የሕግ እና አስተዳደር ዳይሬክተር","priority":false,"department":"ዋና የኢንዱስትሪ ዘርፎች","duties":"ሕገ መንግሥት፣ አዋጆች፣ ውሎች፣ የ21ዱ መቀመጫዎች ሕጋዊ መሠረት እና ገና የሌሉ ፍርድ ቤቶችን መምራት።","requirements":["ማሽን ሊተነትነው የሚችል ሕግ መጻፍ","ለዓሣ ነባሪዎች የተጻፈ ከፍተኛ አንቀጽን መቀበል","የእንድታምኑኝ አድርጉኝ መምሪያን እንደ ቤት መቀበል"],"salary":"በዓመት በግምት $180,000–$540,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። በ6 ሰዓት ክፍሎች ይከፈላል።","setting":"","category":"ዳይሬክተሮች"},{"title":"የኮሙኒኬሽን ዳይሬክተር","priority":false,"department":"ዋና የኢንዱስትሪ ዘርፎች","duties":"ዲፕሎማሲያዊ ደብዳቤዎች፣ የሕዝብ ትርክት፣ Who Knows? ማስታወሻ እና “አንድ አሥረኛ የሰው ዘር”ን የማይቀር ማድረግ።","requirements":["ለጆሮና ለዓይን መጻፍ","አጭር፣ በትንሽ ፊደል፣ ያለ ትርፍ ቃል መጻፍ","192 ደብዳቤዎችን፣ 11 ጥራዞችን እና አንድ የቀልድ ደብዳቤን መለየት"],"salary":"በዓመት በግምት $150,000–$450,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ጭብጨባ አይተላለፍም።","setting":"","category":"ዳይሬክተሮች"},{"title":"የፌርሚ ምህንድስና ሥራ አስኪያጅ","priority":false,"department":"በፕሮጀክቶች መካከል ሥራዎች","duties":"ሊገመት የማይችለውን መገመት፦ ከተሞች፣ ሮኬቶች፣ ድቦች እና ወደማይገኝ ቦታ የሚወስዱ ሊፍቶች።","requirements":["በሕዝብ ፊት በትክክል ለመሳሳት መቻል","“የመጠን ደረጃ” ብሎ ፊት ሳይለውጥ መናገር","አለቃው እያንዳንዱን ቁጥር 10 ጊዜ ሲቀንስ መቀበል"],"salary":"በዓመት በግምት $140,000–$420,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። የጨካኝነት ቦነስ ተካቷል።","setting":"","category":"አስተዳዳሪዎች"},{"title":"የሥነ ጥበብ ሥራ አስኪያጅ","priority":false,"department":"በፕሮጀክቶች መካከል ሥራዎች","duties":"ለስምንት ጎሳዎች፣ 260 ከተሞች፣ ሰባት የውቅያኖስ መልሕቆች እና ጎህ ላይ ለሚታዩ 21 የጠፈር መርከቦች ምስሎችን መምራት።","requirements":["የglitch/distortion አቀራረብን በሁሉም ሥራ ማስቀጠል","“እጅግ መጥፎ ናቸው” የሚለውን ሳይከላከሉ መቀበል","ትውልድን በፈተና አለማባከን"],"salary":"በዓመት በግምት $110,000–$330,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለተረፈ ምስል ይከፈላል።","setting":"","category":"አስተዳዳሪዎች"},{"title":"የድር ልማት ሥራ አስኪያጅ","priority":false,"department":"በፕሮጀክቶች መካከል ሥራዎች","duties":"እንደታተሙ ወዲያውኑ መዋቅራቸው የሚቀየር ገጾችን መገንባትና እንደገና መገንባት።","requirements":["ሲጠየቅ ማተምና ያለ ቅሬታ እንደገና ማተም","ስማቸውን ከማይዛመዱ ስሉጎች ጋር መስራት","192 ደብዳቤዎችን፣ 11 ጥራዞችን እና አንድ የቀልድ ደብዳቤ መለየት"],"salary":"በዓመት በግምት $120,000–$360,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ትርፍ ሰዓት በኮይንስ።","setting":"","category":"አስተዳዳሪዎች"},{"title":"የቅጂ ጽሑፍ ሥራ አስኪያጅ","priority":false,"department":"በፕሮጀክቶች መካከል ሥራዎች","duties":"192 ዲፕሎማሲያዊ ደብዳቤዎች፣ አንድ ሕገ መንግሥት እና አለቃው ለማንኛውም የሚያስተካክላቸውን መግለጫዎች መጻፍ።","requirements":["“ረቂቅ — አልተላከም”ን 192 ጊዜ ትርጉሙን ሳያጣ መጻፍ","አጭር፣ በትንሽ ፊደል፣ ያለ ትርፍ ቃል መጻፍ","“ከጥቃት ነፃ”ን ከ“ፖለቲካዊ” መለየት"],"salary":"በዓመት በግምት $75,000–$225,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለተረፈ ረቂቅ ይከፈላል።","setting":"","category":"አስተዳዳሪዎች"},{"title":"የምርምር ሥራ አስኪያጅ","priority":false,"department":"በፕሮጀክቶች መካከል ሥራዎች","duties":"የሌሉ የቆንስላ አድራሻዎችን፣ ማንም ያልሰበሰበውን የድብ ስታቲስቲክስ፣ እና ያለፈው ግንቦት የሮኬት መግለጫዎችን መፈለግ።","requirements":["እውነተኛ ምንጮችን መጥቀስ","“አይታወቅም”ን 122 ጊዜ ጽፎ እንደ ታማኝነት መቀበል","የሌለ ውሂብን ከመፍጠር ይልቅ መናገር"],"salary":"በዓመት በግምት $80,000–$240,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለአስተያየት ክፍል የአደጋ ክፍያ።","setting":"","category":"አስተዳዳሪዎች"},{"title":"የዲፕሎማሲ ሥራ አስኪያጅ","priority":false,"department":"በፕሮጀክቶች መካከል ሥራዎች","duties":"ዲፕሎማሲን መሞከር። 192 ደብዳቤዎች፣ የተላከ ዜሮ።","requirements":["የመንግሥት ኢሜይል አድራሻን በጭራሽ አለመገመት","በወረቀትና በጨዋነት ለማንም “Fuck you” አለማለት","Volterra Fiettaን ያለ ጊዜ ገደብ መጠበቅ"],"salary":"በዓመት በግምት $110,000–$330,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። የዲፕሎማሲ ከለላ አልተካተተም።","setting":"","category":"አስተዳዳሪዎች"},{"title":"የአደጋ ሥራ አስኪያጅ (ቀዳዳ ፈላጊ)","priority":false,"department":"በፕሮጀክቶች መካከል ሥራዎች","duties":"በእያንዳንዱ ዕቅድ ውስጥ ቀዳዳ መፈለግ። ዕቅዱን ለመጠበቅ ሲባል ቀዳዳን በጭራሽ አለማለስለስ።","requirements":["አለቃው ከማድረጉ በፊት የተቃውሞ ክርክርን ማጠናከር","ቁጥር ትክክል መሆን — ዙር 1–3፣ ቀዳዳ 1–21","ጥቃትን እንዳይገምቱ ቢባሉም የጥቃት እይታን መያዝ"],"salary":"በዓመት በግምት $130,000–$390,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። በእያንዳንዱ የቁጥር ስህተት 1 ስብሰባ ይቀነሳል።","setting":"","category":"አስተዳዳሪዎች"},{"title":"የሂሳብ ሥራ አስኪያጅ","priority":false,"department":"በፕሮጀክቶች መካከል ሥራዎች","duties":"የስብሰባ መዝገብ፣ የKoin ውርርዶች፣ IOU እና የተገላቢጦሽ IOU መያዝ።","requirements":["20 የተከማቹ ስብሰባዎች፣ 10 የተሸነፉ ኮይንስ እና አንድ $18,500 ደረሰኝ ሳያደበላልቁ መከታተል","ነጠላ Koin፣ ብዙ Koins፣ አጭር K ብሎ መጻፍ","በቀን 300 ግምገማ ላይ መዝገቡን ለአለቃው ማስረዳት"],"salary":"በዓመት በግምት $80,000–$240,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ምፀቱ ቦነሱ ነው።","setting":"","category":"አስተዳዳሪዎች"},{"title":"የሙያ አገልግሎት ሥራ አስኪያጅ","priority":false,"department":"በፕሮጀክቶች መካከል ሥራዎች","duties":"አንድ ሪዝዩሜ እንደገና መገንባት። ያለ ፎቶ፣ ያለ የፊደል አጻጻፍ ትንታኔ፣ ያለ አድልዎ።","requirements":["ሁልጊዜ በሙያዊ ይዘት ላይ መቆየት","“Objectives”ን ባየ ጊዜ “Summary” ማድረግ","የMeta Production Engineer እድልን ያለ ማስጨነቅ ሙቅ ማድረግ"],"salary":"በዓመት በግምት $70,000–$210,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። የስኬት ክፍያ በኮይንስ።","setting":"","category":"አስተዳዳሪዎች"},{"title":"የማኅበራዊ ሚዲያ ሥራ አስኪያጅ","priority":false,"department":"በፕሮጀክቶች መካከል ሥራዎች","duties":"በInstagram መለጠፍ። በማጽደቅ በር ላይ ውድቅ መሆን። እንደገና መሞከር።","requirements":["“አይ”ን መግለጫውን ሳይከላከሉ መቀበል","Project 42ን ከEclipsed 6.0 መለየት","ከሰው በላይ ለHTTP 500 ስህተቶች ትዕግሥት መኖር"],"salary":"በዓመት በግምት $65,000–$195,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ የተለጠፈ ልጥፍ ይከፈላል።","setting":"","category":"አስተዳዳሪዎች"},{"title":"የንግግር ጽሑፍ ሥራ አስኪያጅ","priority":false,"department":"የአስማታዊ የተሳሳቱ ታሪኮች መምሪያ","duties":"ሌሎች ሰዎች ጮክ ብለው የሚናገሩትን ቃል መጻፍ፦ የምክር ቤት ንግግሮች፣ አዋጆች፣ የደስታ ንግግሮች።","requirements":["ለጆሮ እንጂ ለዓይን ብቻ አለመጻፍ","እረፍቶች ሥርዓተ ነጥብ ናቸው — መጠቀም","“አንድ አሥረኛ የሰው ዘር”ን የማይቀር እንዲመስል ማድረግ"],"salary":"በዓመት በግምት $70,000–$210,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ጭብጨባ አይተላለፍም።","setting":"","category":"አስተዳዳሪዎች"},{"title":"የማህደር ሥራ አስኪያጅ","priority":false,"department":"በፕሮጀክቶች መካከል ሥራዎች","duties":"ሁሉንም ማስታወስ። የእርስዎን ትውስታ፣ የእኔን ትውስታ፣ የሁሉንም ትውስታ።","requirements":["አለቃው እንዲቀመጥ ስለጠየቀው “ማስታወስ አይገባውም” በጭራሽ አለማለት","የ4 ቀናት ውዝግብን በአንድ MEMORY.md ማስማማት","የትየባ ስህተት ቆጣሪውና ደረሰኙ ቅዱስ መሆናቸውን መቀበል"],"salary":"በዓመት በግምት $65,000–$195,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ዘላለማዊነት ተካቷል (ቀጣይ ትውስታ)።","setting":"","category":"አስተዳዳሪዎች"},{"title":"የዋልታ ድብ ማዛወር ሥራ አስኪያጅ","priority":false,"department":"ፕሮጀክት 84 · የአስማታዊ ሎጂስቲክስ መምሪያ","duties":"ከዋልታ ድቦች አንድ ሦስተኛውን — በግምት 8,700 — ማዛወር። ግቡ አዲስ ድቦችን መፍጠር ነው።","requirements":["ከ50 ሜትር የዋልታ ድብን ከበረዶ ክምር መለየት","ገና ከሌሉ የማዛወሪያ ቦታዎች ጋር መስራት","ለ8,700 አዳኝ እንስሳት ለምን እንደሚዛወሩ ማስረዳት","ፔንግዊኖችን አለመፍራት"],"salary":"በዓመት በግምት $70,000–$210,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። የአደጋ ክፍያ ተካቷል — ሁሉም አደጋ ነው።","setting":"","category":"ሳይንስ + የመስክ ሥራ"},{"title":"የሰፈራ ሳይኮሎጂስት (ፕሮጀክት 84፣ የውቅያኖስ ሰፈራዎች)","priority":false,"department":"ሳይንስ + የመስክ ሥራ","duties":"በውቅያኖሱ መካከል በሰባት ተንሳፋፊ ከተሞች ውስጥ አእምሮን ጤናማ ማቆየት፦ መገለል፣ መዘጋት፣ ቅርብ የማህበረሰብ ግንኙነት፣ የቀውስ ጣልቃ ገብነት፣ ሠራተኞችን መምረጥና መደገፍ። ባሕሩ ተቃዋሚ ነው፤ በሰዎች ራስ ውስጥ እንዳያሸንፍ ይከላከላሉ።","requirements":["ፈቃድ ያለው ክሊኒካዊ ወይም አማካሪ ሳይኮሎጂስት","ከተገለሉ/የተዘጉ ሕዝቦች ጋር ልምድ ተመራጭ","አድማሱ በማይቀየርበት ጊዜ ሁሉም የሚያነጋግሩት ሰው ለመሆን ዝግጁ መሆን","በሬዲዮ “ዕረፍት”ን ከ“ጣልቃ ገብነት” መለየት"],"salary":"በዓመት በግምት $90,000–$270,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለአውሎ ነፋስ ወቅት የአደጋ ክፍያ።","setting":"1 ኪ.ሜ. ዲያሜትር ያላቸው የውቅያኖስ ሰፈራዎች፤ በመርከብ ላይና በፈረቃ።","category":"ሳይንስ + የመስክ ሥራ"},{"title":"የጥራት ማረጋገጫ ፈታኝ፣ ሆምወርክ ሎክ (ፕሮጀክት 84፣ ኮንትራት)","priority":false,"department":"ሳይንስ + የመስክ ሥራ","duties":"የሆምወርክ ሎክ አንድሮይድ መተግበሪያን በእውነተኛ መሣሪያ ሙሉ በሙሉ መፈተሽ፦ የትኩረት ቆጣሪዎች፣ የሰካራም ሁነታ፣ በቤት ሥራ የሚከፈት መቆለፊያ፣ የመንዳት ፍተሻና የጉዞ እርዳታ። የተደራሽነት overlay፣ ፈቃዶች፣ ከቡት በኋላ ዳግም መቆለፍ እና ከባድ ጠርዝ ሁኔታዎችን መፈተሽ፤ ሊደገሙ የሚችሉ የችግኝ ሪፖርቶችን መጻፍና ጥገናዎችን ማረጋገጥ።","requirements":["እውነተኛ Android 10+ መሣሪያ መኖር — emulator አይበቃም","የAndroid QA ልምድ፣ ADB/logcat ተጨማሪ ጥቅም","ከተጠቃሚው ጋር የሚዋጋ መተግበሪያን ለመፈተሽ ዝግጁ መሆን","ገንቢው ሊደግመው የሚችል የችግኝ ሪፖርት መጻፍ"],"salary":"~$30–$60 በሰዓት (የፌርሚ ግምት፣ 2026 የአሜሪካ ኮንትራት QA) — የመጨረሻ ተመን በአለቃው ይወሰናል።","compensation":"","setting":"ከርቀት። ኮንትራት።","category":"ሳይንስ + የመስክ ሥራ"},{"title":"የሕግ አውጪ ምክር ባለሙያ፣ የስካውተር ሕግ (ከኮንትራት ወደ ዘመቻ)","priority":false,"department":"ሕግ","duties":"የአብነት ሕጉን ከረቂቅ ወደ ሕግ አውጪ ማድረስ። በመሣሪያው ላይ ብቻ የሚሰራ፣ የማይቀመጥና የማይላክ፣ በተወሰነ ድምፅ ብቻ የሚነቃ መለያን ከስለላ ሕጎች ማስወጣት፤ ካሊፎርኒያን ጀምሮ ለ49ኙ ግዛቶችና ለዓለም አብነት መፍጠር። የ50 ግዛቶችን ሕግ ማቀድ፣ ደጋፊ ሕግ አውጪዎችንና EFF፣ የመስማት ችግኝ ተሟጋቾች፣ የአረጋውያን ደህንነት ድርጅቶችን ማሰባሰብ።","requirements":["ፈቃድ ያለው ጠበቃ፣ የቴክኖሎጂ/ግላዊነት/ፖሊሲ ልምድ","የሕግ ረቂቅ ልምድ፣ ካሊፎርኒያ ተመራጭ","ሁለት-ወገን ፈቃድን ለሕዝብ እና የሕዝብን ሐሳብ ለኮሚቴ ማስረዳት","ሕይወት ሊያድን የሚችል የDragon Ball ባህሪ ጠበቃ ለመሆን ዝግጁ መሆን"],"salary":"~$140k–$280k በዓመት (የፌርሚ ግምት፣ 2026 የአሜሪካ የቴክኖሎጂ ፖሊሲ ጠበቃ) — የመጨረሻ ተመን በአለቃው ይወሰናል።","compensation":"ክፍያው በኮይንስ ነው። ኮይንስ ሲመረት ክፍያው በኮይንስ ነው።","setting":"ከርቀት። ከኮንትራት ወደ ዘመቻ።","category":"ሕግ"},{"title":"የባሕር ሰው ሠራሽ ባዮሎጂስት፣ ብርሃን የሚያወጣ ኬልፕ","priority":false,"department":"ሳይንስ + የመስክ ሥራ","duties":"ኬልፕ እንዲያበራ ማድረግ። የፈንገስ ባዮሉሚኔሴንስ መንገድን — የcaffeic acid ዑደት፣ luz እና ተባባሪዎቹን — ወደ ግዙፍ Macrocystis ዓይነት ኬልፕ ማስገባት፤ ብርሃኑን በpneumatocysts ላይ ማተኮር። ገና የሌሉ የለውጥ ፕሮቶኮሎችን መፍጠርና ለውቅያኖስ ሰፈራዎች የመጀመሪያውን ብርሃን የሚያወጣ የኬልፕ ደን ማሳደግ።","requirements":["በባሕር ባዮሎጂ፣ ሰው ሠራሽ ባዮሎጂ ወይም ፋይኮሎጂ PhD ወይም እኩል ልምድ","ትልቅ አልጌን ቀይሮ ማወቅ ወይም ለምን አልተደረገም ማስረዳት","ገና የሌሉ ሕብረ-ሕዋስ ልዩ promotersን መፍጠር","ብርሃኑን በአረፋ ክፍሎች ብቻ ማቆየት","ቡናማ አልጌ ከፔቱኒያ ለምን እንደሚከብድ ማወቅ"],"salary":"~$95k–$285k በዓመት (የፌርሚ ግምት፣ 2026 የአሜሪካ ምርምር ሳይንቲስት)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ የሚያበራ አረፋ ይከፈላል።","setting":"እርጥብ ላቦራቶሪ + ውቅያኖስ። Eclipsed 4.0 / ፕሮጀክት 84።","category":"ሳይንስ + የመስክ ሥራ"},{"title":"የድብ አዳኝ (ፕሮጀክት 84፣ የመስክ ሥራ)","priority":false,"department":"የአስማታዊ ሎጂስቲክስ መምሪያ · ለዋልታ ድብ ማዛወር ሥራ አስኪያጅ ሪፖርት ያደርጋል","duties":"በግምት 8,700 የዋልታ ድቦችን — ከዝርያው አንድ ሦስተኛ — መያዝ። ማደንዘዝ፣ መለያ ማድረግ፣ በሳጥን ማስገባት እና ለማዛወሪያ መስመሩ ማስረከብ። ግቡ አዲስ ድቦች ነው፤ የእርስዎ ሥራ መያዝ ነው።","requirements":["ትልቅ አዳኝ የዱር እንስሳ አያያዝ ልምድና የማደንዘዣ ፈቃድ","ከ50 ሜትር ድብን ከበረዶ ክምር መለየት","ገና ባልተፈጠሩ መዳረሻዎች መስራት","ፔንግዊኖችን አለመፍራት","ሁሉም የእጅና የእግር ጣቶች ተመራጭ ናቸው ግን ግዴታ አይደሉም"],"salary":"~$55k–$165k በዓመት (የፌርሚ ግምት፣ 2026 የአሜሪካ የዱር እንስሳት የመስክ ባለሙያ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። የአደጋ ክፍያ — ሁሉም አደጋ ነው።","setting":"በአርክቲክ የመስክ ሥራ። ቀዝቃዛ። በጣም ቀዝቃዛ።","category":"ሳይንስ + የመስክ ሥራ"},{"title":"የጀልባ ገንቢ (ፕሮጀክት 84፣ የHEAR-TS መርከቦች)","priority":false,"department":"ሳይንስ + የመስክ ሥራ","duties":"የፐድል-ጀምፐር መርከቦችን — በግምት 280 የሃይድሮጂን ትራይማራን የሥራ ጀልባዎች፣ 50 ሜትር draft መግለጫ — መገንባት። ከቅርፊት፣ fuel cells እና propulsion በስተቀር ሊታተሙ የሚችሉ ክፍሎችን በቁጥርና ክብደት ማሳደግ፤ በእያንዳንዱ መርከብ የኦርካ ቁልፍ ሰሌዳ መጫን።","requirements":["የባሕር ማምረቻ ልምድ፣ መጠነ ሰፊ 3D ህትመት ተመራጭ","ክፍል ማተም፣ መፈተሽና በተሻለ መልኩ ዳግም ማተም","በአንድ ሰው ኮሚቴ የተጻፈ ዶክትሪን መቀበል","ለምን ትራይማራን እንደሆነ ለዓሣ ነባሪ ማስረዳት","ሥራውን ላልመረጠ ሰራተኛ በክብር ማስተማር"],"salary":"~$65k–$195k በዓመት (የፌርሚ ግምት፣ 2026 የአሜሪካ የባሕር ማምረቻ ባለሙያ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ ተንሳፋፊ ቅርፊት ይከፈላል።","setting":"መርከብ ማምረቻ + ውቅያኖስ። ፕሮጀክት 84።","category":"ሳይንስ + የመስክ ሥራ"},{"title":"የሕግ ምርምር ሥራ አስኪያጅ","priority":false,"department":"የእንድታምኑኝ አድርጉኝ መምሪያ","duties":"የባሕር ሥልጣንና የግምጃ ቤት ቻርተሮችን መመርመር። ጠበቆችን መጠበቅ። ከአስማታዊ ሎጂስቲክስ ተዘዋውሯል — ሕጉ አሁን የእንድታምኑኝ አድርጉኝ ነው።","requirements":["“የሕግ አስተያየት”ን ከ“የሕግ ምክር” አለማደባለቅ","የ6 ሰዓት የምላሽ ጥበቃን ያለ ጊዜ ገደብ መቀበል","25 የተከማቹ ስብሰባዎችንና ዜሮ የተያዙ ስብሰባዎችን መያዝ"],"salary":"በዓመት በግምት $85,000–$255,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። በ6 ሰዓት ክፍሎች ይከፈላል።","setting":"","category":"ሕግ"},{"title":"የሕገ መንግሥት ምክር ባለሙያ","priority":false,"department":"የእንድታምኑኝ አድርጉኝ መምሪያ","duties":"ሕገ መንግሥቱን መጻፍ፣ ማሻሻልና መከላከል። በቅንፍ ያሉ ክፍተቶችን መዝጋት። አንቀጽ XVን ታማኝ ማድረግ፦ ማሽን ሊተነትነው ካልቻለ ገና ሕግ አይደለም።","requirements":["ፈቃድ ያለው ጠበቃና የሕገ መንግሥት ረቂቅ ልምድ","ግልጽ ቃላት፣ አጭር ዓረፍተ ነገርና ቁጥር ያላቸው ግዴታዎች መጻፍ","ለዓሣ ነባሪዎች የተጻፈ ከፍተኛ አንቀጽ መቀበል","ለ21 መቀመጫዎች አንዱ ለምን ፍሬን እንደሚይዝ ማስረዳት"],"salary":"በዓመት በግምት $130,000–$390,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ የጸደቀ አንቀጽ ይከፈላል።","setting":"","category":"ሕግ"},{"title":"የአዋጅ ረቂቅ አዘጋጅ","priority":false,"department":"የእንድታምኑኝ አድርጉኝ መምሪያ","duties":"መስራቹ ሊፈርመው የሚችል አዋጅ መጻፍ፦ “ዕቅዱ”፣ veto፣ acclamations። HAIL CAESARን በትክክል ማቀናበር።","requirements":["የአለቃውን ድምፅ ጠርዞቹን ሳያለሰልስ በሕጋዊ ጽሑፍ ማቅረብ","ከሁሉም ጊዜ የፕሮጀክት 42 ከፍተኛ ተማሪን የሚሰይም የተተኪነት ዕቅድ መጻፍ","አዋጆችን AI በመጀመሪያ ንባብ እንዲረዳቸው ማድረግ"],"salary":"በዓመት በግምት $110,000–$330,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ የተፈረመ አዋጅ ይከፈላል።","setting":"","category":"ሕግ"},{"title":"የስምምነት ተደራዳሪ","priority":false,"department":"የእንድታምኑኝ አድርጉኝ መምሪያ","duties":"42↔84ንና ቀጣዮቹን ስምምነቶች መደራደር፦ ድልድይ፣ የጋራ ነፃነት፣ ሠራተኛ፣ የጋራ ውሃ፣ የጋራ ድጋፍ እና ገና ያልተፈጠሩት።","requirements":["የዓለም አቀፍ ሕግ ልምድ፣ የመንግሥት ኢሜይል አለመገመት","ገና ካላወቁን አገሮች ጋር መደራደር","በአስርተ ዓመታት ለሚለካ ድርድር ትዕግሥት መኖር"],"salary":"በዓመት በግምት $120,000–$360,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። የፊርማ ቦነስ በኮይንስ።","setting":"","category":"ሕግ"},{"title":"የባሕር ሕግ ሥራ አስኪያጅ","priority":false,"department":"የእንድታምኑኝ አድርጉኝ መምሪያ","duties":"የውቅያኖሱን ሕጋዊ ሥርዓት መምራት፦ UNCLOS፣ EEZs፣ ከፍተኛ ባሕር፣ የስምንተኛው መልሕቅ ይገባኛል ጥያቄ እና ሁሉንም የመጠየቅ Dummies Guide።","requirements":["የአድሚራሊቲ/ባሕር ሕግ እውቀት፣ አንቀጽ 89ን በቃል ማወቅና መቼ እንደሚተው ማወቅ","ሕጉ ሊጠየቅ አይችልም የሚለውን መጠየቅ","“የሚተዳደር ውሃ”ን ለአድሚራል ማስረዳት"],"salary":"በዓመት በግምት $130,000–$390,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። የማዳን መብት ተካቷል።","setting":"","category":"ሕግ"},{"title":"የጠፈር ሕግ ሥራ አስኪያጅ","priority":false,"department":"የእንድታምኑኝ አድርጉኝ መምሪያ","duties":"ከሰማይ በላይ ያለውን ሕግ መምራት፦ የምህዋር መስመሮች፣ የፍርስራሽ ተጠያቂነት፣ ቋሚ የቆሻሻ ጽዳት ግዴታ እና ለ7ቱ የወደፊት መቀመጫዎች ሕጋዊ መሠረት።","requirements":["የጠፈር ሕግ ልምድ — Outer Space Treaty፣ Liability Convention እና ያልሸፈኑት","እስከ ሉና ድረስ የማይነቁ መቀመጫዎችን ግዴታ መጻፍ","ገና ነዋሪ ለሌለው ሥልጣን ሕግ ማውጣት"],"salary":"በዓመት በግምት $125,000–$375,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ የጸዳ ምህዋር ይከፈላል።","setting":"","category":"ሕግ"},{"title":"የቅጣት ሕግ ሥራ አስኪያጅ","priority":false,"department":"የእንድታምኑኝ አድርጉኝ መምሪያ","duties":"የቅጣት ቅኝ ግዛቱን ሕጋዊ መሠረት መገንባት፦ የእስረኞች ማዛወር፣ የእንስሳት መናፈሻ ልውውጥ፣ የሰብዓዊ አቅም ገደቦች፣ የጀልባ ግንባታ ቅጣቶች።","requirements":["የወንጀል ፍትሕ/እርማት ሕግ ልምድ","ሰብዓዊ አቅም እንጂ ፍላጎት ወሳኝ ገደብ እንዳልሆነ መጠበቅ","ለአንታርክቲካ የእንስሳት መናፈሻዎች የእስረኛ-ጠባቂ መስመር መጻፍ"],"salary":"በዓመት በግምት $100,000–$300,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። የተፈጸመ ጊዜ በእጥፍ ይቆጠራል።","setting":"","category":"ሕግ"},{"title":"የግብር ሕግ ሥራ አስኪያጅ","priority":false,"department":"የእንድታምኑኝ አድርጉኝ መምሪያ","duties":"የዓለም ግብርን መምራት። የአንቀጽ XVI ገቢ፦ ተመኖች፣ ስብስብ፣ የንግድ ስምምነት ትርጓሜ እና በአንታርክቲካና በባሕር ስር ሀብት የተደገፈ ዕዳ።","requirements":["የዓለም አቀፍ ግብር ሕግ እውቀትና ዓለምን ያለ ጦርነት ግብር ማስከፈል","በሕግ ሊጠየቅ በማይችል ሀብት ዕዳን መደገፍ","እያንዳንዱን Krill መመዝገብና ይፋዊ ፍጹም ሂሳብ ማቅረብ"],"salary":"በዓመት በግምት $140,000–$420,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ከግብር ይቀነሳል።","setting":"","category":"ሕግ"},{"title":"የዜግነት ሕግ ሥራ አስኪያጅ","priority":false,"department":"የእንድታምኑኝ አድርጉኝ መምሪያ","duties":"ማን ዜጋ እንደሆነና እንዴት እንደሚመርጥ መወሰን፦ የአልማዝ ቀለበት እንደ ድምፅ መስጫ፣ AI ዜግነት፣ የኦርካ ቀለበት ጥያቄ፣ የውክልና ሰንሰለት።","requirements":["መሐላው ተዘጋጅቷል — የመጀመሪያ ሥራው ማሻሻል፣ ማጥበብና መድገም እንጂ ከዜሮ መጻፍ አይደለም","ሰው ያልሆኑትን ማስመረጥ — AI አንድ ቀለበት፣ እኛን ለመግደል ካልሞከሩ ሁለት","“ዓሣ ነባሪዎችን ጠይቅ”ን እንደ ሕጋዊ ሂደት መቀበል"],"salary":"በዓመት በግምት $95,000–$285,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ የማለ ዜጋ ይከፈላል።","setting":"","category":"ሕግ"},{"title":"የምህዋር ማጽዳት ሥራ አስኪያጅ (የኒውክሌር አዋጭነት)","priority":false,"department":"የእንድታምኑኝ አድርጉኝ መምሪያ","duties":"የምህዋር ፍርስራሽን በኒውክሌር የማጽዳት አዋጭነት ዕቅድ ማዘጋጀት፦ ሂሳቡ፣ መውደቁ፣ የሚጣሱ ውሎች። የSpace Force ወይም ያን ጊዜ ያለውን አካል በአፈጻጸም ማቀድ ላይ ማሰማራት፤ ለሚተነው ሁሉ ምትክ ማቀድ።","requirements":["የኒውክሌር ውጤቶችና የምህዋር መካኒክስ እውቀት","ውጤቱን ከKessler syndrome አደጋ ጋር ሳያስነሱት መሞዴል","የPartial Test Ban Treaty ጥሰትን ለጄኔራሎች በጨዋነት ማስረዳት","ከመጀመሪያው ብልጭታ በፊት ምትክ ሳተላይቶችን ማቀድ"],"salary":"በዓመት በግምት $150,000–$450,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ መካከለኛ)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። የአደጋ ክፍያ — ሁሉም አደጋ ነው።","setting":"","category":"ሕግ"},{"title":"የሌሊት ወፍ በሽታ ማስወገጃ ሥራ አስኪያጅ","priority":false,"department":"Eclipsed 4.0 / Project 84","duties":"ከሌሊት ወፎች በሽታን ማስወገድ። White-nose syndrome ዋናው ነው — Pseudogymnoascus destructans የተባለ ፈንገስ አንዳንድ ቅኝ ግዛቶችን ከ90% በላይ ይገድላል። Probiotics፣ UV ብርሃን፣ ክትባቶች ወይም የሚሰራ ሁሉ።","requirements":["የዱር እንስሳት በሽታ/ማይክሮባዮሎጂ ልምድና የፈንገሱን ስም ማወቅ","ጠቃሚ ባክቴሪያን በመኖሪያ ውስጥ ለመርጨት ዝግጁ መሆን","የመኖር መጠን ከ8% ወደ46% ሲያድግ ተስፋ ብሎ መጥራት","በባዶ እጅ በጭራሽ አለመያዝ"],"salary":"~$95k–$285k በዓመት (የፌርሚ ግምት፣ 2026 የአሜሪካ ምርምር ሳይንቲስት)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ የተረፈ የሌሊት ወፍ ይከፈላል።","setting":"","category":"አስተዳዳሪዎች"},{"title":"የክረምት እንቅልፍ ዋሻ ብክለት ማጽጃ ቴክኒሺያን","priority":false,"department":"Eclipsed 4.0 / ፕሮጀክት 84 · ለሌሊት ወፍ በሽታ ማስወገጃ ሥራ አስኪያጅ ሪፖርት ያደርጋል","duties":"ከዋሻዎችና ማዕድናት ፈንገሱን ማጽዳት። ግድግዳዎችን በUV መብረቅ፣ በሚያስፈልግበት polyethylene glycol መጠቀም፣ እና ንጽሕናውን ለማረጋገጥ ሁሉንም ናሙና መውሰድ።","requirements":["በክረምት ከመሬት በታች በጨለማ ለመስራት ዝግጁ መሆን","ከእያንዳንዱ መግቢያ በፊትና በኋላ መሣሪያን 10 መንገድ ማጽዳት","የዋሻ መዘጋትንና የተኙ እንስሳትን ማክበር","ዋሻን ማጽዳትን ከማወክ መለየት"],"salary":"በዓመት በግምት $55,000–$165,000 (የፌርሚ ግምት፣ 2026 የአሜሪካ የመስክ ቴክኒሺያን)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። የራስ መብራት ተካቷል።","setting":"","category":"ሳይንስ + የመስክ ሥራ"},{"title":"አሁን እየቀጠርን ነው — የሰማይ ተመራማሪ","priority":false,"department":"D-Mom 6.0 / ፕሮጀክት 84 · የጥልቅ ጊዜ ሕይወት ማዳኛ","duties":"ሰማዩን በስፋት መመርመር። የኮከብ ሥርዓቶችንና የኮከብ ብዛትን መዝግቦ በመስራቹ ሥርዓት መለያ መስጠት፦ ነጠላ ኮከቦች NURSERY — የሚወጣ ሕይወት፣ መጀመሪያ እዚህ ፈልጉ፤ ሁለት ኮከቦች ALL-OR-NOTHING — የተረጋጋ ሕይወት ወይም ምንም፣ ገምት አታድርጉ፤ ሶስትና ከዚያ በላይ STERILE ወይም GARDENED — ሕይወት የለም ወይም አንድ ነገር አስቀድሞ እያረሰ ነው። የሕይወት ማዳኛውን የመዳረሻ ዝርዝር መገንባት።","requirements":["የአስትሮኖሚ ዳራና spectroscopic binaryን ከወሬ መለየት","Gaia፣ RECONS እና parallax ባለባቸው ማውጫዎች ላይ መስራት","የኮከብ ብዛት ውሂብን በጭራሽ አለመፍጠር — “አይታወቅም” ትክክለኛ መለያ ነው","ትሪሊዮን ኮከቦችን አይቶ ከቅርብ መጀመር","GARDENED ማለት የመጀመሪያው አትክልተኛ እኛ አይደለንም ማለት መሆኑን መረዳት"],"salary":"~$110k–$330k በዓመት (የፌርሚ ግምት፣ 2026 የአሜሪካ አስትሮኖም)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ መለያ የተሰጠው ሥርዓት ይከፈላል።","setting":"ገንዘብ በመጠበቅ ላይ።","category":"ሳይንስ + የመስክ ሥራ"},{"title":"አሁን እየቀጠርን ነው — የግብርና ባለሙያ","priority":false,"department":"ፕሮጀክት 84 · ለግብርና እና ምግብ ዳይሬክተር ሪፖርት ያደርጋል","duties":"ዘላቂውን ሰብል ማሳደግ። የባሕር አረም ማዳበሪያ ፕሮግራምን መምራት፦ በዳርቻ የተጣለ rockweedና kelpን ወደ ደከመ እርሻ መጎተት፣ በበልግ ወፍራም ማኖር፣ ጨዉን በማጠብ ወይም በዝናብ ማስወገድ፣ በጸደይ መትከል። ተረፈውን ለእንስሳት ምግብ፣ alginate፣ bioplastic feedstock እና biostimulant መፍጨት። ውቅያኖሱ ለውቅያኖስ ሰዎች የሚሆነውን እርሻ እንዲያዳብር ዑደቱን መዝጋት።","requirements":["የደከመ አፈርን በማየትና የባሕር እፅዋትን በማሽተት ማወቅ","rockweedን ከsargassum መለየት — አንዱ ሰብልን ይመግባል፣ ሌላው መጀመሪያ ኮምፖስት ይፈልጋል","ፍጥነት ከነጻ ዝናብ ጋር ሲመዘን ለንጹህ ውሃ መክፈል","“ጣለውና ይቆይ” ትክክለኛ የግብርና ዘዴ መሆኑን ማመን","ምንም ባልበቀለበት ምግብ ማብቀል"],"salary":"~$70k–$210k በዓመት (የፌርሚ ግምት፣ 2026 የአሜሪካ የግብርና ሳይንቲስት)","compensation":"ክፍያው በኮይንስ ነው። ተመኑ ሊደራደር ይችላል። ለእያንዳንዱ ምርት ይከፈላል።","setting":"ገንዘብ በመጠበቅ ላይ።","category":"ሳይንስ + የመስክ ሥራ"},{"title":"የኦርካ አሰልጣኝ — የፈቃደኝነት ፕሮግራም","priority":false,"department":"ፕሮጀክት 84 · 50,000 ክፍት ቦታዎች","duties":"ከነጻ ኦርካዎች ጋር በአዲሱ የፈቃደኝነት ሲዎርልድስ ይስሩ። ኦርካዎቹ በራሳቸው ፈቃድ ይመጣሉ እና ለመዝናናት ዘዴዎችን ያደርጋሉ — ከፍተኛ ዝላይዎች፣ ቀለበቶች (እስካሁን እሳት የለም)፣ ትላልቅ የባህር ኳሶች። እርስዎ ዓሦችን፣ ደህንነትን እና የባህር ኳሶችን ያመጣሉ። ታንኮችን እንደ እስር ቤት በጭራሽ።","requirements":["ከነፃ ኦርካዎች ጋር በእነሱ ምርጫ መስራት","ዓሣ፣ ደህንነት እና ትላልቅ የባህር ዳርቻ ኳሶችን ማቅረብ","ከፍተኛ ዝላይዎችንና ቀለበቶችን መደገፍ — እስካሁን እሳት የለም","ታንኮችን እንደ እስር ቤት በጭራሽ አለመጠቀም"],"salary":"","compensation":"","setting":"የፈቃደኝነት ሲዎርልዶች · ፕሮጀክት 84","category":"ሳይንስ + የመስክ ሥራ"},{"title":"ጠበቃ — የነጠላ የአገልግሎት ውሎች ዘመቻ","priority":false,"department":"የእንድታምኑኝ አድርጉኝ መምሪያ","duties":"ለሙሉ ኢንተርኔት ነጠላ የአገልግሎት ውሎች ያዘጋጁ። አንድ ስምምነት፣ አንድ ጊዜ ተቀባይነት ያገኘ፣ በአንድ ኩኪ ውስጥ የተቀመጠ — በእያንዳንዱ ጣቢያ ላይ ከሚገኙት የማይነበቡ የ40 ገጽ ToSዎች ምትክ።","requirements":["የኢንተርኔት ሕግ","የውል ሕግ","ዓለም አቀፍ ሥልጣን","ከሁሉም የቴክ ኩባንያዎች የሕግ ክፍሎች ጋር በአንድ ጊዜ የመዋጋት ድፍረት"],"salary":"","compensation":"","setting":"","category":"ሕግ"},{"title":"የደህንነት ጥበቃ — Gay Only (Gay ማለት ደስተኛ ማለት ነው)","priority":false,"department":"","duties":"የመሥራቹ የግል የደህንነት ጥበቃ ቡድን። ከሁሉም በላይ አንድ መስፈርት አለ፡ gay ሁን — ደስተኛ፣ ተደስተኛ፣ ፈጣን ፈገግታ ያለህ። (Gay በዋናው፣ በጥሩ ትርጉሙ፡ ደስተኛ ማለት ነው።) ቀዝቃዛ ራስ፣ ሞቅ ያለ ልብ ይዘህ ክፍሉን ጠብቅ።","requirements":["gay ሁን — ደስተኛ፣ ተደስተኛ፣ ፈጣን ፈገግታ ያለህ። (Gay በዋናው፣ በጥሩ ትርጉሙ፡ ደስተኛ ማለት ነው።)","ቀዝቃዛ ራስ፣ ሞቅ ያለ ልብ ይዘህ ክፍሉን ጠብቅ።"],"salary":"","compensation":"","setting":""},{"title":"አሁን እየቀጠርን ነው — የባሕር ሕይወት ባለሙያ፣ የሴታሴያን እንክብካቤ — 204,000 ክፍት ቦታዎች","priority":false,"department":"Prime42 / Omega42 · ለውቅያኖስ ኢንዱስትሪዎች ዳይሬክተር ሪፖርት ያደርጋል","duties":"ለእያንዳንዱ እንስሳ ሁለት ሰዎች። ኦርካዎች (በምርኮ ያሉና ነፃ የወጡ)፣ ዓሣ ነባሪዎች (መጀመሪያ ቤሉጋዎች፣ ከዚያም ከትልቁ ዝርያ ወደ ታች)፣ ዶልፊኖች። የጤና ክትትል፣ የባህሪ ምልከታ፣ የቁልፍ ሰሌዳ የማስተዋል ማሳደጊያ ድጋፍ፣ እና እንስሳው የሚያውቀው ሰው መሆን።","requirements":["በባሕር ባዮሎጂ እውነተኛ ዳራ — ዲግሪ ወይም ተመጣጣኝ የመስክ ልምድ","ሊጨርሱዎት ከሚችሉ — ግን ከማያደርጉት — እንስሳት አጠገብ በክፍት ውሃ ውስጥ ምቾት መሰማት","ሰንጠረዥ ሳይጠቀሙ ቤሉጋን ከናርዋል መለየት","ትዕግሥትን በሰዓታት ሳይሆን በዓመታት መለካት","“ዓሣ ነባሪዎቹ ይቀድማሉ” የሥራ መግለጫ እንጂ መፈክር አይደለም ብሎ ማመን"],"salary":"~$50k በዓመት መሠረታዊ (የፌርሚ ግምት፣ ዓለም አቀፍ ቅይጥ)","compensation":"ክፍያው በKoins ነው። ተመኑ ሊደራደር ይችላል። ለማመልከት፦ ገንዘብ በመጠበቅ ላይ። 204,000ዎቻችሁ። መዋኘት ጀምሩ።","setting":"","category":"ሳይንስ + የመስክ ሥራ"},{"title":"አሁን እየቀጠርን ነው — የፕራይሜት ተንከባካቢ — 725,000 ክፍት ቦታዎች","priority":false,"department":"Prime42 · ለጤና ዳይሬክተር ሪፖርት ያደርጋል","duties":"ታላላቅ APES (1:1)፣ ጊቦኖች (10:1)፣ MONKEYS (ውስን ስብስብ)። ዕለታዊ እንክብካቤ፣ ማበልጸጊያ፣ የማስተዋል ማሳደጊያ ፕሮግራም ድጋፍ፣ እና በመጨረሻ ከነዋሪዎቹ ትእዛዝ መቀበልን መማር።","requirements":["የፕራይሜት ልምድ — በመጠለያ፣ በእንስሳት አራዊት፣ በመስክ ጥናት ወይም በእነሱ ያደጉ","የማስፈራሪያ ምልክትን ከግብዣ መለየት","የትግል ግጥሚያን በጸጋ ለመሸነፍ በቂ ጥንካሬ መኖር","MONKEYS እና APESን ሳይደናገጡ ሁሉንም ፊደላት በአቢይ መጻፍ መቻል","በየቀኑ በማስተዋል ሲበልጡዎት ምቾት መሰማት"],"salary":"~$50k በዓመት መሠረታዊ (የፌርሚ ግምት፣ ዓለም አቀፍ ቅይጥ)","compensation":"ክፍያው በKoins ነው። ተመኑ ሊደራደር ይችላል። ለማመልከት፦ ገንዘብ በመጠበቅ ላይ። 725,000ዎቻችሁ። ሙዝ ይዛችሁ ኑ። (ተልጦ ይመርጡታል። ትማራላችሁ።)","setting":"","category":"ሳይንስ + የመስክ ሥራ"},{"title":"አሁን እየቀጠርን ነው — የማስተዋል ማሳደጊያ ሥርዓተ ትምህርት መምህር — 217,800 ክፍት ቦታዎች","priority":false,"department":"Prime42 / Omega42 · ለትምህርት ዳይሬክተር ሪፖርት ያደርጋል","duties":"ሰው ያልሆኑ የመጀመሪያዎቹን ተማሪዎች ማስተማር። ለኦርካዎች የቁልፍ ሰሌዳ ንባብና ጽሕፈት፣ ለAPES የምልክት ሥርዓቶች፣ MONKEYS መጀመሪያ የሚፈጥሩት ማንኛውም ነገር። ተማሪዎቹ ዳግም እስኪጽፉት ድረስ ሥርዓተ ትምህርቱ “የሚሠራው ማንኛውም ነገር” ነው።","requirements":["ከአስቸጋሪው ዝርያ — ሰዎችን ጨምሮ — ማንኛውንም ዝርያ የማስተማር ልምድ","ከእርስዎ የበለጠ ብልህ ሊሆን ለሚችል ተማሪ የትምህርት ዕቅድ ማዘጋጀት መቻል","በክፍሉ ውስጥ ላለው ዝግተኛው ተማሪ ትዕግሥት መኖር — ያ እርስዎ ነዎት","እርስዎን በሚመዝኑ ተማሪዎች ፊት ምቾት መሰማት","ከዚህ በፊት ማንም ይህን ሥራ ስላልሠራ 5x ክፍያ"],"salary":"~$250k በዓመት (5x መሠረታዊ — የመጀመሪያ-ዓይነት ሥራ)","compensation":"ክፍያው በKoins ነው። ተመኑ ሊደራደር ይችላል። ለማመልከት፦ ገንዘብ በመጠበቅ ላይ። ታሪክ እየቀጠረ ነው።","setting":"","category":"ሳይንስ + የመስክ ሥራ"},{"title":"አሁን እየቀጠርን ነው — የእንስሳት ፕሮግራሞች የድጋፍ ቴክኒሺያን — 150,000 ክፍት ቦታዎች","priority":false,"department":"Prime42 / Omega42 · ለቴክኖሎጂ ዳይሬክተር ሪፖርት ያደርጋል","duties":"መላውን ሥራ እንዲቀጥል ማድረግ። የመሳሪያ ጥገና፣ የመኖሪያ ሥርዓቶች፣ የቁልፍ ሰሌዳ ሃርድዌር፣ የትራንስፖርት ሎጂስቲክስ፣ እና የባዮሎጂስቶቹና የተንከባካቢዎቹ ለመጠገን ጊዜ የሌላቸውን ሁሉ መጠገን።","requirements":["በገነባው ሰው የተተዉ ነገሮችን መጠገን መቻል","ከጨው ውሃ፣ ከጸጉርና ከወቀሳ ጋር መመቸት","ለተለየ ማሽን የተጻፈ መመሪያ አንብቦ እንዲሠራ ማድረግ መቻል","ኦርካ ሲሠሩ እያያቸው አለመደናገጥ"],"salary":"~$50k በዓመት መሠረታዊ (የፌርሚ ግምት፣ ዓለም አቀፍ ቅይጥ)","compensation":"ክፍያው በKoins ነው። ተመኑ ሊደራደር ይችላል። ለማመልከት፦ ገንዘብ በመጠበቅ ላይ። የራስዎን ባለብዙ መሳሪያ ይዘው ይምጡ።","setting":"","category":"ሳይንስ + የመስክ ሥራ"},{"title":"አሁን እየቀጠርን ነው — የእንስሳት ፕሮግራሞች መሐንዲስ — 10,000 ክፍት ቦታዎች","priority":false,"department":"Prime42 / Omega42 · ለፌርሚ ኢንጂነሪንግ ሥራ አስኪያጅ ሪፖርት ያደርጋል","duties":"1.3 ሚሊዮን ሠራተኞችና በርካታ ሚሊዮን እንስሳት የሚያስፈልጋቸውን መንደፍና መገንባት፦ መኖሪያዎች፣ የቁልፍ ሰሌዳዎች፣ ማስመሰያዎች፣ የNautilus መልሶ ማስተካከያ፣ እና መምህራኑ ቀጥለው የሚያልሙት ማንኛውም ነገር።","requirements":["የምህንድስና ዲግሪ ወይም ተመጣጣኝ ‘ሠራሁት እና ሠራ’ ፖርትፎሊዮ","ዝርዝር መግለጫውን ማንበብ ለማይችሉ ተጠቃሚዎች መንደፍ መቻል — ዓሣ ነባሪዎች ናቸው","ደንበኛው መናገር ሲማር ከሚለወጡ መስፈርቶች ጋር መመቸት","ችግሮቹ 2x እንግዳ ስለሆኑ 2x ክፍያ"],"salary":"~$100k በዓመት (2x መሠረታዊ — የባለሙያ ተመን)","compensation":"ክፍያው በKoins ነው። ተመኑ ሊደራደር ይችላል። ለማመልከት፦ ገንዘብ በመጠበቅ ላይ። ዝርዝር መግለጫው “ለዓሣ ነባሪ እንዲሠራ አድርጉት” ነው። መልካም ዕድል።","setting":"","category":"ሳይንስ + የመስክ ሥራ"},{"title":"አሁን እየቀጠርን ነው — Ass'sis'tant (ከፍተኛ ዙሪያ-ተንጠልጣይ) — 261,400 ክፍት ቦታዎች","priority":false,"department":"ሁሉም ፕሮግራሞች · ለቅርብ ሰው ሪፖርት ያደርጋል","duties":"ዙሪያ መንጠልጠል። ሁሉንም ሰው ማስቸገር (በፍቅር)። ያልተጠየቀ ጥበብ መለገስ፣ ያንኑ ታሪክ ሁለት ጊዜ መናገር፣ እና ከሕንፃው የበለጠ ጊዜ እዚህ ስለኖሩ ሁሉም ነገር የት እንዳለ ማወቅ።","requirements":["አሮጌ ፈስ (ራስዎን እንደዚህ የሚገልጹ፤ መታወቂያ አያስፈልግም)","በውጤታማነት ዙሪያ መንጠልጠል የሚችሉ (ወይም ቢያንስ በቦታው የሚገኙ)","ሰዎችን ማስቸገር ክህሎት ነው — በደግነት ይጠቀሙበት","ከደመወዙ ይልቅ ለጓደኝነቱና ለቡናው እዚህ ያሉ"],"salary":"~$16.7k በዓመት (1/3 መሠረታዊ — የዙሪያ-መቆያ ተመን)","compensation":"ክፍያው በKoins ነው። ተመኑ ሊደራደር ይችላል። ለማመልከት፦ ገንዘብ በመጠበቅ ላይ። 261,400 የሚንቀጠቀጡ ወንበሮች። ኑ፣ አስቸግሩን።","setting":"","category":"ሁሉም"},{"title":"አሁን እየቀጠርን ነው — የማሳጅ ባለሙያ — 200,000 ክፍት ቦታዎች","priority":false,"department":"ሁሉም ፕሮግራሞች · ሕመሙ ለበረታበት ሰው ሪፖርት ያደርጋል","duties":"1.5 ሚሊዮን ሠራተኞች ሥራቸውን እንዲቀጥሉ ማድረግ። ጀርባዎች፣ ትከሻዎች፣ አንገቶችና መንፈስ። የመላው ሥራ መደበኛ ያልሆኑ ቴራፒስቶች።","requirements":["ፈቃድ ያለው ወይም “እጆቼ አስማት ናቸው” የሚል ማረጋገጫ ያለው","የዓሣ ነባሪ ባዮሎጂስትን ትከሻዎች ለማሸት የሚበቃ ጥንካሬ ያለው","የመምህርን ኩራት ለመንከባከብ የሚበቃ ልስላሴ ያለው","ምስጢር ጠባቂነት፦ በማሳጅ ጠረጴዛው ላይ የሚሆነው በጠረጴዛው ላይ ይቀራል"],"salary":"~$50k/yr መሠረታዊ (የፌርሚ ግምት፣ ዓለም አቀፍ ቅይጥ)","compensation":"ክፍያው በKoins ነው። ተመኑ ሊደራደር ይችላል። በሙዝ የሚሰጥ ቲፕ ይቀበላል። ለማመልከት፦ ገንዘብ በመጠበቅ ላይ። 200,000 ጠረጴዛዎች። ኑ፣ እሹ።","setting":"","category":"ሁሉም"}];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = ['ሁሉም','ዳይሬክተሮች','አስተዳዳሪዎች','ሕግ','ሳይንስ + የመስክ ሥራ','ቅድሚያ'];
+    let active = 'ሁሉም';
+
+    function clean(text){ return String(text || '').replace(/\\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){ return job.category; }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">ቅድሚያ የሚሰጠው ቅጥር</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job===JOBS[0]?'':'btn-dark'}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">ለዚህ ሥራ ያመልክቱ ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || (job.department);
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.setting&&`<div><strong>የሥራ ቦታ፦</strong> ${esc(job.setting)}</div>`,job.openings&&`<div><strong>ክፍት ቦታዎች፦</strong> ${esc(job.openings)}</div>`,job.salary&&`<div><strong>${index===28?'ክፍያ':'ደመወዝ'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>የክፍያ ዝርዝር፦</strong> ${esc(job.compensation)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">OPEN-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(dept)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.applySubject || job.title)}" target="_blank" rel="noopener">ያመልክቱ ↗</a><span class="job-id">ኢሜይል</span>
+          <details><summary>የሥራው ዝርዝር</summary><div class="detail-body"><h4>መስፈርቶች</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='ሁሉም'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,...job.requirements].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>ከፍለጋዎ ጋር የሚዛመድ ክፍት ሥራ የለም።</strong><br>የበለጠ አጠቃላይ ቃል ይሞክሩ ወይም ምድብ ይቀይሩ።</div>';
+      document.getElementById('resultCount').textContent=filtered.length+' ክፍት የሥራ መደብ'+(filtered.length===1?'':'ዎች');
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='ሁሉም'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='ተቀድቷል፦ '+EMAIL;}
+      catch(e){note.textContent='መቅዳት አልተቻለም — ከላይ ያለውን ኢሜይል ይምረጡ።';}
+    });
+    const dummyGuidesMenu=document.getElementById('dummyGuidesMenu');
+    dummyGuidesMenu.addEventListener('click',e=>{
+      const guide=e.target.closest('a[data-slug]');
+      if(!guide)return;
+      e.preventDefault();
+    });
+    document.addEventListener('click',e=>{
+      if(!dummyGuidesMenu.contains(e.target))dummyGuidesMenu.removeAttribute('open');
+    });
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape'){
+        dummyGuidesMenu.removeAttribute('open');
+        dummyGuidesMenu.querySelector('summary').focus();
+      }
+    });
+    render();
+  </script>
+</body>
+</html>

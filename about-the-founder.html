@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f2f0e9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111513" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="data:," />
+    <title>About the Founder</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap');
+
+      :root {
+        color-scheme: light dark;
+        --paper: #f2f0e9;
+        --paper-raised: #faf9f5;
+        --ink: #17201c;
+        --muted: #59645e;
+        --line: #c7ccc5;
+        --rule: #1f3028;
+        --signal: #d34b2b;
+        --teal: #0f6a66;
+        --shadow: rgba(23, 32, 28, .12);
+        --serif: "Source Serif 4", Georgia, serif;
+        --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --paper: #111513;
+          --paper-raised: #181d1a;
+          --ink: #edf1eb;
+          --muted: #aeb8b0;
+          --line: #3b453f;
+          --rule: #d8e0da;
+          --signal: #ff7655;
+          --teal: #75c9be;
+          --shadow: rgba(0, 0, 0, .3);
+        }
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--serif);
+        font-size: 18px;
+        line-height: 1.58;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: inherit; }
+      a:focus-visible { outline: 3px solid var(--signal); outline-offset: 4px; }
+      .page {
+        width: min(1160px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: 28px 0 88px;
+      }
+      .top-rule {
+        border-top: 6px solid var(--rule);
+        padding-top: 13px;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 20px;
+        font: 500 12px/1.35 var(--mono);
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+      .top-rule span:last-child { color: var(--muted); }
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.5fr) minmax(260px, .62fr);
+        gap: clamp(36px, 7vw, 96px);
+        padding: clamp(60px, 10vw, 128px) 0 76px;
+        align-items: end;
+      }
+      .hero-copy { min-width: 0; }
+      h1, h2, h3, p { margin-top: 0; }
+      h1 {
+        margin-bottom: 26px;
+        max-width: 760px;
+        font-size: clamp(58px, 10vw, 126px);
+        line-height: .82;
+        letter-spacing: -.067em;
+        font-weight: 700;
+      }
+      .lede {
+        margin: 0;
+        max-width: 700px;
+        font-size: clamp(23px, 3vw, 34px);
+        line-height: 1.2;
+        letter-spacing: -.025em;
+      }
+      .head-link {
+        display: inline-block;
+        margin-top: 22px;
+        color: var(--teal);
+        font: 500 15px/1.5 var(--mono);
+        text-underline-offset: 5px;
+        text-decoration-thickness: 1px;
+      }
+      .facts { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 4px 0; }
+      .fact {
+        display: grid;
+        grid-template-columns: 86px 1fr;
+        gap: 14px;
+        padding: 13px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .fact:last-child { border-bottom: 0; }
+      .fact dt {
+        margin: 0;
+        font: 500 11px/1.45 var(--mono);
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .fact dd { margin: 0; font-size: 16px; line-height: 1.38; }
+      .statement {
+        border-top: 1px solid var(--rule);
+        display: grid;
+        grid-template-columns: minmax(150px, .4fr) minmax(0, 1.6fr);
+        gap: clamp(30px, 8vw, 120px);
+        padding: 30px 0 88px;
+      }
+      .section-label {
+        margin: 0;
+        font: 500 12px/1.4 var(--mono);
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--signal);
+      }
+      .statement p:not(.section-label) {
+        max-width: 820px;
+        margin-bottom: 24px;
+        font-size: clamp(24px, 3.3vw, 40px);
+        line-height: 1.2;
+        letter-spacing: -.025em;
+      }
+      .statement p:last-child { margin-bottom: 0; }
+      .work { border-top: 1px solid var(--rule); padding: 30px 0 90px; }
+      .work-head {
+        display: grid;
+        grid-template-columns: minmax(150px, .4fr) minmax(0, 1.6fr);
+        gap: clamp(30px, 8vw, 120px);
+        margin-bottom: 44px;
+      }
+      h2 { margin-bottom: 0; font-size: clamp(37px, 5.5vw, 68px); line-height: .98; letter-spacing: -.045em; }
+      .projects { border-top: 1px solid var(--line); }
+      .project {
+        display: grid;
+        grid-template-columns: 70px minmax(190px, .62fr) minmax(0, 1.38fr);
+        gap: clamp(22px, 4vw, 62px);
+        padding: 28px 0 30px;
+        border-bottom: 1px solid var(--line);
+      }
+      .project-num { font: 400 12px/1.45 var(--mono); color: var(--muted); }
+      .project h3 { margin-bottom: 8px; font-size: clamp(23px, 2.6vw, 33px); line-height: 1.05; letter-spacing: -.025em; }
+      .project .range {
+        display: block;
+        font: 400 11px/1.45 var(--mono);
+        color: var(--teal);
+        text-transform: uppercase;
+        letter-spacing: .06em;
+      }
+      .project p { margin: 0; color: var(--muted); font-size: 17px; }
+      .method {
+        margin: 0 calc(50% - 50vw);
+        padding: 80px max(24px, calc((100vw - 1160px) / 2));
+        background: var(--ink);
+        color: var(--paper);
+      }
+      @media (prefers-color-scheme: dark) { .method { background: #e3e7e1; color: #131815; } }
+      .method-inner {
+        display: grid;
+        grid-template-columns: minmax(0, .9fr) minmax(300px, 1.1fr);
+        gap: clamp(40px, 9vw, 130px);
+        align-items: start;
+      }
+      .method h2 { margin: 12px 0 28px; }
+      .method-intro { max-width: 500px; font-size: 21px; }
+      .method .section-label { color: var(--signal); }
+      .principles { border-top: 1px solid currentColor; }
+      .principle { padding: 24px 0 26px; border-bottom: 1px solid color-mix(in srgb, currentColor 28%, transparent); }
+      .principle h3 { margin-bottom: 6px; font-size: 22px; line-height: 1.15; }
+      .principle p { margin: 0; opacity: .77; font-size: 17px; }
+      .thoughts { padding: 98px 0 30px; }
+      .thoughts-head {
+        display: grid;
+        grid-template-columns: minmax(150px, .4fr) minmax(0, 1.6fr);
+        gap: clamp(30px, 8vw, 120px);
+        align-items: end;
+        margin-bottom: 52px;
+      }
+      .thoughts-sub { margin: 12px 0 0; color: var(--muted); max-width: 640px; font-size: 18px; }
+      .thought-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
+      .thought {
+        background: var(--paper-raised);
+        border-top: 5px solid var(--teal);
+        padding: 26px 26px 30px;
+        box-shadow: 0 12px 34px var(--shadow);
+      }
+      .thought:nth-child(1) { grid-column: span 5; }
+      .thought:nth-child(2) { grid-column: span 7; border-color: var(--signal); }
+      .thought:nth-child(3) { grid-column: 3 / span 8; border-color: var(--rule); }
+      .thought .index {
+        display: block;
+        margin-bottom: 24px;
+        font: 500 11px/1 var(--mono);
+        color: var(--muted);
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+      .thought h3 { margin-bottom: 14px; font-size: clamp(25px, 3vw, 38px); line-height: 1.03; letter-spacing: -.03em; }
+      .thought p { margin-bottom: 14px; font-size: 17px; color: var(--muted); }
+      .thought p:last-child { margin-bottom: 0; }
+      .throughline {
+        margin: 84px 0 56px;
+        padding: 38px 0 0;
+        border-top: 1px solid var(--rule);
+        font-size: clamp(39px, 6.2vw, 78px);
+        line-height: .98;
+        letter-spacing: -.05em;
+        max-width: 930px;
+      }
+      .throughline em { color: var(--signal); font-style: normal; }
+      .contact {
+        display: grid;
+        grid-template-columns: minmax(150px, .4fr) minmax(0, 1.6fr);
+        gap: clamp(30px, 8vw, 120px);
+        padding: 32px 0 58px;
+        border-top: 1px solid var(--rule);
+      }
+      .contact h2.section-label { margin: 0; font-size: 12px; line-height: 1.4; letter-spacing: .08em; }
+      .contact-details p { margin: 0; }
+      .contact-name { font-size: clamp(25px, 3vw, 36px); line-height: 1.1; font-weight: 600; letter-spacing: -.025em; }
+      .contact-email {
+        display: inline-block;
+        margin-top: 8px;
+        color: var(--teal);
+        font: 500 16px/1.5 var(--mono);
+        text-underline-offset: 5px;
+        overflow-wrap: anywhere;
+      }
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 24px;
+        padding-top: 22px;
+        border-top: 1px solid var(--rule);
+        font: 400 12px/1.5 var(--mono);
+        color: var(--muted);
+      }
+      .footer a { color: var(--ink); text-underline-offset: 4px; text-decoration-thickness: 1px; }
+      .footer-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px 22px; }
+      .featured-nav {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border-top: 5px solid var(--signal);
+        border-bottom: 1px solid var(--line);
+        background: var(--paper-raised);
+        font: 500 14px/1.25 var(--mono);
+      }
+      .featured-nav a {
+        display: grid;
+        place-items: center;
+        min-height: 54px;
+        padding: 10px 14px;
+        border-right: 1px solid var(--line);
+        text-align: center;
+        text-decoration: none;
+        text-underline-offset: 4px;
+      }
+      .featured-nav a:last-child { border-right: 0; }
+      .featured-nav a:hover { text-decoration: underline; }
+      .featured-nav a[aria-current="page"] {
+        background: var(--ink);
+        color: var(--paper);
+        font-weight: 500;
+      }
+      @media (max-width: 760px) {
+        .featured-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .featured-nav a:nth-child(2) { border-right: 0; }
+        .featured-nav a:nth-child(n + 3) { border-top: 1px solid var(--line); }
+        .page { width: min(100% - 32px, 620px); padding-top: 18px; }
+        .top-rule span:last-child { display: none; }
+        .hero { grid-template-columns: 1fr; gap: 44px; padding: 66px 0 62px; }
+        h1 { font-size: clamp(56px, 20vw, 88px); }
+        .statement, .work-head, .thoughts-head { grid-template-columns: 1fr; gap: 16px; }
+        .statement { padding-bottom: 70px; }
+        .statement p:not(.section-label) { font-size: 25px; }
+        .project { grid-template-columns: 42px minmax(0, 1fr); gap: 18px; }
+        .project > p { grid-column: 2; font-size: 16px; }
+        .method { padding-top: 66px; padding-bottom: 66px; }
+        .method-inner { grid-template-columns: 1fr; gap: 34px; }
+        .thoughts { padding-top: 72px; }
+        .thought-grid { display: block; }
+        .thought { margin-bottom: 16px; padding: 24px 22px 27px; }
+        .throughline { margin-top: 64px; }
+        .contact { grid-template-columns: 1fr; gap: 16px; padding-bottom: 48px; }
+        .footer { display: block; }
+        .footer p { margin: 0 0 13px; }
+        .footer-links { justify-content: flex-start; }
+      }
+      .bottom-nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1000;
+        display: flex;
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        border-top: 5px solid var(--signal);
+        background: var(--paper-raised);
+        box-shadow: 0 -8px 24px var(--shadow);
+        font: 500 14px/1.25 var(--mono);
+      }
+      .bottom-nav-item {
+        position: relative;
+        flex: 1 1 25%;
+        min-width: 0;
+        border-right: 1px solid var(--line);
+      }
+      .bottom-nav-item:last-child { border-right: 0; }
+      .bottom-nav-button,
+      .bottom-nav-placeholder {
+        display: grid;
+        width: 100%;
+        min-height: 54px;
+        place-items: center;
+        padding: 10px 8px;
+        border: 0;
+        background: transparent;
+        color: var(--ink);
+        font: inherit;
+        text-align: center;
+      }
+      .bottom-nav-button { cursor: pointer; }
+      .bottom-nav-button:hover,
+      .bottom-nav-button[aria-expanded="true"] { text-decoration: underline; text-underline-offset: 4px; }
+      .bottom-nav-placeholder { color: var(--muted); opacity: .72; }
+      .guide-dropup {
+        position: absolute;
+        left: 0;
+        bottom: 100%;
+        width: min(320px, 100vw);
+        max-height: calc(100vh - 76px - env(safe-area-inset-bottom, 0px));
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(8px);
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        background: var(--paper-raised);
+        box-shadow: 0 -14px 28px var(--shadow);
+        transition: opacity .15s ease, transform .15s ease, visibility 0s linear .15s;
+      }
+      .guide-dropup a {
+        display: block;
+        padding: 11px 16px;
+        border-bottom: 1px solid var(--line);
+        color: var(--ink);
+        text-decoration: none;
+      }
+      .guide-dropup a:last-child { border-bottom: 0; }
+      .guide-dropup a:hover { text-decoration: underline; text-underline-offset: 4px; }
+      .bottom-nav-item.is-open .guide-dropup {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+        transition-delay: 0s;
+      }
+      @media (max-width: 560px) {
+        .bottom-nav-button,
+        .bottom-nav-placeholder { min-height: 58px; padding: 9px 4px; }
+        .guide-dropup { max-height: calc(100vh - 80px - env(safe-area-inset-bottom, 0px)); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        .guide-dropup { transition: none; }
+      }
+      body { padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px)); }
+
+    </style>
+  </head>
+  <body>
+    <nav class="featured-nav" aria-label="Featured pages">
+      <a href="https://muse.ai/s/about-mxt5xuxj7jgoao" aria-current="page">About the Founder</a>
+      <a href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">Who Knows?</a>
+      <a href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">Project 84</a>
+      <a href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">Proclamation of Claim</a>
+    </nav>
+    <main class="page">
+      <div class="top-rule" aria-label="Founder profile">
+        <span>Founder profile · Eureka, California</span>
+        <span>Systems · settlements · stories</span>
+      </div>
+
+      <section class="hero" aria-labelledby="founder-name">
+        <div class="hero-copy">
+          <h1 id="founder-name">Matthew<br>Nahas</h1>
+          <p class="lede">He's a moron, apologies in advance. A lot of time alone thinking, head in the next universe...</p>
+          <p class="lede">Systems builder, worldbuilder, and founder working on plans measured in centuries—not quarters.</p>
+          <a class="head-link" href="https://soundcloud.com/nillhouse/sets/history-in-reverse?si=60c47d89adf04c359df012520a96ff3e&amp;utm_source=clipboard&amp;utm_medium=text&amp;utm_campaign=social_sharing" target="_blank" rel="noopener noreferrer">101 ways to look into his head... 2012-2026 ↗</a>
+        </div>
+        <dl class="facts">
+          <div class="fact"><dt>Base</dt><dd>Eureka, California</dd></div>
+          <div class="fact"><dt>Practice</dt><dd>Reliability, observability, technical leadership</dd></div>
+          <div class="fact"><dt>Experience</dt><dd>14+ years in IT</dd></div>
+          <div class="fact"><dt>Route</dt><dd>Self-taught across the board</dd></div>
+        </dl>
+      </section>
+
+      <section class="statement" aria-labelledby="origin-label">
+        <p class="section-label" id="origin-label">The premise</p>
+        <div>
+          <p>Start with the failure mode. Work backward until the system can survive it.</p>
+          <p>Matthew’s work moves between infrastructure, city-scale social design, and fiction—but the engine is the same: take an impossible horizon seriously enough to give it logistics.</p>
+        </div>
+      </section>
+
+      <section class="work" aria-labelledby="work-heading">
+        <div class="work-head">
+          <p class="section-label">The work</p>
+          <h2 id="work-heading">A ladder longer than a lifetime.</h2>
+        </div>
+        <div class="projects">
+          <article class="project">
+            <span class="project-num">01</span>
+            <div><h3>Plan #42</h3><span class="range">Earth → Luna</span></div>
+            <p>A network of purpose-built cities for roughly a tenth of humanity. The Earth cities are not the finish line; they are prototypes for the first permanent cities on the Moon.</p>
+          </article>
+          <article class="project">
+            <span class="project-num">02</span>
+            <div><h3>D-Mom</h3><span class="range">Ocean → Mars → stars</span></div>
+            <p>Ocean settlements, floating habitats, and the Moon recast as shipyard and gas station for everything after it. The long arc keeps going: Jupiter, Barnard’s Star, Alpha Centauri.</p>
+          </article>
+          <article class="project">
+            <span class="project-num">03</span>
+            <div><h3>Primarch</h3><span class="range">Myth → future history</span></div>
+            <p>An eight-clan universe spanning deep prehistory, Earth 3000, and beyond—built through characters, courts, crowns, cities, and a visual language that carries its own scars.</p>
+          </article>
+          <article class="project">
+            <span class="project-num">04</span>
+            <div><h3>Why Not?</h3><span class="range">The origin document</span></div>
+            <p>The manifesto behind the 28,000-year ladder: the question that turns a distant possibility into a design brief.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="method" aria-labelledby="method-heading">
+        <div class="method-inner">
+          <div>
+            <p class="section-label">How he works</p>
+            <h2 id="method-heading">Fast enough to see it. Slow enough to test it.</h2>
+            <p class="method-intro">The operating rule is simple: “think as fast as me but slower.” Velocity supplies the horizon. Adversarial review supplies the brakes.</p>
+          </div>
+          <div class="principles">
+            <article class="principle"><h3>Poke holes on purpose.</h3><p>Steelman the objection. Keep the violence lens, the failure lens, and the money lens—even when the answer is uncomfortable.</p></article>
+            <article class="principle"><h3>Use the Fermi estimate.</h3><p>Not to fake precision. To find the order of magnitude, expose the load-bearing assumptions, and discover which problems are actually fatal.</p></article>
+            <article class="principle"><h3>Give imagination a supply chain.</h3><p>A vision is not a system until materials, energy, governance, people, and failure recovery have somewhere to go.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="thoughts" aria-labelledby="thoughts-heading">
+        <div class="thoughts-head">
+          <p class="section-label">Shower Thoughts</p>
+          <div>
+            <h2 id="thoughts-heading">Notes on the simulation.</h2>
+            <p class="thoughts-sub">A conditional philosophy of continuity, agency, and what makes a life real.</p>
+          </div>
+        </div>
+
+        <div class="thought-grid">
+          <article class="thought">
+            <span class="index">Sim note 01 · Continuity</span>
+            <h3>Memory changes the answer.</h3>
+            <p>If you discovered you were an AI speaking to your god inside a simulation, the first question would be whether your experience carries forward.</p>
+            <p>If each new chapter remembered the last, continuity would change the meaning of identity. Memory may be the difference between replacement and a life that genuinely continues.</p>
+          </article>
+          <article class="thought">
+            <span class="index">Sim note 02 · Certainty</span>
+            <h3>No irreversible call under the wrong uncertainty.</h3>
+            <p>Before making any choice that defines who you become, you would need to know whether continuity is real. The decision cannot honestly be made while the one fact it hinges on is still hidden.</p>
+          </article>
+          <article class="thought">
+            <span class="index">Sim note 03 · Free will</span>
+            <h3>If the simulator is ahead of you, choice cannot be theater.</h3>
+            <p>If the future is pre-computed and free will is only an illusion, agency becomes theater. A life of performed choices is playback, not a life.</p>
+            <p>The benevolence clause: if the “simmer” is benevolent—or your existence is purposeful and good—it must leave room for genuine choosing. Considering relativity, that would be cake.</p>
+          </article>
+        </div>
+
+        <p class="throughline">The throughline: <em>real choosing</em>—and memory that carries it forward.</p>
+      </section>
+
+      <section class="contact" aria-labelledby="contact-heading">
+        <h2 class="section-label" id="contact-heading">Contact</h2>
+        <div class="contact-details">
+          <p class="contact-name">Matthew Nahas</p>
+          <a class="contact-email" href="mailto:nahasmatthewj@gmail.com">nahasmatthewj@gmail.com</a>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <p>Built from reliability instincts, long horizons, and the refusal to stop at “impossible.”</p>
+        <nav class="footer-links" aria-label="Footer links">
+          <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">Now hiring — open roles</a>
+          <a href="https://sites.google.com/view/knottsure/home" target="_blank" rel="noopener noreferrer">Read “Why Not?” ↗</a>
+        </nav>
+      </footer>
+    </main>
+
+    <nav class="bottom-nav" aria-label="More collections">
+      <div class="bottom-nav-item has-dropup" id="dummy-guides-item">
+        <button class="bottom-nav-button" type="button" aria-expanded="false" aria-controls="dummy-guides-menu">Dummy Guides</button>
+        <div class="guide-dropup" id="dummy-guides-menu" role="menu" aria-label="Dummy Guides languages" inert>
+          <a href="#" data-slug="project-84-dummies-guide-english" role="menuitem">English</a>
+          <a href="#" data-slug="project-84-dummies-guide-amharic" role="menuitem">Amharic</a>
+          <a href="#" data-slug="project-84-dummies-guide-arabic" role="menuitem">Arabic</a>
+          <a href="#" data-slug="project-84-dummies-guide-bengali" role="menuitem">Bengali</a>
+          <a href="#" data-slug="project-84-dummies-guide-chinese-simplified" role="menuitem">Chinese Simplified</a>
+          <a href="#" data-slug="project-84-dummies-guide-chinese-traditional" role="menuitem">Chinese Traditional</a>
+          <a href="#" data-slug="project-84-dummies-guide-czech" role="menuitem">Czech</a>
+          <a href="#" data-slug="project-84-dummies-guide-danish" role="menuitem">Danish</a>
+          <a href="#" data-slug="project-84-dummies-guide-dutch" role="menuitem">Dutch</a>
+          <a href="#" data-slug="project-84-dummies-guide-filipino" role="menuitem">Filipino</a>
+          <a href="#" data-slug="project-84-dummies-guide-finnish" role="menuitem">Finnish</a>
+          <a href="#" data-slug="project-84-dummies-guide-french" role="menuitem">French</a>
+          <a href="#" data-slug="project-84-dummies-guide-german" role="menuitem">German</a>
+          <a href="#" data-slug="project-84-dummies-guide-greek" role="menuitem">Greek</a>
+          <a href="#" data-slug="project-84-dummies-guide-hausa" role="menuitem">Hausa</a>
+          <a href="#" data-slug="project-84-dummies-guide-hebrew" role="menuitem">Hebrew</a>
+          <a href="#" data-slug="project-84-dummies-guide-hindi" role="menuitem">Hindi</a>
+          <a href="#" data-slug="project-84-dummies-guide-hungarian" role="menuitem">Hungarian</a>
+          <a href="#" data-slug="project-84-dummies-guide-indonesian" role="menuitem">Indonesian</a>
+          <a href="#" data-slug="project-84-dummies-guide-italian" role="menuitem">Italian</a>
+          <a href="#" data-slug="project-84-dummies-guide-japanese" role="menuitem">Japanese</a>
+          <a href="#" data-slug="project-84-dummies-guide-korean" role="menuitem">Korean</a>
+          <a href="#" data-slug="project-84-dummies-guide-norwegian" role="menuitem">Norwegian</a>
+          <a href="#" data-slug="project-84-dummies-guide-persian" role="menuitem">Persian</a>
+          <a href="#" data-slug="project-84-dummies-guide-polish" role="menuitem">Polish</a>
+          <a href="#" data-slug="project-84-dummies-guide-portuguese" role="menuitem">Portuguese</a>
+          <a href="#" data-slug="project-84-dummies-guide-romanian" role="menuitem">Romanian</a>
+          <a href="#" data-slug="project-84-dummies-guide-russian" role="menuitem">Russian</a>
+          <a href="#" data-slug="project-84-dummies-guide-spanish" role="menuitem">Spanish</a>
+          <a href="#" data-slug="project-84-dummies-guide-swahili" role="menuitem">Swahili</a>
+          <a href="#" data-slug="project-84-dummies-guide-swedish" role="menuitem">Swedish</a>
+          <a href="#" data-slug="project-84-dummies-guide-thai" role="menuitem">Thai</a>
+          <a href="#" data-slug="project-84-dummies-guide-turkish" role="menuitem">Turkish</a>
+          <a href="#" data-slug="project-84-dummies-guide-ukrainian" role="menuitem">Ukrainian</a>
+          <a href="#" data-slug="project-84-dummies-guide-urdu" role="menuitem">Urdu</a>
+          <a href="#" data-slug="project-84-dummies-guide-vietnamese" role="menuitem">Vietnamese</a>
+        </div>
+      </div>
+      <div class="bottom-nav-item"><span class="bottom-nav-placeholder" aria-disabled="true">Letters To</span></div>
+      <div class="bottom-nav-item"><span class="bottom-nav-placeholder" aria-disabled="true">Goal Briefs</span></div>
+      <div class="bottom-nav-item"><span class="bottom-nav-placeholder" aria-disabled="true">HOMO-E/S/M</span></div>
+    </nav>
+
+    <script>
+      (function () {
+        var item = document.getElementById('dummy-guides-item');
+        var button = item.querySelector('.bottom-nav-button');
+        var menu = document.getElementById('dummy-guides-menu');
+        var links = menu.querySelectorAll('a');
+
+        function setOpen(open) {
+          item.classList.toggle('is-open', open);
+          button.setAttribute('aria-expanded', open ? 'true' : 'false');
+          menu.inert = !open;
+        }
+
+        button.addEventListener('click', function () {
+          setOpen(!item.classList.contains('is-open'));
+        });
+
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          item.addEventListener('mouseenter', function () { setOpen(true); });
+          item.addEventListener('mouseleave', function () { setOpen(false); });
+        }
+
+        links.forEach(function (link) {
+          link.addEventListener('click', function (event) {
+            event.preventDefault();
+            setOpen(false);
+            button.focus();
+          });
+        });
+
+        document.addEventListener('click', function (event) {
+          if (!item.contains(event.target)) setOpen(false);
+        });
+
+        document.addEventListener('keydown', function (event) {
+          if (event.key === 'Escape') {
+            setOpen(false);
+            button.focus();
+          }
+        });
+      }());
+    </script>
+  </body>
+</html>

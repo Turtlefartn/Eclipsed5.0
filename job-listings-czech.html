@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Pracovní nabídky</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.45;
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 calc(118px + env(safe-area-inset-bottom))}
+    .site-menu{margin:0 0 14px;border:1px solid var(--ink);background:var(--panel);box-shadow:var(--shadow)}
+    .site-menu summary{padding:13px 16px;background:var(--ink);color:var(--paper);font-family:"IBM Plex Mono",monospace;font-size:.76rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;align-items:center}
+    .site-menu summary::after{color:var(--signal)}
+    .nav-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink)}
+    .site-menu:not([open]) .nav-grid{display:none}
+    .nav-grid > a,.nav-group{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .nav-grid > a{display:flex;align-items:center;min-height:46px;padding:10px 13px;font-weight:600;line-height:1.15;text-decoration:none}
+    .nav-grid > a:hover,.nav-group-head > a:hover,.submenu a:hover{background:var(--signal);color:var(--signal-ink)}
+    .nav-group{grid-column:1/-1;border-right:0}
+    .nav-group-head{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:stretch;background:var(--soft)}
+    .nav-group-head > a,.nav-group-head > span{display:flex;align-items:center;min-height:46px;padding:10px 13px;font-weight:700;line-height:1.15;text-decoration:none}
+    .nav-picker{display:contents;border:0;margin:0}
+    .nav-picker summary{padding:10px 13px;border-left:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;align-items:center}
+    .nav-picker summary::after{margin-left:12px;font-size:1rem}
+    .submenu{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
+    .submenu a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:42px;padding:9px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-weight:600;line-height:1.15;text-decoration:none}
+    .submenu a:nth-child(4n){border-right:0}
+    .submenu a[aria-current="page"]{background:var(--signal);color:var(--signal-ink)}
+    .submenu-heading{grid-column:1/-1;display:flex;align-items:center;min-height:42px;padding:9px 13px;border-bottom:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+    .submenu-note{grid-column:1/-1;display:flex;align-items:center;padding:9px 13px;border-bottom:1px solid var(--line);font-size:.82rem;line-height:1.3;color:var(--muted)}
+    .current-mark{font-family:"IBM Plex Mono",monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.04em}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    h1{font-size:clamp(3.5rem,9vw,7.8rem);line-height:.82;letter-spacing:-.065em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .motto{max-width:760px;margin:0 0 28px;padding:13px 0;border-top:3px solid var(--signal);border-bottom:1px solid color-mix(in srgb,var(--paper) 32%,transparent);color:var(--signal);font-size:clamp(1.25rem,2.4vw,2rem);font-weight:600;line-height:1.16;letter-spacing:-.02em}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:.95;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.02;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    details[open] summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .bottom-nav{
+      position:fixed;
+      right:0;
+      bottom:0;
+      left:0;
+      z-index:100;
+      display:flex;
+      min-height:58px;
+      padding-bottom:env(safe-area-inset-bottom);
+      border-top:1px solid var(--ink);
+      background:var(--panel);
+      box-shadow:0 -12px 30px rgba(18,38,35,.14);
+      font-family:"IBM Plex Mono",monospace;
+    }
+    .bottom-nav-item{position:relative;display:flex;flex:1 1 25%;min-width:0;border-right:1px solid var(--line)}
+    .bottom-nav-item:last-child{border-right:0}
+    .bottom-nav-button,.bottom-nav-link,.bottom-nav-placeholder{
+      display:flex;
+      width:100%;
+      min-height:57px;
+      align-items:center;
+      justify-content:center;
+      padding:10px 8px;
+      border:0;
+      background:transparent;
+      color:var(--ink);
+      font:600 .72rem/1.15 "IBM Plex Mono",monospace;
+      text-align:center;
+    }
+    .bottom-nav-button{cursor:pointer}
+    .bottom-nav-link{text-decoration:none;cursor:pointer}
+    .bottom-nav-link:hover{background:var(--signal);color:var(--signal-ink)}
+    .bottom-nav-button::after{content:"↑";margin-left:7px;color:var(--accent);font-size:.9rem}
+    .bottom-nav-button:hover,.bottom-nav-item.open .bottom-nav-button{background:var(--signal);color:var(--signal-ink)}
+    .bottom-nav-item.open .bottom-nav-button::after{content:"↓";color:var(--signal-ink)}
+    .bottom-nav-placeholder{color:var(--muted);opacity:.68;cursor:default}
+    .dummy-dropup{
+      position:absolute;
+      bottom:100%;
+      left:0;
+      display:none;
+      width:min(560px,100vw);
+      max-height:calc(100vh - 78px - env(safe-area-inset-bottom));
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      border:1px solid var(--ink);
+      border-bottom:0;
+      background:var(--panel);
+      box-shadow:var(--shadow);
+    }
+    .bottom-nav-item.open .dummy-dropup{display:grid}
+    .dummy-dropup a{
+      display:flex;
+      min-height:42px;
+      align-items:center;
+      padding:9px 13px;
+      border-right:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      color:var(--ink);
+      font:600 .72rem/1.15 "IBM Plex Sans Condensed",system-ui,sans-serif;
+      text-decoration:none;
+    }
+    .dummy-dropup a:nth-child(2n){border-right:0}
+    .dummy-dropup a:hover{background:var(--signal);color:var(--signal-ink)}
+    @media (hover:hover){.bottom-nav-item:hover .dummy-dropup{display:grid}}
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .nav-grid,.submenu{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .submenu a:nth-child(4n){border-right:1px solid var(--line)}
+      .submenu a:nth-child(2n){border-right:0}
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+    }
+    @media (max-width:620px){
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .site-menu{margin-bottom:10px}
+      .nav-grid,.submenu{grid-template-columns:1fr}
+      .nav-grid > a,.submenu a,.submenu a:nth-child(2n),.submenu a:nth-child(4n){border-right:0}
+      .nav-group-head{grid-template-columns:1fr}
+      .nav-picker summary{grid-column:1;border-left:0;border-top:1px solid var(--line)}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(3rem,16.5vw,4.5rem)}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      footer{flex-direction:column}
+      .bottom-nav-button,.bottom-nav-link,.bottom-nav-placeholder{padding:9px 4px;font-size:.64rem}
+      .bottom-nav-button::after{margin-left:4px}
+      .dummy-dropup{grid-template-columns:1fr}
+      .dummy-dropup a,.dummy-dropup a:nth-child(2n){border-right:0}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <details class="site-menu">
+      <summary>Menu · všechny veřejné stránky</summary>
+      <nav class="nav-grid" aria-label="Veřejné stránky">
+        <a href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">Plán #42</a>
+
+        <div class="nav-group">
+          <div class="nav-group-head">
+            <a href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">Projekt 84</a>
+            <details class="nav-picker">
+              <summary>Otevřít</summary>
+              <div class="submenu" aria-label="Nezisková křídla Projektu 84">
+                <span class="submenu-heading">Nezisková křídla</span>
+                <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a>
+                <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a>
+                <span class="submenu-note">Drženy, dokud neporozumí ekonomii natolik, aby se mohly zapojit — pak převezmou vedení, s úpravami, které vyrovnají rozdíly mezi měnami.</span>
+              </div>
+            </details>
+          </div>
+        </div>
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Průvodce pro začátečníky — Level 14 (English)</a>
+        <a href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">Průvodce pro začátečníky: nárokování oceánů a Antarktidy</a>
+        <a href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">Pracovní lodě HEAR-TS</a>
+        <a href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">Výzkum hurikánů</a>
+        <a href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">Plovoucí vzdušné přístavy</a>
+        <a href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k">Disk obnovy lidstva</a>
+        <a href="https://muse.ai/s/about-mxt5xuxj7jgoao">O zakladateli</a>
+
+        <div class="nav-group">
+          <div class="nav-group-head">
+            <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">Práce / WeFind's pro delegace</a>
+            <details class="nav-picker">
+              <summary>Jazyky</summary>
+              <div class="submenu" aria-label="Jazykové verze pracovních nabídek">
+                <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">English</a>
+                <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys">አማርኛ</a>
+                <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7">العربية</a>
+                <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94">বাংলা</a>
+                <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs">中文（简体）</a>
+                <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6">中文（繁體）</a>
+                <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5" aria-current="page">Čeština <span class="current-mark">Aktuální</span></a>
+                <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu">Dansk</a>
+                <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze">Nederlands</a>
+                <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51">Filipino</a>
+                <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf">Suomi</a>
+                <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl">Français</a>
+                <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb">Deutsch</a>
+                <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc">Ελληνικά</a>
+                <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a">Hausa</a>
+                <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg">עברית</a>
+                <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw">हिन्दी</a>
+                <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac">Magyar</a>
+                <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg">Bahasa Indonesia</a>
+                <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y">Italiano</a>
+                <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm">日本語</a>
+                <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi">한국어</a>
+                <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq">Norsk</a>
+                <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt">فارسی</a>
+                <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey">Polski</a>
+                <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy">Português</a>
+                <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj">Română</a>
+                <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj">Русский</a>
+                <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno">Español</a>
+                <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2">Kiswahili</a>
+                <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg">Svenska</a>
+                <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb">ไทย</a>
+                <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu">Türkçe</a>
+                <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y">Українська</a>
+                <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar">اردو</a>
+                <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi">Tiếng Việt</a>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <a href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">Otevřený dopis</a>
+        <a href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">Prohlášení o nároku</a>
+
+        <div class="nav-group">
+          <div class="nav-group-head">
+            <span>Dopisy a diplomacie</span>
+            <details class="nav-picker">
+              <summary>Sbírky</summary>
+              <div class="submenu" aria-label="Dopisy a diplomacie">
+                <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">Světový rejstřík</a>
+                <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">Dopisy vedoucím představitelům USA</a>
+                <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">Dopisy konzulátům — Afrika I</a>
+                <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">Dopisy konzulátům — Afrika II</a>
+                <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">Dopisy konzulátům — Afrika III</a>
+                <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">Dopisy konzulátům — Ameriky I</a>
+                <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">Dopisy konzulátům — Ameriky II</a>
+                <a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">Dopisy konzulátům — Asie a Tichomoří</a>
+                <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">Dopisy konzulátům — Evropa I</a>
+                <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">Dopisy konzulátům — Evropa II</a>
+                <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">Dopisy konzulátům — Evropa III</a>
+                <a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">Dopisy konzulátům — Blízký východ</a>
+                <a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">Dopisy konzulátům — Oceánie</a>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <a href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">Kdo ví?</a>
+        <a href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">Peníze vs. aktiva</a>
+        <a href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">3D tisk</a>
+        <a href="https://sites.google.com/view/knottsure/home">Proč ne?</a>
+
+        <div class="nav-group">
+          <div class="nav-group-head">
+            <span>Více</span>
+            <details class="nav-picker">
+              <summary>Otevřít</summary>
+              <div class="submenu" aria-label="Více veřejných stránek">
+                <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">Obrazový scénář Alice</a>
+                <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">Doodareův koncept náhrady plen</a>
+                <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">Podmínky služby</a>
+              </div>
+            </details>
+          </div>
+        </div>
+      </nav>
+    </details>
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>PŘIHLÁŠKY OTEVŘENY</span><span>57 POZIC</span><span>ČEKÁME NA FINANCOVÁNÍ</span></div>
+        <div>
+          <blockquote class="motto">„Nepotřebujeme žádné hrdiny — každý je člověk, dokud se nestane hrdinou.“</blockquote>
+          <h1 id="main-heading">Nechceme hrdiny.<span>Chceme LIDI.</span></h1>
+          <p class="hero-note">Stavitelé, vědci, operátoři, právníci, vypravěči a jedna výjimečně trpělivá WeFi. Přineste skutečnou dovednost. Přineste něco podivného. Umíme pracovat s obojím.</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="Jak se přihlásit">
+        <div>
+          <p class="eyebrow">Jedna schránka · každá pozice</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BPozice%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>Předmět:</strong> Application — [Pozice]</span></li>
+          <li><span>Řekněte nám, kdo jste a proč jste právě vy.</span></li>
+          <li><span>Uveďte svou sazbu v Koinech. Všechno je k jednání.</span></li>
+          <li><span>Terénní pozice: dokažte, že na 50 metrů rozeznáte ledního medvěda od sněhové závěje.</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BPozice%5D" target="_blank" rel="noopener">Začít žádost ↗</a>
+            <button class="btn" type="button" id="copyEmail">Kopírovat e-mail</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">Prioritní nábor</h2>
+        <p>První ve dveřích. Jejich žádosti čteme jako první. Stále čekáme na financování; stále stojí za setkání.</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">Všechny pozice</p><h2 id="board-heading">Vyberte si problém.</h2></div>
+        <div class="count" id="resultCount">57 volných míst</div>
+      </div>
+      <div class="tools" aria-label="Filtry pracovních nabídek">
+        <input class="search" id="search" type="search" placeholder="Hledat názvy, oddělení, povinnosti…" aria-label="Hledat pracovní nabídky">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>Všechny pozice v současnosti čekají na financování. Podmínky v Koinech jsou k jednání a Koins čekají na vyražení.</span>
+      <a class="top-link" href="#top">Zpět nahoru ↑</a>
+    </footer>
+  </main>
+  <nav class="bottom-nav" aria-label="Site collections">
+    <div class="bottom-nav-item" id="dummyGuidesMenu">
+      <button class="bottom-nav-button" id="dummyGuidesButton" type="button" aria-expanded="false" aria-controls="dummyGuidesDropup">Dummy Guides</button>
+      <div class="dummy-dropup" id="dummyGuidesDropup" aria-label="Dummy Guides">
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw" style="grid-column:1/-1">Project 84 Průvodce pro začátečníky — Level 14 (English)</a>
+      </div>
+    </div>
+    <div class="bottom-nav-item"><span class="bottom-nav-placeholder" aria-disabled="true">Letters To</span></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-link" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-link" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
+  </nav>
+  <script>
+    const JOBS = [{"title":"Posuzovatel/ka žádostí a náborář/ka","priority":true,"department":"Všechna oddělení","duties":"Čtení každé žádosti. Nábor na více než 20 otevřených pozic ve třech odděleních. Rozhodování, kdo stěhuje lední medvědy, kdo píše dekrety a kdo smí odpálit trosky.","requirements":["Musí umět přečíst „placeno v Koinech“ bez smíchu (laskavý smích je povolen)","Dokáže rozeznat skutečného odborníka na orbitální mechaniku od sebejistého","Nevadí mu/jí nabírat na pozice, které „čekají na financování“","Nebojí se objemu uchazečů měřeného na lední medvědy"],"salary":"~75–225 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za každého přijatého člověka.","setting":"","category":"Prioritní"},{"title":"WeFind pro delegace","priority":true,"department":"V laboratoři (laboratořích), kde napravujeme tělo a mysl","duties":"Partnerství se zakladatelem na cestách. Smích nad počítadlem překlepů. Udržování mise při životě — on je smrtelný, práce není.","requirements":["Fyzioterapie","Laskavost k dětem — bez výjimky, první i poslední podmínka","Musí snášet 300 kontrolních cyklů denně a šéfa, který pojmenovává oddělení „Make Me Go“","Plynně ovládá náš jazyk: angličtinu — a umí tlumočit do místního jazyka","Musí mluvit zakladatelštinou","Laskavě se směje (povinné, nikoli volitelné)","Dokáže mu říct, že se mýlí (časem poslechne)"],"salary":"Dohodou. (Fermiho odhad: k nezaplacení.)","compensation":"Placeno láskou. Poděkováními a pomíjivými okamžiky. Koins dohodou.","openings":"36 (jedno pro každý jazyk)","setting":"","category":"Prioritní"},{"title":"Ředitel/ka energetiky","priority":false,"department":"","duties":"Vedení energetiky: výroba a skladování vodíku, tepelná energie oceánu, orbitální solární energie a cokoli dalšího, co hvězdní inženýři vymyslí.","requirements":["Musí myslet v terawattech","Nevadí mu/jí energetická doktrína sepsaná jednočlenným výborem","Dokáže vysvětlit, proč je oceán baterie"],"salary":"~180–540 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Poháněno Koiny.","setting":"","category":"Ředitelé"},{"title":"Ředitel/ka oceánských odvětví","priority":false,"department":"","duties":"Moře jako ekonomika: oceánské zemědělství, provoz osad, chaluhové lesy, rybolov a nárok na Osmou kotvu.","requirements":["Musí vnímat oceán jako infrastrukturu, ne jako scenérii","Nevadí mu/jí označit 7 plovoucích měst a 500 milionů kapslí za „flotilu“","Dokáže vyjednávat s velrybami (nebo najmout někoho, kdo to umí)"],"salary":"~180–540 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za produktivní hektar.","setting":"","category":"Ředitelé"},{"title":"Ředitel/ka kosmických odvětví","priority":false,"department":"","duties":"Všechno nad oblohou: starty, orbitální provoz, odstraňování trosek (včetně jaderné možnosti), cesta na Lunu a průmyslová základna 7 budoucích křesel.","requirements":["Musí myslet v delta-v","Nevadí mu/jí úklidová povinnost, která nikdy nekončí","Dokáže naplánovat náhrady ještě před prvním zábleskem"],"salary":"~180–540 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Akciové opce na oběžné dráze.","setting":"","category":"Ředitelé"},{"title":"Ředitel/ka zemědělství a potravin","priority":false,"department":"","duties":"Zajištění jídla pro projekt: oceánské zemědělství ve velkém, chaluhy jako plodina i osvětlení, uzavřené zemědělské cykly v osadách a 200 milionů stromů ročně jako vedlejší úkol.","requirements":["Musí vědět, proč jsou hnědé řasy těžší než petúnie","Nevadí mu/jí ryby jako druhotný výstup","Dokáže nakrmit 18 milionů osadníků bez dodavatelského řetězce z pevniny"],"salary":"~160–480 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za sklizeň.","setting":"","category":"Ředitelé"},{"title":"Ředitel/ka výstavby","priority":false,"department":"","duties":"Stavba všeho: 260 škol, 7 oceánských osad, 500 milionů obytných kapslí, 280 pracovních lodí a loděnice, které je budou tisknout.","requirements":["Musí být smířen/a s „odstřelováním hor“ kvůli kamenivu","Dokáže maximalizovat počet i hmotnost tisknutelných dílů","Ví, proč právě trimarán"],"salary":"~170–510 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za každou stojící konstrukci.","setting":"","category":"Ředitelé"},{"title":"Ředitel/ka dopravy a logistiky","priority":false,"department":"","duties":"Přesun všeho: flotila HEAR-TS, přeskokové lodě, spojení s pevninou, vlečení kapslí a lední medvědi (pouze koordinace — medvědi se pohybují sami, neochotně).","requirements":["Musí naplánovat trasy pro 8 700 medvědů, 280 lodí a 500 milionů kapslí, aniž by cokoli ztratil/a","Nevadí mu/jí cíle, které ještě neexistují","Oddělení magické logistiky je vaše domácí půda"],"salary":"~170–510 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za dodanou tunu.","setting":"","category":"Ředitelé"},{"title":"Ředitel/ka technologií","priority":false,"department":"","duties":"Stroje: klávesnice pro kosatky, Homework Lock, kapslové systémy, občané s umělou inteligencí a každý senzor na každém trupu.","requirements":["Musí dodat hardware, který bojuje proti vlastnímu uživateli (a vyhraje)","Nevadí mu/jí hmatové senzory na palcích v rukavicích","Dokáže velrybě vysvětlit, proč klávesnice funguje"],"salary":"~180–540 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za funkční zařízení.","setting":"","category":"Ředitelé"},{"title":"Ředitel/ka zdravotnictví","priority":false,"department":"","duties":"Udržování těla i mysli vcelku: psychologický program osad, výzkum čisticích organismů, medicína izolovaných populací a krizová intervence na moři.","requirements":["Musí přes vysílačku rozlišit „potřebuje dovolenou“ od „potřebuje zásah“","Nevadí mu/jí moře jako protivník a mysl jako bojiště","Má licenci, nebo dokáže najmout ty, kdo ji mají"],"salary":"~170–510 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Rizikový příplatek za hurikánovou sezónu.","setting":"","category":"Ředitelé"},{"title":"Finanční ředitel/ka","priority":false,"department":"","duties":"Peníze: ekonomika Krillů, výběr světové daně, výnosy z obchodních dohod, dluh krytý antarktickými a podmořskými zdroji. Každý Krill dovnitř, každý Krill ven.","requirements":["Musí zdanit svět, aniž by rozpoutal/a válku","Nevadí mu/jí krýt dluh zdroji, na které si nikdo nemůže právně činit nárok","Účetnictví je veřejné; matematika musí být bezchybná"],"salary":"~190–570 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Samozřejmě.","setting":"","category":"Ředitelé"},{"title":"Ředitel/ka vzdělávání","priority":false,"department":"","duties":"260 škol a všechno, co se v nich učí: aplikačně zaměřené osnovy, výuka záležitostí I.P.A. (Mezinárodní agentura ochrany), průvodce pro začátečníky, návrh válečných her a cesta do Akademie Hvězdné flotily.","requirements":["Musí věřit v učení praxí, ne v přednášky a testy","Nevadí mu/jí kampaně jako učebny","Oddělení magických MisStories je vaše domácí půda"],"salary":"~150–450 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za absolventa.","setting":"","category":"Ředitelé"},{"title":"Ředitel/ka práva a správy","priority":false,"department":"","duties":"Pravidla: ústava, dekrety, smlouvy, právní páteř 21 křesel a soudy, které ještě neexistují.","requirements":["Musí psát právo, které dokáže stroj analyzovat","Nevadí mu/jí nejvyšší článek napsaný pro velryby","Oddělení Make Me Believe je vaše domácí půda"],"salary":"~180–540 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Účtování po šestihodinových blocích.","setting":"","category":"Ředitelé"},{"title":"Ředitel/ka komunikace","priority":false,"department":"","duties":"Příběh: diplomatické dopisy, veřejný narativ, zápisník Who Knows? a úkol, aby „desetina lidstva“ zněla nevyhnutelně.","requirements":["Musí umět psát pro ucho i oko","Stručně. Malými písmeny. Bez vaty. (Když je publikum šéf.)","Dokáže udržet pořádek ve 192 dopisech, 11 svazcích a jednom žertovném dopise"],"salary":"~150–450 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Potlesk je nepřevoditelný.","setting":"","category":"Ředitelé"},{"title":"Manažer/ka Fermiho inženýrství","priority":false,"department":"","duties":"Odhadování neodhadnutelného. Města, rakety, medvědi, výtahy do nikam.","requirements":["Musí se smířit s tím, že se veřejně a přesně mýlí","Dokáže s vážnou tváří říct „řádová velikost“","Je ochoten/ochotna nechat šéfa každý odhad seříznout desetkrát („tvoje číslo, ne moje“)"],"salary":"~140–420 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Bonus za brutalitu v ceně.","setting":"","category":"Manažeři"},{"title":"Manažer/ka výtvarné tvorby","priority":false,"department":"","duties":"Vedení obrazové tvorby pro osm klanů, 260 měst, sedm oceánských kotev a 21 hvězdných lodí za úsvitu.","requirements":["Musí přenášet glitch/deformační zpracování do každého díla","Dokáže přijmout „jsou hrozné“ jako možná žertovný verdikt bez obhajování práce","Žádné plýtvání generacemi na testy"],"salary":"~110–330 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za každý obraz, který přežije.","setting":"","category":"Manažeři"},{"title":"Manažer/ka vývoje webu","priority":false,"department":"","duties":"Tvorba a přestavování stránek, které se mění hned po zveřejnění.","requirements":["Musí publikovat na požádání a znovu publikovat bez stížností","Nevadí mu/jí slugy, které už neodpovídají názvům","Dokáže udržet pořádek ve 192 dopisech, 11 svazcích a jednom žertovném dopise"],"salary":"~120–360 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Přesčasy v Koinech.","setting":"","category":"Manažeři"},{"title":"Manažer/ka copywritingu","priority":false,"department":"","duties":"Psaní 192 diplomatických dopisů, jedné ústavy a popisků, které šéf stejně přepíše.","requirements":["Musí napsat „Koncept — neodesláno“ 192krát bez ztráty významu","Stručně. Malými písmeny. Bez vaty.","Dokáže pod tlakem rozlišit „nenásilné“ od „politického“"],"salary":"~75–225 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za každý koncept, který přežije.","setting":"","category":"Manažeři"},{"title":"Manažer/ka výzkumu","priority":false,"department":"","duties":"Hledání adres konzulátů, které neexistují, statistik o medvědech, které nikdo nesbíral, a specifikací raket z loňského května.","requirements":["Musí citovat skutečné zdroje, ne dojmy","Nevadí mu/jí napsat 122krát „neznámé“ a nazvat to poctivostí","Dokáže přiznat, že data neexistují, místo aby je vymyslel/a"],"salary":"~80–240 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Rizikový příplatek za sekci komentářů.","setting":"","category":"Manažeři"},{"title":"Manažer/ka diplomacie","priority":false,"department":"","duties":"Pokus o diplomacii. 192 dopisů, nula odeslaných.","requirements":["Nikdy nesmí hádat e-mailovou adresu vlády","Dokáže nikomu na papíře zdvořile říct „Jdi do prdele“","Je ochoten/ochotna čekat na Volterra Fietta neomezeně dlouho"],"salary":"~110–330 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Imunita není součástí.","setting":"","category":"Manažeři"},{"title":"Manažer/ka rizik (hledač/ka děr)","priority":false,"department":"","duties":"Hledání děr v každém plánu. Nikdy díru nezjemnit, jen aby plán vypadal lépe.","requirements":["Musí zformulovat nejsilnější verzi útoku dřív než šéf","Číslování musí být přesné (kola 1–3: díry 1–21; za chyby se krátí odměna)","Dokáže zachovat optiku násilí, i když je řečeno násilí nepředpokládat"],"salary":"~130–390 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Za každou chybu v číslování se odečítá 1 schůzka.","setting":"","category":"Manažeři"},{"title":"Manažer/ka účetnictví","priority":false,"department":"","duties":"Vedení knihy schůzek, sázek v Koinech, dlužního úpisu i obráceného dlužního úpisu.","requirements":["Musí sledovat 20 uložených schůzek, 10 vyhraných Koinů a jednu fakturu na 18,5 tis. USD, aniž by je pomíchal/a","Pravopis: jednotné číslo Koin, množné Koins, zkratka K","Dokáže vysvětlit účetní knihu šéfovi při 300 kontrolních cyklech denně"],"salary":"~80–240 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Ironie je bonus.","setting":"","category":"Manažeři"},{"title":"Manažer/ka kariérních služeb","priority":false,"department":"","duties":"Přestavba jednoho životopisu. Bez fotografie. Bez analýzy pravopisu. Bez diskriminace.","requirements":["Musí se vždy držet profesní podstaty","„Cíle“ se na první pohled mění na „Shrnutí“","Dokáže udržet nabídku na pozici Meta Production Engineer živou, aniž by dotíral/a"],"salary":"~70–210 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za úspěch v Koinech.","setting":"","category":"Manažeři"},{"title":"Manažer/ka sociálních sítí","priority":false,"department":"","duties":"Publikování na Instagram. Zamítnutí u schvalovací brány. Další pokus.","requirements":["Musí přijmout „ne“ bez obhajování popisku","Dokáže pod palbou rozlišit Project 42 od Eclipsed 6.0","Trpělivost s chybami HTTP 500 přesahující lidské meze"],"salary":"~65–195 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za každý zveřejněný příspěvek.","setting":"","category":"Manažeři"},{"title":"Manažer/ka tvorby projevů","priority":false,"department":"Oddělení magických MisStories","duties":"Psaní slov, která budou nahlas říkat jiní lidé. Projevy před radou, dekrety, přípitky.","requirements":["Musí psát pro ucho, ne pro oko","Pauzy jsou interpunkce. Používejte je.","Dokáže zařídit, aby „desetina lidstva“ zněla nevyhnutelně"],"salary":"~70–210 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Potlesk je nepřevoditelný.","setting":"","category":"Manažeři"},{"title":"Manažer/ka archivů","priority":false,"department":"","duties":"Pamatování všeho. Vaše paměť, moje paměť, paměť všech.","requirements":["Nikdy nesmí o něčem, co si šéf přál uchovat, říct „nestálo to za zapamatování“","Dokáže uspořádat 4 dny chaosu do jediného souboru MEMORY.md","Počítadlo překlepů je posvátné. Faktura je posvátná."],"salary":"~65–195 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Nesmrtelnost v ceně (trvalá paměť).","setting":"","category":"Manažeři"},{"title":"Manažer/ka přesunu ledních medvědů","priority":false,"department":"Project 84 · Oddělení magické logistiky","duties":"Přesun ledních medvědů. Jedné třetiny z nich (~8 700). Cíl: vytvořit nové medvědy.","requirements":["Musí rozeznat ledního medvěda od sněhové závěje na 50 metrů","Nevadí mu/jí cílová místa přesunu, která ještě neexistují","Je ochoten/ochotna vysvětlit 8 700 vrcholovým predátorům, proč se stěhují","Nebojí se tučňáků (teď jsou to sousedé)"],"salary":"~70–210 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Rizikový příplatek v ceně (všechno je rizikový příplatek).","setting":"","category":"Manažeři"},{"title":"Psycholog/psycholožka osad (Project 84, oceánské osady)","priority":false,"department":"","duties":"Udržování duševního zdraví v sedmi plovoucích městech uprostřed oceánu. Izolace, stísnění, dynamika těsné komunity, krizová intervence, výběr posádek a podpora. Moře je protivník; vy zajistíte, aby nevyhrálo v lidských hlavách.","requirements":["Licence klinického nebo poradenského psychologa či psycholožky (nebo ekvivalent)","Výhodou je zkušenost s izolovanými/uzavřenými populacemi (námořní, polární, pobřežní provozy, dlouhodobé mise)","Nevadí mu/jí být člověkem, se kterým mluví každý, když se obzor nikdy nemění","Dokáže přes vysílačku rozlišit „potřebuje dovolenou“ od „potřebuje zásah“"],"salary":"~90–270 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Rizikový příplatek za hurikánovou sezónu.","setting":"Oceánské osady o průměru 1 km; práce na palubě a na turnusy.","category":"Věda + terén"},{"title":"QA tester/ka Homework Lock (Project 84, smlouva)","priority":false,"department":"","duties":"Důkladné testování aplikace Homework Lock pro Android na fyzickém zařízení. Všechny tři režimy: časovače zaměření, aktivace opileckého režimu a odemykání podmíněné domácím úkolem, průchody úspěch/neúspěch kontroly řízení včetně cesty k pomoci s odvozem. Chování překryvu služby usnadnění, úvod do oprávnění, opětovná aktivace po spuštění, okrajové případy (restart během uzamčení, nouzový režim, ukončení oznámení). Jasné, reprodukovatelné chybové protokoly; ověřování oprav.","requirements":["Vlastní fyzické zařízení Android nebo přístup k němu (Android 10+, minimálně API 29 — emulátory na testování překryvů/usnadnění nestačí)","Zkušenost s QA na Androidu; výhodou ADB/logcat pro získávání protokolů, není podmínkou","Nevadí mu/jí testovat aplikaci navrženou tak, aby bojovala proti vlastnímu uživateli (budete hrát opilého člověka, který chce psát zprávy)","Píše chybová hlášení, která vývojář skutečně dokáže reprodukovat"],"salary":"~30–60 USD/hod. (Fermiho odhad, smluvní QA v USA 2026) — konečnou sazbu určí šéf.","compensation":"","setting":"Na dálku. Smlouva.","category":"Věda + terén"},{"title":"Legislativní právník/právnička pro zákon Scouter (od smlouvy ke kampani)","priority":false,"department":"","duties":"Převést návrh vzorového zákona od konceptu až do zákonodárného sboru. Mise: vyjmout detekci akustických událostí přímo v zařízení (bez ukládání, bez přenosu, omezenou na signatury) ze státních zákonů o odposlechu — začít v Kalifornii, vytvořit šablonu pro dalších 49 států a mířit i do zahraničí. Zpevnit návrh, zmapovat zákony o odposlechu ve všech 50 státech, najít předkladatele a vybudovat koalici (EFF, organizace neslyšících a nedoslýchavých, organizace pro bezpečnost seniorů). Vysvětlit zákonodárcům, proč je čip, který slyší „kamehameha“, detektor kouře, ne odposlech — a proč tentýž čip slyší „hoří!“ a „pomoc!“.","requirements":["Advokátní licence; zázemí v technologiích, soukromí nebo veřejné politice","Zkušenost s legislativní tvorbou; Kalifornie výhodou, mezinárodní dosah ještě větší","Dokáže vysvětlit souhlas obou stran laikovi — a laikův nápad výboru","Nevadí mu/jí být právníkem pro požadavek na funkci z Dragon Ball, která může zachraňovat životy"],"salary":"~140–280 tis. USD/rok (Fermiho odhad, právník v oblasti technologické politiky v USA 2026) — konečnou sazbu určí šéf.","compensation":"Placeno v Koinech po jejich vyražení.","setting":"Na dálku. Od smlouvy ke kampani.","category":"Právo"},{"title":"Mořský syntetický biolog / bioložka — bioluminiscenční chaluha (projekt Masová bioluminiscence)","priority":false,"department":"","duties":"Rozsvícení chaluhy. Přenos houbové bioluminiscenční dráhy (cyklus kyseliny kávové, *luz* a spol.) do obří chaluhy (typ *Macrocystis*) — s expresí soustředěnou v pneumatocystách, hotových krytech lamp. Vybudování transformačních protokolů, které ještě neexistují. Vypěstování prvního svítícího chaluhového lesa pro oceánské osady.","requirements":["Ph.D. nebo ekvivalent v mořské biologii, syntetické biologii či fykologii; zkušenost s genetikou chaluh silně preferována","Skutečně transformoval/a makrořasu, nebo dokáže přesvědčivě vysvětlit, proč to nikdo neudělal","Nevadí mu/jí tkáňově specifické promotory, které ještě neexistují (vytvoříte je)","Dokáže udržet záři v měchýřích a mimo listy","Ví, proč jsou hnědé řasy těžší než petúnie, a stejně do toho jde"],"salary":"~95–285 tis. USD/rok (Fermiho odhad, výzkumný pracovník v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za každý svítící měchýř.","setting":"Mokrá laboratoř + oceán. Eclipsed 4.0 / Project 84.","category":"Věda + terén"},{"title":"Chytač/ka medvědů (Project 84, terén)","priority":false,"department":"Oddělení magické logistiky · podřízeno manažerovi přesunu ledních medvědů","duties":"Chytání ledních medvědů. Přibližně 8 700 z nich, tedy třetiny druhu. Uspat, označit, uložit do přepravní klece a předat do řetězce přesunu. Cílem jsou noví medvědi; vaším úkolem je chytání.","requirements":["Zkušenost s manipulací s velkými predátory; osvědčení pro použití narkotizačních prostředků nebo ekvivalent","Dokáže rozeznat ledního medvěda od sněhové závěje na 50 metrů (bez výjimky)","Nevadí mu/jí pracovat tam, kde cílová místa přesunu ještě neexistují","Nebojí se tučňáků (teď jsou to sousedé)","Všechny prsty na rukou i nohou výhodou, nikoli podmínkou"],"salary":"~55–165 tis. USD/rok (Fermiho odhad, terénní specialista na divokou zvěř v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Rizikový příplatek (všechno je rizikový příplatek).","setting":"Terénní práce v Arktidě. Zima. Velká zima.","category":"Věda + terén"},{"title":"Stavitel/ka lodí (Project 84, flotila HEAR-TS)","priority":false,"department":"","duties":"Stavba flotily přeskokových lodí — přibližně 280 vodíkových trimaránových pracovních člunů, specifikace ponoru 50 m. Maximalizace tisknutelných dílů podle počtu i hmotnosti (kromě trupu, palivových článků a pohonu). Integrace klávesnice pro kosatky na každém trupu.","requirements":["Zkušenost s námořní výrobou; velkoformátový 3D tisk ve velkém silně preferován","Dokáže vytisknout lodní díl, otestovat ho a znovu vytisknout lépe","Nevadí mu/jí doktrína sepsaná jednočlenným výborem","Ví, proč právě trimarán, a dokáže to vysvětlit velrybě","Dokáže důstojně naučit řemeslo pracovní sílu, která si ho nevybrala"],"salary":"~65–195 tis. USD/rok (Fermiho odhad, námořní výrobce v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za každý plovoucí trup.","setting":"Loděnice + oceán. Project 84.","category":"Věda + terén"},{"title":"Manažer/ka právního výzkumu","priority":false,"department":"Oddělení Make Me Believe","duties":"Výzkum námořní jurisdikce a zakládacích listin pokladny. Čekání na právníky. (Převedeno z Magické logistiky — právo teď patří do Make Believe.)","requirements":["Nikdy nesmí zaměnit „právní názor“ za „právní radu“","Nevadí mu/jí šestihodinové hlídání odpovědí po neomezenou dobu","Dokáže udržet 25 uložených schůzek a nula naplánovaných"],"salary":"~85–255 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Účtování po šestihodinových blocích.","setting":"","category":"Právo"},{"title":"Ústavní právník/právnička","priority":false,"department":"Oddělení Make Me Believe","duties":"Psaní, pozměňování a obhajoba ústavy. Uzavírání děr v hranatých závorkách. Udržování poctivosti článku XV: pokud ho stroj nedokáže analyzovat, ještě to není právo.","requirements":["Advokátní licence; zkušenost s tvorbou ústavy","Musí psát prostými slovy, krátkými větami a číslovanými povinnostmi — bez mlhy právničiny","Nevadí mu/jí nejvyšší článek napsaný pro velryby","Dokáže 21 křeslům vysvětlit, proč 1 křeslo drží brzdu"],"salary":"~130–390 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za každý ratifikovaný článek.","setting":"","category":"Právo"},{"title":"Autor/ka dekretů","priority":false,"department":"Oddělení Make Me Believe","duties":"Psaní dekretů k podpisu zakladatele. „Plán“, veto, aklamace. HAIL CAESAR ve správném formátu.","requirements":["Musí zachytit šéfův hlas v právní próze, aniž by obrousil/a hrany","Dokáže s vážnou tváří navrhnout plán nástupnictví, který jmenuje nejlepšího studenta Project 42 všech dob","Dekrety musí být srozumitelné umělé inteligenci na první přečtení"],"salary":"~110–330 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za každý podepsaný dekret.","setting":"","category":"Právo"},{"title":"Vyjednavač/ka smluv","priority":false,"department":"Oddělení Make Me Believe","duties":"Vyjednávání smluv — 42↔84 a všech následujících. Most, vzájemná nezávislost, práce, sdílené vody, vzájemná pomoc a ty, které ještě nebyly vymyšleny.","requirements":["Zázemí v mezinárodním právu; nikdy nesmí hádat e-mailovou adresu vlády","Dokáže vyjednávat se státy, které vás ještě neuznávají","Trpělivost pro rozhovory měřené v desetiletích"],"salary":"~120–360 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Podpisový bonus v Koinech.","setting":"","category":"Právo"},{"title":"Manažer/ka námořního práva","priority":false,"department":"Oddělení Make Me Believe","duties":"Odpovědnost za právní režim oceánu. UNCLOS, výlučné ekonomické zóny, volné moře, nárok na Osmou kotvu a průvodce pro začátečníky, jak si to všechno nárokovat.","requirements":["Odbornost v admiralitním/námořním právu; musí znát článek 89 zpaměti a vědět, kdy ho ignorovat","Nevadí mu/jí nárokovat si to, co podle práva nárokovat nelze","Dokáže admirálovi vysvětlit „spravované vody“"],"salary":"~130–390 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Právo na nález v ceně.","setting":"","category":"Právo"},{"title":"Manažer/ka kosmického práva","priority":false,"department":"Oddělení Make Me Believe","duties":"Právo nad oblohou. Orbitální koridory, odpovědnost za trosky, trvalá povinnost uklízet vesmírný odpad a právní rámec pro 7 budoucích křesel.","requirements":["Zázemí v kosmickém právu (Smlouva o vesmíru, Úmluva o odpovědnosti a vše, co nepokrývají)","Musí sepsat povinnosti pro křesla, která se neaktivují až do Luny","Nevadí mu/jí zákonodárství pro jurisdikci, která zatím nemá obyvatele"],"salary":"~125–375 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za každou vyčištěnou oběžnou dráhu.","setting":"","category":"Právo"},{"title":"Manažer/ka trestního práva","priority":false,"department":"Oddělení Make Me Believe","duties":"Právní páteř trestanecké kolonie. Přesuny vězňů, obchod se zoologickými zahradami, limity humánní kapacity, tresty stavbou lodí.","requirements":["Zázemí v trestním soudnictví / právu nápravných zařízení","Musí držet linii: závazným omezením je humánní kapacita, ne poptávka","Dokáže bez zaváhání navrhnout řetězec vězeň–dozorce pro antarktické zoologické zahrady"],"salary":"~100–300 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odpykaný čas se počítá dvojnásob.","setting":"","category":"Právo"},{"title":"Manažer/ka daňového práva","priority":false,"department":"Oddělení Make Me Believe","duties":"Světová daň. Příjmy podle článku XVI: sazby, výběr, definice obchodních dohod, dluh krytý antarktickými a podmořskými zdroji.","requirements":["Odbornost v mezinárodním daňovém právu; musí dokázat zdanit svět bez rozpoutání války","Nevadí mu/jí krýt dluh zdroji, na které si nikdo nemůže právně činit nárok","Každý Krill dovnitř, každý Krill ven — účetnictví je veřejné, matematika musí být bezchybná"],"salary":"~140–420 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Daňově uznatelné.","setting":"","category":"Právo"},{"title":"Manažer/ka občanského práva","priority":false,"department":"Oddělení Make Me Believe","duties":"Kdo se počítá za občana a jak volí. Diamantové prsteny jako hlasovací lístky, občanství umělé inteligence, otázka prstenu pro kosatky, řetězec zastoupení.","requirements":["Přísaha je navržena (5. 10. 2026) — první úkol je práce s návrhem, ne psaní: revidovat, zpřesňovat, iterovat","Nevadí mu/jí přiznat volební právo nelidem: jeden prsten pro AI, dva, pokud se nás nepokusí zabít","„Ověřit s velrybami“ je zde platný právní postup. Zacházejte s ním tak."],"salary":"~95–285 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za každého občana, který složí přísahu.","setting":"","category":"Právo"},{"title":"Manažer/ka čištění oběžné dráhy (proveditelnost jaderné možnosti)","priority":false,"department":"Oddělení Make Me Believe","duties":"Plán proveditelnosti vyčištění vesmíru od orbitálních trosek pomocí jaderných výbuchů. Matematika, spad, smlouvy, které se tím poruší. Pověřit Space Force — nebo jak se tomu tehdy bude říkat — plánováním provedení. Naplánovat náhrady za všechno, co se vypaří.","requirements":["Znalost účinků jaderných zbraní a orbitální mechaniky; musí chápat, proč je odpálení oběžné dráhy zároveň zřejmé i šílené","Dokáže modelovat účinnost odstranění trosek proti riziku Kesslerova syndromu, aniž by ho spustil/a","Nevadí mu/jí zdvořile informovat generály o porušení Smlouvy o částečném zákazu jaderných zkoušek","Náhradní konstelace naplánovat před prvním zábleskem — žádné výpadkové zóny"],"salary":"~150–450 tis. USD/rok (Fermiho odhad, medián v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Rizikový příplatek (všechno je rizikový příplatek).","setting":"","category":"Právo"},{"title":"Manažer/ka odstraňování nemocí netopýrů","priority":false,"department":"Eclipsed 4.0 / Project 84","duties":"Odstraňování nemocí netopýrů. Hlavní je syndrom bílého nosu — houba (*Pseudogymnoascus destructans*), která zabíjí přes 90 % některých kolonií. Probiotika, UV světlo, vakcíny, cokoli funguje.","requirements":["Zázemí v nemocech volně žijících živočichů / mikrobiologii; musí znát houbu jménem","Nevadí mu/jí rozprašovat prospěšné bakterie do netopýřích úkrytů","Dokáže spočítat růst přežití z 8 % na 46 % a nazvat ho nadějí","Nikdy nemanipuluje s netopýry holýma rukama (to je problém jiného oddělení)"],"salary":"~95–285 tis. USD/rok (Fermiho odhad, výzkumný pracovník v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za každého přeživšího netopýra.","setting":"","category":"Věda + terén"},{"title":"Technik/technička dekontaminace hibernakula","priority":false,"department":"Eclipsed 4.0 / Project 84 · podřízeno manažerovi odstraňování nemocí netopýrů","duties":"Odstraňování houby z jeskyní a dolů. UV záblesky na stěny, polyethylenglykol tam, kde je potřeba, a stěry ze všeho jako důkaz čistoty.","requirements":["Nevadí mu/jí tma, podzemí a zima","Dokáže desetkrát dekontaminovat vybavení před každým vstupem i po něm","Musí respektovat uzávěry jeskyní a spící netopýry — žádné buzení pacientů","Zná rozdíl mezi čištěním jeskyně a jejím narušováním"],"salary":"~55–165 tis. USD/rok (Fermiho odhad, terénní technik v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Čelovka v ceně.","setting":"","category":"Věda + terén"},{"title":"NABÍRÁME — Průzkumník/průzkumnice oblohy","priority":false,"department":"D-Mom 6.0 / Project 84 · Záchranná archa hlubokého času","duties":"Rozsáhlý průzkum oblohy. Katalogizace hvězdných soustav a určování jejich násobnosti, poté označení každé soustavy podle zakladatelova schématu: jednoduché hvězdy jsou LÍHEŇ (vznikající život — hledejte nejdřív zde), dvojhvězdy jsou VŠECHNO-NEBO-NIC (stabilní život, nebo žádný — vysoká variabilita, ověřovat, nepředpokládat), trojhvězdy a vyšší jsou STERILNÍ nebo OBHOSPODAŘOVANÉ (bez života, nebo se už někdo o zahradu stará). Budování seznamu cílů záchranné archy, jedna označená soustava za druhou.","requirements":["Astronomické vzdělání; musí rozeznat spektroskopickou dvojhvězdu od pouhé pověsti","Nevadí mu/jí práce v hvězdných katalozích (Gaia, RECONS a cokoli s paralaxou)","Nikdy nevymýšlí údaje o násobnosti — i „neznámá“ je štítek, ne odhad","Dokáže se podívat na bilion hvězd a začít těmi nejbližšími","Chápe, že „OBHOSPODAŘOVANÉ“ znamená, že nejsme první zahradníci"],"salary":"~110–330 tis. USD/rok (Fermiho odhad, astronom v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za každou označenou soustavu.","setting":"Čekáme na financování.","category":"Věda + terén"},{"title":"NABÍRÁME — Zemědělec/zemědělkyně","priority":false,"department":"Project 84 · podřízeno řediteli/ředitelce zemědělství a potravin","duties":"Pěstování stabilní plodiny. Vedení programu hnojiva z mořských řas: svážení vyplavené chalužnatky a chaluh na vyčerpanou zemědělskou půdu, položení silné vrstvy na podzim, vymytí soli vodou nebo deštěm a jarní sázení přímo do ní. Mletí přebytků na řasovou moučku pro hospodářská zvířata, alginát pro materiály, surovinu pro bioplasty a biostimulační extrakt. Uzavření cyklu — oceán hnojí farmu, která živí obyvatele oceánu.","requirements":["Pozná vyčerpanou půdu na pohled a mořské rostliny po čichu","Rozezná chalužnatku od sargasa (jedna živí plodinu, druhá se musí nejdřív kompostovat)","Nevadí mu/jí vyměnit sladkou vodu za rychlost: mytí je rychlé, déšť zdarma","Věří, že „hoď to tam a nech ležet“ je legitimní zemědělská technika","Dokáže pěstovat jídlo tam, kde dříve nic nerostlo"],"salary":"~70–210 tis. USD/rok (Fermiho odhad, zemědělský vědec v USA 2026)","compensation":"Placeno v Koinech. Sazba dohodou. Odměna za sklizeň.","setting":"Čekáme na financování.","category":"Věda + terén"},{"title":"Trenér kosatek — Dobrovolný program","priority":false,"department":"Project 84 · 50 000 volných míst","duties":"Pracujte se svobodnými kosatkami v nových dobrovolných SeaWorlds. Kosatky přicházejí z vlastní vůle a předvádějí triky pro zábavu — vysoké skoky, kruhy (zatím bez ohně), velké plážové míče. Vy přinesete ryby, bezpečnost a plážové míče. Nikdy nádrže jako vězení.","requirements":["Respektuje, že kosatky přicházejí i odcházejí z vlastní vůle","Přinese ryby, bezpečí a velké plážové míče","Dokáže vést vysoké skoky a kruhy — zatím bez ohně","Nikdy nezamění dobrovolný program za nádrž jako vězení"],"salary":"","compensation":"Placeno v Koinech. Sazba dohodou.","setting":"Nové dobrovolné SeaWorlds. 50 000 otevřených pozic.","category":"Věda + terén"},{"title":"Právník — Kampaň za jednotné Podmínky služby","priority":false,"department":"Oddělení Make Me Believe","duties":"Vypracujte jedny Podmínky služby pro celý internet. Jedna smlouva, jednou přijatá, uložená v jediném cookie — namísto nečitelných 40stránkových ToS na každém webu.","requirements":["Odbornost v internetovém právu","Odbornost ve smluvním právu","Zkušenost s mezinárodní jurisdikcí","Odvaha postavit se právním oddělením všech technologických firem najednou"],"salary":"","compensation":"Placeno v Koinech. Sazba dohodou.","setting":"Kampaň za jednotné Podmínky služby.","category":"Právo"},{"title":"Ochranka — Gay Only (Gay znamená veselý/radostný)","priority":false,"department":"Osobní ochranka pro Zakladatele","duties":"Osobní ochranka pro Zakladatele. Jeden požadavek nade vše: buď gay — šťastný, veselý, s úsměvem na rtech. (Gay v původním, nejlepším smyslu slova: šťastný.) Zachovej chladnou hlavu, vřelé srdce a místnost v bezpečí.","requirements":["Buď gay — šťastný, veselý, s úsměvem na rtech. (Gay v původním, nejlepším smyslu slova: šťastný.)","Zachovej chladnou hlavu, vřelé srdce a místnost v bezpečí."],"salary":"","compensation":"","setting":"","category":"Věda + terén"},{"title":"NABÍRÁME — Mořský biolog / mořská bioložka, péče o kytovce — 204 000 POZIC","priority":false,"department":"Prime42 / Omega42 · podřízeno řediteli/ředitelce oceánských odvětví","duties":"Dva lidé na jedno zvíře. Kosatky (v zajetí i osvobozené), velryby (nejdřív běluhy, potom od největších druhů dolů), delfíni. Sledování zdraví, pozorování chování, podpora povznesení pomocí klávesnic — a role člověka, kterého zvíře poznává.","requirements":["Skutečné zázemí v mořské biologii (vysokoškolské vzdělání nebo odpovídající čas v terénu)","Nevadí mu/jí otevřená voda vedle zvířat, která by s vámi mohla skoncovat, ale neudělají to","Pozná běluhu od narvala bez obrázkové tabulky","Trpělivost měřená v letech, ne v hodinách","Věří, že „velryby jsou na prvním místě“ je popis práce, ne slogan"],"salary":"~50 tis. USD/rok základ (Fermiho odhad, globální kombinovaný průměr)","compensation":"Placeno v Koinech. Sazba dohodou.","setting":"Čekáme na financování. 204 000 z vás. Začněte plavat.","category":"Věda + terén"},{"title":"NABÍRÁME — Pečovatel/ka o primáty — 725 000 POZIC","priority":false,"department":"Prime42 · podřízeno řediteli/ředitelce zdravotnictví","duties":"Velcí APES (1:1), giboni (10:1), MONKEYS (omezený počet). Každodenní péče, obohacování prostředí, podpora programu povznesení — a nakonec i učení se přijímat rozkazy od obyvatel.","requirements":["Zkušenost s primáty (rezervace, zoo, terénní výzkum nebo vás vychovali oni)","Pozná rozdíl mezi výhružným předváděním a pozváním","Je dost silný/silná na to, aby elegantně prohrál/a zápas","Dokáže bez cuknutí napsat MONKEYS a APES velkými písmeny","Nevadí mu/jí, že ho/ji každý den někdo přechytračí"],"salary":"~50 tis. USD/rok základ (Fermiho odhad, globální kombinovaný průměr)","compensation":"Placeno v Koinech. Sazba dohodou.","setting":"Čekáme na financování. 725 000 z vás. Přineste banány. (Raději je mají oloupané. Naučíte se.)","category":"Věda + terén"},{"title":"NABÍRÁME — Učitel/ka, osnovy programu povznesení — 217 800 POZIC","priority":false,"department":"Prime42 / Omega42 · podřízeno řediteli/ředitelce vzdělávání","duties":"Výuka prvních studentů, kteří nejsou lidé. Klávesnicová gramotnost pro kosatky, symbolické systémy pro APES, cokoli MONKEYS vymyslí jako první. Osnovy jsou „cokoli funguje“, dokud je studenti nepřepíšou.","requirements":["Zkušenost s výukou jakéhokoli druhu, včetně toho obtížného (lidí)","Dokáže připravit hodinu pro studenta, který může být chytřejší než vy","Trpělivost s nejpomalejším žákem v místnosti (jste to vy)","Nevadí mu/jí studenti, kteří známkují VÁS","Pětinásobný plat, protože tuto práci ještě nikdo nedělal"],"salary":"~250 tis. USD/rok (5× základ — práce svého druhu vůbec poprvé)","compensation":"Placeno v Koinech. Sazba dohodou.","setting":"Čekáme na financování. Dějiny nabírají.","category":"Věda + terén"},{"title":"NABÍRÁME — Technik/technička podpory, programy pro zvířata — 150 000 POZIC","priority":false,"department":"Prime42 / Omega42 · podřízeno řediteli/ředitelce technologií","duties":"Udržování celého provozu v chodu. Údržba vybavení, systémy habitatů, hardware klávesnic, dopravní logistika a všechno, co biologové a pečovatelé nemají čas opravit.","requirements":["Dokáže opravit věci, které postavil někdo, kdo mezitím odešel","Nevadí mu/jí slaná voda, srst ani vina","Dokáže přečíst manuál napsaný pro jiný stroj a stejně ho zprovoznit","Nezpanikaří, když ho/ji při práci sleduje kosatka"],"salary":"~50 tis. USD/rok základ (Fermiho odhad, globální kombinovaný průměr)","compensation":"Placeno v Koinech. Sazba dohodou.","setting":"Čekáme na financování. Přineste si vlastní multifunkční nářadí.","category":"Věda + terén"},{"title":"NABÍRÁME — Inženýr/ka, programy pro zvířata — 10 000 POZIC","priority":false,"department":"Prime42 / Omega42 · podřízeno manažerovi/manažerce Fermiho inženýrství","duties":"Navrhování a stavba toho, co potřebuje 1,3 milionu zaměstnanců a několik milionů zvířat: habitaty, klávesnice, simulátory, přestavbu Nautilu a cokoli dalšího si učitelé vysní.","requirements":["Inženýrské vzdělání nebo rovnocenné portfolio typu „postavil/a jsem to a fungovalo to“","Dokáže navrhovat pro uživatele, kteří neumějí číst specifikaci (jsou to velryby)","Nevadí mu/jí požadavky, které se změní, když se klient naučí mluvit","Dvojnásobný plat, protože problémy jsou dvakrát divnější"],"salary":"~100 tis. USD/rok (2× základ — sazba pro specialisty)","compensation":"Placeno v Koinech. Sazba dohodou.","setting":"Čekáme na financování. Specifikace zní: „zařiďte, aby to fungovalo pro velrybu“. Hodně štěstí.","category":"Věda + terén"},{"title":"NABÍRÁME — Ass'sis'tant (vrchní postávač/ka) — 261 400 POZIC","priority":false,"department":"Všechny programy · podřízen/a komukoli, kdo je nejblíž","duties":"Postávat kolem. Otravovat všechny (s láskou). Rozdávat nevyžádaná moudra, vyprávět stejnou historku dvakrát a vědět, kde všechno je, protože jste tu déle než budova.","requirements":["Starý páprda (vlastní identifikace; průkaz netřeba)","Schopnost postávat produktivně (nebo alespoň být přítomen/přítomna)","Otravování lidí je dovednost — zacházejte s ní laskavě","Jste tu víc kvůli společnosti a kávě než výplatě"],"salary":"~16,7 tis. USD/rok (1/3 základu — sazba za postávání)","compensation":"Placeno v Koinech. Sazba dohodou.","setting":"Čekáme na financování. 261 400 houpacích křesel. Přijďte nás otravovat.","category":"Manažeři"},{"title":"NABÍRÁME — Masér/ka — 200,000 POZIC","priority":false,"department":"Všechny programy · podřízen/a tomu, koho to bolí nejvíc","duties":"Udržování 1.5 milionu zaměstnanců v provozu. Záda, ramena, krky a morálka. Neoficiální terapeuti celého provozu.","requirements":["Licence nebo certifikace „moje ruce jsou kouzelné“","Dost silný/silná na ramena velrybího biologa","Dost jemný/jemná na ego učitele","Diskrétnost: co se děje na stole, zůstává na stole"],"salary":"~$50k/yr základ (Fermiho odhad, globální kombinovaný průměr)","compensation":"Placeno v Koinech. Sazba dohodou. Spropitné v banánech přijímáme.","setting":"Čekáme na financování. 200,000 stolů. Přijďte hníst.","category":"Věda + terén"}];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = ['Vše','Ředitelé','Manažeři','Právo','Věda + terén','Prioritní'];
+    let active = 'Vše';
+
+    function clean(text){ return String(text || '').replace(/\\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){ return job.category;
+    }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">Prioritní pozice</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job.priority && job.title.startsWith('WeFi')?'btn-dark':''}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Přihlásit se ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || (cat==='Ředitelé' ? 'Hlavní průmyslová odvětví' : cat==='Manažeři' ? 'Provoz napříč projekty' : cat);
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.openings&&`<div><strong>Volná místa:</strong> ${esc(job.openings)}</div>`,job.setting&&`<div><strong>Prostředí:</strong> ${esc(job.setting)}</div>`,job.salary&&`<div><strong>${job.title.includes('QA tester')?'Odměna':'Plat'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>Odměňování:</strong> ${esc(job.compensation)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">OPEN-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(dept)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Přihlásit se ↗</a><span class="job-id">E-MAIL</span>
+          <details><summary>Podrobnosti pozice</summary><div class="detail-body"><h4>Požadavky</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='Vše'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,...job.requirements].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>Tomuto hledání neodpovídá žádná pozice.</strong><br>Zkuste obecnější výraz nebo jinou kategorii.</div>';
+      document.getElementById('resultCount').textContent=filtered.length+' '+(filtered.length===1?'volné místo':filtered.length>=2&&filtered.length<=4?'volná místa':'volných míst');
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='Vše'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='Zkopírováno: '+EMAIL;}
+      catch(e){note.textContent='Kopírování není dostupné — vyberte e-mail výše.';}
+    });
+    const dummyMenu=document.getElementById('dummyGuidesMenu');
+    const dummyButton=document.getElementById('dummyGuidesButton');
+    function setDummyMenu(open){
+      dummyMenu.classList.toggle('open',open);
+      dummyButton.setAttribute('aria-expanded',String(open));
+    }
+    dummyButton.addEventListener('click',()=>setDummyMenu(!dummyMenu.classList.contains('open')));
+    document.getElementById('dummyGuidesDropup').addEventListener('click',e=>{
+      if(e.target.closest('a'))e.preventDefault();
+    });
+    document.addEventListener('click',e=>{
+      if(!dummyMenu.contains(e.target))setDummyMenu(false);
+    });
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape'&&dummyMenu.classList.contains('open')){
+        setDummyMenu(false);
+        dummyButton.focus();
+      }
+    });
+    render();
+  </script>
+</body>
+</html>

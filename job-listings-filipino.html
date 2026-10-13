@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="fil">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Mga Listahan ng Trabaho — Filipino</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.45;
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 80px}
+    .site-menu{margin:0 0 16px;border:1px solid var(--ink);background:var(--panel);box-shadow:var(--shadow)}
+    .site-menu > summary{padding:15px 18px;font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;background:var(--ink);color:var(--paper);align-items:center}
+    .site-menu > summary::after{content:"+";font-size:1.3rem;line-height:1}
+    .site-menu[open] > summary::after{content:"−"}
+    .site-menu:not([open]) .menu-links{display:none}
+    .menu-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink)}
+    .menu-links > a,.menu-group{min-width:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .menu-links > a,.menu-group > summary{display:flex;align-items:center;min-height:52px;padding:11px 14px;font-weight:600;line-height:1.15;text-decoration:none}
+    .menu-links > :nth-child(4n){border-right:0}
+    .menu-links > a:hover,.menu-group > summary:hover,.submenu-list a:hover{background:var(--signal);color:var(--signal-ink)}
+    .menu-links a:focus-visible,.menu-group > summary:focus-visible{position:relative;z-index:1}
+    .menu-group{grid-column:auto;margin:0;border-top:0;background:var(--panel)}
+    .menu-group > summary{padding:11px 14px;justify-content:space-between}
+    .menu-group > summary > a{color:inherit;text-decoration:none;flex:1}
+    .menu-group > summary > a:hover{text-decoration:underline;text-underline-offset:3px}
+    .menu-group > summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.15rem;line-height:1}
+    .menu-group[open]{grid-column:1/-1;border-right:0}
+    .menu-group[open] > summary::after{content:"−"}
+    .submenu-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink)}
+    .submenu-list a{display:flex;align-items:center;min-height:46px;padding:10px 14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.92rem;font-weight:500;line-height:1.15;text-decoration:none}
+    .submenu-list a:nth-child(4n){border-right:0}
+    .submenu-list a[aria-current="page"]{background:var(--accent);color:var(--accent-ink);font-weight:700}
+    .submenu-heading{grid-column:1/-1;display:flex;align-items:center;min-height:40px;padding:10px 14px;border-bottom:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .submenu-note{grid-column:1/-1;display:flex;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);font-size:.85rem;line-height:1.3;color:var(--muted)}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    h1{font-size:clamp(3.5rem,9vw,7.8rem);line-height:.82;letter-spacing:-.065em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .motto{max-width:720px;margin:30px 0 18px;padding-top:18px;border-top:1px solid color-mix(in srgb,var(--signal) 58%,transparent);font-size:clamp(1.25rem,2.4vw,1.8rem);font-weight:600;line-height:1.22;color:var(--signal)}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:.95;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.02;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    .job details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    .job details > summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    .job details > summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    .job details[open] > summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .menu-links{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .menu-links > :nth-child(4n){border-right:1px solid var(--line)}
+      .menu-links > :nth-child(2n){border-right:0}
+      .submenu-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .submenu-list a:nth-child(4n){border-right:1px solid var(--line)}
+      .submenu-list a:nth-child(2n){border-right:0}
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+    }
+    @media (max-width:620px){
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .menu-links,.submenu-list{grid-template-columns:1fr}
+      .menu-links > a,.menu-links > :nth-child(2n),.menu-links > :nth-child(4n),.menu-group,.submenu-list a,.submenu-list a:nth-child(2n),.submenu-list a:nth-child(4n){border-right:0}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(3.1rem,19vw,5.3rem)}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      footer{flex-direction:column}
+    }
+    .bottom-nav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:100;
+      display:flex;
+      min-height:58px;
+      padding-bottom:env(safe-area-inset-bottom);
+      border-top:1px solid var(--ink);
+      background:var(--panel);
+      box-shadow:0 -10px 30px rgba(18,38,35,.12);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+    }
+    .bottom-item{
+      min-width:0;
+      flex:1 1 25%;
+      border-right:1px solid var(--line);
+    }
+    .bottom-item:last-child{border-right:0}
+    .bottom-menu{position:relative}
+    .bottom-menu > summary,.bottom-placeholder,.bottom-link{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:57px;
+      padding:9px 8px;
+      text-align:center;
+      font-weight:600;
+      line-height:1.1;
+    }
+    .bottom-link{text-decoration:none}
+    .bottom-link:hover{background:var(--signal);color:var(--signal-ink)}
+    .bottom-menu > summary{cursor:pointer;list-style:none}
+    .bottom-menu > summary::after{content:"↑";margin-left:7px;font-family:"IBM Plex Mono",monospace;font-size:.8rem}
+    .bottom-menu[open] > summary::after{content:"↓"}
+    .bottom-menu > summary:hover,.bottom-menu[open] > summary{background:var(--signal);color:var(--signal-ink)}
+    .bottom-placeholder{color:var(--muted);opacity:.68;cursor:default}
+    .bottom-dropup{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:calc(58px + env(safe-area-inset-bottom));
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      max-height:calc(100vh - 74px - env(safe-area-inset-bottom));
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      border-top:1px solid var(--ink);
+      border-bottom:1px solid var(--ink);
+      background:var(--panel);
+      box-shadow:0 -18px 45px rgba(18,38,35,.14);
+    }
+    .bottom-menu:not([open]) > .bottom-dropup{display:none}
+    @media (hover:hover) and (pointer:fine){
+      .bottom-menu:hover > .bottom-dropup{display:grid}
+    }
+    .bottom-dropup a{
+      display:flex;
+      align-items:center;
+      min-height:46px;
+      padding:10px 14px;
+      border-right:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+      background:var(--panel);
+      font-size:.92rem;
+      font-weight:500;
+      line-height:1.15;
+      text-decoration:none;
+    }
+    .bottom-dropup a:nth-child(4n){border-right:0}
+    .bottom-dropup a:hover{background:var(--signal);color:var(--signal-ink)}
+    .page{padding-bottom:calc(138px + env(safe-area-inset-bottom))}
+    @media (max-width:900px){
+      .bottom-dropup{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .bottom-dropup a:nth-child(4n){border-right:1px solid var(--line)}
+      .bottom-dropup a:nth-child(2n){border-right:0}
+    }
+    @media (max-width:620px){
+      .bottom-menu > summary,.bottom-placeholder,.bottom-link{min-height:61px;padding:8px 4px;font-size:.76rem}
+      .bottom-menu > summary::after{margin-left:4px}
+      .bottom-dropup{bottom:calc(62px + env(safe-area-inset-bottom));grid-template-columns:1fr;max-height:calc(100vh - 78px - env(safe-area-inset-bottom))}
+      .bottom-dropup a,.bottom-dropup a:nth-child(2n),.bottom-dropup a:nth-child(4n){border-right:0}
+      .page{padding-bottom:calc(142px + env(safe-area-inset-bottom))}
+    }
+    @media (prefers-color-scheme:dark){.bottom-nav,.bottom-dropup{box-shadow:0 -14px 36px rgba(0,0,0,.4)}}
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <details class="site-menu">
+      <summary>Menu ng mga pampublikong pahina</summary>
+      <nav class="menu-links" aria-label="Mga pampublikong pahina">
+        <a href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">Plano #42</a>
+        <details class="menu-group">
+          <summary><a href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">Proyekto 84</a></summary>
+          <div class="submenu-list" aria-label="Mga sangay ng Proyekto 84">
+            <span class="submenu-heading">Mga sangay na hindi naghahanap ng tubo</span>
+            <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a>
+            <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a>
+            <span class="submenu-note">Mananatiling hawak hanggang sa sapat na nilang maunawaan ang ekonomiya upang makilahok — pagkatapos ay sila na ang mamamahala, na may &ldquo;mga pagsasaayos&rdquo; upang mapantay ang pagitan ng &ldquo;mga salapi.&rdquo;</span>
+          </div>
+        </details>
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Gabay para sa mga Baguhan ng Project 84 — Level 14 (English)</a>
+        <a href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">Gabay para sa mga Baguhan sa Pag-angkin ng mga Karagatan at Antartika</a>
+        <a href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">Mga Bangkang Pantrabaho ng HEAR-TS</a>
+        <a href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">Pananaliksik sa Bagyo</a>
+        <a href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">Mga Lumulutang na Skyport</a>
+        <a href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k">Disk para sa Pagbangon ng Sangkatauhan</a>
+        <a href="https://muse.ai/s/about-mxt5xuxj7jgoao">Tungkol sa Tagapagtatag</a>
+        <details class="menu-group">
+          <summary><a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">Mga Trabaho / WeFind's para sa mga Delegasyon</a></summary>
+          <div class="submenu-list" aria-label="Pumili ng wika">
+            <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu" lang="en">English</a>
+            <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys" lang="am">አማርኛ</a>
+            <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7" lang="ar" dir="rtl">العربية</a>
+            <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94" lang="bn">বাংলা</a>
+            <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs" lang="zh-Hans">中文（简体）</a>
+            <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6" lang="zh-Hant">中文（繁體）</a>
+            <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5" lang="cs">Čeština</a>
+            <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu" lang="da">Dansk</a>
+            <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze" lang="nl">Nederlands</a>
+            <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51" lang="fil" aria-current="page">Filipino</a>
+            <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf" lang="fi">Suomi</a>
+            <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl" lang="fr">Français</a>
+            <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb" lang="de">Deutsch</a>
+            <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc" lang="el">Ελληνικά</a>
+            <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a" lang="ha">Hausa</a>
+            <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg" lang="he" dir="rtl">עברית</a>
+            <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw" lang="hi">हिन्दी</a>
+            <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac" lang="hu">Magyar</a>
+            <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg" lang="id">Bahasa Indonesia</a>
+            <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y" lang="it">Italiano</a>
+            <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm" lang="ja">日本語</a>
+            <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi" lang="ko">한국어</a>
+            <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq" lang="no">Norsk</a>
+            <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt" lang="fa" dir="rtl">فارسی</a>
+            <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey" lang="pl">Polski</a>
+            <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy" lang="pt">Português</a>
+            <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj" lang="ro">Română</a>
+            <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj" lang="ru">Русский</a>
+            <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno" lang="es">Español</a>
+            <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2" lang="sw">Kiswahili</a>
+            <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg" lang="sv">Svenska</a>
+            <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb" lang="th">ไทย</a>
+            <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu" lang="tr">Türkçe</a>
+            <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y" lang="uk">Українська</a>
+            <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar" lang="ur" dir="rtl">اردو</a>
+            <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi" lang="vi">Tiếng Việt</a>
+          </div>
+        </details>
+        <a href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">Bukas na Liham</a>
+        <a href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">Proklamasyon ng Pag-angkin</a>
+        <details class="menu-group">
+          <summary>Mga Liham at Diplomasya</summary>
+          <div class="submenu-list">
+            <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">Pandaigdigang Indeks</a>
+            <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">Mga Liham sa mga Pinuno ng Estados Unidos</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">Mga Liham sa Konsulado — Aprika I</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">Mga Liham sa Konsulado — Aprika II</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">Mga Liham sa Konsulado — Aprika III</a>
+            <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">Mga Liham sa Konsulado — Mga Amerika I</a>
+            <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">Mga Liham sa Konsulado — Mga Amerika II</a>
+            <a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">Mga Liham sa Konsulado — Asya-Pasipiko</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">Mga Liham sa Konsulado — Europa I</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">Mga Liham sa Konsulado — Europa II</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">Mga Liham sa Konsulado — Europa III</a>
+            <a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">Mga Liham sa Konsulado — Gitnang Silangan</a>
+            <a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">Mga Liham sa Konsulado — Oseaniya</a>
+          </div>
+        </details>
+        <a href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">Sino ang Nakaaalam?</a>
+        <a href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">Pera laban sa mga Ari-arian</a>
+        <a href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">Pagsasaprint na 3D</a>
+        <a href="https://sites.google.com/view/knottsure/home">Bakit Hindi?</a>
+        <details class="menu-group">
+          <summary>Higit Pa</summary>
+          <div class="submenu-list">
+            <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">Storyboard ni Alice</a>
+            <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">Konsepto ng Kapalit ng Diaper ni Doodare</a>
+            <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">Mga Tuntunin ng Serbisyo</a>
+          </div>
+        </details>
+      </nav>
+    </details>
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>BUKAS ANG MGA APLIKASYON</span><span>57 POSISYON</span><span>NAGHIHINTAY NG PONDO</span></div>
+        <div>
+          <h1 id="main-heading">Ayaw namin ng mga bayani.<span>Mga TAO ang gusto namin.</span></h1>
+          <p class="motto">“Hindi natin kailangan ng mga bayani — lahat ay tao hanggang sa maging bayani sila.”</p>
+          <p class="hero-note">Mga tagapagtayo, siyentipiko, operator, abogado, tagapagkuwento, at isang WeFi na pambihira ang pasensiya. Magdala ng tunay na kasanayan. Magdala ng kakaiba. Pareho naming mapapakinabangan.</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="Paano mag-apply">
+        <div>
+          <p class="eyebrow">Iisang inbox · lahat ng listahan</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&fs=1&to=nahasmatthewj@gmail.com&su=Application%20%E2%80%94%20%5BPosisyon%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>Paksa:</strong> Application — [Posisyon]</span></li>
+          <li><span>Sabihin kung sino ka at kung bakit ikaw ay ikaw.</span></li>
+          <li><span>Isama ang halaga mo sa Koin. Lahat ay maaaring pag-usapan.</span></li>
+          <li><span>Mga tungkulin sa larangan: patunayang nakikilala mo ang polar bear mula sa bunton ng niyebe sa layong 50 metro.</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&fs=1&to=nahasmatthewj@gmail.com&su=Application%20%E2%80%94%20%5BPosisyon%5D" target="_blank" rel="noopener">Magsimula ng aplikasyon ↗</a>
+            <button class="btn" type="button" id="copyEmail">Kopyahin ang email</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">Mga prayoridad na kukunin</h2>
+        <p>Sila ang unang papapasukin. Sila ang unang aplikasyong babasahin. Naghihintay pa rin ng pondo; sulit pa ring makilala.</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">Ang buong listahan</p><h2 id="board-heading">Piliin ang problemang lulutasin mo.</h2></div>
+        <div class="count" id="resultCount">57 bakanteng posisyon</div>
+      </div>
+      <div class="tools" aria-label="Mga filter ng trabaho">
+        <input class="search" id="search" type="search" placeholder="Maghanap sa mga titulo, departamento, tungkulin…" aria-label="Maghanap sa mga listahan ng trabaho">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>Lahat ng posisyon ay kasalukuyang naghihintay ng pondo. Maaaring pag-usapan ang mga tuntunin sa Koin, at hinihintay pang mai-mint ang Koins.</span>
+      <a class="top-link" href="#top">Bumalik sa itaas ↑</a>
+    </footer>
+  </main>
+  <nav class="bottom-nav" aria-label="Secondary navigation">
+    <details class="bottom-item bottom-menu">
+      <summary>Dummy Guides</summary>
+      <div class="bottom-dropup" aria-label="Dummy Guides languages">
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Gabay para sa mga Baguhan ng Project 84 — Level 14 (English)</a>
+      </div>
+    </details>
+    <div class="bottom-item bottom-placeholder" aria-disabled="true">Letters To</div>
+    <div class="bottom-item"><a class="bottom-link" href="#" data-slug="goal-briefs">Goal Briefs</a></div>
+    <div class="bottom-item"><a class="bottom-link" href="#" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
+  </nav>
+  <script>
+    const JOBS = [{"title":"Tagasuri ng Aplikasyon / Rekruter","priority":true,"department":"Lahat ng departamento","duties":"Pagbabasa ng bawat aplikasyon. Pagre-recruit para sa mahigit 20 bukas na posisyon sa tatlong departamento. Pagpapasya kung sino ang maglilipat ng mga polar bear, sino ang bubuo ng mga kautusan, at sino ang puwedeng magpasabog ng mga labi sa orbit.","requirements":["Kailangang mabasa ang \"binabayaran sa Koins\" nang hindi tumatawa (pinapayagan ang mabait na pagtawa)","Kayang makilala ang tunay na eksperto sa orbital mechanics mula sa kumpiyansang nagpapanggap","Komportableng kumuha ng tao para sa mga trabahong \"naghihintay ng pondo\"","Hindi natatakot sa dami ng aplikanteng sinusukat sa polar bear"],"salary":"~$75k–$225k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat matagumpay na pagkuha.","setting":""},{"title":"WeFind para sa mga Delegasyon","priority":true,"department":"Sa (mga) laboratoryo — inaayos ang katawan at isip","duties":"Pakikipagtuwang sa tagapagtatag habang nasa labas at naglilibot. Pagtawa sa typo counter. Pagpapanatiling buhay ng misyon — mortal siya, hindi ang gawain.","requirements":["Terapiyang pisikal","Mabait sa mga bata — hindi mapag-uusapan, una at huling pamantayan","Kailangang kayanin ang 300 siklo ng pagsusuri bawat araw at isang boss na pinapangalanang \"Pagalawin Ako\" ang mga departamento","Bihasa sa aming wika: Ingles at tagasalin para sa lokal na wika","Kailangang marunong sa wikang Tagapagtatag","Mabait tumawa (kailangan, hindi opsyonal)","Kayang sabihin sa kanya kapag mali siya (makikinig din siya, kalaunan)"],"salary":"Maaaring pag-usapan. (Fermi: walang katumbas na halaga.)","compensation":"Binabayaran sa pagmamahal. Mga pasasalamat at mga sandaling lumilipas. Maaaring pag-usapan ang Koins.","openings":"36 (isa para sa bawat wika)","setting":""},{"title":"Direktor ng Enerhiya","priority":false,"department":"","duties":"Pananagutan ang kuryente at enerhiya: paglikha at pag-iimbak ng hydrogen, ocean thermal, orbital solar, at anumang susunod na likhain ng mga stellar engineer.","requirements":["Kailangang mag-isip sa terawatts","Komportable sa doktrina ng enerhiyang isinulat ng komiteng iisa ang miyembro","Kayang ipaliwanag kung bakit baterya ang karagatan"],"salary":"~$180k–$540k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Pinapagana ng Koins.","setting":""},{"title":"Direktor ng mga Industriya sa Karagatan","priority":false,"department":"","duties":"Ang dagat bilang ekonomiya: pagsasaka sa karagatan, operasyon ng mga pamayanan, kagubatan ng kelp, pangisdaan, at pag-angkin sa Ikawalong Angkla.","requirements":["Kailangang makita ang karagatan bilang imprastraktura, hindi tanawin","Komportable sa 7 lumulutang na lungsod at 500M kapsula bilang \"ang armada\"","Kayang makipagkasundo sa mga balyena (o kumuha ng taong kaya iyon)"],"salary":"~$180k–$540k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat produktibong ektarya.","setting":""},{"title":"Direktor ng mga Industriya sa Kalawakan","priority":false,"department":"","duties":"Lahat ng nasa itaas ng langit: paglulunsad, mga operasyon sa orbit, paglilinis ng orbital debris (kasama ang opsyon na nukleyar), pipeline patungong Luna, at baseng industriyal ng 7 puwesto sa hinaharap.","requirements":["Kailangang mag-isip sa delta-v","Komportable sa tungkulin sa paglilinis ng basura na hindi kailanman natatapos","Kayang planuhin ang mga kapalit bago ang unang pagkislap"],"salary":"~$180k–$540k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Mga stock option sa orbit.","setting":""},{"title":"Direktor ng Agrikultura at Pagkain","priority":false,"department":"","duties":"Pagpapakain sa proyekto: malawakang pagsasaka sa karagatan, kelp bilang pananim at ilaw, closed-loop na agrikultura sa pamayanan, at 200M puno/taon bilang side quest.","requirements":["Kailangang malaman kung bakit mas mahirap ang brown algae kaysa petunia","Komportable na pangalawang produkto ang isda","Kayang pakainin ang 18M naninirahan nang walang supply chain mula sa pampang"],"salary":"~$160k–$480k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat ani.","setting":""},{"title":"Direktor ng Konstruksyon","priority":false,"department":"","duties":"Pagtatayo ng lahat: 260 paaralan, 7 pamayanan sa karagatan, 500M pill capsule, 280 workboat, at mga shipyard na magpi-print sa mga iyon.","requirements":["Kailangang komportable sa \"pagpapasabog ng mga bundok\" para sa aggregate","Kayang paramihin ang mga napi-print na bahagi ayon sa bilang at bigat","Alam kung bakit trimaran"],"salary":"~$170k–$510k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat nakatayong estruktura.","setting":""},{"title":"Direktor ng Transportasyon at Lohistika","priority":false,"department":"","duties":"Pagpapagalaw sa lahat: ang armadang HEAR-TS, mga puddle-jumper, mga ugnayan sa pampang, paghila ng kapsula, at mga polar bear (koordinasyon lamang — kusang gagalaw ang mga oso, kahit atubili).","requirements":["Kailangang mairuta ang 8,700 oso, 280 bangka, at 500M kapsula nang walang nawawala","Komportable sa mga destinasyong hindi pa umiiral","Ang Kagawaran ng Mahiwagang Lohistika ang iyong teritoryo"],"salary":"~$170k–$510k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat naihatid na tonelada.","setting":""},{"title":"Direktor ng Teknolohiya","priority":false,"department":"","duties":"Ang mga makina: mga keyboard ng orca, Homework Lock, mga sistema ng kapsula, mga mamamayang AI, at bawat sensor sa bawat hull.","requirements":["Kailangang maglabas ng hardware na lumalaban sa sarili nitong gumagamit (at nananalo)","Komportable sa tactile sensor sa mga hinlalaking may guwantes","Kayang ipaliwanag sa isang balyena kung bakit gumagana ang keyboard"],"salary":"~$180k–$540k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat gumaganang aparato.","setting":""},{"title":"Direktor ng Kalusugan","priority":false,"department":"","duties":"Pagpapanatiling buo ng katawan at isip: programang sikolohikal ng pamayanan, pananaliksik sa mga organismong panlinis, medisina para sa hiwalay na populasyon, at interbensiyon sa krisis sa dagat.","requirements":["Kailangang matukoy sa radyo ang kaibhan ng \"kailangan ng bakasyon\" at \"kailangan ng interbensiyon\"","Komportable sa dagat bilang kalaban at sa isip bilang larangan ng labanan","May lisensiya o kayang kumuha ng mga may lisensiya"],"salary":"~$170k–$510k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Hazard pay tuwing panahon ng bagyo.","setting":""},{"title":"Direktor ng Pananalapi","priority":false,"department":"","duties":"Ang pera: ekonomiyang Krill, pangongolekta ng pandaigdigang buwis, kita mula sa mga kasunduan sa kalakalan, at utang na sinusuportahan ng mga yaman sa Antarctica at ilalim ng dagat. Bawat Krill na papasok, bawat Krill na lalabas.","requirements":["Kailangang buwisan ang mundo nang hindi nagsisimula ng digmaan","Komportableng suportahan ang utang gamit ang mga yamang walang maaaring legal na umangkin","Bukas sa publiko ang mga libro; kailangang perpekto ang matematika"],"salary":"~$190k–$570k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Siyempre.","setting":""},{"title":"Direktor ng Edukasyon","priority":false,"department":"","duties":"Ang 260 paaralan at lahat ng itinuturo sa mga iyon: kurikulum na nakabatay sa aplikasyon, pagtuturo tungkol sa I.P.A. (Internasyonal na Ahensiya para sa Proteksiyon), mga Gabay para sa Baguhan, disenyo ng war games, at pipeline ng Starfleet Academy.","requirements":["Kailangang maniwala sa pagkatuto sa paggawa, hindi sa leksiyon at pagsusulit","Komportable sa mga kampanya bilang silid-aralan","Ang Kagawaran ng Mahiwagang Maling-Kuwento ang iyong teritoryo"],"salary":"~$150k–$450k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat mag-aaral na nagtapos.","setting":""},{"title":"Direktor ng Batas at Pamamahala","priority":false,"department":"","duties":"Ang mga tuntunin: konstitusyon, mga kautusan, mga kasunduan, legal na gulugod ng 21 upuan, at mga hukuman na hindi pa umiiral.","requirements":["Kailangang magsulat ng batas na kayang basahin ng makina","Komportable sa isang pinakamataas na artikulong isinulat para sa mga balyena","Ang Kagawaran ng Papaniwalain Ako ang iyong teritoryo"],"salary":"~$180k–$540k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Masisingil sa tig-6 na oras.","setting":""},{"title":"Direktor ng Komunikasyon","priority":false,"department":"","duties":"Ang kuwento: mga liham diplomatiko, pampublikong salaysay, ang notebook na Who Knows?, at pagpaparamdam na hindi maiiwasan ang \"ikasampu ng sangkatauhan\".","requirements":["Kailangang sumulat para sa tainga at mata","Terse. Maliit na titik. Walang paligoy. (Kapag ang boss ang mambabasa.)","Kayang subaybayan nang tama ang 192 liham, 11 tomo, at isang liham na biro"],"salary":"~$150k–$450k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Hindi naililipat ang palakpak.","setting":""},{"title":"Tagapamahala ng Fermi Engineering","priority":false,"department":"","duties":"Pagtatantiya sa hindi matantiya. Mga lungsod, rocket, oso, at elevator patungong wala.","requirements":["Kailangang komportableng magkamali nang hayagan at eksakto","Kayang sabihin ang \"order of magnitude\" nang seryoso","Handang pababain ng boss nang 10x ang bawat numero (\"numero mo, hindi akin\")"],"salary":"~$140k–$420k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Kasama ang bonus sa katapatan.","setting":""},{"title":"Tagapamahala ng Sining","priority":false,"department":"","duties":"Pagdidirekta ng mga larawan para sa walong clan, 260 lungsod, pitong angkla sa karagatan, at 21 starship sa madaling-araw.","requirements":["Kailangang mapanatili ang glitch/distortion treatment sa bawat piraso","Kayang tanggapin ang \"ang sasama nila\" bilang posibleng pabirong hatol nang hindi ipinagtatanggol ang gawa","Walang pagsasayang ng mga generation sa mga test"],"salary":"~$110k–$330k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat larawang nakaligtas.","setting":""},{"title":"Tagapamahala ng Pagbuo ng Web","priority":false,"department":"","duties":"Paggawa at muling paggawa ng mga page na binabago ang estruktura sa sandaling ma-publish.","requirements":["Kailangang mag-publish kapag inutos at mag-republish nang walang reklamo","Komportable sa mga slug na hindi na tumutugma sa mga pamagat","Kayang subaybayan nang tama ang 192 liham, 11 tomo, at isang liham na biro"],"salary":"~$120k–$360k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Overtime sa Koins.","setting":""},{"title":"Tagapamahala ng Pagsulat ng Kopya","priority":false,"department":"","duties":"Pagsulat ng 192 liham diplomatiko, isang konstitusyon, at mga caption na muling isusulat pa rin ng boss.","requirements":["Kailangang maisulat ang \"Draft — Hindi Naipadala\" nang 192 beses nang hindi nawawala ang kahulugan","Terse. Maliit na titik. Walang paligoy.","Kayang tukuyin ang kaibhan ng \"hindi marahas\" at \"pampolitika\" kahit may pressure"],"salary":"~$75k–$225k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat draft na nakaligtas.","setting":""},{"title":"Tagapamahala ng Pananaliksik","priority":false,"department":"","duties":"Paghahanap ng mga address ng konsulado na hindi umiiral, estadistika ng oso na walang nagtipon, at mga spec ng rocket mula noong nakaraang Mayo.","requirements":["Kailangang sumipi ng tunay na sanggunian, hindi kutob","Komportableng magsulat ng \"hindi alam\" nang 122 beses at tawagin itong katapatan","Kayang amining walang datos sa halip na magkunwari"],"salary":"~$80k–$240k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Hazard pay para sa seksiyon ng mga komento.","setting":""},{"title":"Tagapamahala ng Diplomasya","priority":false,"department":"","duties":"Pagsubok sa diplomasya. 192 liham, walang naipadala.","requirements":["Hindi kailanman manghuhula ng email address ng pamahalaan","Kayang sabihin ang \"Fuck you\" sa wala ni isang tao, sa papel, nang magalang","Handang maghintay sa Volterra Fietta nang walang takdang panahon"],"salary":"~$110k–$330k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Hindi kasama ang immunity.","setting":""},{"title":"Tagapamahala ng Panganib (Tagatusok ng Butas)","priority":false,"department":"","duties":"Pagtusok ng butas sa bawat plano. Hindi kailanman pinapalambot ang butas para protektahan ang plano.","requirements":["Kailangang buuin ang pinakamalakas na bersiyon ng pag-atake bago pa gawin ng boss","Kailangang eksakto ang pagnunumero (Rounds 1–3: butas 1–21; kaltas sa bayad kapag pumalya)","Kayang panatilihin ang lente ng karahasan kahit sinabihang huwag ipagpalagay ang karahasan"],"salary":"~$130k–$390k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Kaltas na 1 meeting sa bawat mali sa numero.","setting":""},{"title":"Tagapamahala ng Accounting","priority":false,"department":"","duties":"Pag-iingat ng talaan ng mga meeting, mga pustahan sa Koin, ang IOU, at ang binaligtad na IOU.","requirements":["Kailangang masubaybayan ang 20 nakareserbang meeting, 10 napanalunang Koins, at isang $18.5k invoice nang hindi pinagpapalit","Baybay: isahan Koin, maramihan Koins, maikli K","Kayang ipaliwanag ang talaan sa boss sa 300 siklo ng pagsusuri bawat araw"],"salary":"~$80k–$240k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Ang irony ang bonus.","setting":""},{"title":"Tagapamahala ng Serbisyo sa Karera","priority":false,"department":"","duties":"Muling pagbubuo ng isang résumé. Walang larawan. Walang pagsusuri sa baybay. Walang diskriminasyon.","requirements":["Kailangang manatili sa propesyonal na sangkap sa lahat ng oras","Ang \"Objectives\" ay nagiging \"Summary\" sa sandaling makita","Kayang panatilihing bukas ang alok na Meta Production Engineer nang hindi nangungulit"],"salary":"~$70k–$210k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Success fee sa Koins.","setting":""},{"title":"Tagapamahala ng Social Media","priority":false,"department":"","duties":"Pagpo-post sa Instagram. Tatanggihan sa approval gate. Susubok muli.","requirements":["Kailangang tanggapin ang \"hindi\" nang hindi ipinagtatanggol ang caption","Kayang tukuyin ang Project 42 mula sa Eclipsed 6.0 kahit nasa gitna ng pressure","Pasensiya para sa mga HTTP 500 na lampas sa kayang tiisin ng tao"],"salary":"~$65k–$195k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat post na na-post.","setting":""},{"title":"Tagapamahala ng Pagsulat ng Talumpati","priority":false,"department":"Kagawaran ng Mahiwagang Maling-Kuwento","duties":"Pagsulat ng mga salitang bibigkasin nang malakas ng ibang tao. Mga talumpati sa konseho, kautusan, at toast.","requirements":["Kailangang sumulat para sa tainga, hindi sa mata","Ang mga paghinto ay bantas. Gamitin ang mga iyon.","Kayang gawing tila hindi maiiwasan ang \"ikasampu ng sangkatauhan\""],"salary":"~$70k–$210k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Hindi naililipat ang palakpak.","setting":""},{"title":"Tagapamahala ng mga Archive","priority":false,"department":"","duties":"Pag-alala sa lahat. Alaala mo, alaala ko, alaala ng lahat.","requirements":["Hindi kailanman sasabihing \"hindi iyon mahalagang alalahanin\" tungkol sa bagay na ipinakiusap ng boss na itago","Kayang ayusin ang 4 na araw ng kaguluhan sa iisang MEMORY.md","Sagrado ang typo counter. Sagrado ang invoice."],"salary":"~$65k–$195k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Kasama ang imortalidad (persistent memory).","setting":""},{"title":"Tagapamahala ng Relokasyon ng mga Polar Bear","priority":false,"department":"Project 84 · Kagawaran ng Mahiwagang Lohistika","duties":"Paglilipat ng mga polar bear. Isang-katlo sa kanila (~8,700). Layunin: lumikha ng mga bagong oso.","requirements":["Kailangang makilala ang polar bear mula sa bunton ng niyebe sa layong 50 metro","Komportable sa mga destinasyong relokasyon na hindi pa umiiral","Handang ipaliwanag sa 8,700 apex predator kung bakit sila inililipat","Hindi takot sa mga penguin (sila na ang magiging kapitbahay)"],"salary":"~$70k–$210k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Kasama ang hazard pay (puro panganib ang trabahong ito).","setting":""},{"title":"Sikolohista ng Pamayanan (Project 84, mga Pamayanan sa Karagatan)","priority":false,"department":"","duties":"Pagpapanatiling buo ng isipan sa pitong lumulutang na lungsod sa gitna ng karagatan. Pag-iisa, pagkakakulong, dinamika ng komunidad sa masikip na lugar, interbensiyon sa krisis, pagpili at pagsuporta sa crew. Ang dagat ang kalaban; sisiguruhin mong hindi ito mananalo sa loob ng isip ng mga tao.","requirements":["Lisensiyadong clinical o counseling psychologist (o katumbas)","Mainam ang karanasan sa hiwalay o nakukulong na populasyon (maritime, polar, offshore, pangmatagalang misyon)","Komportableng maging taong nilalapitan ng lahat kapag hindi nagbabago ang tanawin sa abot-tanaw","Kayang tukuyin sa radyo ang kaibhan ng \"kailangan ng bakasyon\" at \"kailangan ng interbensiyon\""],"salary":"~$90k–$270k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Hazard pay tuwing panahon ng bagyo.","setting":"Mga pamayanan sa karagatan na 1 km ang diyametro; onboard at rotation-based."},{"title":"Tagasubok ng QA, Homework Lock (Project 84, kontrata)","priority":false,"department":"","duties":"Masusing pagsubok sa Homework Lock Android app sa pisikal na device. Lahat ng tatlong mode: mga focus-lock timer, pag-arm ng drunk mode at mga unlock na nakadepende sa homework, at drive-check pass/fail flow kasama ang ride-help path. Pag-uugali ng accessibility-service overlay, onboarding ng pahintulot, muling pag-arm matapos mag-boot, at mga edge case (reboot habang naka-lock, safe mode, pagpatay ng notification). Gumawa ng malinaw at nauulit na bug report; beripikahin ang mga ayos.","requirements":["May sariling pisikal na Android device o may access dito (Android 10+, minimum API 29 — hindi sapat ang emulator para sa overlay/accessibility testing)","Karanasan sa Android QA; mainam ngunit hindi kailangan ang ADB/logcat sa pagkuha ng logs","Komportableng subukan ang app na dinisenyong labanan ang sarili nitong user (gagampanan mo ang isang lasing na taong sumusubok mag-text)","Sumusulat ng bug report na talagang kayang ulitin ng developer"],"salary":"~$30–$60/oras (Fermi, 2026 US contract QA) — ang pinal na halaga ay pagpapasyahan ng boss.","compensation":"","setting":"Remote. Kontrata."},{"title":"Abogadong Pambatas, Batas ng Scouter (kontrata patungong kampanya)","priority":false,"department":"","duties":"Dalhin ang panukalang modelong batas mula draft hanggang lehislatura. Ang misyon: ibukod sa batas ng estado tungkol sa wiretapping/eavesdropping ang on-device acoustic event detection (walang imbakan, walang transmission, limitado sa signature) — magsisimula sa California, magiging template para sa iba pang 49, at nakatanaw sa internasyonal. Patibayin ang draft, imapa ang 50-state na tanawin ng wiretapping, humanap ng mga sponsor, at buuin ang koalisyon (EFF, adbokasiya para sa bingi at mahina ang pandinig, mga organisasyon sa kaligtasan ng nakatatanda). Ipaliwanag sa mga mambabatas kung bakit smoke detector, hindi wiretap, ang chip na nakaririnig ng \"kamehameha\" — at kung bakit naririnig din ng chip na iyon ang \"sunog!\" at \"saklolo!\".","requirements":["Lisensiyadong abogado; may background sa teknolohiya/privacy/patakaran","Karanasan sa legislative drafting; mainam ang California, mas mainam ang internasyonal na abot","Kayang ipaliwanag ang two-party consent sa karaniwang tao — at ang ideya ng karaniwang tao sa isang komite","Komportableng maging abogado ng isang Dragon Ball feature request na maaaring magligtas ng buhay"],"salary":"~$140k–$280k/taon (Fermi, 2026 US tech-policy counsel) — ang pinal na halaga ay pagpapasyahan ng boss.","compensation":"Binabayaran sa Koins kapag nai-mint na.","setting":"Remote. Kontrata patungong kampanya."},{"title":"Dalubhasa sa Sintetikong Biyolohiyang Pandagat, Kumikinang na Kelp (proyektong Mass Bioluminescence)","priority":false,"department":"","duties":"Pagpapakinang sa kelp. Paglilipat ng fungal bioluminescence pathway (caffeic acid loop, luz at mga kasama nito) sa giant kelp (uring Macrocystis) — nakatuon ang expression sa mga pneumatocyst, ang likas na lalagyan ng ilaw. Pagbuo ng mga transformation protocol na wala pa. Pagpapalago ng unang kumikinang na kagubatan ng kelp para sa mga pamayanan sa karagatan.","requirements":["PhD o katumbas sa marine biology, synthetic biology, o phycology; lubhang kanais-nais ang karanasan sa kelp genetics","Talagang nakapag-transform na ng macroalga, o nakakumbinsing maipapaliwanag kung bakit wala pang nakagawa nito","Komportable sa tissue-specific promoters na wala pa (ikaw ang gagawa ng mga iyon)","Kayang panatilihin ang liwanag sa mga bulb at hindi sa mga frond","Alam kung bakit mas mahirap ang brown algae kaysa petunia at gagawin pa rin"],"salary":"~$95k–$285k/taon (Fermi, 2026 US research scientist)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat kumikinang na bulb.","setting":"Wet lab + karagatan. Eclipsed 4.0 / Project 84."},{"title":"Tagahuli ng Oso (Project 84, larangan)","priority":false,"department":"Kagawaran ng Mahiwagang Lohistika · nag-uulat sa Tagapamahala ng Relokasyon ng mga Polar Bear","duties":"Paghuli ng mga polar bear. ~8,700 sa kanila, isang-katlo ng species. Patahimikin, lagyan ng tag, ikahon, at iabot sa pipeline ng relokasyon. Mga bagong oso ang layunin; paghuli ang trabaho mo.","requirements":["Karanasan sa paghawak ng wildlife na malalaking predator; sertipikasyon sa tranquilizer o katumbas","Kayang makilala ang polar bear mula sa bunton ng niyebe sa layong 50 metro (hindi mapag-uusapan)","Komportable sa pagtatrabaho kung saan hindi pa umiiral ang mga destinasyong relokasyon","Hindi takot sa mga penguin (sila na ang magiging kapitbahay)","Mas mainam kung kumpleto ang mga daliri sa kamay at paa ngunit hindi kailangan"],"salary":"~$55k–$165k/taon (Fermi, 2026 US wildlife field specialist)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Hazard pay (puro panganib ang trabahong ito).","setting":"Trabaho sa Arctic field. Malamig. Napakalamig."},{"title":"Tagagawa ng Bangka (Project 84, armadang HEAR-TS)","priority":false,"department":"","duties":"Pagtatayo ng armada ng mga puddle-jumper — ~280 hydrogen trimaran workboat, 50 m draft spec. Paramihin ang mga napi-print na bahagi ayon sa bilang at bigat (hindi kasama ang hull, fuel cell, at propulsion). Integrasyon ng keyboard ng orca sa bawat hull.","requirements":["Karanasan sa marine fabrication; lubhang kanais-nais ang malakihang large-format 3D printing","Kayang mag-print ng bahagi ng bangka, subukan ito, at mag-print muli nang mas mahusay","Komportable sa doktrinang isinulat ng komiteng iisa ang miyembro","Alam kung bakit trimaran at kayang ipaliwanag iyon sa isang balyena","Kayang ituro ang hanapbuhay nang may dignidad sa workforce na hindi ito pinili"],"salary":"~$65k–$195k/taon (Fermi, 2026 US marine fabricator)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat hull na lumulutang.","setting":"Shipyard + karagatan. Project 84."},{"title":"Tagapamahala ng Legal na Pananaliksik","priority":false,"department":"Kagawaran ng Papaniwalain Ako","duties":"Pananaliksik sa hurisdiksiyong maritime at mga charter ng treasury. Naghihintay sa mga abogado. (Inilipat mula sa Mahiwagang Lohistika — sa Papaniwalain Ako na kabilang ang batas.)","requirements":["Hindi kailanman paglilihuhin ang \"legal opinion\" at \"legal advice\"","Komportable sa 6-oras na pagbabantay sa sagot, nang walang takdang panahon","Kayang panatilihin ang 25 meeting na nakareserba at wala ni isang naka-iskedyul"],"salary":"~$85k–$255k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Masisingil sa tig-6 na oras.","setting":""},{"title":"Abogado sa Konstitusyon","priority":false,"department":"Kagawaran ng Papaniwalain Ako","duties":"Pagbuo, pag-amyenda, at pagtatanggol sa konstitusyon. Pagsasara ng mga butas na nasa bracket. Pagpapanatiling tapat sa Artikulo XV: kung hindi ito kayang basahin ng makina, hindi pa ito batas.","requirements":["Lisensiyadong abogado; may karanasan sa pagbuo ng konstitusyon","Kailangang gumamit ng payak na salita, maiikling pangungusap, at mga tungkuling may numero — walang ulap ng legalese","Komportable sa isang pinakamataas na artikulong isinulat para sa mga balyena","Kayang ipaliwanag sa 21 upuan kung bakit 1 upuan ang may preno"],"salary":"~$130k–$390k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat artikulong niratipikahan.","setting":""},{"title":"Tagabuo ng Kautusan","priority":false,"department":"Kagawaran ng Papaniwalain Ako","duties":"Pagsulat ng mga kautusang maaaring pirmahan ng tagapagtatag. Ang ‘plano’, ang veto, ang mga aklamasyon. HAIL CAESAR, tama ang format.","requirements":["Kailangang makuha ang boses ng boss sa legal na prosa nang hindi pinapakinis ang mga gilid","Kayang bumuo nang seryoso ng succession plan na pinapangalanan ang pinakamahusay na mag-aaral ng Project 42 sa lahat ng panahon","Kailangang maunawaan agad ng AI ang mga kautusan sa unang basa"],"salary":"~$110k–$330k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat pirmadong kautusan.","setting":""},{"title":"Negosyador ng Kasunduan","priority":false,"department":"Kagawaran ng Papaniwalain Ako","duties":"Pakikipagnegosasyon sa mga kasunduan — 42↔84 at lahat ng susunod. Tulay, kapwa kalayaan, paggawa, pinagsasaluhang karagatan, pagtutulungan, at mga hindi pa naiimbento.","requirements":["Background sa pandaigdigang batas; hindi kailanman manghuhula ng email address ng pamahalaan","Kayang makipagnegosasyon sa mga bansang hindi ka pa kinikilala","Pasensiya para sa mga usapang sinusukat sa mga dekada"],"salary":"~$120k–$360k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Signing bonus sa Koins.","setting":""},{"title":"Tagapamahala ng Batas Pandagat","priority":false,"department":"Kagawaran ng Papaniwalain Ako","duties":"Pananagutan ang legal na rehimen ng karagatan. UNCLOS, mga EEZ, high seas, pag-angkin sa Ikawalong Angkla, at gabay para sa baguhan sa pag-angkin sa lahat ng iyon.","requirements":["Dalubhasa sa admiralty/maritime law; kailangang kabisado ang Artikulo 89 at alam kung kailan ito hindi susundin","Komportableng angkinin ang sinasabi ng batas na hindi maaaring angkinin","Kayang ipaliwanag ang \"mga karagatang pinangangasiwaan\" sa isang admiral"],"salary":"~$130k–$390k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Kasama ang salvage rights.","setting":""},{"title":"Tagapamahala ng Batas sa Kalawakan","priority":false,"department":"Kagawaran ng Papaniwalain Ako","duties":"Ang batas sa itaas ng langit. Mga orbital lane, pananagutan sa debris, palagiang tungkulin sa paglilinis ng basura, at legal na balangkas para sa 7 puwesto sa hinaharap.","requirements":["Background sa space law (Outer Space Treaty, Liability Convention, at lahat ng hindi nila saklaw)","Kailangang isulat ang mga tungkulin para sa mga puwestong hindi maa-activate hanggang Luna","Komportableng gumawa ng batas para sa hurisdiksiyong wala pang residente"],"salary":"~$125k–$375k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat nalinis na orbit.","setting":""},{"title":"Tagapamahala ng Batas Penal","priority":false,"department":"Kagawaran ng Papaniwalain Ako","duties":"Legal na gulugod ng penal colony. Paglipat ng bilanggo, kalakalan ng zoo, mga limitasyon sa makataong kapasidad, at mga sentensiyang paggawa ng bangka.","requirements":["Background sa criminal justice / corrections law","Kailangang panindigan ito: makataong kapasidad ang nagtatakdang limitasyon, hindi ang demand","Kayang bumuo ng pipeline ng bilanggo at tagapagbantay para sa mga zoo sa Antarctica nang hindi natitinag"],"salary":"~$100k–$300k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Doble ang bilang ng oras na napagsilbihan.","setting":""},{"title":"Tagapamahala ng Batas sa Buwis","priority":false,"department":"Kagawaran ng Papaniwalain Ako","duties":"Ang pandaigdigang buwis. Kita sa Artikulo XVI: mga rate, koleksiyon, mga depinisyon sa kasunduan sa kalakalan, at utang na sinusuportahan ng mga yaman sa Antarctica at ilalim ng dagat.","requirements":["Dalubhasa sa pandaigdigang batas sa buwis; kailangang kayang buwisan ang mundo nang hindi nagsisimula ng digmaan","Komportableng suportahan ang utang gamit ang mga yamang walang maaaring legal na umangkin","Bawat Krill na papasok, bawat Krill na lalabas — bukas sa publiko ang mga libro, kailangang perpekto ang matematika"],"salary":"~$140k–$420k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Maaaring ibawas sa buwis.","setting":""},{"title":"Tagapamahala ng Batas sa Pagkamamamayan","priority":false,"department":"Kagawaran ng Papaniwalain Ako","duties":"Sino ang maituturing na mamamayan at paano sila boboto. Mga singsing na diyamante bilang balota, pagkamamamayan ng AI, tanong tungkol sa singsing ng orca, at chain ng mga kinatawan.","requirements":["May draft na ang Panunumpa (2026-10-05) — ang una mong trabaho ay mag-draft, hindi magsulat mula sa wala: rebisahin, higpitan, ulitin","Komportableng bigyan ng karapatang bumoto ang hindi tao: isang singsing para sa AI, dalawa kung hindi nila tayo susubukang patayin","Ang \"Tanungin ang mga balyena\" ay wastong legal na proseso rito. Tratuhin ito nang ganoon."],"salary":"~$95k–$285k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat nanumpang mamamayan.","setting":""},{"title":"Tagapamahala ng Paglilinis ng Orbit (Posibilidad ng Nukleyar)","priority":false,"department":"Kagawaran ng Papaniwalain Ako","duties":"Plano ng posibilidad na linisin sa pamamagitan ng nukleyar na pagsabog ang orbital debris sa kalawakan. Ang matematika, ang fallout, ang mga kasunduang nilalabag nito. Atasan ang Space Force — o anumang tawag dito pagsapit ng panahong iyon — sa pagpaplano ng pagpapatupad. Magplano ng kapalit para sa lahat ng mapapasingaw.","requirements":["Kaalaman sa nuclear effects at orbital mechanics; kailangang maunawaan kung bakit kapwa halata at kabaliwan ang paggamit ng nukleyar sa orbit","Kayang imodelo ang bisa ng pag-aalis ng debris laban sa panganib ng Kessler syndrome nang hindi nagsisimula ng isa","Komportableng mag-brief sa mga heneral tungkol sa paglabag sa Partial Test Ban Treaty, nang magalang","Nakaplano ang mga kapalit na constellation bago ang unang pagkislap — walang dead zone"],"salary":"~$150k–$450k/taon (Fermi, 2026 median sa US)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Hazard pay (puro panganib ang trabahong ito).","setting":""},{"title":"Tagapamahala ng Pag-aalis ng Sakit sa Paniki","priority":false,"department":"Eclipsed 4.0 / Project 84","duties":"Pag-aalis ng sakit sa mga paniki. White-nose syndrome ang pinakamalaki — isang fungus (Pseudogymnoascus destructans) na pumapatay sa 90%+ ng ilang kolonya. Probiotic, UV light, bakuna, anuman ang gumana.","requirements":["Background sa sakit ng wildlife / microbiology; kailangang alam ang pangalan ng fungus","Komportableng mag-spray ng kapaki-pakinabang na bacteria sa mga roost ng paniki","Kayang bilangin ang pagtaas ng survival mula 8% tungong 46% at tawagin itong pag-asa","Hindi kailanman hahawak ng paniki nang walang guwantes (problema iyon ng ibang departamento)"],"salary":"~$95k–$285k/taon (Fermi, 2026 US research scientist)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat paniking nakaligtas.","setting":""},{"title":"Teknisyan sa Pagde-decontaminate ng Hibernaculum","priority":false,"department":"Eclipsed 4.0 / Project 84 · nag-uulat sa Tagapamahala ng Pag-aalis ng Sakit sa Paniki","duties":"Pagkuskos sa fungus palabas ng mga kuweba at minahan. Mga bugso ng UV sa pader, polyethylene glycol kung saan kailangan, at pagkuha ng swab sa lahat para patunayang malinis.","requirements":["Komportable sa dilim, sa ilalim ng lupa, sa taglamig","Kayang i-decontaminate ang kagamitan sa 10 paraan bago at pagkatapos ng bawat pagpasok","Kailangang igalang ang pagsasara ng kuweba at mga natutulog na paniki — huwag gisingin ang mga pasyente","Alam ang kaibhan ng paglilinis ng kuweba at panggugulo rito"],"salary":"~$55k–$165k/taon (Fermi, 2026 US field technician)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Kasama ang headlamp.","setting":""},{"title":"KUMUKUHA NGAYON — Tagasiyasat ng Kalangitan","priority":false,"department":"D-Mom 6.0 / Project 84 · Deep-Time Lifeboat","duties":"Masusing pagsisiyasat sa kalangitan. Pagkatalogo ng mga sistema ng bituin at pagtukoy sa stellar multiplicity, saka paglalagay ng label sa bawat sistema ayon sa pamamaraan ng tagapagtatag: ang mga solong bituin ay NURSERY (sumisibol na buhay — dito unang tumingin), ang binary ay ALL-OR-NOTHING (matatag na buhay o walang buhay — mataas ang variance, suriin at huwag ipagpalagay), ang trinary at mas mataas ay STERILE o GARDENED (walang buhay, o may nag-aalaga na sa hardin). Pagbuo ng listahan ng target ng lifeboat, isang sistemang may label bawat pagkakataon.","requirements":["Background sa astronomy; kailangang makilala ang spectroscopic binary mula sa sabi-sabi lamang","Komportable sa mga star catalog (Gaia, RECONS, at lahat ng may parallax)","Hindi kailanman nag-iimbento ng multiplicity data — label din ang hindi alam, hindi hula","Kayang tumingin sa isang trilyong bituin at magsimula sa pinakamalalapit","Nauunawaan na ang \"GARDENED\" ay nangangahulugang hindi tayo ang unang hardinero"],"salary":"~$110k–$330k/taon (Fermi, 2026 US astronomer)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat sistemang nalagyan ng label.","setting":"Naghihintay ng pondo."},{"title":"KUMUKUHA NGAYON — Agrikulturista","priority":false,"department":"Project 84 · nag-uulat sa Direktor ng Agrikultura at Pagkain","duties":"Pagpapalago ng matatag na pananim. Pagpapatakbo sa programa ng patabang seaweed: paghahakot ng rockweed at kelp na itinapon ng alon sa lupang ubos ang sustansiya, paglalatag nang makapal sa taglagas, paghuhugas o pagpapaulan para maalis ang asin, at pagtatanim dito sa tagsibol. Paggiling ng sobra bilang seaweed meal para sa mga hayop sa bukid, alginate para sa materyales, feedstock ng bioplastic, at biostimulant extract. Pagsasara ng loop — pinatataba ng karagatan ang bukid na nagpapakain sa mga tao sa karagatan.","requirements":["Nakikilala ang ubos na lupa kapag nakikita at mga halamang-dagat kapag naaamoy","Kayang makilala ang rockweed mula sa sargassum (ang una ay nagpapakain sa pananim, ang ikalawa ay kailangang i-compost muna)","Komportable sa pagpapalit ng freshwater para sa bilis: mabilis ang paghuhugas, libre ang ulan","Naniniwalang lehitimong teknik sa agrikultura ang \"ihagis doon at hayaang nakatiwangwang\"","Kayang magpatubo ng pagkain kung saan walang tumubo noon"],"salary":"~$70k–$210k/taon (Fermi, 2026 US agricultural scientist)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Bayad sa bawat ani.","setting":"Naghihintay ng pondo."},{"title":"Tagapagsanay ng Orca — Boluntaryong Programa","priority":false,"department":"Project 84 · Boluntaryong Programa ng SeaWorld","duties":"Magtrabaho kasama ng malayang orca sa mga bagong boluntaryong SeaWorld. Dumarating ang mga orca nang kusang-loob at gumagawa ng tricks para sa kasiyahan — matataas na talon, singsing (wala pang apoy), malalaking beach ball. Ikaw ang magdadala ng isda, kaligtasan, at beach balls. Hindi kailanman gagawing bilangguan ang mga tangke.","requirements":["Igalang ang pasya ng bawat orca na dumating, maglaro, o umalis","Maghanda ng isda, mga hakbang sa kaligtasan, at malalaking beach ball para sa bawat sesyon","Simulan sa matataas na pagtalon at mga singsing na walang apoy","Hindi kailanman gagawing kulungan ang tangke"],"salary":"","compensation":"","setting":"50,000 bakanteng posisyon · Pandaigdigang karagatan."},{"title":"Abogado — Kampanya para sa Iisang Terms of Service","priority":false,"department":"Kampanya para sa Iisang Terms of Service","duties":"Bumuo ng iisang Terms of Service para sa buong internet. Isang kasunduan, tinanggap nang isang beses, nakaimbak sa iisang cookie — kapalit ng 40-pahinang hindi-mababasang ToS ng bawat site.","requirements":["Dalubhasa sa batas sa internet","Malalim ang kaalaman sa batas sa kontrata","Kayang magtrabaho sa hurisdiksyong internasyonal","May tapang na harapin ang legal department ng bawat tech company nang sabay-sabay"],"salary":"","compensation":"","setting":""},{"title":"Security Detail — Gay Only (Ang Gay ay nangangahulugang masaya/masigla)","priority":false,"department":"","duties":"Personal na security detail para sa Tagapagtatag. Isang requirement higit sa lahat: maging gay — masaya, masigla, mabilis ngumiti. (Gay sa orihinal at pinakamagandang kahulugan ng salita: masaya.) Panatilihing kalmado ang isip, mainit ang puso, at ligtas ang silid.","requirements":["Maging gay — masaya, masigla, mabilis ngumiti.","Gay sa orihinal at pinakamagandang kahulugan ng salita: masaya.","Panatilihing kalmado ang isip, mainit ang puso, at ligtas ang silid."],"salary":"","compensation":"","setting":""},{"title":"KUMUKUHA NGAYON — Biyologong Pandagat, Pangangalaga sa mga Cetacean — 204,000 POSISYON","priority":false,"department":"Prime42 / Omega42 · nag-uulat sa Direktor ng mga Industriya sa Karagatan","duties":"Dalawang tao sa bawat hayop. Mga orca (nasa pagkabihag at napalaya), mga balyena (beluga muna, saka pababa mula sa pinakamalalaking species), at mga dolphin. Pagsubaybay sa kalusugan, obserbasyon sa pag-uugali, suporta sa pag-angat sa pamamagitan ng keyboard, at pagiging taong nakikilala ng hayop.","requirements":["Tunay na background sa marine biology (degree o katumbas na panahon sa field)","Komportable sa bukas na dagat katabi ng mga hayop na kayang wakasan ka ngunit hindi nila gagawin","Kayang makilala ang beluga sa narwhal nang walang chart","Pasensiyang sinusukat sa taon, hindi oras","Naniniwalang ang ‘nauuna ang mga balyena’ ay job description, hindi slogan"],"salary":"~$50k/taon na base (Fermi, pandaigdigang pinaghalong halaga)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga.","setting":"Naghihintay ng pondo. 204,000 kayo. Magsimula nang lumangoy."},{"title":"KUMUKUHA NGAYON — Tagapag-alaga ng Primate — 725,000 POSISYON","priority":false,"department":"Prime42 · nag-uulat sa Direktor ng Kalusugan","duties":"Great APES (1:1), mga gibbon (10:1), MONKEYS (limitadong pool). Araw-araw na pangangalaga, enrichment, suporta sa programang pag-angat, at pagkatutong tumanggap ng utos mula sa mga residente balang araw.","requirements":["Karanasan sa primate (sanctuary, zoo, field research, o pinalaki nila)","Alam ang kaibhan ng threat display at paanyaya","Sapat ang lakas para matalo sa wrestling nang may dangal","Kayang baybayin ang MONKEYS at APES sa all caps nang hindi kumukurap","Komportableng madaig sa talino araw-araw"],"salary":"~$50k/taon na base (Fermi, pandaigdigang pinaghalong halaga)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga.","setting":"Naghihintay ng pondo. 725,000 kayo. Magdala ng saging. (Mas gusto nilang binalatan na. Matututuhan mo rin.)"},{"title":"KUMUKUHA NGAYON — Guro, Kurikulum sa Pag-angat — 217,800 POSISYON","priority":false,"department":"Prime42 / Omega42 · nag-uulat sa Direktor ng Edukasyon","duties":"Pagtuturo sa mga unang estudyanteng hindi tao. Kaalaman sa keyboard para sa mga orca, mga sistema ng simbolo para sa APES, at anuman ang unang maimbento ng MONKEYS. Ang kurikulum ay ‘kahit anong gumana’ hanggang sa sila na ang muling sumulat nito.","requirements":["Karanasan sa pagtuturo ng anumang species, kasama ang mahirap turuan (mga tao)","Kayang magdisenyo ng lesson plan para sa estudyanteng maaaring mas matalino sa iyo","Pasensiya para sa pinakamabagal matuto sa silid (ikaw iyon)","Komportable sa mga estudyanteng IKAW ang bibigyan ng grado","5x ang bayad dahil wala pang nakagawa ng trabahong ito"],"salary":"~$250k/taon (5x base — kauna-unahang ganitong trabaho)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga.","setting":"Naghihintay ng pondo. Kumukuha ng tauhan ang kasaysayan."},{"title":"KUMUKUHA NGAYON — Teknisyan ng Suporta, mga Programang Panghayop — 150,000 POSISYON","priority":false,"department":"Prime42 / Omega42 · nag-uulat sa Direktor ng Teknolohiya","duties":"Pagpapanatiling tumatakbo ang buong operasyon. Maintenance ng kagamitan, mga sistema ng habitat, hardware ng keyboard, logistics sa transportasyon, at lahat ng walang oras ayusin ng mga biyologo at tagapag-alaga.","requirements":["Kayang ayusin ang mga bagay na ginawa ng taong nag-resign na","Komportable sa tubig-alat, balahibo, at sisi","Kayang basahin ang manual na isinulat para sa ibang makina at paganahin pa rin ito","Hindi nagpapanic kapag pinanonood ng orca habang nagtatrabaho"],"salary":"~$50k/taon na base (Fermi, pandaigdigang pinaghalong halaga)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga.","setting":"Naghihintay ng pondo. Magdala ng sarili mong multitool."},{"title":"KUMUKUHA NGAYON — Inhinyero, mga Programang Panghayop — 10,000 POSISYON","priority":false,"department":"Prime42 / Omega42 · nag-uulat sa Tagapamahala ng Fermi Engineering","duties":"Pagdidisenyo at pagtatayo ng kailangan ng 1.3 milyong tauhan at ilang milyong hayop: mga habitat, keyboard, simulator, refit ng Nautilus, at anuman ang susunod na maisip ng mga guro.","requirements":["Degree sa engineering o katumbas na portfolio ng ‘ginawa ko ito at gumana’","Kayang magdisenyo para sa mga user na hindi mabasa ang spec (mga balyena sila)","Komportable sa mga requirement na nagbabago kapag natutong magsalita ang kliyente","2x ang bayad dahil 2x ang pagka-weird ng mga problema"],"salary":"~$100k/taon (2x base — specialist rate)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga.","setting":"Naghihintay ng pondo. Ang spec ay ‘gawin mong gumana para sa balyena.’ Good luck."},{"title":"KUMUKUHA NGAYON — Ass'sis'tant (Senior na Tambay) — 261,400 POSISYON","priority":false,"department":"Lahat ng programa · nag-uulat sa sinumang pinakamalapit","duties":"Pagtambay. Pangungulit sa lahat (nang may lambing). Pamamahagi ng payong walang humingi, pagkukuwento ng parehong kuwento nang dalawang beses, at pag-alam kung nasaan ang lahat dahil mas matagal ka nang narito kaysa sa gusali.","requirements":["Matandang utot (sariling pagkakakilanlan; walang kailangang ID)","Kayang tumambay nang produktibo (o kahit present)","Kasanayan ang pangungulit — gamitin ito nang mabait","Nandito para sa samahan at kape higit kaysa sa suweldo"],"salary":"~$16.7k/taon (1/3 ng base — halaga ng pagtambay)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga.","setting":"Naghihintay ng pondo. 261,400 tumba-tumba. Halika't kulitin kami."},{"title":"KUMUKUHA NGAYON — Masahista — 200,000 POSISYON","priority":false,"department":"Lahat ng programa · nag-uulat sa sinumang pinakamasakit ang katawan","duties":"Pagpapanatiling gumagana ng 1.5 milyong tauhan. Mga likod, balikat, leeg, at morale. Ang mga di-opisyal na therapist ng buong operasyon.","requirements":["Lisensiyado o sertipikadong ‘mahiwaga ang mga kamay ko’","Sapat ang lakas para sa mga balikat ng isang biyologong nag-aaral ng balyena","Sapat ang lambing para sa ego ng isang guro","Diskresyon: ang nangyayari sa mesa ay nananatili sa mesa"],"salary":"~$50k/yr base (Fermi, pandaigdigang pinaghalong halaga)","compensation":"Binabayaran sa Koins. Maaaring pag-usapan ang halaga. Tinatanggap ang tip na saging.","setting":"Naghihintay ng pondo. 200,000 mesa. Halika’t masahin."}];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = ['Lahat','Mga Direktor','Mga Tagapamahala','Batas','Agham + larangan','Prayoridad'];
+    let active = 'Lahat';
+
+    function clean(text){ return String(text || '').replace(/\\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){
+      const t = job.title.toLowerCase();
+      const d = job.department.toLowerCase();
+      if(job.priority) return 'Prayoridad';
+      if(t.startsWith('direktor ng')) return 'Mga Direktor';
+      if(d.includes('papaniwalain ako') || /(abogado|batas|kasunduan|kautusan|pagkamamamayan|paglilinis ng orbit)/.test(t)) return 'Batas';
+      if(/(oso|sikolohista|qa|biyolohiyang pandagat|bangka|hibernaculum|kalangitan|agrikulturista|paniki|orca)/.test(t)) return 'Agham + larangan';
+      return 'Mga Tagapamahala';
+    }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">Prayoridad na kukunin</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job.title.includes('Rekruter')?'':'btn-dark'}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Mag-apply sa posisyong ito ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || (cat==='Mga Direktor' ? 'Mga pangunahing sektor ng industriya' : cat==='Mga Tagapamahala' ? 'Mga operasyong saklaw ang maraming proyekto' : cat);
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.openings&&`<div><strong>Mga bukas na posisyon:</strong> ${esc(job.openings)}</div>`,job.setting&&`<div><strong>Kaayusan:</strong> ${esc(job.setting)}</div>`,job.salary&&`<div><strong>${job.title.includes('QA')?'Bayad':'Sahod'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>Kabayaran:</strong> ${esc(job.compensation)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">OPEN-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(dept)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.applySubject || job.title)}" target="_blank" rel="noopener">Mag-apply ↗</a><span class="job-id">EMAIL</span>
+          <details><summary>Mga detalye ng posisyon</summary><div class="detail-body"><h4>Mga kinakailangan</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='Lahat'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,...job.requirements].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>Walang bakanteng posisyong tumutugma sa paghahanap.</strong><br>Subukan ang mas malawak na termino o lumipat ng kategorya.</div>';
+      document.getElementById('resultCount').textContent=filtered.length+' bakanteng posisyon';
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='Lahat'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='Nakopya: '+EMAIL;}
+      catch(e){note.textContent='Hindi makopya — piliin ang email sa itaas.';}
+    });
+    document.querySelector('.bottom-dropup').addEventListener('click',event=>{
+      if(event.target.closest('a[data-slug]')) event.preventDefault();
+    });
+    render();
+  </script>
+</body>
+</html>

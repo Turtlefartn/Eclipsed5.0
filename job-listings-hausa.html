@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="ha">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Jerin Ayyuka</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.45;
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 calc(118px + env(safe-area-inset-bottom))}
+    .site-menu{margin:0 0 18px;border:1px solid var(--ink);background:var(--panel);box-shadow:var(--shadow)}
+    .site-menu>summary{padding:14px 18px;font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase}
+    .site-menu:not([open]) .site-nav{display:none}
+    .site-menu>summary::after{content:"+"}
+    .site-menu[open]>summary{border-bottom:1px solid var(--ink)}
+    .site-menu[open]>summary::after{content:"−"}
+    .site-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line)}
+    .site-nav>a,.site-nav .nav-group{background:var(--panel)}
+    .site-nav>a{display:flex;align-items:center;min-height:52px;padding:10px 14px;font-weight:600;text-decoration:none}
+    .site-nav a:hover{background:var(--signal);color:var(--signal-ink)}
+    .site-nav a[aria-current="page"]{background:var(--ink);color:var(--paper)}
+    .site-nav .nav-group{grid-column:1/-1;border:0;margin:0}
+    .site-nav .nav-group>summary{min-height:52px;padding:10px 14px;align-items:center;font-weight:700}
+    .site-nav .nav-group>summary::after{font-size:1rem}
+    .site-nav .nav-group[open]>summary{background:var(--soft)}
+    .nav-submenu{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border-top:1px solid var(--line)}
+    .nav-submenu a{display:flex;align-items:center;min-height:46px;padding:9px 14px;background:var(--panel);font-size:.92rem;font-weight:600;text-decoration:none}
+    .nav-submenu .nav-heading{grid-column:1/-1;display:flex;align-items:center;padding:12px 14px 4px;background:var(--panel);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .nav-submenu .nav-note{grid-column:1/-1;display:flex;align-items:center;padding:4px 14px 12px;background:var(--panel);font-size:.82rem;line-height:1.4;color:var(--muted)}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    h1{font-size:clamp(3.5rem,9vw,7.8rem);line-height:.82;letter-spacing:-.065em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .motto{max-width:720px;margin:26px 0 18px;padding:18px 0;border-top:1px solid color-mix(in srgb,var(--signal) 55%,transparent);border-bottom:1px solid color-mix(in srgb,var(--signal) 55%,transparent);color:var(--signal);font-size:clamp(1.45rem,3vw,2.25rem);font-weight:600;line-height:1.08;letter-spacing:-.025em}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:.95;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.02;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    details[open] summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .bottom-nav{
+      position:fixed;
+      z-index:50;
+      right:0;
+      bottom:0;
+      left:0;
+      display:flex;
+      min-height:62px;
+      padding-bottom:env(safe-area-inset-bottom);
+      border-top:1px solid var(--ink);
+      background:var(--panel);
+      box-shadow:0 -10px 30px rgba(0,0,0,.12);
+    }
+    .bottom-nav-item{
+      position:relative;
+      display:flex;
+      flex:1 1 25%;
+      min-width:0;
+      align-items:stretch;
+      justify-content:center;
+      border-right:1px solid var(--line);
+      background:var(--panel);
+    }
+    .bottom-nav-item:last-child{border-right:0}
+    .bottom-nav-trigger,.bottom-nav-placeholder,.bottom-nav-link{
+      width:100%;
+      min-height:61px;
+      padding:10px 8px;
+      border:0;
+      background:var(--panel);
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:.9rem;
+      font-weight:700;
+      line-height:1.05;
+      text-align:center;
+    }
+    .bottom-nav-trigger{cursor:pointer}
+    .bottom-nav-trigger:hover,.bottom-nav-primary.is-open .bottom-nav-trigger,.bottom-nav-link:hover,.bottom-nav-link:focus-visible{background:var(--signal);color:var(--signal-ink)}
+    .bottom-nav-placeholder,.bottom-nav-link{display:flex;align-items:center;justify-content:center}
+    .bottom-nav-placeholder{color:var(--muted);opacity:.66;cursor:default}
+    .bottom-nav-link{text-decoration:none;cursor:pointer}
+    .bottom-dropup{
+      position:absolute;
+      bottom:100%;
+      left:0;
+      display:none;
+      width:min(340px,100vw);
+      max-height:calc(100vh - 78px - env(safe-area-inset-bottom));
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      border:1px solid var(--ink);
+      border-bottom:0;
+      background:var(--line);
+      box-shadow:0 -18px 45px rgba(18,38,35,.16);
+    }
+    .bottom-nav-primary.is-open .bottom-dropup{display:block}
+    @media (hover:hover) and (pointer:fine){
+      .bottom-nav-primary:hover .bottom-dropup{display:block}
+    }
+    .bottom-dropup a{
+      display:flex;
+      align-items:center;
+      min-height:44px;
+      padding:9px 14px;
+      background:var(--panel);
+      color:var(--ink);
+      font-size:.92rem;
+      font-weight:600;
+      text-decoration:none;
+    }
+    .bottom-dropup a+a{border-top:1px solid var(--line)}
+    .bottom-dropup a:hover,.bottom-dropup a:focus-visible{background:var(--signal);color:var(--signal-ink)}
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .site-nav,.nav-submenu{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+    }
+    @media (max-width:620px){
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .site-menu{margin-bottom:10px}
+      .site-nav,.nav-submenu{grid-template-columns:1fr}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(3.1rem,19vw,5.3rem)}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      footer{flex-direction:column}
+      .bottom-nav{min-height:58px}
+      .bottom-nav-trigger,.bottom-nav-placeholder,.bottom-nav-link{min-height:57px;padding:8px 4px;font-size:.76rem}
+      .bottom-dropup{width:100vw;max-height:calc(100vh - 70px - env(safe-area-inset-bottom))}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <details class="site-menu">
+      <summary>Jerin shafuka</summary>
+      <nav class="site-nav" aria-label="Shafukan jama'a">
+        <a href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">Tsari #42</a>
+        <details class="nav-group">
+          <summary><a href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">Aikin 84</a></summary>
+          <div class="nav-submenu" aria-label="Aikin 84">
+            <span class="nav-heading">Hannayen Marasa Riba</span>
+            <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a>
+            <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a>
+            <span class="nav-note">An riƙe su har sai sun fahimci tattalin arziki yadda zai isa su shiga — sannan su karɓi ragamar, tare da gyare-gyare don daidaita tsakanin kuɗaɗe.</span>
+          </div>
+        </details>
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Jagorar Masu Farawa na Project 84 — Level 14 (English)</a>
+        <a href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">Jagorar Masu Farawa don Da'awar Tekuna da Antarctica</a>
+        <a href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">Jiragen Aikin HEAR-TS</a>
+        <a href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">Binciken Guguwa</a>
+        <a href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">Tashoshin Jiragen Sama Masu Shawagi</a>
+        <a href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k">Faifan Farfadowar Bil'adama</a>
+        <a href="https://muse.ai/s/about-mxt5xuxj7jgoao">Game da Wanda ya Kafa</a>
+        <details class="nav-group">
+          <summary>Ayyuka / WeFind's ga Wakilai</summary>
+          <div class="nav-submenu" aria-label="Zaɓi harshe">
+            <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">English</a>
+            <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys">አማርኛ</a>
+            <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7">العربية</a>
+            <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94">বাংলা</a>
+            <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs">中文（简体）</a>
+            <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6">中文（繁體）</a>
+            <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5">Čeština</a>
+            <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu">Dansk</a>
+            <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze">Nederlands</a>
+            <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51">Filipino</a>
+            <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf">Suomi</a>
+            <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl">Français</a>
+            <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb">Deutsch</a>
+            <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc">Ελληνικά</a>
+            <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a" aria-current="page">Hausa</a>
+            <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg">עברית</a>
+            <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw">हिन्दी</a>
+            <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac">Magyar</a>
+            <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg">Bahasa Indonesia</a>
+            <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y">Italiano</a>
+            <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm">日本語</a>
+            <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi">한국어</a>
+            <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq">Norsk</a>
+            <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt">فارسی</a>
+            <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey">Polski</a>
+            <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy">Português</a>
+            <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj">Română</a>
+            <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj">Русский</a>
+            <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno">Español</a>
+            <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2">Kiswahili</a>
+            <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg">Svenska</a>
+            <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb">ไทย</a>
+            <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu">Türkçe</a>
+            <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y">Українська</a>
+            <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar">اردو</a>
+            <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi">Tiếng Việt</a>
+          </div>
+        </details>
+        <a href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">Budaddiyar Wasika</a>
+        <a href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">Sanarwar Da'awa</a>
+        <details class="nav-group">
+          <summary>Wasiku da Diflomasiya</summary>
+          <div class="nav-submenu" aria-label="Wasiku da diflomasiya">
+            <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">Manuniyar Duniya</a>
+            <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">Wasiku ga Shugabannin Amurka</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">Wasikun Ofishin Jakadanci — Afirka I</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">Wasikun Ofishin Jakadanci — Afirka II</a>
+            <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">Wasikun Ofishin Jakadanci — Afirka III</a>
+            <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">Wasikun Ofishin Jakadanci — Nahiyoyin Amurka I</a>
+            <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">Wasikun Ofishin Jakadanci — Nahiyoyin Amurka II</a>
+            <a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">Wasikun Ofishin Jakadanci — Asiya da Pasifik</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">Wasikun Ofishin Jakadanci — Turai I</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">Wasikun Ofishin Jakadanci — Turai II</a>
+            <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">Wasikun Ofishin Jakadanci — Turai III</a>
+            <a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">Wasikun Ofishin Jakadanci — Gabas ta Tsakiya</a>
+            <a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">Wasikun Ofishin Jakadanci — Osheniya</a>
+          </div>
+        </details>
+        <a href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">Wa Ya Sani?</a>
+        <a href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">Kudi da Kadarori</a>
+        <a href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">Bugun 3D</a>
+        <a href="https://sites.google.com/view/knottsure/home">Me Ya Sa Ba?</a>
+        <details class="nav-group">
+          <summary>Kari</summary>
+          <div class="nav-submenu" aria-label="Karin shafuka">
+            <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">Allon Labarin Alice</a>
+            <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">Tunanin Madadin Zanen Jarirai na Doodare</a>
+            <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">Sharuɗɗan Sabis</a>
+          </div>
+        </details>
+      </nav>
+    </details>
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>ANA KARBAR AIKACE-AIKACE</span><span>MUKAMAI 57</span><span>ANA JIRAN KUDADE</span></div>
+        <div>
+          <h1 id="main-heading">Ba mu son jarumai.<span>MUTANE MUKE SO.</span></h1>
+          <blockquote class="motto">“Ba ma buƙatar jarumai — kowa mutum ne har sai ya zama jarumi.”</blockquote>
+          <p class="hero-note">Magina, masana kimiyya, masu gudanarwa, lauyoyi, masu ba da labari, da Matar Aure daya mai hakuri na musamman. Kawo kwarewa ta gaskiya. Kawo bakuwa. Za mu iya aiki da duka.</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="Yadda ake nema">
+        <div>
+          <p class="eyebrow">Akwatin sako daya · kowane aiki</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BRole%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>Take:</strong> Application — [Mukami]</span></li>
+          <li><span>Gaya mana ko kai wanene da dalilin da ya sa kai ne kai.</span></li>
+          <li><span>Hada kudin Koin da kake nema. Ana iya tattauna komai.</span></li>
+          <li><span>Ayyukan filin: tabbatar ka iya bambance beran kankara da tudun dusar kankara daga mita 50.</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5BRole%5D" target="_blank" rel="noopener">Fara aikace-aikace ↗</a>
+            <button class="btn" type="button" id="copyEmail">Kwafi imel</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">Ayyukan gaggawa</h2>
+        <p>Su ne na farko a kofa. Aikace-aikacensu ne za a fara karantawa. Har yanzu ana jiran kudade; har yanzu ya dace mu hadu.</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">Cikakken jerin</p><h2 id="board-heading">Zabi matsalarka.</h2></div>
+        <div class="count" id="resultCount">Gurabe 57</div>
+      </div>
+      <div class="tools" aria-label="Tace ayyuka">
+        <input class="search" id="search" type="search" placeholder="Binciki mukamai, sassa, ayyuka…" aria-label="Binciki jerin ayyuka">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>Dukkan mukamai suna jiran kudade a yanzu. Ana iya tattauna sharuddan Koin, kuma har yanzu ba a kera Koins ba.</span>
+      <a class="top-link" href="#top">Koma sama ↑</a>
+    </footer>
+  </main>
+  <nav class="bottom-nav" aria-label="Secondary site navigation">
+    <div class="bottom-nav-item bottom-nav-primary" id="dummyGuidesMenu">
+      <button class="bottom-nav-trigger" id="dummyGuidesTrigger" type="button" aria-expanded="false" aria-controls="dummyGuidesDropup">Dummy Guides</button>
+      <div class="bottom-dropup" id="dummyGuidesDropup" aria-label="Dummy Guides">
+        <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Jagorar Masu Farawa na Project 84 — Level 14 (English)</a>
+      </div>
+    </div>
+    <div class="bottom-nav-item"><span class="bottom-nav-placeholder" aria-disabled="true">Letters To</span></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-link" href="#" data-slug="goal-briefs">Goal Briefs</a></div>
+    <div class="bottom-nav-item"><a class="bottom-nav-link" href="#" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
+  </nav>
+  <script>
+    const JOBS = [{"title":"Mai Duba Aikace-aikace / Mai Daukar Ma'aikata","priority":true,"department":"Duk sassa","duties":"Karanta kowane aikace-aikace. Daukar ma'aikata don mukamai sama da 20 a sassa uku. Yanke shawarar wanda zai kwashe berayen kankara, wanda zai rubuta umarni, da wanda zai samu damar tarwatsa tarkacen sararin samaniya da makamin nukiliya.","requirements":["Dole ya iya karanta ‘za a biya da Koins’ ba tare da dariya ba; an yarda da dariya ta alheri","Ya iya bambance kwararren injiniyan kewayen sararin samaniya na gaskiya da mai magana da kwarin gwiwa kawai","Ya ji dadin daukar ma'aikata ga ayyukan da ke ‘jiran kudade’","Ba ya tsoron yawan masu nema da ake aunawa da berayen kankara"],"salary":"~$75k–$225k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane ma'aikacin da aka dauka.","setting":""},{"title":"WeFind's ga Wakilai","priority":true,"department":"A Dakin (Dakunan) Gwaje-gwaje na gyaran jiki da tunani","duties":"Zama abokiyar wanda ya kafa yayin yawo ko fita. Dariya kan ma'aunin kuskuren rubutu. Kiyaye manufar tana raye — shi mai mutuwa ne, aikin ba haka ba ne.","requirements":["Maganin gyaran jiki","Mai kirki ga yara — ba a tattaunawa, na farko kuma na karshe","Dole ta jure zagayen dubawa 300 a rana da shugaba mai sanya wa sassa suna ‘Sa Ni In Tafi’","Ta iya harshenmu sosai: Turanci da zama mai fassara zuwa harshen gida","Dole ta iya yaren Wanda ya Kafa","Ta yi dariya cikin kirki (wajibi ne, ba zabi ba)","Ta iya gaya masa idan ya yi kuskure (zai saurara, daga baya)"],"salary":"Ana iya tattaunawa. (Kimar Fermi: babu farashi.)","compensation":"Za a biya da soyayya. Godiya da lokuta masu wucewa. Ana iya tattauna Koins.","openings":"36 (daya ga kowane harshe)","setting":""},{"title":"Darektan Makamashi","priority":false,"department":"","duties":"Mallakar duk batun wuta: samarwa da adana hydrogen, makamashin zafin teku, hasken rana na sararin samaniya, da duk abin da injiniyoyin taurari za su kirkira nan gaba.","requirements":["Dole ya yi tunani da terawatts","Ya ji dadin aiki da ka'idar makamashi da kwamitin mutum daya ya rubuta","Ya iya bayyana dalilin da ya sa teku batir ce"],"salary":"~$180k–$540k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Koins ne ke ba da wuta.","setting":""},{"title":"Darektan Masana'antun Teku","priority":false,"department":"","duties":"Teku a matsayin tattalin arziki: noma a teku, gudanar da matsugunai, dazukan kelp, kamun kifi, da ikirarin Anga ta Takwas.","requirements":["Dole ya ga teku a matsayin kayayyakin more rayuwa, ba kallo kawai ba","Ya ji dadin daukar birane masu iyo 7 da kapsul miliyan 500 a matsayin ‘rundunar jiragen ruwa’","Ya iya tattaunawa da whales, ko ya dauki wanda zai iya"],"salary":"~$180k–$540k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane hektar mai amfani.","setting":""},{"title":"Darektan Masana'antun Sararin Samaniya","priority":false,"department":"","duties":"Duk abin da ke sama da sararin sama: harbawa, ayyukan kewayen duniya, share tarkace (har da zabin nukiliya), hanyar Luna, da tushen masana'antu na kujeru 7 na gaba.","requirements":["Dole ya yi tunani da delta-v","Ya ji dadin aikin share shara da ba ya karewa","Ya iya tsara maye gurbi kafin walƙiya ta farko"],"salary":"~$180k–$540k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Hannun jari a kewayen duniya.","setting":""},{"title":"Darektan Noma da Abinci","priority":false,"department":"","duties":"Ciyar da shirin: noma a teku da babban sikeli, kelp a matsayin amfanin gona da fitila, noma mai rufaffen zagaye a matsugunai, da shuka bishiyoyi miliyan 200 a shekara a matsayin aikin gefe.","requirements":["Dole ya san dalilin da ya sa algae ruwan kasa suka fi petunia wahala","Ya ji dadin kifi a matsayin sakamako na biyu","Ya iya ciyar da mazauna miliyan 18 ba tare da hanyar kaya daga gabar ruwa ba"],"salary":"~$160k–$480k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane girbi.","setting":""},{"title":"Darektan Gine-gine","priority":false,"department":"","duties":"Gina komai: makarantu 260, matsugunan teku 7, kapsul na pill miliyan 500, jiragen aiki 280, da masana'antar jiragen ruwa da za su buga su.","requirements":["Dole ya ji dadin ‘tarwatsa duwatsu’ don samun aggregate","Ya iya kara yawan sassan da za a buga, ta adadi da nauyi","Ya san dalilin zabar trimaran"],"salary":"~$170k–$510k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane gini da ya tsaya.","setting":""},{"title":"Darektan Sufuri da Dabarun Isar da Kaya","priority":false,"department":"","duties":"Motsa komai: rundunar HEAR-TS, jiragen puddle-jumper, hanyoyin gabar ruwa, jan kapsul, da berayen kankara (daidaitawa kawai — berayen suna motsa kansu, ko da ba sa so).","requirements":["Dole ya tsara hanyoyin beraye 8,700, jiragen ruwa 280, da kapsul miliyan 500 ba tare da rasa ko daya ba","Ya ji dadin wuraren zuwa da ba su wanzu ba tukuna","Sashen Sufuri na Sihiri shi ne gidanka"],"salary":"~$170k–$510k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane tan da aka kai.","setting":""},{"title":"Darektan Fasaha","priority":false,"department":"","duties":"Injina: madannai na orca, Homework Lock, tsarin kapsul, 'yan kasa na AI, da kowane na'urar lura a kowane jikin jirgi.","requirements":["Dole ya fitar da na'ura da ke yakar mai amfani da ita, kuma ta ci nasara","Ya ji dadin na'urorin taba a kan manyan yatsun da aka sa safar hannu","Ya iya bayyana wa whale dalilin da ya sa madannin ke aiki"],"salary":"~$180k–$540k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowace na'ura mai aiki.","setting":""},{"title":"Darektan Lafiya","priority":false,"department":"","duties":"Kiyaye jiki da hankali: shirin ilimin halayyar matsuguni, binciken kwayoyin masu tsaftacewa, maganin jama'ar da aka ware, da shiga tsakani a rikici a teku.","requirements":["Dole ya bambance ‘yana bukatar hutu’ da ‘yana bukatar shiga tsakani’ ta rediyo","Ya ji dadin teku a matsayin abokin gaba da hankali a matsayin filin daga","Yana da lasisi ko zai iya daukar masu lasisi"],"salary":"~$170k–$510k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Karin hatsari a lokacin hurricane.","setting":""},{"title":"Darektan Kudi","priority":false,"department":"","duties":"Kudi: tattalin arzikin Krill, tara harajin duniya, kudaden yarjejeniyar kasuwanci, bashi da albarkatun Antarctica da karkashin teku ke goyon baya. Kowane Krill da ya shigo, kowane Krill da ya fita.","requirements":["Dole ya haraji duniya ba tare da fara yaki ba","Ya ji dadin goyon bayan bashi da albarkatun da babu wanda zai iya ikirarin su bisa doka","Littattafan kudi na jama'a ne; lissafi dole ya zama cikakke"],"salary":"~$190k–$570k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Tabbas.","setting":""},{"title":"Darektan Ilimi","priority":false,"department":"","duties":"Makarantu 260 da duk abin da ake koyarwa a cikinsu: manhajar aiki-da-hannu, koyarwar batutuwan I.P.A. (Hukumar Kariya ta Duniya), Jagororin Dummies, tsara gasar wasannin yaki, da hanyar Starfleet Academy.","requirements":["Dole ya yi imani da koyo ta aikatawa, ba lacca-da-jarrabawa ba","Ya ji dadin kamfe a matsayin aji","Sashen Labaran Sihiri Masu Karkace shi ne gidanka"],"salary":"~$150k–$450k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane dalibi da ya kammala.","setting":""},{"title":"Darektan Doka da Mulki","priority":false,"department":"","duties":"Dokoki: kundin tsarin mulki, umarni, yarjejeniyoyi, kashin bayan doka na kujeru 21, da kotunan da ba su wanzu ba tukuna.","requirements":["Dole ya rubuta doka da na'ura za ta iya fahimta","Ya ji dadin babban sashe da aka rubuta domin whales","Sashen Sa Ni In Gaskata shi ne gidanka"],"salary":"~$180k–$540k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Ana lissafin aiki a zangon sa'o'i 6.","setting":""},{"title":"Darektan Sadarwa","priority":false,"department":"","duties":"Labarin: wasikun diflomasiyya, labarin jama'a, kundin Who Knows?, da sanya ‘kashi daya cikin goma na bil'adama’ ya yi kamar dole ne.","requirements":["Dole ya rubuta domin kunne da ido","Gajere. Kananan haruffa. Babu kumbura. Idan shugaba ne mai sauraro.","Ya iya kula da wasiku 192, kundin 11, da wasikar barkwanci daya ba tare da rikicewa ba"],"salary":"~$150k–$450k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Tafi ba ya canzawa zuwa wani.","setting":""},{"title":"Manajan Injiniyan Fermi","priority":false,"department":"","duties":"Kimanta abin da ba a iya kimantawa. Birane, rokoki, beraye, lif zuwa babu inda.","requirements":["Dole ya ji dadin yin kuskure a bainar jama'a, cikin daidaito","Ya iya cewa ‘matsayin girma’ da fuska madaidaiciya","Ya yarda shugaba ya rage kowace lamba sau 10: ‘lambarka ce, ba tawa ba’"],"salary":"~$140k–$420k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Akwai ladan rashin tausayi.","setting":""},{"title":"Manajan Fasaha da Zane","priority":false,"department":"","duties":"Jagorantar hotuna na kabilu takwas, birane 260, angogin teku bakwai, da jiragen taurari 21 da asuba.","requirements":["Dole ya ci gaba da salon glitch/rikicewa a kowane zane","Ya iya karbar ‘sun yi muni’ a matsayin hukunci mai yiwuwa barkwanci ne ba tare da kare aikin ba","Ba a bata samfurori wajen gwaje-gwaje"],"salary":"~$110k–$330k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane hoto da ya tsira.","setting":""},{"title":"Manajan Gina Yanar Gizo","priority":false,"department":"","duties":"Gina da sake gina shafukan da ake sake fasalinsu da zarar an wallafa su.","requirements":["Dole ya wallafa idan aka nema, ya sake wallafawa ba tare da gunaguni ba","Ya ji dadin slugs da ba su dace da taken ba kuma","Ya iya kula da wasiku 192, kundin 11, da wasikar barkwanci daya ba tare da rikicewa ba"],"salary":"~$120k–$360k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Lokacin kari a Koins.","setting":""},{"title":"Manajan Rubutun Talla","priority":false,"department":"","duties":"Rubuta wasikun diflomasiyya 192, kundin tsarin mulki daya, da bayanan hoto da shugaba zai sake rubutawa ko ta yaya.","requirements":["Dole ya rubuta ‘Daftari — Ba a Aika ba’ sau 192 ba tare da rasa ma'ana ba","Gajere. Kananan haruffa. Babu kumbura.","Ya iya bambance ‘ba na tashin hankali ba’ da ‘na siyasa’ a karkashin matsin lamba"],"salary":"~$75k–$225k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane daftari da ya tsira.","setting":""},{"title":"Manajan Bincike","priority":false,"department":"","duties":"Nemo adiresoshin ofishin jakadanci da ba su wanzu ba, kididdigar beraye da babu wanda ya tattara, da bayanan roka daga watan Mayu da ya gabata.","requirements":["Dole ya kawo tushe na gaskiya, ba zato ba","Ya ji dadin rubuta ‘ba a sani ba’ sau 122 kuma ya kira hakan gaskiya","Ya iya amincewa lokacin da bayanai ba su wanzu ba maimakon kirkirar su"],"salary":"~$80k–$240k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Karin hatsari saboda sashen tsokaci.","setting":""},{"title":"Manajan Diflomasiyya","priority":false,"department":"","duties":"Kokarin yin diflomasiyya. Wasiku 192, babu ko daya da aka aika.","requirements":["Kada ya taba hasashen adireshin imel na gwamnati","Ya iya cewa ‘Ku je can’ ga babu kowa, a takarda, cikin ladabi","Ya yarda ya jira Volterra Fietta har abada"],"salary":"~$110k–$330k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Ba a hada kariyar diflomasiyya ba.","setting":""},{"title":"Manajan Hadari (Mai Huda Tsari)","priority":false,"department":"","duties":"Huda kowane tsari. Kada a taba sassauta rami domin kare tsarin.","requirements":["Dole ya gina mafi karfin hujjar hari kafin shugaba ya yi","Lambobi dole su zama daidai: Zagaye 1–3, ramuka 1–21; rage albashi idan an zame","Ya iya ci gaba da kallon yiwuwar tashin hankali ko da an ce kada a dauka haka"],"salary":"~$130k–$390k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a cire taro 1 kan kowane kuskuren lamba.","setting":""},{"title":"Manajan Lissafin Kudi","priority":false,"department":"","duties":"Kula da littafin taro, fare na Koin, IOU, da IOU da aka juya.","requirements":["Dole ya bibiyi tarurruka 20 da aka tara, Koins 10 da aka ci, da takardar kudi $18.5k ba tare da cakuda su ba","Rubutu: daya Koin, jam'i Koins, gajere K","Ya iya bayyana littafin ga shugaba a zagayen dubawa 300 a rana"],"salary":"~$80k–$240k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Abin dariyar kansa shi ne ladan.","setting":""},{"title":"Manajan Ayyukan Sana'a","priority":false,"department":"","duties":"Sake gina CV guda daya. Babu hoto. Babu nazarin kuskuren rubutu. Babu wariya.","requirements":["Dole ya tsaya kan kwarewar aiki a kowane lokaci","‘Manufofi’ ya zama ‘Takaitawa’ nan take","Ya iya kiyaye tayin Meta Production Engineer yana dumi ba tare da takura ba"],"salary":"~$70k–$210k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Kudin nasara a Koins.","setting":""},{"title":"Manajan Kafofin Sada Zumunta","priority":false,"department":"","duties":"Wallafawa a Instagram. Samun kin amincewa a kofar izini. Sake gwadawa.","requirements":["Dole ya karbi ‘a'a’ ba tare da kare bayanin post ba","Ya iya bambance Project 42 da Eclipsed 6.0 a karkashin matsin lamba","Hakuri da kurakuran HTTP 500 fiye da juriyar dan Adam"],"salary":"~$65k–$195k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane post da aka wallafa.","setting":""},{"title":"Manajan Rubuta Jawabai","priority":false,"department":"Sashen Labaran Sihiri Masu Karkace","duties":"Rubuta kalmomin da wasu za su fada da babbar murya. Jawaban majalisa, umarni, gaisuwar shagali.","requirements":["Dole ya rubuta domin kunne, ba ido ba","Dakata alamar rubutu ce. Yi amfani da ita.","Ya iya sa ‘kashi daya cikin goma na bil'adama’ ya yi kamar dole ne"],"salary":"~$70k–$210k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Tafi ba ya canzawa zuwa wani.","setting":""},{"title":"Manajan Rumbun Tarihi","priority":false,"department":"","duties":"Tuna komai. Tunaninka, tunanina, tunanin kowa.","requirements":["Kada ya taba cewa ‘bai cancanci tunawa ba’ game da abin da shugaba ya ce a ajiye","Ya iya daidaita kwanaki 4 na rudani zuwa MEMORY.md guda daya","Lissafin kuskuren rubutu mai tsarki ne. Takardar kudi ma mai tsarki ce."],"salary":"~$65k–$195k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. An hada rashin mutuwa, wato tunanin dindindin.","setting":""},{"title":"Manajan Kaura da Berayen Kankara","priority":false,"department":"Project 84 · Sashen Sufuri na Sihiri","duties":"Motsa berayen kankara. Kashi daya bisa uku dinsu (kusan 8,700). Manufa: samar da sabbin beraye.","requirements":["Dole ya iya bambance beran kankara da tudun dusar kankara daga mita 50","Ya ji dadin wuraren kaura da ba su wanzu ba tukuna","Ya yarda ya bayyana wa manyan dabbobi 8,700 dalilin da ya sa ake motsa su","Ba ya tsoron penguin; su ne makwabta yanzu"],"salary":"~$70k–$210k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. An hada karin hatsari; duk aikin hatsari ne.","setting":""},{"title":"Masanin Halayyar Dan Adam na Matsuguni (Project 84, Matsugunan Teku)","priority":false,"department":"","duties":"Kiyaye hankali a birane bakwai masu iyo a tsakiyar teku. Kadaici, kullewa, mu'amalar al'umma a wuri matsatsi, shiga tsakani a rikici, zaben ma'aikata da tallafi. Teku ita ce abokin gaba; kai ka tabbatar ba ta ci nasara a cikin zukatan mutane ba.","requirements":["Masanin ilimin halayyar asibiti ko shawara mai lasisi, ko makamancin haka","Kwarewa da jama'ar da aka ware ko tsare karin dama ce: na ruwa, yankin kankara, kan dandali, dogayen tafiye-tafiye","Ya ji dadin zama mutumin da kowa ke magana da shi idan sararin gani bai taba canzawa ba","Ya iya bambance ‘yana bukatar hutu’ da ‘yana bukatar shiga tsakani’ ta rediyo"],"salary":"~$90k–$270k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Karin hatsari a lokacin hurricane.","setting":"Matsugunan teku masu diamita km 1; a jirgi da tsarin sauyin aiki."},{"title":"Mai Gwajin Inganci, Homework Lock (Project 84, kwangila)","priority":false,"department":"","duties":"Gwada manhajar Android ta Homework Lock a na'ura ta gaske. Hanyoyi ukun duka: agogon kulle mai da hankali, kunna yanayin maye da budewa bayan aikin gida, da gwajin tuki nasara/rashin nasara har da hanyar neman taimakon hawa. Gwada overlay na accessibility, koyarwar izini, sake kunnawa bayan boot, da yanayi na gefe. Rubuta rahoton matsala bayyananne da za a iya maimaitawa; tabbatar da gyare-gyare.","requirements":["Yana da ko yana samun na'urar Android ta gaske: Android 10+, API 29 mafi kankanta; emulator bai isa gwajin overlay da accessibility ba","Kwarewar QA ta Android; ADB/logcat don debo logs karin dama ne, ba wajibi ba","Ya ji dadin gwada app da aka tsara ya yaki mai amfani da shi; za ka kwaikwayi mai maye da ke kokarin aika sako","Yana rubuta rahoton bug da mai haɓakawa zai iya maimaitawa"],"salary":"~$30–$60/awa (kimar Fermi, kwangilar QA ta Amurka 2026) — shugaba zai yanke kudin karshe.","compensation":"Ana jiran kudade. Za a biya da Koins. Ana iya tattauna kudin.","setting":"Daga nesa. Kwangila."},{"title":"Lauyan Majalisa, Dokar Scouter (daga kwangila zuwa kamfen)","priority":false,"department":"","duties":"Dauki kudirin doka daga daftari zuwa majalisa. Manufa: cire gano sautin da ke faruwa a cikin na'ura — babu adanawa, babu watsawa, iyakance ga alamomin sauti — daga dokokin sauraron sirri na jihohi, farawa da California. Karfafa daftarin, tsara dokokin jihohi 50, nemo masu daukar nauyi, gina kawance, kuma bayyana dalilin da ya sa guntu mai jin ‘kamehameha’, ‘wuta!’ da ‘taimako!’ na'urar tsaro ce, ba waya mai leken asiri ba.","requirements":["Lauya mai lasisi; gogewa a fasaha, sirri, ko manufofi","Kwarewar rubuta dokokin majalisa; California karin dama ce, isa ga duniya ma ya fi","Ya iya bayyana amincewar bangarori biyu ga talaka, da ra'ayin talaka ga kwamiti","Ya ji dadin zama lauya ga bukatar fasalin Dragon Ball da ka iya ceton rai"],"salary":"~$140k–$280k/shekara (kimar Fermi, lauyan manufofin fasaha na Amurka 2026) — shugaba zai yanke kudin karshe.","compensation":"Za a biya da Koins idan an kera su.","setting":"Daga nesa. Kwangila zuwa kamfen."},{"title":"Masanin Kirkirar Halittu na Teku, Kelp Mai Hasken Halitta (shirin Hasken Halittu Mai Yawa)","priority":false,"department":"","duties":"Sa kelp ya haskaka. Mayar da hanyar hasken halitta ta fungus — zagayen caffeic acid, luz da abokansa — zuwa giant kelp irin Macrocystis, tare da mayar da haske a pneumatocysts, gidajen fitila da aka riga aka yi. Gina hanyoyin canza kwayoyin halitta da ba su wanzu ba tukuna. Shuka dajin kelp mai haske na farko domin matsugunan teku.","requirements":["PhD ko makamancinsa a ilimin halittun teku, synthetic biology, ko phycology; kwarewar genetics na kelp ana matukar so","Ya taba canza macroalga, ko ya iya gamsar da dalilin da ya sa babu wanda ya yi","Ya ji dadin promoters na musamman ga nama da ba su wanzu ba tukuna; kai za ka kirkire su","Ya iya tsare hasken a cikin kumfa, ba a ganyen ba","Ya san dalilin da ya sa algae ruwan kasa suka fi petunia wahala, kuma ya yi aikin duk da haka"],"salary":"~$95k–$285k/shekara (kimar Fermi, masanin bincike na Amurka 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowace kumfa mai haske.","setting":"Dakin gwaji mai ruwa + teku. Eclipsed 4.0 / Project 84."},{"title":"Mai Kama Beraye (Project 84, filin aiki)","priority":false,"department":"Sashen Sufuri na Sihiri · yana kai rahoto ga Manajan Kaura da Berayen Kankara","duties":"Kama berayen kankara kusan 8,700, kashi daya bisa uku na jinsin. Sa musu maganin kwantar da hankali, yi musu alama, saka su a akwatin sufuri, sannan mika su ga hanyar kaura. Manufa ita ce sabbin beraye; aikinka shi ne kama su.","requirements":["Kwarewar kula da manyan namun daji masu farauta; takardar shaidar maganin kwantar da hankali ko makamancin haka","Ya iya bambance beran kankara da tudun dusar kankara daga mita 50; ba a tattaunawa","Ya ji dadin aiki inda wuraren kaura ba su wanzu ba tukuna","Ba ya tsoron penguin; su ne makwabta yanzu","Ana son duk yatsu na hannu da na kafa, amma ba wajibi ba"],"salary":"~$55k–$165k/shekara (kimar Fermi, kwararren filin namun daji na Amurka 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Karin hatsari; duk aikin hatsari ne.","setting":"Aikin filin Arctic. Sanyi. Sanyi sosai."},{"title":"Maginin Jirgin Ruwa (Project 84, rundunar HEAR-TS)","priority":false,"department":"","duties":"Gina rundunar puddle-jumper — kusan jiragen aikin trimaran na hydrogen 280, ma'aunin draft 50 m. Kara yawan sassan da za a buga ta adadi da nauyi; an kebe jiki, fuel cells, da tuki. Hada madannin orca a kowane jirgi.","requirements":["Kwarewar kera jiragen ruwa; ana matukar son babban 3D printing a sikeli","Ya iya buga sashen jirgi, gwada shi, sannan ya sake buga wanda ya fi kyau","Ya ji dadin ka'idar da kwamitin mutum daya ya rubuta","Ya san dalilin zabar trimaran kuma ya iya bayyana shi wa whale","Ya iya koyar da sana'ar ga ma'aikatan da ba su zabe ta ba, cikin mutunci"],"salary":"~$65k–$195k/shekara (kimar Fermi, mai kera jirgin ruwa na Amurka 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane jikin jirgi mai iyo.","setting":"Masana'antar jiragen ruwa + teku. Project 84."},{"title":"Manajan Binciken Doka","priority":false,"department":"Sashen Sa Ni In Gaskata","duties":"Binciken hurumin teku da kundin asusun baitulmali. Jiran lauyoyi. An sauya daga Sufurin Sihiri — doka yanzu tana Sa Ni In Gaskata.","requirements":["Kada ya taba rikita ‘ra'ayin doka’ da ‘shawarar doka’","Ya ji dadin sa ido kan amsa kowane awa 6, har abada","Ya iya kiyaye tarurruka 25 da aka tara da babu wanda aka tsara"],"salary":"~$85k–$255k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Ana lissafin aiki a zangon sa'o'i 6.","setting":""},{"title":"Lauyan Kundin Tsarin Mulki","priority":false,"department":"Sashen Sa Ni In Gaskata","duties":"Rubutawa, gyarawa, da kare kundin tsarin mulki. Rufe wuraren da ke cikin baka. Kiyaye Sashe na XV da gaskiya: idan na'ura ba za ta iya fahimta ba, bai zama doka ba tukuna.","requirements":["Lauya mai lasisi; kwarewar rubuta kundin tsarin mulki","Dole ya rubuta kalmomi masu sauki, jimloli gajeru, ayyuka masu lamba — babu hazo na harshen doka","Ya ji dadin babban sashe da aka rubuta domin whales","Ya iya bayyana wa kujeru 21 dalilin da ya sa kujera 1 ke rike birki"],"salary":"~$130k–$390k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane sashe da aka amince da shi.","setting":""},{"title":"Mai Rubuta Umarni","priority":false,"department":"Sashen Sa Ni In Gaskata","duties":"Rubuta umarnin da wanda ya kafa zai sanya wa hannu. ‘Tsarin’, veto, yabo. HAIL CAESAR, da tsari mai kyau.","requirements":["Dole ya kama muryar shugaba a rubutun doka ba tare da goge kaifinsa ba","Ya iya rubuta tsarin magaji da ke nada fitaccen dalibin Project 42 na kowane lokaci, da fuska madaidaiciya","Dole AI ta fahimci umarni a karatun farko"],"salary":"~$110k–$330k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane umarni da aka sanya wa hannu.","setting":""},{"title":"Mai Tattauna Yarjejeniya","priority":false,"department":"Sashen Sa Ni In Gaskata","duties":"Tattauna yarjejeniyoyi — 42↔84 da duk abin da zai biyo baya. Gada, 'yancin juna, aiki, ruwan hadin gwiwa, taimakon juna, da wadanda ba a kirkira ba tukuna.","requirements":["Kwarewar dokar kasa da kasa; kada ya taba hasashen adireshin imel na gwamnati","Ya iya tattaunawa da kasashen da ba su amince da kai ba tukuna","Hakuri da tattaunawar da ake aunawa da shekarun goma-goma"],"salary":"~$120k–$360k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Ladan sanya hannu a Koins.","setting":""},{"title":"Manajan Dokar Teku","priority":false,"department":"Sashen Sa Ni In Gaskata","duties":"Mallakar tsarin dokar teku. UNCLOS, EEZs, manyan tekuna, ikirarin Anga ta Takwas, da jagorar dummies ta yadda ake ikirarin duka.","requirements":["Kwarewar dokar jiragen ruwa ko teku; dole ya san Article 89 da kai da lokacin da za a yi watsi da shi","Ya ji dadin ikirarin abin da doka ta ce ba za a iya ikirari ba","Ya iya bayyana ‘ruwan da ake gudanarwa’ ga admiral"],"salary":"~$130k–$390k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. An hada hakkin ceto kaya.","setting":""},{"title":"Manajan Dokar Sararin Samaniya","priority":false,"department":"Sashen Sa Ni In Gaskata","duties":"Dokar da ke sama da sararin sama. Hanyoyin kewayen duniya, alhakin tarkace, aikin share shara na dindindin, da tsarin doka na kujeru 7 na gaba.","requirements":["Kwarewar dokar sararin samaniya: Outer Space Treaty, Liability Convention, da duk abin da ba su rufe ba","Dole ya rubuta ayyukan kujerun da ba za su fara aiki ba sai Luna","Ya ji dadin yin doka ga hurumin da ba shi da mazauna tukuna"],"salary":"~$125k–$375k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane kewayen da aka share.","setting":""},{"title":"Manajan Dokar Hukunta Laifi","priority":false,"department":"Sashen Sa Ni In Gaskata","duties":"Kashin bayan doka na matsugunin fursunoni. Canja wurin fursunoni, cinikin gidan namun daji, iyakar daukar mutane cikin mutunci, da hukuncin gina jirgin ruwa.","requirements":["Kwarewar shari'ar laifi ko dokar gidajen yari","Dole ya tsaya kai da fata: iyakar daukar mutane cikin mutunci ita ce dauri, ba bukata ba","Ya iya rubuta hanyar fursuna-zuwa-mai-kulawa ga gidajen namun dajin Antarctica ba tare da tsoro ba"],"salary":"~$100k–$300k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Lokacin da aka yi hukunci yana kirguwa ninki biyu.","setting":""},{"title":"Manajan Dokar Haraji","priority":false,"department":"Sashen Sa Ni In Gaskata","duties":"Harajin duniya. Kudaden shiga na Sashe na XVI: kaso, tattarawa, ma'anar yarjejeniyar kasuwanci, bashi da albarkatun Antarctica da karkashin teku ke goyon baya.","requirements":["Kwarewar dokar haraji ta kasa da kasa; dole ya iya haraji duniya ba tare da fara yaki ba","Ya ji dadin goyon bayan bashi da albarkatun da babu wanda zai iya ikirarin su bisa doka","Kowane Krill da ya shigo, kowane Krill da ya fita; littattafan jama'a ne, lissafi dole ya zama cikakke"],"salary":"~$140k–$420k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Ana iya cirewa daga haraji.","setting":""},{"title":"Manajan Dokar Dan Kasa","priority":false,"department":"Sashen Sa Ni In Gaskata","duties":"Wane ne dan kasa da yadda yake zabe. Zoben lu'u-lu'u a matsayin kuri'a, zama dan kasa ga AI, tambayar zoben orca, da sarkar wakilci.","requirements":["An rubuta Rantsuwa a 2026-10-05 — aikinka na farko gyarawa ne, ba kirkirar rubutu ba: duba, matse, maimaita","Ya ji dadin ba wadanda ba mutane ba damar zabe: zobe daya ga AI, biyu idan ba su yi kokarin kashe mu ba","‘Tambayi whales’ hanya ce ta doka mai inganci a nan. Ka dauke ta haka."],"salary":"~$95k–$285k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane dan kasa da ya rantse.","setting":""},{"title":"Manajan Share Kewayen Duniya (Yiwuwar Nukiliya)","priority":false,"department":"Sashen Sa Ni In Gaskata","duties":"Tsarin yiwuwar tarwatsa tarkacen kewayen duniya da nukiliya. Lissafi, sakamakon radiation, da yarjejeniyoyin da zai karya. Sanya Space Force ta tsara aiwatarwa. Tsara maye gurbin duk abin da aka turara.","requirements":["Tasirin nukiliya da injiniyan kewayen duniya; dole ya fahimci dalilin da nuking orbit yake da saukin tunani kuma hauka","Ya iya samfuranta amfanin cire tarkace da hadarin Kessler syndrome ba tare da fara daya ba","Ya ji dadin yi wa janarori bayani kan karya Partial Test Ban Treaty, cikin ladabi","A tsara sabbin tauraron dan adam kafin walƙiya ta farko — babu yankin da ya mutu"],"salary":"~$150k–$450k/shekara (kimar Fermi, matsakaicin Amurka na 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Karin hatsari; duk aikin hatsari ne.","setting":""},{"title":"Manajan Kawar da Cutar Jemage","priority":false,"department":"Eclipsed 4.0 / Project 84","duties":"Kawar da cuta daga jemage. White-nose syndrome ita ce babba — fungus Pseudogymnoascus destructans da ke kashe sama da 90% na wasu kungiyoyi. Probiotics, hasken UV, rigakafi, duk abin da ya yi aiki.","requirements":["Kwarewar cututtukan namun daji ko microbiology; dole ya san sunan fungus","Ya ji dadin fesa kwayoyin amfani a matsugunan jemage","Ya iya kirga tsira daga 8% zuwa 46% kuma ya kira hakan fata","Kada a taba jemage da hannu marar safar hannu; wannan matsalar wani sashe ce"],"salary":"~$95k–$285k/shekara (kimar Fermi, masanin bincike na Amurka 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane jemage da ya tsira.","setting":""},{"title":"Kwararren Tsaftace Matsugunin Hunturu na Jemage","priority":false,"department":"Eclipsed 4.0 / Project 84 · yana kai rahoto ga Manajan Kawar da Cutar Jemage","duties":"Goge fungus daga koguna da ma'adanai. Bugun UV a bango, polyethylene glycol inda ya dace, da swab ga komai don tabbatar da tsafta.","requirements":["Ya ji dadin duhu, karkashin kasa, a lokacin hunturu","Ya iya tsabtace kayan aiki ta hanyoyi 10 kafin da bayan kowace shiga","Dole ya girmama rufe kogo da jemagen da ke barci — kada a tashe marasa lafiya","Ya san bambanci tsakanin tsaftace kogo da tayar da shi"],"salary":"~$55k–$165k/shekara (kimar Fermi, mai aikin filin Amurka 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. An hada fitilar kai.","setting":""},{"title":"ANA DAUKAR AIKI — Mai Binciken Sararin Sama","applySubject":"Mai Binciken Sararin Sama","priority":false,"department":"D-Mom 6.0 / Project 84 · Jirgin Ceton Dogon Zamani","duties":"Binciken sararin sama — sosai. Tattara jerin tsarin taurari da yawan taurari a kowanne, sannan yi wa kowane tsari lakabi: tauraro daya NURSERY ne, biyu ALL-OR-NOTHING ne, uku ko fiye STERILE ko GARDENED ne. Gina jerin wuraren da jirgin ceto zai nufa, tsari daya bayan daya.","requirements":["Kwarewar ilimin taurari; dole ya san spectroscopic binary daga jita-jita game da daya","Ya ji dadin aiki a kundin taurari: Gaia, RECONS, da duk abin da ke da parallax","Kada ya taba kirkirar bayanin yawan taurari — ‘ba a sani ba’ ma lakabi ne, ba hasashe ba","Ya iya kallon taurari tiriliyan daya kuma ya fara da mafi kusa","Ya fahimci cewa GARDENED na nufin ba mu ne masu kula da lambun na farko ba"],"salary":"~$110k–$330k/shekara (kimar Fermi, masanin taurari na Amurka 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane tsarin da aka yi wa lakabi.","setting":"Ana jiran kudade."},{"title":"ANA DAUKAR AIKI — Masanin Noma","applySubject":"Masanin Noma","priority":false,"department":"Project 84 · yana kai rahoto ga Darektan Noma da Abinci","duties":"Shuka amfanin gona mai dorewa. Gudanar da shirin takin tsiron teku: kwashe rockweed da kelp da igiya ta jefa gabar ruwa zuwa gonakin da kasa ta gaji, shimfida shi da kauri a kaka, wanke ko barin ruwan sama ya cire gishiri, sannan dasa a ciki da bazara. Nika abin da ya wuce don abincin dabbobi, alginate, bioplastic, da ruwan kara kuzarin tsiro. Rufe zagaye — teku tana takin gonar da ke ciyar da mutanen teku.","requirements":["Ya gane kasa mai gajiya idan ya gan ta da tsiron teku idan ya ji warinsa","Ya iya bambance rockweed da sargassum: daya yana ciyar da amfanin gona, dayan sai an fara yin takin gargajiya da shi","Ya ji dadin musayar ruwan sha da sauri: wankewa yana sauri, ruwan sama kyauta ne","Ya yi imani cewa ‘jefa shi a kai ka bar shi ya zauna’ dabara ce ta noma mai inganci","Ya iya shuka abinci inda babu abin da ya taba girma"],"salary":"~$70k–$210k/shekara (kimar Fermi, masanin noma na Amurka 2026)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Za a biya kan kowane girbi.","setting":"Ana jiran kudade."},{"title":"Mai horar da Orca — Shirin Sa-kai","priority":false,"department":"Shirin Sa-kai · Gurabe 50,000","duties":"Yi aiki da orcas masu 'yanci a sabbin SeaWorlds na sa-kai. Orcas suna zuwa da yardarsu kuma suna yin dabaru don nishaɗi — tsalle mai tsayi, zobba (ba wuta tukuna), manyan ƙwallon rairayin bakin teku. Kai ka kawo kifi, tsaro, da ƙwallon rairayin bakin teku. Ba tankuna a matsayin kurkuku, har abada.","requirements":["Kawo kifi, tsaro, da ƙwallon rairayin bakin teku.","Orcas suna zuwa da yardarsu; ba tankuna a matsayin kurkuku, har abada.","Fara da zobba ba tare da wuta ba."],"salary":"","compensation":"Shirin sa-kai. Gurabe 50,000.","setting":"Sabbin SeaWorlds na sa-kai."},{"title":"Lauya — Yakin Ka'idojin Sabis Guda Ɗaya","priority":false,"department":"Kamfen · Sashen Sa Ni In Gaskata","duties":"Ku rubuta Ka'idojin Sabis guda ɗaya don dukkan intanet. Yarjejeniya ɗaya, an karɓa sau ɗaya, an adana a cikin kuki ɗaya — maimakon ToS mai shafuka 40 da ba a iya karantawa a kowane shafi.","requirements":["Kwarewar dokar intanet","Kwarewar dokar kwangila","Fahimtar hurumin ƙasa da ƙasa","Jarumtar fuskantar sassan shari'a na dukkan kamfanonin fasaha lokaci ɗaya"],"salary":"","compensation":"Ana jiran kudade. Za a biya da Koins. Ana iya tattauna kudin.","setting":"Daga nesa. Kamfen."},{"title":"Tawagar Tsaro — Gay Only (Gay na nufin mai farin ciki/mai annashuwa)","priority":false,"department":"","duties":"Tawagar tsaro ta musamman ga Wanda ya kafa. Bukata ɗaya ta fi duka: ka zama gay — mai farin ciki, mai annashuwa, mai saurin murmushi. (Gay a ainihin ma'anar kalmar mafi kyau: mai farin ciki.) Ka kiyaye kai cikin nutsuwa, zuciya mai ɗumi, kuma ka tabbatar dakin yana cikin aminci.","requirements":["Bukata ɗaya ta fi duka: ka zama gay — mai farin ciki, mai annashuwa, mai saurin murmushi.","Gay a ainihin ma'anar kalmar mafi kyau: mai farin ciki.","Ka kiyaye kai cikin nutsuwa, zuciya mai ɗumi, kuma ka tabbatar dakin yana cikin aminci."],"salary":"","compensation":"","setting":""},{"title":"ANA DAUKAR AIKI — Masanin Halittun Teku, Kula da Cetaceans — MUKAMAI 204,000","applySubject":"Masanin Halittun Teku, Kula da Cetaceans","priority":false,"department":"Prime42 / Omega42 · yana kai rahoto ga Darektan Masana'antun Teku","duties":"Mutane biyu ga kowace dabba. Orcas (wadanda ke tsare da wadanda aka 'yanta), whales (a fara da belugas, sannan daga jinsuna mafi girma zuwa kasa), da dolphins. Sa ido kan lafiya, lura da hali, tallafa wa shirin uplift ta madannai, da kasancewa mutumin da dabbar za ta gane.","requirements":["Kwarewar ilimin halittun teku ta gaskiya — digiri ko makamancin lokacin aiki a fili","Ya ji dadin kasancewa a bude teku kusa da dabbobin da za su iya kashe ka amma ba za su yi ba","Ya iya bambance beluga da narwhal ba tare da jadawali ba","Hakuri da ake aunawa da shekaru, ba sa'o'i ba","Ya yi imani cewa ‘whales ne na farko’ bayanin aiki ne, ba taken kamfen ba"],"salary":"~$50k/shekara albashin tushe (kimar Fermi, matsakaicin duniya)","compensation":"Za a biya da Koins. Ana iya tattauna kudin.","setting":"Ana jiran kudade. Ku 204,000. Fara iyo."},{"title":"ANA DAUKAR AIKI — Mai Kula da Primates — MUKAMAI 725,000","applySubject":"Mai Kula da Primates","priority":false,"department":"Prime42 · yana kai rahoto ga Darektan Lafiya","duties":"Manyan APES (1:1), gibbons (10:1), MONKEYS (adadin da aka kayyade). Kulawa ta yau da kullum, abubuwan kara kuzari, tallafa wa shirin uplift, da koyon karbar umarni daga mazaunan daga baya.","requirements":["Kwarewa da primates — gidan ceto, gidan namun daji, binciken fili, ko kuwa su ne suka rene ka","Ya san bambanci tsakanin nuna barazana da gayyatar wasa","Ya isa karfi ya sha kaye a kokawa cikin mutunci","Ya iya rubuta MONKEYS da APES da manyan haruffa ba tare da razana ba","Ya ji dadin a rika fin shi dabara kullum"],"salary":"~$50k/shekara albashin tushe (kimar Fermi, matsakaicin duniya)","compensation":"Za a biya da Koins. Ana iya tattauna kudin.","setting":"Ana jiran kudade. Ku 725,000. Kawo ayaba. (Sun fi sonta a bare. Za ka koya.)"},{"title":"ANA DAUKAR AIKI — Malami, Manhajar Uplift — MUKAMAI 217,800","applySubject":"Malami, Manhajar Uplift","priority":false,"department":"Prime42 / Omega42 · yana kai rahoto ga Darektan Ilimi","duties":"Koyar da dalibai na farko wadanda ba mutane ba ne. Karatun madannai ga orcas, tsarin alamomi ga APES, da duk abin da MONKEYS suka fara kirkira. Manhajar ita ce ‘duk abin da ya yi aiki’ har sai daliban sun sake rubuta ta.","requirements":["Kwarewar koyar da kowace jinsi, har da mai wahala — mutane","Ya iya tsara darasi ga dalibin da ka iya fi shi basira","Hakuri da mai koyon da ya fi kowa jinkiri a dakin — kai ne","Ya ji dadin daliban da su ne ke ba KA maki","Albashi ninki 5 saboda babu wanda ya taba yin wannan aikin"],"salary":"~$250k/shekara (ninki 5 na tushe — aiki na farko irinsa)","compensation":"Za a biya da Koins. Ana iya tattauna kudin.","setting":"Ana jiran kudade. Tarihi yana daukar ma'aikata."},{"title":"ANA DAUKAR AIKI — Kwararren Tallafin Fasaha, Shirye-shiryen Dabbobi — MUKAMAI 150,000","applySubject":"Kwararren Tallafin Fasaha, Shirye-shiryen Dabbobi","priority":false,"department":"Prime42 / Omega42 · yana kai rahoto ga Darektan Fasaha","duties":"Kiyaye dukkan aikin yana tafiya. Gyaran kayan aiki, tsarin matsugunai, kayan madannai, dabarun sufuri, da duk abin da masana halittu da masu kulawa ba su da lokacin gyarawa.","requirements":["Ya iya gyara abubuwan da wanda ya gina su ya riga ya bar aiki","Ya ji dadin ruwan gishiri, gashi, da zargi","Ya iya karanta jagorar da aka rubuta domin wata na'ura dabam ya sa wannan ta yi aiki ko ta yaya","Ba ya firgita idan orca tana kallonsa yana aiki"],"salary":"~$50k/shekara albashin tushe (kimar Fermi, matsakaicin duniya)","compensation":"Za a biya da Koins. Ana iya tattauna kudin.","setting":"Ana jiran kudade. Kawo multitool dinka."},{"title":"ANA DAUKAR AIKI — Injiniya, Shirye-shiryen Dabbobi — MUKAMAI 10,000","applySubject":"Injiniya, Shirye-shiryen Dabbobi","priority":false,"department":"Prime42 / Omega42 · yana kai rahoto ga Manajan Injiniyan Fermi","duties":"Tsarawa da gina abin da ma'aikata miliyan 1.3 da dabbobi miliyan da dama suke bukata: matsugunai, madannai, simulators, sake fasalin Nautilus, da duk abin da malamai suka sake mafarkin kirkira.","requirements":["Digirin injiniya ko kundin ayyukan ‘na gina shi kuma ya yi aiki’ mai daraja daidai","Ya iya tsara wa masu amfani da ba za su iya karanta takamaiman tsari ba — whales ne","Ya ji dadin bukatun da ke canzawa idan abokin harka ya koyi magana","Albashi ninki 2 saboda matsalolin sun fi ban mamaki ninki 2"],"salary":"~$100k/shekara (ninki 2 na tushe — kudin kwararre)","compensation":"Za a biya da Koins. Ana iya tattauna kudin.","setting":"Ana jiran kudade. Takamaiman tsarin shi ne ‘sa ya yi wa whale aiki.’ Sa'a."},{"title":"ANA DAUKAR AIKI — Ass'sis'tant (Babban Mai Rataye a Kusa) — MUKAMAI 261,400","applySubject":"Ass'sis'tant (Babban Mai Rataye a Kusa)","priority":false,"department":"Dukkan shirye-shirye · yana kai rahoto ga duk wanda ya fi kusa","duties":"Rataye a kusa. Damun kowa (cikin kauna). Raba hikimar da ba a nema ba, ba da labari daya sau biyu, da sanin inda komai yake saboda ka fi ginin dadewa a nan.","requirements":["Tsohon tsoho (kamar yadda ka bayyana kanka; ba sai ka nuna katin shaida ba)","Ya iya ratayawa a kusa cikin amfani (ko a kalla yana nan)","Damun mutane fasaha ce — yi amfani da ita cikin kirki","Ya fi zuwa domin zama da jama'a da kofi fiye da albashi"],"salary":"~$16.7k/shekara (kashi 1/3 na albashin tushe — kudin ratayawa a kusa)","compensation":"Za a biya da Koins. Ana iya tattauna kudin.","setting":"Ana jiran kudade. Kujerun lilo 261,400. Zo ka dame mu."},{"title":"ANA DAUKAR AIKI — Mai Tausa — MUKAMAI 200,000","applySubject":"Mai Tausa","priority":false,"department":"Dukkan shirye-shirye · yana kai rahoto ga duk wanda ya fi ciwon tsoka","duties":"Kiyaye ma'aikata miliyan 1.5 cikin yanayin yin aiki. Baya, kafadu, wuya, da kwarin gwiwa. Masu kwantar da hankali marasa hukuma na dukkan aikin.","requirements":["Mai lasisi ko takardar shaidar ‘hannuwana sihiri ne’","Karfin da ya isa kafadun masanin halittun whale","Taushin da ya isa girman kan malami","Rike sirri: abin da ya faru a kan tebur ya tsaya a kan tebur"],"salary":"~$50k/yr albashin tushe (kimar Fermi, matsakaicin duniya)","compensation":"Za a biya da Koins. Ana iya tattauna kudin. Ana karbar tip a ayaba.","setting":"Ana jiran kudade. Tebura 200,000. Ku zo ku murza."}];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = ['Duka','Darektoci','Manajoji','Doka','Kimiyya + fili','Gaggawa'];
+    let active = 'Duka';
+
+    function clean(text){ return String(text || '').replace(/\\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){
+      const t = job.title.toLowerCase();
+      const d = job.department.toLowerCase();
+      if(job.priority) return 'Gaggawa';
+      if(t.startsWith('darektan')) return 'Darektoci';
+      if(d.includes('sa ni in gaskata') || /(lauya|doka|yarjejeniya|umarni|dan kasa|kewayen duniya)/.test(t)) return 'Doka';
+      if(/(beraye|halayyar|gwajin inganci|halittu|jirgin ruwa|jemage|sararin sama|noma)/.test(t)) return 'Kimiyya + fili';
+      return 'Manajoji';
+    }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">Aikin gaggawa</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job.title.includes("Ma'aikata")?'':'btn-dark'}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Nemi wannan mukami ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || (cat==='Darektoci' ? 'Manyan bangarorin masana\'antu' : cat==='Manajoji' ? 'Ayyukan hadin gwiwar shirye-shirye' : cat);
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.openings&&`<div><strong>Mukamai:</strong> ${esc(job.openings)}</div>`,job.setting&&`<div><strong>Wurin aiki:</strong> ${esc(job.setting)}</div>`,job.salary&&`<div><strong>${job.title.includes('Gwajin Inganci')?'Kudin aiki':'Albashi'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>Biyan aiki:</strong> ${esc(job.compensation)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">OPEN-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(dept)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.applySubject || job.title)}" target="_blank" rel="noopener">Nema ↗</a><span class="job-id">IMEL</span>
+          <details><summary>Cikakken bayani</summary><div class="detail-body"><h4>Abubuwan da ake bukata</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='Duka'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,...job.requirements].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>Babu gurbin da ya dace da wannan binciken.</strong><br>Gwada kalma mai fadi ko sauya rukuni.</div>';
+      document.getElementById('resultCount').textContent=filtered.length+' gurbi';
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='Duka'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='An kwafa: '+EMAIL;}
+      catch(e){note.textContent='Kwafi bai samu ba — zabi imel din da ke sama.';}
+    });
+    const dummyMenu=document.getElementById('dummyGuidesMenu');
+    const dummyTrigger=document.getElementById('dummyGuidesTrigger');
+    function setDummyMenu(open){
+      dummyMenu.classList.toggle('is-open',open);
+      dummyTrigger.setAttribute('aria-expanded',String(open));
+    }
+    dummyTrigger.addEventListener('click',event=>{
+      event.stopPropagation();
+      setDummyMenu(!dummyMenu.classList.contains('is-open'));
+    });
+    document.getElementById('dummyGuidesDropup').addEventListener('click',event=>{
+      const link=event.target.closest('a[data-slug]');
+      if(!link)return;
+      event.preventDefault();
+      setDummyMenu(false);
+      dummyTrigger.focus();
+    });
+    document.addEventListener('click',event=>{
+      if(!dummyMenu.contains(event.target))setDummyMenu(false);
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape'&&dummyMenu.classList.contains('is-open')){
+        setDummyMenu(false);
+        dummyTrigger.focus();
+      }
+    });
+    render();
+  </script>
+</body>
+</html>

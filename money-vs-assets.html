@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#f2efe7" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#111613" media="(prefers-color-scheme: dark)" />
+  <link rel="icon" href="data:," />
+  <title>Money vs Assets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,650&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper:#f2efe7;
+      --ink:#171b18;
+      --muted:#5d625c;
+      --line:#c6c3b8;
+      --soft:#e6e2d7;
+      --money:#d65336;
+      --money-soft:#f0d0c6;
+      --asset:#1e6d54;
+      --asset-soft:#c8ddd3;
+      --wash:#ebe8df;
+      --shadow:0 20px 60px rgba(25,29,25,.12);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper:#111613;
+        --ink:#ecede8;
+        --muted:#aab0aa;
+        --line:#3b433e;
+        --soft:#1c241f;
+        --money:#f07858;
+        --money-soft:#48271e;
+        --asset:#5db991;
+        --asset-soft:#18382b;
+        --wash:#171e1a;
+        --shadow:0 20px 70px rgba(0,0,0,.35);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:"Newsreader", Georgia, serif;font-size:18px;line-height:1.5}
+    button{font:inherit}
+    a{color:inherit}
+    .page{max-width:1280px;margin:0 auto;padding:clamp(18px,4vw,56px)}
+    .site-menu{position:fixed;top:18px;right:18px;z-index:20;font-family:"IBM Plex Mono",monospace}
+    .site-menu>summary{list-style:none;display:flex;align-items:center;gap:9px;padding:11px 14px;border:1px solid var(--line);background:var(--paper);box-shadow:0 6px 20px rgba(25,29,25,.1);font-size:12px;font-weight:500;line-height:1;letter-spacing:.09em;text-transform:uppercase;cursor:pointer}
+    .site-menu>summary::-webkit-details-marker{display:none}
+    .site-menu>summary::after{content:"+";font-size:16px;line-height:.7;color:var(--asset)}
+    .site-menu[open]>summary::after{content:"−"}
+    .site-menu>summary:hover,.site-menu>summary:focus-visible{border-color:var(--ink);outline:none}
+    .site-menu:not([open]) nav{display:none}
+    .site-menu nav{position:absolute;z-index:1;top:calc(100% + 8px);right:0;width:min(330px,calc(100vw - 36px));max-height:calc(100dvh - 82px);overflow-y:auto;overscroll-behavior:contain;background:var(--paper);border:1px solid var(--line);box-shadow:var(--shadow)}
+    .site-menu ol{list-style:none;margin:0;padding:8px 0;counter-reset:menu}
+    .site-menu li{counter-increment:menu}
+    .site-menu li>a,.site-menu .group-summary{display:grid;grid-template-columns:2.4em minmax(0,1fr);gap:9px;align-items:baseline;padding:9px 16px;text-decoration:none;font-size:13px;line-height:1.35}
+    .site-menu li>a::before,.site-menu .group-summary::before{content:counter(menu,decimal-leading-zero);font-size:10px;letter-spacing:.05em;color:var(--muted)}
+    .site-menu li>a:hover,.site-menu li>a:focus-visible,.site-menu .group-summary:hover,.site-menu .group-summary:focus-visible{background:var(--soft);color:var(--asset);outline:none}
+    .site-menu a[aria-current="page"]{background:var(--asset-soft);color:var(--asset);font-weight:500}
+    .site-menu .menu-submenu{border-top:1px solid transparent;border-bottom:1px solid transparent}
+    .site-menu .menu-submenu[open]{border-color:var(--line);background:var(--wash)}
+    .site-menu .menu-submenu>summary{list-style:none;cursor:pointer}
+    .site-menu .menu-submenu>summary::-webkit-details-marker{display:none}
+    .site-menu .group-summary::after{content:"+";justify-self:end;color:var(--asset);font-size:16px;line-height:.7}
+    .site-menu .menu-submenu[open]>.group-summary::after{content:"−"}
+    .site-menu .group-summary{grid-template-columns:2.4em minmax(0,1fr) auto}
+    .site-menu .submenu-primary{display:block;margin:0 16px 8px 49px;color:var(--asset);font-size:11px;line-height:1.35;text-decoration-thickness:1px;text-underline-offset:3px}
+    .site-menu .submenu-links{padding:4px 0 9px;border-top:1px solid var(--line);max-height:270px;overflow-y:auto;overscroll-behavior:contain;background:var(--paper)}
+    .site-menu .submenu-links a{display:block;padding:7px 16px 7px 49px;text-decoration:none;font-size:12px;line-height:1.35}
+    .site-menu .submenu-links a:hover,.site-menu .submenu-links a:focus-visible{background:var(--soft);color:var(--asset);outline:none}
+    .site-menu .submenu-heading{display:block;padding:9px 16px 4px 49px;font-size:11px;font-weight:500;line-height:1.35;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .site-menu .submenu-note{display:block;padding:7px 16px 9px 49px;font-size:11px;line-height:1.45;color:var(--muted)}
+    .mast{min-height:min(820px,94vh);display:grid;grid-template-columns:minmax(0,1.12fr) minmax(330px,.88fr);gap:clamp(28px,6vw,92px);align-items:center;border-bottom:1px solid var(--line);padding:clamp(40px,7vh,90px) 0}
+    .index{font:500 12px/1.4 "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;align-items:center;margin-bottom:30px}
+    .index::before{content:"";width:38px;height:1px;background:var(--ink)}
+    h1{font-size:clamp(52px,8vw,112px);line-height:.86;letter-spacing:-.055em;margin:0;max-width:820px;font-weight:500}
+    h1 .money-word{color:var(--money);font-style:italic}
+    h1 .asset-word{color:var(--asset);font-style:italic}
+    .lede{font-size:clamp(21px,2.2vw,31px);line-height:1.25;max-width:670px;margin:36px 0 0}
+    .lede em{font-style:normal;border-bottom:2px solid var(--ink)}
+    .thesis-card{position:relative;background:var(--ink);color:var(--paper);padding:clamp(26px,4vw,50px);box-shadow:var(--shadow)}
+    .thesis-card::before{content:"";position:absolute;inset:14px;border:1px solid color-mix(in srgb,var(--paper) 30%,transparent);pointer-events:none}
+    .thesis-card blockquote{font-size:clamp(29px,3.2vw,45px);line-height:1.02;letter-spacing:-.035em;margin:0 0 36px}
+    .thesis-card footer{font:400 12px/1.5 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.12em;color:color-mix(in srgb,var(--paper) 70%,transparent)}
+    .thesis-card .zero{display:block;font:500 clamp(72px,12vw,160px)/.75 "IBM Plex Mono",monospace;letter-spacing:-.1em;color:var(--money);margin:34px 0 24px}
+
+    .section{padding:clamp(70px,10vw,140px) 0;border-bottom:1px solid var(--line)}
+    .section-head{display:grid;grid-template-columns:180px minmax(0,780px);gap:32px;margin-bottom:clamp(48px,7vw,92px)}
+    .num{font:500 12px/1.4 "IBM Plex Mono",monospace;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+    h2{font-size:clamp(40px,5.2vw,72px);line-height:.98;letter-spacing:-.045em;margin:0;font-weight:500}
+    .deck{font-size:clamp(19px,2vw,25px);line-height:1.35;color:var(--muted);margin:22px 0 0;max-width:690px}
+    .duo{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .panel{padding:clamp(28px,5vw,68px) clamp(0px,4vw,54px)}
+    .panel:first-child{padding-left:0;border-right:1px solid var(--line)}
+    .panel:last-child{padding-right:0}
+    .panel-tag{font:500 12px/1.4 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:42px;display:flex;align-items:center;gap:9px}
+    .panel-tag::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor}
+    .money .panel-tag,.money .panel-title{color:var(--money)}
+    .assets .panel-tag,.assets .panel-title{color:var(--asset)}
+    .panel-title{font-size:clamp(36px,4vw,58px);line-height:1;margin:0 0 26px;font-weight:500}
+    .panel p{max-width:500px;margin:0 0 22px}
+    .definition{font:400 14px/1.55 "IBM Plex Mono",monospace;padding-top:24px;margin-top:38px;border-top:1px solid var(--line);color:var(--muted)}
+
+    .machine{background:var(--wash);padding:clamp(22px,4vw,52px);border:1px solid var(--line)}
+    .machine-bar{display:flex;justify-content:space-between;gap:18px;align-items:start;margin-bottom:34px}
+    .machine-label{font:500 12px/1.4 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
+    .machine-state{font:500 12px/1.4 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;color:var(--asset);text-align:right}
+    .machine-state.changed{color:var(--money)}
+    .ledger{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .ledger-card{background:var(--paper);border:1px solid var(--line);padding:24px;min-height:205px;position:relative;overflow:hidden}
+    .ledger-card h3{font-size:30px;margin:0 0 34px;font-weight:500}
+    .ledger-row{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-top:1px solid var(--line);font:400 13px/1.4 "IBM Plex Mono",monospace;gap:16px}
+    .ledger-row strong{font-size:17px;font-weight:500;transition:all .4s ease}
+    .void-mark{position:absolute;inset:0;display:grid;place-items:center;font:500 clamp(38px,7vw,78px)/1 "IBM Plex Mono",monospace;letter-spacing:.08em;color:var(--money);background:color-mix(in srgb,var(--paper) 88%,transparent);opacity:0;transform:rotate(-8deg) scale(1.08);pointer-events:none}
+    .machine.changed .cash .void-mark{opacity:1;transform:rotate(-8deg) scale(1)}
+    .machine.changed .cash .ledger-row strong{color:var(--muted);text-decoration:line-through}
+    .asset-status{display:inline-flex;align-items:center;gap:7px;color:var(--asset)}
+    .asset-status::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+    .machine-controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:24px}
+    .change-btn{border:0;background:var(--ink);color:var(--paper);padding:14px 20px;font:500 13px/1 "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s}
+    .change-btn:hover,.change-btn:focus-visible{background:var(--money);outline:none}
+    .reset-btn{border:1px solid var(--line);background:transparent;color:var(--ink);padding:13px 19px;font:500 13px/1 "IBM Plex Mono",monospace;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+    .reset-btn:hover,.reset-btn:focus-visible{border-color:var(--ink);outline:none}
+    .machine-note{margin:0 0 0 auto;font:400 12px/1.5 "IBM Plex Mono",monospace;color:var(--muted)}
+
+    .logic{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--line)}
+    .logic-step{padding:clamp(25px,4vw,46px);min-height:310px;position:relative;background:var(--paper)}
+    .logic-step+ .logic-step{border-left:1px solid var(--line)}
+    .logic-step .step-n{font:500 12px/1 "IBM Plex Mono",monospace;color:var(--muted);margin-bottom:80px}
+    .logic-step h3{font-size:clamp(27px,3vw,39px);line-height:1.03;margin:0 0 18px;font-weight:500}
+    .logic-step p{margin:0;color:var(--muted);font-size:17px;line-height:1.45}
+    .logic-step:nth-child(2){background:var(--money-soft)}
+    .logic-step:nth-child(3){background:var(--asset-soft)}
+
+    .catch{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,7vw,100px);align-items:start}
+    .catch-title{position:sticky;top:28px}
+    .catch-copy{font-size:clamp(24px,2.7vw,36px);line-height:1.25;letter-spacing:-.015em;margin:0}
+    .catch-copy + .catch-copy{margin-top:32px}
+    .under{background:linear-gradient(transparent 70%,var(--asset-soft) 70%)}
+    .rule-card{margin-top:52px;padding:30px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+    .rule-card p{margin:0;font:400 14px/1.55 "IBM Plex Mono",monospace}
+    .rule-icon{width:68px;height:68px;color:var(--asset)}
+
+    .verdict{padding:clamp(80px,13vw,170px) 0 70px;display:grid;grid-template-columns:180px minmax(0,1fr);gap:32px}
+    .verdict blockquote{margin:0;font-size:clamp(46px,7vw,96px);line-height:.94;letter-spacing:-.055em;max-width:950px}
+    .verdict .red{color:var(--money);font-style:italic}
+    .verdict .green{color:var(--asset);font-style:italic}
+    .fine{grid-column:2;margin-top:50px;font:400 12px/1.6 "IBM Plex Mono",monospace;color:var(--muted);max-width:700px}
+
+    @media(max-width:800px){
+      .mast{grid-template-columns:1fr;min-height:auto;padding-top:52px;padding-bottom:72px}
+      .thesis-card{max-width:540px}
+      .section-head{grid-template-columns:1fr;gap:12px}
+      .duo{grid-template-columns:1fr}
+      .panel:first-child{padding-left:0;padding-right:0;border-right:0;border-bottom:1px solid var(--line)}
+      .panel:last-child{padding-left:0;padding-right:0}
+      .ledger{grid-template-columns:1fr}
+      .logic{grid-template-columns:1fr}
+      .logic-step{min-height:auto}
+      .logic-step+ .logic-step{border-left:0;border-top:1px solid var(--line)}
+      .logic-step .step-n{margin-bottom:40px}
+      .catch{grid-template-columns:1fr}
+      .catch-title{position:static}
+      .verdict{grid-template-columns:1fr;gap:20px}
+      .fine{grid-column:1}
+    }
+    @media(max-width:520px){
+      body{font-size:17px}
+      .page{padding-left:18px;padding-right:18px}
+      h1{font-size:54px}
+      .machine{margin-left:-18px;margin-right:-18px;border-left:0;border-right:0;padding:22px 18px}
+      .machine-bar{display:block}
+      .machine-state{text-align:left;margin-top:10px}
+      .machine-note{width:100%;margin-top:4px}
+      .rule-card{grid-template-columns:1fr}
+      .rule-icon{width:52px;height:52px}
+    }
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{transition:none!important}
+    }
+  </style>
+  <style>
+    :root { --bottom-nav-height: 64px; }
+    body { padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom)); }
+    .site-bottom-nav {
+      --bn-bg:#171b18;
+      --bn-ink:#f2efe7;
+      --bn-line:rgba(242,239,231,.24);
+      --bn-hover:#1e6d54;
+      --bn-label:#a9cec0;
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 100;
+      min-height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+      padding-bottom: env(safe-area-inset-bottom);
+      background: var(--bn-bg);
+      color: var(--bn-ink);
+      border-top: 1px solid var(--bn-line);
+      font-family: "IBM Plex Mono", monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      .site-bottom-nav { --bn-bg:#1c241f; --bn-ink:#ecede8; --bn-line:#3b433e; }
+    }
+    .site-bottom-nav__items { display: flex; width: 100%; min-height: var(--bottom-nav-height); }
+    .site-bottom-nav__item { position: relative; flex: 1 1 25%; min-width: 0; border-right: 1px solid var(--bn-line); }
+    .site-bottom-nav__item:last-child { border-right: 0; }
+    .site-bottom-nav__button,
+    .site-bottom-nav__link {
+      width: 100%;
+      min-height: var(--bottom-nav-height);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      background: transparent;
+      color: var(--bn-ink);
+      font: 500 12px/1.2 "IBM Plex Mono", monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .site-bottom-nav__button { cursor: pointer; }
+    .site-bottom-nav__link { text-decoration: none; }
+    .site-bottom-nav__button:hover,
+    .site-bottom-nav__button:focus-visible,
+    .site-bottom-nav__link:hover,
+    .site-bottom-nav__link:focus-visible,
+    .site-bottom-nav__item.is-open > .site-bottom-nav__button {
+      background: var(--bn-hover);
+      color: #fff;
+      outline: 2px solid #fff;
+      outline-offset: -3px;
+    }
+    .site-bottom-nav__chevron { flex: 0 0 auto; width: 14px; height: 14px; transition: transform .18s ease; }
+    .site-bottom-nav__item.is-open .site-bottom-nav__chevron { transform: rotate(180deg); }
+    .site-bottom-nav__dropup {
+      position: absolute;
+      left: 0;
+      bottom: 100%;
+      width: min(360px, 100vw);
+      max-height: calc(100svh - var(--bottom-nav-height) - env(safe-area-inset-bottom) - 16px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      background: var(--bn-bg);
+      border: 1px solid var(--bn-line);
+      border-bottom: 0;
+      box-shadow: 0 -16px 38px rgba(0, 0, 0, .28);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .16s ease, transform .16s ease, visibility 0s linear .16s;
+      scrollbar-color: var(--bn-label) var(--bn-bg);
+    }
+    .site-bottom-nav__item.is-open .site-bottom-nav__dropup {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+      transition-delay: 0s;
+    }
+    .site-bottom-nav__dropup-label {
+      padding: 12px 16px 8px;
+      color: var(--bn-label);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--bn-line);
+    }
+    .site-bottom-nav__dropup a {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 10px 16px;
+      color: var(--bn-ink);
+      text-decoration: none;
+      font: 400 13px/1.25 "IBM Plex Mono", monospace;
+      border-bottom: 1px solid var(--bn-line);
+    }
+    .site-bottom-nav__dropup a:last-child { border-bottom: 0; }
+    .site-bottom-nav__dropup a:hover,
+    .site-bottom-nav__dropup a:focus-visible {
+      background: var(--bn-hover);
+      color: #fff;
+      outline: 2px solid #fff;
+      outline-offset: -3px;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .site-bottom-nav__item--menu:hover .site-bottom-nav__dropup {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+        transition-delay: 0s;
+      }
+      .site-bottom-nav__item--menu:hover > .site-bottom-nav__button {
+        background: var(--bn-hover);
+        color: #fff;
+      }
+    }
+    @media (max-width: 620px) {
+      .site-bottom-nav__button,
+      .site-bottom-nav__link { padding: 8px 5px; font-size: 11px; }
+      .site-bottom-nav__button { gap: 4px; }
+      .site-bottom-nav__dropup { position: fixed; right: 0; left: 0; width: 100%; bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom)); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .site-bottom-nav__chevron,
+      .site-bottom-nav__dropup { transition: none; }
+    }
+    @media print { .site-bottom-nav { display: none !important; } body { padding-bottom: 0; } }
+  </style>
+</head>
+<body>
+  <details class="site-menu">
+    <summary>Menu</summary>
+    <nav aria-label="Public pages">
+      <ol>
+        <li><a href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2" target="_blank" rel="noopener">Plan #42</a></li>
+        <li>
+          <details class="menu-submenu">
+            <summary class="group-summary">Project 84</summary>
+            <a class="submenu-primary" href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly" target="_blank" rel="noopener">Open Project 84</a>
+            <div class="submenu-links" aria-label="Project 84">
+              <span class="submenu-heading">Non-profit aimed arms</span>
+              <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz" target="_blank" rel="noopener">Omega42</a>
+              <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3" target="_blank" rel="noopener">Prime 42</a>
+              <span class="submenu-note">Held until they can understand economics enough to participate — then they take over, with adjustments to equalize between currencies.</span>
+            </div>
+          </details>
+        </li>
+        <li><a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw" target="_blank" rel="noopener">Project 84 Dummies Guide — Level 14 (English)</a></li>
+        <li><a href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk" target="_blank" rel="noopener">Claiming Oceans &amp; Antarctica</a></li>
+        <li><a href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb" target="_blank" rel="noopener">HEAR-TS Work Boats</a></li>
+        <li><a href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt" target="_blank" rel="noopener">Hurricane Research</a></li>
+        <li><a href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl" target="_blank" rel="noopener">Floating Skyports</a></li>
+        <li><a href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k" target="_blank" rel="noopener">Human Recovery Disk</a></li>
+        <li><a href="https://muse.ai/s/about-the-founder-ym5xspl6ktpxc" target="_blank" rel="noopener">About the Founder</a></li>
+        <li>
+          <details class="menu-submenu">
+            <summary class="group-summary">Jobs / WeFind's for Delegations</summary>
+            <a class="submenu-primary" href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu" target="_blank" rel="noopener">Open main jobs page</a>
+            <div class="submenu-links" aria-label="Job listing languages">
+              <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu" target="_blank" rel="noopener">English</a>
+              <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys" target="_blank" rel="noopener">Amharic</a>
+              <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7" target="_blank" rel="noopener">Arabic</a>
+              <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94" target="_blank" rel="noopener">Bengali</a>
+              <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs" target="_blank" rel="noopener">Chinese (Simplified)</a>
+              <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6" target="_blank" rel="noopener">Chinese (Traditional)</a>
+              <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5" target="_blank" rel="noopener">Czech</a>
+              <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu" target="_blank" rel="noopener">Danish</a>
+              <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze" target="_blank" rel="noopener">Dutch</a>
+              <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51" target="_blank" rel="noopener">Filipino</a>
+              <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf" target="_blank" rel="noopener">Finnish</a>
+              <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl" target="_blank" rel="noopener">French</a>
+              <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb" target="_blank" rel="noopener">German</a>
+              <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc" target="_blank" rel="noopener">Greek</a>
+              <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a" target="_blank" rel="noopener">Hausa</a>
+              <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg" target="_blank" rel="noopener">Hebrew</a>
+              <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw" target="_blank" rel="noopener">Hindi</a>
+              <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac" target="_blank" rel="noopener">Hungarian</a>
+              <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg" target="_blank" rel="noopener">Indonesian</a>
+              <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y" target="_blank" rel="noopener">Italian</a>
+              <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm" target="_blank" rel="noopener">Japanese</a>
+              <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi" target="_blank" rel="noopener">Korean</a>
+              <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq" target="_blank" rel="noopener">Norwegian</a>
+              <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt" target="_blank" rel="noopener">Persian</a>
+              <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey" target="_blank" rel="noopener">Polish</a>
+              <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy" target="_blank" rel="noopener">Portuguese</a>
+              <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj" target="_blank" rel="noopener">Romanian</a>
+              <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj" target="_blank" rel="noopener">Russian</a>
+              <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno" target="_blank" rel="noopener">Spanish</a>
+              <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2" target="_blank" rel="noopener">Swahili</a>
+              <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg" target="_blank" rel="noopener">Swedish</a>
+              <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb" target="_blank" rel="noopener">Thai</a>
+              <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu" target="_blank" rel="noopener">Turkish</a>
+              <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y" target="_blank" rel="noopener">Ukrainian</a>
+              <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar" target="_blank" rel="noopener">Urdu</a>
+              <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi" target="_blank" rel="noopener">Vietnamese</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd" target="_blank" rel="noopener">Open Letter</a></li>
+        <li><a href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh" target="_blank" rel="noopener">Proclamation of Claim</a></li>
+        <li>
+          <details class="menu-submenu">
+            <summary class="group-summary">Letters &amp; Diplomacy</summary>
+            <div class="submenu-links">
+              <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz" target="_blank" rel="noopener">World Index</a>
+              <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd" target="_blank" rel="noopener">Letters to US Leaders</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh" target="_blank" rel="noopener">Consulate Letters — Africa I</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu" target="_blank" rel="noopener">Consulate Letters — Africa II</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba" target="_blank" rel="noopener">Consulate Letters — Africa III</a>
+              <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn" target="_blank" rel="noopener">Consulate Letters — Americas I</a>
+              <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy" target="_blank" rel="noopener">Consulate Letters — Americas II</a>
+              <a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf" target="_blank" rel="noopener">Consulate Letters — Asia-Pacific</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w" target="_blank" rel="noopener">Consulate Letters — Europe I</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt" target="_blank" rel="noopener">Consulate Letters — Europe II</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo" target="_blank" rel="noopener">Consulate Letters — Europe III</a>
+              <a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv" target="_blank" rel="noopener">Consulate Letters — Middle East</a>
+              <a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0" target="_blank" rel="noopener">Consulate Letters — Oceania</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0" target="_blank" rel="noopener">Who Knows?</a></li>
+        <li><a href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy" target="_blank" rel="noopener" aria-current="page">Money vs Assets</a></li>
+        <li><a href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi" target="_blank" rel="noopener">3D Printing</a></li>
+        <li><a href="https://sites.google.com/view/knottsure/home" target="_blank" rel="noopener">Why Not? (external manifesto)</a></li>
+        <li>
+          <details class="menu-submenu">
+            <summary class="group-summary">More</summary>
+            <div class="submenu-links">
+              <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9" target="_blank" rel="noopener">Alice Storyboard</a>
+              <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6" target="_blank" rel="noopener">Doodare's Diaper Concept</a>
+              <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa" target="_blank" rel="noopener">Terms of Service</a>
+            </div>
+          </details>
+        </li>
+      </ol>
+    </nav>
+  </details>
+  <main class="page">
+    <section class="mast" aria-labelledby="hero-title">
+      <div>
+        <div class="index">A two-part thought experiment</div>
+        <h1 id="hero-title"><span class="money-word">Money</span> is a rule.<br><span class="asset-word">Assets</span> are a thing <em>plus</em> a rule.</h1>
+        <p class="lede">Change the money and the hoard loses its language. Change the ownership rules and the assets may lose their owner. Those are <em>two different moves.</em></p>
+      </div>
+      <aside class="thesis-card" aria-label="Core thesis">
+        <blockquote>What happens when the old money is retired—and nothing carries over?</blockquote>
+        <span class="zero" aria-hidden="true">0</span>
+        <footer>They hold all of the old agreement.</footer>
+      </aside>
+    </section>
+
+    <section class="section" aria-labelledby="distinction-title">
+      <header class="section-head">
+        <div class="num">01 / The split</div>
+        <div>
+          <h2 id="distinction-title">Same balance sheet.<br>Different species.</h2>
+          <p class="deck">Money and assets can both be counted in dollars. That does not make them the same thing.</p>
+        </div>
+      </header>
+      <div class="duo">
+        <article class="panel money">
+          <div class="panel-tag">Money</div>
+          <h3 class="panel-title">A transferable claim</h3>
+          <p>A bill, coin, or bank balance is valuable because other people accept it in exchange. Its substance is the network of agreement around it.</p>
+          <p>When the accepted unit changes, the old units can stop functioning as claims. The number remains. Its purchasing power does not have to.</p>
+          <div class="definition">TOKEN + ACCEPTANCE = MONEY<br>Remove acceptance, and the token becomes a record of a game that ended.</div>
+        </article>
+        <article class="panel assets">
+          <div class="panel-tag">Assets</div>
+          <h3 class="panel-title">A thing with an owner</h3>
+          <p>Land still occupies space. A factory still makes things. A ship still moves cargo. Their usefulness does not vanish because the measuring unit changes.</p>
+          <p>The price can be translated into the new money. The underlying capacity remains.</p>
+          <div class="definition">PHYSICAL CAPACITY + OWNERSHIP = ASSET<br>Change the unit, and the thing is still there.</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="experiment-title">
+      <header class="section-head">
+        <div class="num">02 / Run it</div>
+        <div>
+          <h2 id="experiment-title">Retire the unit.<br>Watch what moves.</h2>
+          <p class="deck">This demonstration ends acceptance without conversion. It does not change the property rules.</p>
+        </div>
+      </header>
+      <div class="machine" id="machine">
+        <div class="machine-bar">
+          <div class="machine-label">Balance sheet / before transition</div>
+          <div class="machine-state" id="machineState" aria-live="polite">Old unit accepted</div>
+        </div>
+        <div class="ledger">
+          <article class="ledger-card cash" aria-label="Money holdings">
+            <h3>Money</h3>
+            <div class="ledger-row"><span>Notes</span><strong>8,400 OLD</strong></div>
+            <div class="ledger-row"><span>Account balance</span><strong>41,600 OLD</strong></div>
+            <div class="void-mark" aria-hidden="true">VOID</div>
+          </article>
+          <article class="ledger-card property" aria-label="Asset holdings">
+            <h3>Assets</h3>
+            <div class="ledger-row"><span>Field</span><strong>still grows</strong></div>
+            <div class="ledger-row"><span>Workshop</span><strong class="asset-status">still works</strong></div>
+          </article>
+        </div>
+        <div class="machine-controls">
+          <button class="change-btn" id="changeBtn" type="button">Retire the old money</button>
+          <button class="reset-btn" id="resetBtn" type="button" hidden>Restore old unit</button>
+          <p class="machine-note" id="machineNote">One rule changes. The objects do not.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="sequence-title">
+      <header class="section-head">
+        <div class="num">03 / The mechanism</div>
+        <div>
+          <h2 id="sequence-title">The vanishing happens in the exchange.</h2>
+        </div>
+      </header>
+      <div class="logic">
+        <article class="logic-step">
+          <div class="step-n">01</div>
+          <h3>The old money is accepted.</h3>
+          <p>Every unit carries a claim on whatever the network will trade for it.</p>
+        </article>
+        <article class="logic-step">
+          <div class="step-n">02</div>
+          <h3>The network changes units.</h3>
+          <p>The shared rule moves. Conversion terms decide whether old claims cross over—or stop.</p>
+        </article>
+        <article class="logic-step">
+          <div class="step-n">03</div>
+          <h3>The assets keep doing.</h3>
+          <p>Useful capacity survives the change and is counted again in the new unit.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section catch" aria-labelledby="catch-title">
+      <div class="catch-title">
+        <div class="num">04 / The deeper cut</div>
+        <h2 id="catch-title" style="margin-top:18px">Assets are not pure physics.</h2>
+      </div>
+      <div>
+        <p class="catch-copy">The field is real. The deed is a rule. The factory is real. The legal claim saying <span class="under">“this is yours”</span> is a rule.</p>
+        <p class="catch-copy">So changing currency does not erase an asset. But changing the property system can change who controls it.</p>
+        <div class="rule-card">
+          <p><strong>Currency rules</strong> determine which claims count as money.<br><strong>Property rules</strong> determine whose claims count as ownership.</p>
+          <svg class="rule-icon" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+            <path d="M14 30 40 12l26 18v36H14V30Z" stroke="currentColor" stroke-width="2"/>
+            <path d="M31 66V43h18v23M9 66h62" stroke="currentColor" stroke-width="2"/>
+            <circle cx="40" cy="29" r="5" fill="currentColor"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="verdict" aria-labelledby="verdict-title">
+      <div class="num">The clean version</div>
+      <blockquote id="verdict-title">Retire old money without conversion and the money-hoarder holds <span class="red">the old game.</span> Change only the money and the asset-holder still holds <span class="green">the thing.</span></blockquote>
+      <p class="fine">If balances convert, holders retain whatever claim the transition grants them. The actual power sits in those terms: who writes them, what crosses over, and which claims the new system agrees to honor.</p>
+    </section>
+  </main>
+  <nav class="site-bottom-nav" aria-label="Secondary pages">
+    <div class="site-bottom-nav__items">
+      <div class="site-bottom-nav__item site-bottom-nav__item--menu" id="dummy-guides-menu">
+        <button class="site-bottom-nav__button" type="button" aria-expanded="false" aria-controls="dummy-guides-dropup">
+          <span>Dummy Guides</span>
+          <svg class="site-bottom-nav__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 10.5 8 5.5l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="site-bottom-nav__dropup" id="dummy-guides-dropup" aria-label="Dummy Guides" hidden>
+          <div class="site-bottom-nav__dropup-label">Project 84 Dummy Guide:</div>
+          <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Dummies Guide — Level 14 (English)</a>
+        </div>
+      </div>
+      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">Letters To</a></div>
+      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="https://muse.ai/s/goal-briefs-xbt5xuxmw1aumxh">Goal Briefs</a></div>
+      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="https://muse.ai/s/homo-e-s-m-xvxm5xuxmvr4xg11">HOMO-E/S/M</a></div>
+    </div>
+  </nav>
+  <script>
+    (function () {
+      var machine = document.getElementById('machine');
+      var changeBtn = document.getElementById('changeBtn');
+      var resetBtn = document.getElementById('resetBtn');
+      var state = document.getElementById('machineState');
+      var label = machine.querySelector('.machine-label');
+      var note = document.getElementById('machineNote');
+
+      changeBtn.addEventListener('click', function () {
+        machine.classList.add('changed');
+        state.classList.add('changed');
+        state.textContent = 'New unit accepted';
+        label.textContent = 'Balance sheet / after transition';
+        note.textContent = 'The money claim failed. The useful capacity remained.';
+        changeBtn.hidden = true;
+        resetBtn.hidden = false;
+      });
+
+      resetBtn.addEventListener('click', function () {
+        machine.classList.remove('changed');
+        state.classList.remove('changed');
+        state.textContent = 'Old unit accepted';
+        label.textContent = 'Balance sheet / before transition';
+        note.textContent = 'One rule changes. The objects do not.';
+        changeBtn.hidden = false;
+        resetBtn.hidden = true;
+      });
+    }());
+  </script>
+  <script>
+    (function () {
+      var menu = document.getElementById('dummy-guides-menu');
+      var button = menu.querySelector('.site-bottom-nav__button');
+      var dropup = document.getElementById('dummy-guides-dropup');
+      var guideLinks = dropup.querySelectorAll('a');
+      var hoverOpen = false;
+
+      function renderOpen() {
+        var open = hoverOpen || menu.classList.contains('is-open');
+        dropup.hidden = !open;
+        button.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      function setOpen(open) {
+        menu.classList.toggle('is-open', open);
+        renderOpen();
+      }
+
+      button.addEventListener('click', function () {
+        setOpen(!menu.classList.contains('is-open'));
+      });
+
+      menu.addEventListener('mouseenter', function () {
+        hoverOpen = true;
+        renderOpen();
+      });
+
+      menu.addEventListener('mouseleave', function () {
+        hoverOpen = false;
+        renderOpen();
+      });
+
+      guideLinks.forEach(function (link) {
+        link.addEventListener('click', function () {
+          hoverOpen = false;
+          setOpen(false);
+        });
+      });
+
+      document.addEventListener('click', function (event) {
+        if (!menu.contains(event.target)) {
+          hoverOpen = false;
+          setOpen(false);
+        }
+      });
+
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape' && !dropup.hidden) {
+          hoverOpen = false;
+          setOpen(false);
+          button.focus();
+        }
+      });
+    }());
+  </script>
+</body>
+</html>

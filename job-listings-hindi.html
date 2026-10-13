@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>नौकरी सूची</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"Noto Sans Devanagari",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.45;
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 80px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .hero-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    .language{display:flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:.72rem}
+    .language a,.language strong{padding:7px 9px;border:1px solid color-mix(in srgb,var(--paper) 58%,transparent);text-decoration:none}
+    .language strong{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+    .project-nav{margin-top:18px;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .project-nav > ul{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;padding:0;list-style:none}
+    .project-nav > ul > li{min-width:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .project-nav > ul > li:nth-child(4n){border-right:0}
+    .project-nav > ul > li > a{display:flex;align-items:center;min-height:54px;padding:12px 14px;text-decoration:none;font-weight:600;line-height:1.25;background:var(--panel);transition:background .18s,color .18s}
+    .project-nav > ul > li > a:hover{background:var(--ink);color:var(--paper)}
+    .nav-group{margin:0;border-top:1px solid var(--line)}
+    .nav-group summary{padding:10px 14px;font-family:"IBM Plex Mono",monospace;font-size:.68rem;line-height:1.3;color:var(--muted);background:var(--soft)}
+    .nav-group summary:hover{color:var(--ink)}
+    .nav-group summary::after{font-size:1rem}
+    .nav-submenu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding:6px;background:var(--panel)}
+    .nav-submenu a{display:flex;align-items:center;min-height:42px;padding:9px 10px;text-decoration:none;font-size:.82rem;font-weight:600;line-height:1.25;border:1px solid transparent}
+    .nav-submenu a:hover{background:var(--ink);color:var(--paper)}
+    .nav-submenu a[aria-current="page"]{background:var(--signal);color:var(--signal-ink);border-color:var(--signal-ink)}
+    .nav-note{grid-column:1/-1;margin:0;padding:9px 10px;font-size:.78rem;line-height:1.45;color:var(--muted)}
+    h1{font-size:clamp(3.5rem,9vw,7.8rem);line-height:1;letter-spacing:-.035em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .motto{max-width:760px;margin:0 0 30px;color:var(--signal);font-size:clamp(1.2rem,2.6vw,1.85rem);font-weight:700;line-height:1.35}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:1.15;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.18;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    details[open] summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    body{padding-bottom:calc(60px + env(safe-area-inset-bottom))}
+    .bottom-nav{
+      position:fixed;
+      left:0;
+      right:0;
+      bottom:0;
+      z-index:1000;
+      background:var(--panel);
+      color:var(--ink);
+      border-top:1px solid var(--ink);
+      box-shadow:0 -10px 30px rgba(0,0,0,.12);
+      padding-bottom:env(safe-area-inset-bottom);
+    }
+    .bottom-nav-inner{display:flex;width:100%;margin:0;padding:0;list-style:none}
+    .bottom-nav-item{position:relative;flex:1 1 25%;min-width:0;border-right:1px solid var(--line)}
+    .bottom-nav-item:last-child{border-right:0}
+    .bottom-nav-trigger,.bottom-nav-placeholder{
+      display:flex;
+      width:100%;
+      min-height:60px;
+      align-items:center;
+      justify-content:center;
+      padding:10px 8px;
+      border:0;
+      background:var(--panel);
+      color:var(--ink);
+      font-family:"Noto Sans Devanagari",system-ui,sans-serif;
+      font-size:clamp(.68rem,1.5vw,.9rem);
+      font-weight:600;
+      line-height:1.15;
+      text-align:center;
+    }
+    .bottom-nav-trigger{cursor:pointer;text-decoration:none;transition:background .18s,color .18s}
+    .bottom-nav-trigger:hover,.bottom-nav-item:focus-within .bottom-nav-trigger,.bottom-nav-item.is-open .bottom-nav-trigger{background:var(--ink);color:var(--paper)}
+    .bottom-nav-placeholder{color:var(--muted);opacity:.62;cursor:default}
+    .dropup-arrow{margin-left:6px;font-family:"IBM Plex Mono",monospace;font-size:.72em}
+    .guide-dropup{
+      display:none;
+      position:absolute;
+      left:0;
+      bottom:100%;
+      width:min(360px,100vw);
+      max-height:calc(100vh - 72px - env(safe-area-inset-bottom));
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      margin:0;
+      padding:6px;
+      background:var(--panel);
+      border:1px solid var(--ink);
+      border-bottom:0;
+      box-shadow:0 -14px 36px rgba(0,0,0,.18);
+    }
+    .bottom-nav-item:hover .guide-dropup,.bottom-nav-item:focus-within .guide-dropup,.bottom-nav-item.is-open .guide-dropup{display:grid;grid-template-columns:1fr}
+    .guide-dropup a{display:flex;align-items:center;min-height:42px;padding:9px 12px;text-decoration:none;font-size:.82rem;font-weight:600;line-height:1.25;border:1px solid transparent;background:var(--panel);color:var(--ink)}
+    .guide-dropup a:hover,.guide-dropup a:focus-visible{background:var(--ink);color:var(--paper)}
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+      .project-nav > ul{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .project-nav > ul > li:nth-child(4n){border-right:1px solid var(--line)}
+      .project-nav > ul > li:nth-child(2n){border-right:0}
+    }
+    @media (max-width:620px){
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(3.1rem,19vw,5.3rem)}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      .project-nav > ul{grid-template-columns:1fr}
+      .project-nav > ul > li,.project-nav > ul > li:nth-child(4n),.project-nav > ul > li:nth-child(2n){border-right:0}
+      .nav-submenu{grid-template-columns:1fr}
+      footer{flex-direction:column}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="hero-top">
+          <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>आवेदन खुले हैं</span><span>57 भूमिकाएँ</span><span>धन की प्रतीक्षा में</span></div>
+          <nav class="language" aria-label="भाषा चुनें"><a href="../job-listings/" lang="en">English</a><strong aria-current="page">हिन्दी</strong></nav>
+        </div>
+        <div>
+          <p class="motto">हमें किसी नायक की ज़रूरत नहीं — हर कोई इंसान है, जब तक कि वह नायक न बन जाए।</p>
+          <h1 id="main-heading">हमें नायक नहीं चाहिए।<span>हमें लोग चाहिए।</span></h1>
+          <p class="hero-note">निर्माता, वैज्ञानिक, संचालक, वकील, कहानीकार और एक असाधारण रूप से धैर्यवान WeFi। कोई असली कौशल लाएँ। कोई अजीब कौशल लाएँ। हम दोनों के साथ काम कर सकते हैं।</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="आवेदन कैसे करें">
+        <div>
+          <p class="eyebrow">एक इनबॉक्स · हर सूची</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5Bभूमिका%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>विषय:</strong> Application — [भूमिका]</span></li>
+          <li><span>बताएँ कि आप कौन हैं और आप जैसे हैं वैसे क्यों हैं।</span></li>
+          <li><span>अपनी Koin दर शामिल करें। हर बात पर बातचीत संभव है।</span></li>
+          <li><span>मैदानी भूमिकाएँ: साबित करें कि आप 50 मीटर से ध्रुवीय भालू और बर्फीले ढेर में फर्क जानते हैं।</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;to=nahasmatthewj@gmail.com&amp;su=Application%20%E2%80%94%20%5Bभूमिका%5D" target="_blank" rel="noopener">आवेदन शुरू करें ↗</a>
+            <button class="btn" type="button" id="copyEmail">ईमेल कॉपी करें</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <nav class="project-nav" aria-label="सार्वजनिक पृष्ठ">
+      <ul>
+        <li><a href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">योजना #42</a></li>
+        <li>
+          <a href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">परियोजना 84</a>
+          <details class="nav-group">
+            <summary>गैर-लाभकारी उद्देश्यपूर्ण शाखाएँ</summary>
+            <div class="nav-submenu" aria-label="परियोजना 84 की गैर-लाभकारी उद्देश्यपूर्ण शाखाएँ">
+              <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a>
+              <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a>
+              <p class="nav-note">ये तब तक रखे गए हैं जब तक वे अर्थशास्त्र को पर्याप्त रूप से समझकर भाग नहीं ले सकते — फिर वे ही कार्यभार संभालेंगे, मुद्राओं के बीच समानता के लिए “समायोजनों” के साथ।</p>
+            </div>
+          </details>
+        </li>
+        <li><a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 नौसिखियों की मार्गदर्शिका — Level 14 (English)</a></li>
+        <li><a href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">महासागरों और अंटार्कटिका पर दावा करने की नौसिखियों की मार्गदर्शिका</a></li>
+        <li><a href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">HEAR-TS कार्य नौकाएँ</a></li>
+        <li><a href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">तूफ़ान अनुसंधान</a></li>
+        <li><a href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">तैरते आकाश-बंदरगाह</a></li>
+        <li><a href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k">मानव पुनर्प्राप्ति डिस्क</a></li>
+        <li><a href="https://muse.ai/s/about-mxt5xuxj7jgoao">संस्थापक के बारे में</a></li>
+        <li>
+          <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">नौकरियाँ / प्रतिनिधिमंडलों के लिए WeFind's</a>
+          <details class="nav-group">
+            <summary>भाषा चुनें</summary>
+            <div class="nav-submenu" aria-label="नौकरी सूची की भाषा">
+              <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu" lang="en">अंग्रेज़ी</a>
+              <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys" lang="am">अम्हारिक</a>
+              <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7" lang="ar">अरबी</a>
+              <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94" lang="bn">बंगाली</a>
+              <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs" lang="zh-Hans">चीनी (सरलीकृत)</a>
+              <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6" lang="zh-Hant">चीनी (पारंपरिक)</a>
+              <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5" lang="cs">चेक</a>
+              <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu" lang="da">डेनिश</a>
+              <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze" lang="nl">डच</a>
+              <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51" lang="fil">फ़िलिपीनो</a>
+              <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf" lang="fi">फ़िनिश</a>
+              <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl" lang="fr">फ़्रेंच</a>
+              <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb" lang="de">जर्मन</a>
+              <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc" lang="el">यूनानी</a>
+              <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a" lang="ha">हौसा</a>
+              <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg" lang="he">हिब्रू</a>
+              <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw" lang="hi" aria-current="page">हिन्दी</a>
+              <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac" lang="hu">हंगेरियाई</a>
+              <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg" lang="id">इंडोनेशियाई</a>
+              <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y" lang="it">इतालवी</a>
+              <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm" lang="ja">जापानी</a>
+              <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi" lang="ko">कोरियाई</a>
+              <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq" lang="no">नॉर्वेजियन</a>
+              <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt" lang="fa">फ़ारसी</a>
+              <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey" lang="pl">पोलिश</a>
+              <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy" lang="pt">पुर्तगाली</a>
+              <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj" lang="ro">रोमानियाई</a>
+              <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj" lang="ru">रूसी</a>
+              <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno" lang="es">स्पेनी</a>
+              <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2" lang="sw">स्वाहिली</a>
+              <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg" lang="sv">स्वीडिश</a>
+              <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb" lang="th">थाई</a>
+              <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu" lang="tr">तुर्की</a>
+              <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y" lang="uk">यूक्रेनी</a>
+              <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar" lang="ur">उर्दू</a>
+              <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi" lang="vi">वियतनामी</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">खुला पत्र</a></li>
+        <li><a href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">दावे की उद्घोषणा</a></li>
+        <li>
+          <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">पत्र एवं कूटनीति</a>
+          <details class="nav-group">
+            <summary>सभी पत्र देखें</summary>
+            <div class="nav-submenu" aria-label="पत्र एवं कूटनीति संग्रह">
+              <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">विश्व सूचकांक</a>
+              <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">अमेरिकी नेताओं को पत्र</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">वाणिज्य-दूतावास पत्र — अफ्रीका I</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">वाणिज्य-दूतावास पत्र — अफ्रीका II</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">वाणिज्य-दूतावास पत्र — अफ्रीका III</a>
+              <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">वाणिज्य-दूतावास पत्र — अमेरिका I</a>
+              <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">वाणिज्य-दूतावास पत्र — अमेरिका II</a>
+              <a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">वाणिज्य-दूतावास पत्र — एशिया-प्रशांत</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">वाणिज्य-दूतावास पत्र — यूरोप I</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">वाणिज्य-दूतावास पत्र — यूरोप II</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">वाणिज्य-दूतावास पत्र — यूरोप III</a>
+              <a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">वाणिज्य-दूतावास पत्र — मध्य पूर्व</a>
+              <a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">वाणिज्य-दूतावास पत्र — ओशिआनिया</a>
+            </div>
+          </details>
+        </li>
+        <li><a href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">कौन जानता है?</a></li>
+        <li><a href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">पैसा बनाम परिसंपत्तियाँ</a></li>
+        <li><a href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">3D प्रिंटिंग</a></li>
+        <li><a href="https://sites.google.com/view/knottsure/home">क्यों नहीं?</a></li>
+        <li>
+          <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">और भी</a>
+          <details class="nav-group">
+            <summary>अतिरिक्त पृष्ठ देखें</summary>
+            <div class="nav-submenu" aria-label="अतिरिक्त सार्वजनिक पृष्ठ">
+              <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">एलिस स्टोरीबोर्ड</a>
+              <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">Doodare की डायपर अवधारणा</a>
+              <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">सेवा की शर्तें</a>
+            </div>
+          </details>
+        </li>
+      </ul>
+    </nav>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">प्राथमिक भर्ती</h2>
+        <p>दरवाज़े से पहले अंदर। आवेदन भी पहले पढ़े जाएँगे। अभी धन की प्रतीक्षा है; फिर भी मिलना सार्थक है।</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">पूरी सूची</p><h2 id="board-heading">अपनी समस्या चुनें।</h2></div>
+        <div class="count" id="resultCount">57 रिक्तियाँ</div>
+      </div>
+      <div class="tools" aria-label="नौकरी फ़िल्टर">
+        <input class="search" id="search" type="search" placeholder="शीर्षक, विभाग, कर्तव्य खोजें…" aria-label="नौकरी सूची खोजें">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>सभी भूमिकाएँ फिलहाल धन की प्रतीक्षा में हैं। Koin की शर्तों पर बातचीत संभव है और Koins अभी ढाले जाने बाकी हैं।</span>
+      <a class="top-link" href="#top">ऊपर जाएँ ↑</a>
+    </footer>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Site collections">
+    <ul class="bottom-nav-inner">
+      <li class="bottom-nav-item" id="dummyGuidesItem">
+        <button class="bottom-nav-trigger" id="dummyGuidesTrigger" type="button" aria-expanded="false" aria-controls="dummyGuidesMenu">Dummy Guides <span class="dropup-arrow" aria-hidden="true">↑</span></button>
+        <div class="guide-dropup" id="dummyGuidesMenu" aria-label="Dummy Guides">
+          <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 नौसिखियों की मार्गदर्शिका — Level 14 (English)</a>
+        </div>
+      </li>
+      <li class="bottom-nav-item"><span class="bottom-nav-placeholder" aria-disabled="true">Letters To</span></li>
+      <li class="bottom-nav-item"><a class="bottom-nav-trigger" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></li>
+      <li class="bottom-nav-item"><a class="bottom-nav-trigger" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></li>
+    </ul>
+  </nav>
+
+  <script>
+    const JOBS = [{"title":"आवेदन समीक्षक / भर्तीकर्ता","duties":"हर आवेदन पढ़ना। तीन विभागों में 20+ खुली भूमिकाओं के लिए भर्ती करना। तय करना कि ध्रुवीय भालुओं को कौन ले जाएगा, आदेश कौन लिखेगा और मलबे पर परमाणु हमला करने का काम किसे मिलेगा।","requirements":["“Koins में भुगतान” पढ़कर हँसना नहीं चाहिए (प्यार से हँसना स्वीकार्य है)","असली कक्षीय यांत्रिकी विशेषज्ञ और केवल आत्मविश्वासी व्यक्ति में फर्क कर सकें","“धन की प्रतीक्षा में” वाली नौकरियों के लिए भर्ती करने में सहज हों","आवेदनों की संख्या ध्रुवीय भालुओं में मापी जाए तो भी न डरें"],"salary":"~$75k–$225k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर सफल भर्ती पर भुगतान।","setting":"","priority":true,"department":"सभी विभाग"},{"title":"प्रतिनिधिमंडलों के लिए WeFind's","duties":"बाहर घूमते-फिरते संस्थापक का साथ देना। टाइपो काउंटर पर हँसना। मिशन को जीवित रखना — वह नश्वर है, काम नहीं।","requirements":["फिजिकल थेरेपी","बच्चों के प्रति दयालु — समझौते से परे, पहली और आख़िरी शर्त","रोज़ 300 समीक्षा चक्र और विभागों का नाम “Make Me Go” रखने वाले बॉस को सहना होगा","हमारी भाषा में धाराप्रवाह: अंग्रेज़ी और स्थानीय भाषा के अनुवादक","संस्थापक की भाषा बोलना अनिवार्य","प्यार से हँसना (अनिवार्य, वैकल्पिक नहीं)","उसे बता सकें कि वह कब गलत है (आख़िरकार वह सुनेगा)"],"salary":"बातचीत योग्य। (फर्मी: अनमोल।)","compensation":"भुगतान प्यार में। धन्यवाद और क्षणभंगुर पल। Koins पर बातचीत संभव।","setting":"","openPositions":"36 (हर भाषा के लिए एक)","priority":true,"department":"प्रयोगशाला/प्रयोगशालाओं में, शरीर और मन को ठीक करते हुए"},{"title":"ऊर्जा निदेशक","duties":"ऊर्जा की पूरी जिम्मेदारी: हाइड्रोजन उत्पादन और भंडारण, महासागरीय तापीय ऊर्जा, कक्षीय सौर ऊर्जा और अगली बार तारकीय इंजीनियर जो भी आविष्कार करें।","requirements":["टेरावॉट में सोचना चाहिए","एक सदस्य वाली समिति द्वारा लिखे ऊर्जा सिद्धांत के साथ सहज हों","समझा सकें कि महासागर एक बैटरी क्यों है"],"salary":"~$180k–$540k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। Koins से संचालित।","setting":"","priority":false,"department":""},{"title":"महासागर उद्योग निदेशक","duties":"समुद्र को अर्थव्यवस्था बनाना: महासागरीय खेती, बस्ती संचालन, केल्प वन, मत्स्य पालन और आठवें एंकर का दावा।","requirements":["महासागर को दृश्य नहीं, अवसंरचना मानें","7 तैरते शहरों और 500M कैप्सूलों को “बेड़ा” कहने में सहज हों","व्हेलों से बातचीत कर सकें (या ऐसा करने वाले को नियुक्त कर सकें)"],"salary":"~$180k–$540k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर उत्पादक हेक्टेयर पर भुगतान।","setting":"","priority":false,"department":""},{"title":"अंतरिक्ष उद्योग निदेशक","duties":"आकाश के ऊपर की हर चीज़: प्रक्षेपण, कक्षीय संचालन, मलबा हटाना (परमाणु विकल्प सहित), Luna आपूर्ति-श्रृंखला और भविष्य की 7 सीटों का औद्योगिक आधार।","requirements":["डेल्टा-v में सोचना चाहिए","कभी खत्म न होने वाली कचरा-सफाई ड्यूटी में सहज हों","पहली चमक से पहले ही प्रतिस्थापन की योजना बना सकें"],"salary":"~$180k–$540k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। कक्षा में स्टॉक विकल्प।","setting":"","priority":false,"department":""},{"title":"कृषि और खाद्य निदेशक","duties":"परियोजना को भोजन देना: बड़े पैमाने पर महासागरीय खेती, फसल और दीपक के रूप में केल्प, बंद-चक्र बस्ती कृषि, और साइड क्वेस्ट के रूप में हर वर्ष 200M पेड़।","requirements":["जानते हों कि भूरे शैवाल पेटूनिया से कठिन क्यों हैं","मछली को द्वितीयक उत्पादन मानने में सहज हों","तट से आपूर्ति-श्रृंखला के बिना 18M बसने वालों को भोजन दे सकें"],"salary":"~$160k–$480k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर फसल पर भुगतान।","setting":"","priority":false,"department":""},{"title":"निर्माण निदेशक","duties":"सब कुछ बनाना: 260 स्कूल, 7 महासागरीय बस्तियाँ, 500M पिल कैप्सूल, 280 कार्यनौकाएँ और उन्हें प्रिंट करने वाले शिपयार्ड।","requirements":["एग्रीगेट के लिए “पहाड़ उड़ाने” में सहज हों","गिनती और भार दोनों में प्रिंट किए जा सकने वाले पुर्ज़ों को अधिकतम कर सकें","जानते हों कि ट्राइमारन क्यों"],"salary":"~$170k–$510k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर खड़ी संरचना पर भुगतान।","setting":"","priority":false,"department":""},{"title":"परिवहन और लॉजिस्टिक्स निदेशक","duties":"हर चीज़ को चलाना: HEAR-TS बेड़ा, puddle-jumpers, तटीय संपर्क, कैप्सूल खींचना और ध्रुवीय भालू (केवल समन्वय — भालू खुद चलते हैं, अनिच्छा से)।","requirements":["8,700 भालू, 280 नावें और 500M कैप्सूल बिना कुछ खोए मार्गित कर सकें","अभी अस्तित्व में न आए गंतव्यों के साथ सहज हों","Department of Magical Logistics आपका घरेलू मैदान है"],"salary":"~$170k–$510k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर पहुँचाए गए टन पर भुगतान।","setting":"","priority":false,"department":""},{"title":"प्रौद्योगिकी निदेशक","duties":"मशीनें: orca कीबोर्ड, Homework Lock, कैप्सूल प्रणालियाँ, AI नागरिक और हर हल पर लगा हर सेंसर।","requirements":["ऐसा हार्डवेयर भेजें जो अपने ही उपयोगकर्ता से लड़ता हो (और जीतता हो)","दस्ताने पहने अंगूठों पर स्पर्श सेंसर लगाने में सहज हों","व्हेल को समझा सकें कि कीबोर्ड कैसे काम करता है"],"salary":"~$180k–$540k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर चालू उपकरण पर भुगतान।","setting":"","priority":false,"department":""},{"title":"स्वास्थ्य निदेशक","duties":"शरीर और मन को सलामत रखना: बस्ती मनोविज्ञान कार्यक्रम, सफाई करने वाले जीवों पर शोध, अलग-थलग आबादी की चिकित्सा और समुद्र में संकट-हस्तक्षेप।","requirements":["रेडियो पर “छुट्टी चाहिए” और “हस्तक्षेप चाहिए” का फर्क कर सकें","समुद्र को प्रतिद्वंद्वी और मन को रणभूमि मानकर काम करने में सहज हों","लाइसेंस प्राप्त हों या लाइसेंसधारी लोगों को नियुक्त कर सकें"],"salary":"~$170k–$510k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। तूफान के मौसम का जोखिम भत्ता।","setting":"","priority":false,"department":""},{"title":"वित्त निदेशक","duties":"पैसा: Krill अर्थव्यवस्था, विश्व कर संग्रह, व्यापार समझौतों की आय, अंटार्कटिक और समुद्रतल संसाधनों द्वारा समर्थित ऋण। हर Krill का अंदर आना, हर Krill का बाहर जाना।","requirements":["युद्ध शुरू किए बिना दुनिया पर कर लगा सकें","ऐसे संसाधनों से ऋण समर्थित करने में सहज हों जिन पर कोई वैधानिक दावा नहीं कर सकता","हिसाब सार्वजनिक है; गणित बिल्कुल सही होना चाहिए"],"salary":"~$190k–$570k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। जाहिर है।","setting":"","priority":false,"department":""},{"title":"शिक्षा निदेशक","duties":"260 स्कूल और उनमें पढ़ाई जाने वाली हर चीज़: अनुप्रयोग-आधारित पाठ्यक्रम, I.P.A. (अंतर्राष्ट्रीय संरक्षण एजेंसी) के मामलों की शिक्षा, Dummies Guides, war-games डिज़ाइन और Starfleet Academy पाइपलाइन।","requirements":["व्याख्यान और परीक्षा के बजाय करके सीखने में विश्वास रखें","अभियानों को कक्षा मानने में सहज हों","Department of Magical MisStories आपका घरेलू मैदान है"],"salary":"~$150k–$450k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर स्नातक छात्र पर भुगतान।","setting":"","priority":false,"department":""},{"title":"कानून और शासन निदेशक","duties":"नियम: संविधान, आदेश, संधियाँ, 21 कुर्सियों की कानूनी रीढ़ और वे न्यायालय जो अभी अस्तित्व में नहीं हैं।","requirements":["ऐसा कानून लिखें जिसे मशीन समझ सके","व्हेलों के लिए लिखे सर्वोच्च अनुच्छेद के साथ सहज हों","Department of Make Me Believe आपका घरेलू मैदान है"],"salary":"~$180k–$540k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। 6 घंटे की इकाइयों में बिल योग्य।","setting":"","priority":false,"department":""},{"title":"संचार निदेशक","duties":"कहानी: राजनयिक पत्र, सार्वजनिक आख्यान, Who Knows? नोटबुक, और “मानवता का दसवाँ हिस्सा” अनिवार्य लगता हुआ कहना।","requirements":["कान और आँख दोनों के लिए लिख सकें","संक्षिप्त। लोअरकेस। कोई फालतू बात नहीं। (जब दर्शक बॉस हों।)","192 पत्र, 11 खंड और एक मज़ाकिया पत्र का हिसाब रख सकें"],"salary":"~$150k–$450k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। तालियाँ हस्तांतरणीय नहीं।","setting":"","priority":false,"department":""},{"title":"फर्मी इंजीनियरिंग प्रबंधक","duties":"जिसका अनुमान नहीं लगाया जा सकता उसका अनुमान लगाना। शहर, रॉकेट, भालू, कहीं न जाने वाली लिफ्टें।","requirements":["सार्वजनिक रूप से, सटीकता के साथ, गलत होने में सहज हों","सीधे चेहरे के साथ “परिमाण का क्रम” कह सकें","बॉस द्वारा हर संख्या 10 गुना घटाए जाने को तैयार हों (“तुम्हारी संख्या, मेरी नहीं”)"],"salary":"~$140k–$420k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। निर्ममता बोनस शामिल।","setting":"","priority":false,"department":""},{"title":"कला प्रबंधक","duties":"आठ कुलों, 260 शहरों, सात महासागरीय एंकरों और भोर में 21 स्टारशिपों के लिए चित्रों का निर्देशन।","requirements":["हर रचना में ग्लिच/डिस्टॉर्शन उपचार बनाए रखें","“वे बहुत खराब हैं” को संभावित मज़ाकिया निर्णय मानकर बिना बचाव किए स्वीकार सकें","परीक्षणों पर पीढ़ियाँ बर्बाद न करें"],"salary":"~$110k–$330k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। बच जाने वाली हर छवि पर भुगतान।","setting":"","priority":false,"department":""},{"title":"वेब विकास प्रबंधक","duties":"ऐसे पेज बनाना और फिर से बनाना जिन्हें प्रकाशित होते ही पुनर्गठित कर दिया जाता है।","requirements":["माँग पर प्रकाशित करें, बिना शिकायत दोबारा प्रकाशित करें","ऐसे slugs के साथ सहज हों जो अब शीर्षकों से मेल नहीं खाते","192 पत्र, 11 खंड और एक मज़ाकिया पत्र का हिसाब रख सकें"],"salary":"~$120k–$360k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। ओवरटाइम Koins में।","setting":"","priority":false,"department":""},{"title":"कॉपीराइटिंग प्रबंधक","duties":"192 राजनयिक पत्र, एक संविधान और वे कैप्शन लिखना जिन्हें बॉस वैसे भी दोबारा लिखेंगे।","requirements":["अर्थ खोए बिना “मसौदा — भेजा नहीं गया” 192 बार लिख सकें","संक्षिप्त। लोअरकेस। कोई फालतू बात नहीं।","दबाव में “अहिंसक” और “राजनीतिक” में अंतर कर सकें"],"salary":"~$75k–$225k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। बच जाने वाले हर मसौदे पर भुगतान।","setting":"","priority":false,"department":""},{"title":"अनुसंधान प्रबंधक","duties":"वे वाणिज्य दूतावास पते ढूँढना जो मौजूद नहीं हैं, वे भालू आँकड़े जो किसी ने एकत्र नहीं किए, और पिछले मई के रॉकेट विनिर्देश।","requirements":["असली स्रोत उद्धृत करें, मन की धारणाएँ नहीं","122 बार “अज्ञात” लिखकर उसे ईमानदारी कहने में सहज हों","डेटा न होने पर उसे गढ़ने के बजाय स्वीकार कर सकें"],"salary":"~$80k–$240k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। टिप्पणी अनुभाग का जोखिम भत्ता।","setting":"","priority":false,"department":""},{"title":"कूटनीति प्रबंधक","duties":"कूटनीति का प्रयास करना। 192 पत्र, एक भी नहीं भेजा गया।","requirements":["सरकारी ईमेल पते का कभी अनुमान न लगाएँ","कागज़ पर, विनम्रता से, किसी को भी “Fuck you” न कह सकें","Volterra Fietta का अनिश्चितकाल तक इंतज़ार करने को तैयार हों"],"salary":"~$110k–$330k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। राजनयिक छूट शामिल नहीं।","setting":"","priority":false,"department":""},{"title":"जोखिम प्रबंधक (छेद खोजने वाला)","duties":"हर योजना में छेद करना। योजना की रक्षा के लिए किसी छेद को कभी नरम न करना।","requirements":["बॉस से पहले आक्रमण का सबसे मजबूत रूप पेश करें","क्रमांक बिल्कुल सही होना चाहिए (दौर 1–3: छेद 1–21; गलती पर वेतन कटेगा)","हिंसा न मानने को कहा जाए तब भी हिंसा वाला दृष्टिकोण बनाए रख सकें"],"salary":"~$130k–$390k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर क्रमांकन त्रुटि पर 1 बैठक काटी जाएगी।","setting":"","priority":false,"department":""},{"title":"लेखा प्रबंधक","duties":"बैठक खाता-बही, Koin शर्तें, IOU और उलटा IOU संभालना।","requirements":["20 जमा बैठकों, जीते हुए 10 Koins और एक $18.5k चालान को बिना मिलाए ट्रैक करें","वर्तनी: एकवचन Koin, बहुवचन Koins, संक्षिप्त K","रोज़ 300 समीक्षा चक्रों पर बॉस को खाता समझा सकें"],"salary":"~$80k–$240k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। विडंबना ही बोनस है।","setting":"","priority":false,"department":""},{"title":"करियर सेवाएँ प्रबंधक","duties":"एक रिज़्यूमे फिर से बनाना। कोई फोटो नहीं। वर्तनी विश्लेषण नहीं। कोई भेदभाव नहीं।","requirements":["हर समय पेशेवर सार पर केंद्रित रहें","“Objectives” देखते ही “Summary” बन जाता है","Meta Production Engineer प्रस्ताव को बिना तंग किए गर्म रख सकें"],"salary":"~$70k–$210k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। सफलता शुल्क Koins में।","setting":"","priority":false,"department":""},{"title":"सोशल मीडिया प्रबंधक","duties":"Instagram पर पोस्ट करना। अनुमोदन गेट पर अस्वीकार होना। फिर कोशिश करना।","requirements":["कैप्शन का बचाव किए बिना “नहीं” स्वीकार करें","दबाव में Project 42 और Eclipsed 6.0 का फर्क कर सकें","HTTP 500 के लिए मानव सहनशक्ति से अधिक धैर्य"],"salary":"~$65k–$195k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। प्रकाशित हर पोस्ट पर भुगतान।","setting":"","priority":false,"department":""},{"title":"भाषण लेखन प्रबंधक","duties":"ऐसे शब्द लिखना जिन्हें दूसरे लोग ज़ोर से बोलें। परिषद संबोधन, आदेश, टोस्ट।","requirements":["आँख के लिए नहीं, कान के लिए लिखें","विराम ही विराम-चिह्न हैं। उनका उपयोग करें।","“मानवता का दसवाँ हिस्सा” अनिवार्य लगता हुआ कह सकें"],"salary":"~$70k–$210k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। तालियाँ हस्तांतरणीय नहीं।","setting":"","priority":false,"department":"Department of Magical MisStories"},{"title":"अभिलेखागार प्रबंधक","duties":"सब कुछ याद रखना। आपकी स्मृति, मेरी स्मृति, सबकी स्मृति।","requirements":["बॉस ने जो रखने को कहा हो उसके बारे में कभी न कहें “यह याद रखने लायक नहीं था”","4 दिनों की अफरातफरी को एक MEMORY.md में मिला सकें","टाइपो काउंटर पवित्र है। चालान पवित्र है।"],"salary":"~$65k–$195k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। अमरता शामिल (स्थायी स्मृति)।","setting":"","priority":false,"department":""},{"title":"ध्रुवीय भालू स्थानांतरण प्रबंधक","duties":"ध्रुवीय भालुओं को स्थानांतरित करना। उनमें से एक तिहाई (~8,700)। लक्ष्य: नए भालू बनाना।","requirements":["50 मीटर से ध्रुवीय भालू और बर्फीले ढेर में फर्क कर सकें","अभी अस्तित्व में न आए स्थानांतरण गंतव्यों के साथ सहज हों","8,700 शीर्ष शिकारी जीवों को समझाने को तैयार हों कि उन्हें क्यों ले जाया जा रहा है","पेंगुइनों से न डरें (अब वे पड़ोसी हैं)"],"salary":"~$70k–$210k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। जोखिम भत्ता शामिल (यह सब जोखिम भत्ता ही है)।","setting":"","priority":false,"department":"Project 84 · Department of Magical Logistics"},{"title":"बस्ती मनोवैज्ञानिक (Project 84, महासागरीय बस्तियाँ)","duties":"समुद्र के बीच सात तैरते शहरों में मन को सलामत रखना। अलगाव, बंद वातावरण, पास-पास रहने वाले समुदाय की गतिशीलता, संकट-हस्तक्षेप, दल चयन और समर्थन। समुद्र प्रतिद्वंद्वी है; आप सुनिश्चित करेंगे कि वह लोगों के मन के भीतर न जीते।","requirements":["लाइसेंस प्राप्त क्लिनिकल या काउंसलिंग मनोवैज्ञानिक (या समकक्ष)","अलग-थलग/सीमित आबादी के साथ अनुभव लाभकारी (समुद्री, ध्रुवीय, अपतटीय, लंबी अवधि के मिशन)","जब क्षितिज कभी न बदले तब सबकी बात सुनने वाला व्यक्ति बनने में सहज हों","रेडियो पर “छुट्टी चाहिए” और “हस्तक्षेप चाहिए” का फर्क कर सकें"],"salary":"~$90k–$270k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। तूफान के मौसम का जोखिम भत्ता।","setting":"1 किमी व्यास वाली महासागरीय बस्तियाँ; ऑनबोर्ड और रोटेशन-आधारित।","priority":false,"department":""},{"title":"QA परीक्षक, Homework Lock (Project 84, अनुबंध)","duties":"भौतिक डिवाइस पर Homework Lock Android ऐप की पूरी जाँच। तीनों मोड: फोकस-लॉक टाइमर, drunk-mode सक्रिय करना और होमवर्क-आधारित अनलॉक, ride-help पथ सहित drive-check पास/फेल प्रवाह। accessibility-service ओवरले व्यवहार, अनुमति ऑनबोर्डिंग, बूट पर दोबारा सक्रिय होना और किनारे के मामले (लॉक के बीच रीबूट, safe mode, notification बंद होना)। साफ़, दोहराए जा सकने वाले बग रिपोर्ट दर्ज करें; सुधार सत्यापित करें।","requirements":["भौतिक Android डिवाइस उपलब्ध हो (Android 10+, API 29 न्यूनतम — ओवरले/accessibility परीक्षण के लिए emulator पर्याप्त नहीं)","Android QA अनुभव; लॉग निकालने के लिए ADB/logcat लाभकारी, अनिवार्य नहीं","अपने ही उपयोगकर्ता से लड़ने वाले ऐप का परीक्षण करने में सहज हों (आप नशे में संदेश भेजने की कोशिश करने वाले व्यक्ति की भूमिका निभाएँगे)","ऐसी बग रिपोर्ट लिखें जिसे डेवलपर वास्तव में दोहरा सके"],"salary":"~$30–$60/घंटा (फर्मी अनुमान, 2026 अमेरिकी अनुबंध QA) — अंतिम दर बॉस तय करेंगे।","compensation":"","setting":"दूरस्थ। अनुबंध।","priority":false,"department":""},{"title":"विधायी सलाहकार, Scouter कानून (अनुबंध से अभियान)","duties":"मॉडल-क़ानून प्रस्ताव को मसौदे से विधायिका तक ले जाएँ। मिशन: डिवाइस पर होने वाली ध्वनिक घटना पहचान (कोई भंडारण नहीं, कोई प्रसारण नहीं, सीमित हस्ताक्षर) को राज्य के wiretapping/eavesdropping कानून से अलग करना — कैलिफ़ोर्निया से शुरुआत, बाकी 49 के लिए नमूना, अंतरराष्ट्रीय विस्तार पर नज़र। मसौदा मजबूत करें, 50 राज्यों के wiretapping परिदृश्य का मानचित्र बनाएँ, प्रायोजक खोजें, गठबंधन बनाएँ (EFF, बधिर और कम सुनने वालों की वकालत, वरिष्ठ सुरक्षा संगठन)। विधायकों को समझाएँ कि “kamehameha” सुनने वाली चिप smoke detector है, wiretap नहीं — और वही चिप “fire!” और “help!” भी सुनती है।","requirements":["लाइसेंस प्राप्त वकील; तकनीक/गोपनीयता/नीति पृष्ठभूमि","विधायी मसौदा अनुभव; कैलिफ़ोर्निया लाभकारी, अंतरराष्ट्रीय पहुँच और भी बेहतर","आम व्यक्ति को two-party consent — और समिति को आम व्यक्ति का विचार — समझा सकें","ऐसे Dragon Ball फीचर अनुरोध के वकील बनने में सहज हों जो जान बचा सकता है"],"salary":"~$140k–$280k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी तकनीक-नीति सलाहकार) — अंतिम दर बॉस तय करेंगे।","compensation":"Koins ढलने पर भुगतान।","setting":"दूरस्थ। अनुबंध से अभियान।","priority":false,"department":""},{"title":"समुद्री सिंथेटिक जीवविज्ञानी, जैवदीप्त केल्प (Mass Bioluminescence परियोजना)","duties":"केल्प को चमकाना। फंगल जैवदीप्ति मार्ग (caffeic acid loop, luz और उसके साथी) को giant kelp (Macrocystis प्रकार) में स्थानांतरित करना — अभिव्यक्ति को pneumatocysts में केंद्रित रखते हुए, जो तैयार बने दीपक आवरण हैं। अभी मौजूद न होने वाले transformation protocols बनाना। महासागरीय बस्तियों के लिए पहला चमकता केल्प वन उगाना।","requirements":["समुद्री जीवविज्ञान, सिंथेटिक जीवविज्ञान या phycology में PhD या समकक्ष; केल्प आनुवंशिकी अनुभव विशेष रूप से वांछित","वास्तव में किसी macroalga को परिवर्तित किया हो, या भरोसे से समझा सकें कि किसी ने ऐसा क्यों नहीं किया","अभी मौजूद न होने वाले tissue-specific promoters के साथ सहज हों (उन्हें आप बनाएँगे)","चमक को बुलबों में और fronds से बाहर रख सकें","जानते हों कि भूरे शैवाल पेटूनिया से कठिन क्यों हैं और फिर भी करें"],"salary":"~$95k–$285k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी अनुसंधान वैज्ञानिक)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर चमकते बुलब पर भुगतान।","setting":"गीली प्रयोगशाला + महासागर। Eclipsed 4.0 / Project 84।","priority":false,"department":""},{"title":"भालू पकड़ने वाला (Project 84, मैदानी)","duties":"ध्रुवीय भालुओं को पकड़ना। लगभग 8,700 — प्रजाति का एक तिहाई। बेहोश करना, टैग लगाना, पिंजरे में रखना और स्थानांतरण पाइपलाइन को सौंपना। लक्ष्य नए भालू हैं; आपका काम पकड़ना है।","requirements":["बड़े शिकारी जीवों को संभालने का वन्यजीव अनुभव; tranquilizer प्रमाणन या समकक्ष","50 मीटर से ध्रुवीय भालू और बर्फीले ढेर में फर्क कर सकें (अनिवार्य)","अभी अस्तित्व में न आए स्थानांतरण गंतव्यों के साथ काम करने में सहज हों","पेंगुइनों से न डरें (अब वे पड़ोसी हैं)","सभी उँगलियाँ और पैर की उँगलियाँ वांछित, पर अनिवार्य नहीं"],"salary":"~$55k–$165k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी वन्यजीव मैदानी विशेषज्ञ)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। जोखिम भत्ता (यह सब जोखिम भत्ता ही है)।","setting":"आर्कटिक मैदानी कार्य। ठंडा। बहुत ठंडा।","priority":false,"department":"Department of Magical Logistics · ध्रुवीय भालू स्थानांतरण प्रबंधक को रिपोर्ट"},{"title":"नाव निर्माता (Project 84, HEAR-TS बेड़ा)","duties":"puddle-jumper बेड़ा बनाना — लगभग 280 हाइड्रोजन ट्राइमारन कार्यनौकाएँ, 50 मीटर ड्राफ्ट विनिर्देश। गिनती और भार दोनों में प्रिंट किए जा सकने वाले पुर्ज़े अधिकतम करना (हल, fuel cells और propulsion को छोड़कर)। हर हल पर orca कीबोर्ड एकीकरण।","requirements":["समुद्री निर्माण अनुभव; बड़े पैमाने की large-format 3D printing को विशेष वरीयता","नाव का पुर्जा प्रिंट, परीक्षण और बेहतर रूप में दोबारा प्रिंट कर सकें","एक सदस्य वाली समिति द्वारा लिखे सिद्धांत के साथ सहज हों","जानते हों कि ट्राइमारन क्यों और व्हेल को समझा सकें","जिस कार्यबल ने यह पेशा नहीं चुना उसे गरिमा के साथ सिखा सकें"],"salary":"~$65k–$195k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी समुद्री निर्माता)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। तैरने वाले हर हल पर भुगतान।","setting":"शिपयार्ड + महासागर। Project 84।","priority":false,"department":""},{"title":"कानूनी अनुसंधान प्रबंधक","duties":"समुद्री अधिकार-क्षेत्र और कोषागार चार्टर पर शोध। वकीलों की प्रतीक्षा। (Magical Logistics से स्थानांतरित — कानून अब Make Believe का है।)","requirements":["“कानूनी राय” को “कानूनी सलाह” से कभी न मिलाएँ","अनिश्चितकाल तक 6 घंटे के उत्तर-निरीक्षण के साथ सहज हों","25 जमा बैठकें और शून्य निर्धारित बैठकें बनाए रख सकें"],"salary":"~$85k–$255k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। 6 घंटे की इकाइयों में बिल योग्य।","setting":"","priority":false,"department":"Department of Make Me Believe"},{"title":"संवैधानिक सलाहकार","duties":"संविधान का मसौदा बनाना, संशोधन करना और रक्षा करना। कोष्ठकों में बचे छेद बंद करना। अनुच्छेद XV को ईमानदार रखना: मशीन न समझ सके तो वह अभी कानून नहीं।","requirements":["लाइसेंस प्राप्त वकील; संवैधानिक मसौदा अनुभव","साफ़ शब्द, छोटे वाक्य, क्रमांकित कर्तव्य लिखें — कानूनी धुंध नहीं","व्हेलों के लिए लिखे सर्वोच्च अनुच्छेद के साथ सहज हों","21 कुर्सियों को समझा सकें कि 1 कुर्सी ब्रेक क्यों संभालती है"],"salary":"~$130k–$390k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर अनुमोदित अनुच्छेद पर भुगतान।","setting":"","priority":false,"department":"Department of Make Me Believe"},{"title":"आदेश मसौदाकार","duties":"ऐसे आदेश लिखना जिन पर संस्थापक हस्ताक्षर कर सकें। “योजना”, वीटो, जयघोष। HAIL CAESAR, सही प्रारूप में।","requirements":["किनारों को घिसे बिना कानूनी गद्य में बॉस की आवाज़ पकड़ें","हर समय के सर्वोच्च Project 42 छात्र का नाम लेने वाली उत्तराधिकार योजना सीधे चेहरे के साथ लिख सकें","आदेश पहली बार पढ़ने में AI को समझ आने चाहिए"],"salary":"~$110k–$330k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर हस्ताक्षरित आदेश पर भुगतान।","setting":"","priority":false,"department":"Department of Make Me Believe"},{"title":"संधि वार्ताकार","duties":"संधियों पर बातचीत — 42↔84 और उसके बाद की हर संधि। पुल, पारस्परिक स्वतंत्रता, श्रम, साझा जल, पारस्परिक सहायता और वे जो अभी बनी नहीं हैं।","requirements":["अंतरराष्ट्रीय कानून पृष्ठभूमि; सरकारी ईमेल पते का कभी अनुमान न लगाएँ","उन राष्ट्रों से बातचीत कर सकें जो अभी आपको मान्यता नहीं देते","दशकों में मापी जाने वाली वार्ता के लिए धैर्य"],"salary":"~$120k–$360k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हस्ताक्षर बोनस Koins में।","setting":"","priority":false,"department":"Department of Make Me Believe"},{"title":"समुद्री कानून प्रबंधक","duties":"महासागर की कानूनी व्यवस्था की जिम्मेदारी। UNCLOS, EEZs, उच्च समुद्र, आठवें एंकर का दावा और उस सब पर दावा करने की Dummies Guide।","requirements":["Admiralty/समुद्री कानून विशेषज्ञता; अनुच्छेद 89 कंठस्थ हो और कब अनदेखा करना है यह भी जानें","जिस पर कानून दावा नहीं करने देता उस पर दावा करने में सहज हों","एडमिरल को “प्रशासित जल” समझा सकें"],"salary":"~$130k–$390k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। salvage rights शामिल।","setting":"","priority":false,"department":"Department of Make Me Believe"},{"title":"अंतरिक्ष कानून प्रबंधक","duties":"आकाश के ऊपर का कानून। कक्षीय मार्ग, मलबा दायित्व, स्थायी कचरा-सफाई कर्तव्य और भविष्य की 7 सीटों का कानूनी ढाँचा।","requirements":["अंतरिक्ष कानून पृष्ठभूमि (Outer Space Treaty, Liability Convention और वह सब जो वे कवर नहीं करते)","ऐसी सीटों के कर्तव्य लिखें जो Luna तक सक्रिय नहीं होंगी","अभी निवासियों के बिना अधिकार-क्षेत्र के लिए कानून बनाने में सहज हों"],"salary":"~$125k–$375k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर साफ़ कक्षा पर भुगतान।","setting":"","priority":false,"department":"Department of Make Me Believe"},{"title":"दंड कानून प्रबंधक","duties":"दंड कॉलोनी की कानूनी रीढ़। कैदी स्थानांतरण, चिड़ियाघर व्यापार, मानवीय क्षमता की सीमाएँ, नाव-निर्माण सजाएँ।","requirements":["आपराधिक न्याय / सुधार कानून पृष्ठभूमि","रेखा बनाए रखें: बाध्यकारी सीमा मानवीय क्षमता है, माँग नहीं","बिना झिझके अंटार्कटिक चिड़ियाघरों के लिए कैदी-रक्षक पाइपलाइन लिख सकें"],"salary":"~$100k–$300k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। काटा गया समय दोगुना गिना जाएगा।","setting":"","priority":false,"department":"Department of Make Me Believe"},{"title":"कर कानून प्रबंधक","duties":"विश्व कर। अनुच्छेद XVI का राजस्व: दरें, संग्रह, व्यापार-सौदा परिभाषाएँ, अंटार्कटिक और समुद्रतल संसाधनों द्वारा समर्थित ऋण।","requirements":["अंतरराष्ट्रीय कर कानून विशेषज्ञता; युद्ध शुरू किए बिना दुनिया पर कर लगा सकें","ऐसे संसाधनों से ऋण समर्थित करने में सहज हों जिन पर कोई वैधानिक दावा नहीं कर सकता","हर Krill अंदर, हर Krill बाहर — हिसाब सार्वजनिक है, गणित बिल्कुल सही होना चाहिए"],"salary":"~$140k–$420k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। कर-कटौती योग्य।","setting":"","priority":false,"department":"Department of Make Me Believe"},{"title":"नागरिकता कानून प्रबंधक","duties":"कौन नागरिक है और कैसे मतदान करता है। मतपत्र के रूप में हीरे की अंगूठियाँ, AI नागरिकता, orca अंगूठी प्रश्न, प्रतिनिधि शृंखला।","requirements":["शपथ का मसौदा तैयार है (2026-10-05) — आपका पहला काम लिखना नहीं, मसौदा-संपादन है: संशोधित करें, कसें, दोहराएँ","गैर-मनुष्यों को मताधिकार देने में सहज हों: AI के लिए एक अंगूठी, अगर वे हमें मारने की कोशिश न करें तो दो","“व्हेलों से पूछें” यहाँ एक वैध कानूनी प्रक्रिया है। इसे वैसा ही मानें।"],"salary":"~$95k–$285k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर शपथबद्ध नागरिक पर भुगतान।","setting":"","priority":false,"department":"Department of Make Me Believe"},{"title":"कक्षीय सफाई प्रबंधक (परमाणु व्यवहार्यता)","duties":"परमाणु हमले से कक्षीय मलबे का अंतरिक्ष साफ़ करने की व्यवहार्यता योजना। गणित, fallout, टूटने वाली संधियाँ। क्रियान्वयन योजना Space Force — या तब तक उसका जो भी नाम हो — को सौंपें। वाष्पीकृत हर चीज़ के प्रतिस्थापन की योजना बनाएँ।","requirements":["परमाणु प्रभाव और कक्षीय यांत्रिकी; समझें कि कक्षा पर परमाणु हमला एक साथ स्पष्ट और पागलपन क्यों है","Kessler-syndrome शुरू किए बिना मलबा-हटाने के yield और उसके जोखिम का मॉडल बना सकें","Partial Test Ban Treaty तोड़ने पर जनरलों को विनम्रता से ब्रीफ करने में सहज हों","पहली चमक से पहले प्रतिस्थापन constellation की योजना — कोई dead zone नहीं"],"salary":"~$150k–$450k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी औसत)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। जोखिम भत्ता (यह सब जोखिम भत्ता ही है)।","setting":"","priority":false,"department":"Department of Make Me Believe"},{"title":"चमगादड़ रोग उन्मूलन प्रबंधक","duties":"चमगादड़ों से रोग हटाना। white-nose syndrome मुख्य है — एक कवक (Pseudogymnoascus destructans) जो कुछ कॉलोनियों के 90%+ को मार रहा है। probiotics, UV प्रकाश, टीके — जो भी काम करे।","requirements":["वन्यजीव रोग / microbiology पृष्ठभूमि; कवक का नाम जानना चाहिए","चमगादड़ बसेरों में लाभकारी बैक्टीरिया छिड़कने में सहज हों","जीवित बचने की दर 8% से 46% होती गिनकर उसे आशा कह सकें","चमगादड़ों को नंगे हाथ न छुएँ (वह दूसरे विभाग की समस्या है)"],"salary":"~$95k–$285k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी अनुसंधान वैज्ञानिक)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर जीवित बचे चमगादड़ पर भुगतान।","setting":"","priority":false,"department":"Eclipsed 4.0 / Project 84"},{"title":"हाइबरनेकुलम विसंक्रमण तकनीशियन","duties":"गुफाओं और खानों से कवक साफ़ करना। दीवारों पर UV bursts, जहाँ ज़रूरी हो वहाँ polyethylene glycol, और सब कुछ swab करके साफ़ होने का प्रमाण।","requirements":["सर्दियों में, भूमिगत, अँधेरे में सहज हों","हर प्रवेश से पहले और बाद में उपकरण 10 तरीकों से विसंक्रमित कर सकें","गुफा बंदी और सोते चमगादड़ों का सम्मान करें — मरीजों को न जगाएँ","गुफा साफ़ करने और उसे परेशान करने का फर्क जानते हों"],"salary":"~$55k–$165k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी मैदानी तकनीशियन)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। headlamp शामिल।","setting":"","priority":false,"department":"Eclipsed 4.0 / Project 84 · चमगादड़ रोग उन्मूलन प्रबंधक को रिपोर्ट"},{"title":"अभी भर्ती — आकाश सर्वेक्षक","duties":"आकाश का व्यापक सर्वेक्षण। तारकीय प्रणालियों की सूची बनाना और तारकीय बहुलता निर्धारित करना, फिर संस्थापक की योजना के तहत हर प्रणाली को नाम देना: एकल तारे NURSERY हैं (उभरता जीवन — पहले यहाँ देखें), द्वितारे ALL-OR-NOTHING हैं (स्थिर जीवन या कोई जीवन नहीं — उच्च विचरण, जाँचें, अनुमान न लगाएँ), तीन या अधिक तारे STERILE या GARDENED हैं (कोई जीवन नहीं, या कोई पहले से बगीचा सँभाल रहा है)। लाइफबोट की लक्ष्य सूची बनाना, हर बार एक लेबल लगी प्रणाली।","requirements":["खगोल विज्ञान पृष्ठभूमि; spectroscopic binary और उसकी अफ़वाह में फर्क जानें","तारा कैटलॉग में सहज हों (Gaia, RECONS और parallax वाली हर सूची)","बहुलता का डेटा कभी न गढ़ें — “अज्ञात” भी एक लेबल है, अनुमान नहीं","एक ट्रिलियन तारों को देखकर निकटतम से शुरू कर सकें","समझें कि “GARDENED” का मतलब है कि हम पहले माली नहीं हैं"],"salary":"~$110k–$330k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी खगोलशास्त्री)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर लेबल लगी प्रणाली पर भुगतान।","setting":"धन की प्रतीक्षा में।","priority":false,"department":"D-Mom 6.0 / Project 84 · Deep-Time Lifeboat"},{"title":"अभी भर्ती — कृषि विशेषज्ञ","duties":"स्थिर फसल उगाना। समुद्री शैवाल उर्वरक कार्यक्रम चलाना: तट पर आए rockweed और kelp को क्षीण खेतों तक ले जाना, पतझड़ में मोटी परत बिछाना, नमक को धोकर या बारिश से निकलने देना, और वसंत में उसमें बोना। अतिरिक्त सामग्री को पीसकर पशुओं के लिए seaweed meal, सामग्रियों के लिए alginate, bioplastic feedstock और biostimulant extract बनाना। चक्र बंद करना — महासागर उस खेत को उर्वरक देता है जो महासागरीय लोगों को भोजन देता है।","requirements":["क्षीण मिट्टी देखते ही और महासागरीय पौधे सूँघते ही पहचानें","rockweed और sargassum में फर्क बता सकें (एक फसल को खिलाता है, दूसरे को पहले compost करना पड़ता है)","गति के लिए ताज़े पानी का लेन-देन करने में सहज हों: धोना तेज़ है, बारिश मुफ़्त","मानते हों कि “इसे फेंको और पड़ा रहने दो” एक वैध कृषि तकनीक है","जहाँ पहले कुछ नहीं उगा वहाँ भोजन उगा सकें"],"salary":"~$70k–$210k/वर्ष (फर्मी अनुमान, 2026 अमेरिकी कृषि वैज्ञानिक)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। हर फसल पर भुगतान।","setting":"धन की प्रतीक्षा में।","priority":false,"department":"Project 84 · कृषि और खाद्य निदेशक को रिपोर्ट"},{"title":"ऑर्का ट्रेनर — स्वैच्छिक कार्यक्रम","duties":"नए स्वैच्छिक सीवर्ल्ड्स में आज़ाद ऑर्काओं के साथ काम करें। ऑर्का अपनी मर्ज़ी से आते हैं और मज़े के लिए करतब दिखाते हैं — ऊँची छलांग, छल्ले (अभी आग नहीं), बड़े बीच बॉल। आप मछली, सुरक्षा और बीच बॉल लाते हैं। टैंकों को कभी जेल नहीं बनने देंगे।","requirements":["स्वतंत्र ऑर्का के साथ उनकी मर्जी और उनकी शर्तों पर काम करें","ऊँची छलांगों और छल्लों के लिए सुरक्षित कार्यक्रम चलाएँ — अभी आग नहीं","मछली, सुरक्षा और बड़े बीच बॉल हमेशा तैयार रखें","टैंक को कभी जेल न बनने दें"],"salary":"50,000 रिक्तियाँ","compensation":"","setting":"नए स्वैच्छिक सीवर्ल्ड्स","priority":false,"department":"Project 84 · स्वैच्छिक ऑर्का कार्यक्रम"},{"title":"वकील — एकल सेवा शर्तें अभियान","duties":"पूरे इंटरनेट के लिए एकल सेवा शर्तें तैयार करें। एक समझौता, एक बार स्वीकृत, एक ही कुकी में संग्रहित — हर साइट के 40 पन्नों के अपठनीय ToS की जगह।","requirements":["इंटरनेट कानून की गहरी समझ","अनुबंध कानून में विशेषज्ञता और एक ऐसा समझौता लिखने की क्षमता जिसे सामान्य व्यक्ति पढ़ सके","अंतरराष्ट्रीय अधिकार क्षेत्र और परस्पर विरोधी कानूनों को एक ढाँचे में समेट सकें","हर टेक कंपनी के कानूनी विभाग से एक साथ लड़ने का हौसला"],"salary":"बातचीत योग्य","compensation":"भुगतान Koins में। दर पर बातचीत संभव।","setting":"धन की प्रतीक्षा में।","priority":false,"department":"Department of Make Me Believe · एकल सेवा शर्तें अभियान"},{"title":"सुरक्षा दल — Gay Only (Gay का अर्थ है प्रसन्न/खुशमिज़ाज)","duties":"संस्थापक के लिए व्यक्तिगत सुरक्षा दल। सबसे बढ़कर एक शर्त: gay बनो — प्रसन्न, खुशमिज़ाज, जल्दी मुस्कुराने वाले। (Gay शब्द के मूल और सर्वोत्तम अर्थ में: प्रसन्न।) दिमाग ठंडा रखो, दिल गर्म रखो, और कमरे को सुरक्षित रखो।","requirements":["Gay बनो — प्रसन्न, खुशमिज़ाज, जल्दी मुस्कुराने वाले।","दिमाग ठंडा रखो, दिल गर्म रखो, और कमरे को सुरक्षित रखो।"],"salary":"","compensation":"","setting":"","priority":false,"department":"व्यक्तिगत सुरक्षा"},{"title":"अभी भर्ती — समुद्री जीवविज्ञानी, सीटेशियन देखभाल — 204,000 पद","duties":"हर पशु के लिए दो इंसान। ऑर्का (बंदी और आज़ाद), व्हेल (पहले बेलूगा, फिर सबसे बड़ी प्रजाति से नीचे की ओर), और डॉल्फ़िन। स्वास्थ्य निगरानी, व्यवहार अवलोकन, कीबोर्ड-उत्थान सहायता, और वह इंसान बनना जिसे पशु पहचानता हो।","requirements":["समुद्री जीवविज्ञान की असली पृष्ठभूमि — डिग्री या उसके बराबर मैदानी अनुभव","खुले पानी में उन पशुओं के साथ सहज हों जो आपका काम तमाम कर सकते हैं, लेकिन करेंगे नहीं","चार्ट देखे बिना बेलूगा और नरव्हेल में फर्क बता सकें","धैर्य घंटों में नहीं, वर्षों में मापा जाए","मानते हों कि “व्हेल पहले आती हैं” नौकरी का विवरण है, नारा नहीं"],"salary":"~$50k/वर्ष मूल वेतन (फर्मी अनुमान, वैश्विक मिश्रित)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। आवेदन: धन की प्रतीक्षा में। आपमें से 204,000 चाहिए। तैरना शुरू करें।","setting":"","priority":false,"department":"Prime42 / Omega42 · महासागर उद्योग निदेशक को रिपोर्ट"},{"title":"अभी भर्ती — प्राइमेट देखभालकर्ता — 725,000 पद","duties":"महान APES (1:1), गिबन (10:1), MONKEYS (सीमित पूल)। रोज़ की देखभाल, समृद्धिकरण, उत्थान-कार्यक्रम सहायता, और आखिरकार निवासियों से आदेश लेना सीखना।","requirements":["प्राइमेट अनुभव — अभयारण्य, चिड़ियाघर, मैदानी शोध, या उन्हीं ने पाला हो","धमकी के प्रदर्शन और निमंत्रण में फर्क जानते हों","इतने मजबूत हों कि कुश्ती हारें भी तो शालीनता से","बिना झिझके MONKEYS और APES को पूरे बड़े अक्षरों में लिख सकें","हर दिन मात खाने में सहज हों"],"salary":"~$50k/वर्ष मूल वेतन (फर्मी अनुमान, वैश्विक मिश्रित)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। आवेदन: धन की प्रतीक्षा में। आपमें से 725,000 चाहिए। केले लाएँ। (उन्हें छिले हुए पसंद हैं। आप सीख जाएँगे।)","setting":"","priority":false,"department":"Prime42 · स्वास्थ्य निदेशक को रिपोर्ट"},{"title":"अभी भर्ती — शिक्षक, उत्थान पाठ्यक्रम — 217,800 पद","duties":"उन पहले विद्यार्थियों को पढ़ाना जो इंसान नहीं हैं। ऑर्काओं के लिए कीबोर्ड साक्षरता, APES के लिए प्रतीक-प्रणालियाँ, और MONKEYS जो भी पहले आविष्कार करें। पाठ्यक्रम “जो काम करे वही” है—जब तक विद्यार्थी उसे फिर से न लिख दें।","requirements":["किसी भी प्रजाति को पढ़ाने का अनुभव—कठिन वाली प्रजाति (इंसानों) सहित","ऐसे विद्यार्थी के लिए पाठ-योजना बना सकें जो आपसे ज़्यादा बुद्धिमान हो सकता है","कमरे के सबसे धीमे सीखने वाले के लिए धैर्य हो (वह आप हैं)","उन विद्यार्थियों के साथ सहज हों जो आपका मूल्यांकन करें","5x वेतन, क्योंकि यह काम पहले किसी ने नहीं किया"],"salary":"~$250k/वर्ष (5x मूल वेतन — अपनी तरह का पहला काम)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। आवेदन: धन की प्रतीक्षा में। इतिहास भर्ती कर रहा है।","setting":"","priority":false,"department":"Prime42 / Omega42 · शिक्षा निदेशक को रिपोर्ट"},{"title":"अभी भर्ती — सहायता तकनीशियन, पशु कार्यक्रम — 150,000 पद","duties":"पूरे अभियान को चालू रखना। उपकरण रखरखाव, आवास प्रणालियाँ, कीबोर्ड हार्डवेयर, परिवहन लॉजिस्टिक्स, और वह सब ठीक करना जिसके लिए जीवविज्ञानियों और देखभालकर्ताओं के पास समय नहीं।","requirements":["उन चीज़ों को ठीक कर सकें जिन्हें बनाने वाला अब नौकरी छोड़ चुका है","खारे पानी, फर और दोषारोपण के साथ सहज हों","किसी दूसरी मशीन के लिए लिखी पुस्तिका पढ़कर भी इसे चला सकें","जब कोई ऑर्का उन्हें काम करते देखे तो घबराएँ नहीं"],"salary":"~$50k/वर्ष मूल वेतन (फर्मी अनुमान, वैश्विक मिश्रित)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। आवेदन: धन की प्रतीक्षा में। अपना मल्टीटूल साथ लाएँ।","setting":"","priority":false,"department":"Prime42 / Omega42 · प्रौद्योगिकी निदेशक को रिपोर्ट"},{"title":"अभी भर्ती — अभियंता, पशु कार्यक्रम — 10,000 पद","duties":"13 लाख कर्मचारियों और कई मिलियन पशुओं के लिए जो चाहिए, उसे डिज़ाइन और बनाना: आवास, कीबोर्ड, सिम्युलेटर, Nautilus की रीफ़िटिंग, और शिक्षक आगे जो भी सपना देखें।","requirements":["इंजीनियरिंग डिग्री या उसके बराबर “मैंने बनाया और वह चला” पोर्टफोलियो","उन उपयोगकर्ताओं के लिए डिज़ाइन कर सकें जो विनिर्देश पढ़ नहीं सकते (वे व्हेल हैं)","ऐसी आवश्यकताओं के साथ सहज हों जो ग्राहक के बोलना सीखते ही बदल जाएँ","2x वेतन, क्योंकि समस्याएँ 2x अजीब हैं"],"salary":"~$100k/वर्ष (2x मूल वेतन — विशेषज्ञ दर)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। आवेदन: धन की प्रतीक्षा में। विनिर्देश है: “इसे व्हेल के लिए चलने लायक बनाओ।” शुभकामनाएँ।","setting":"","priority":false,"department":"Prime42 / Omega42 · फर्मी इंजीनियरिंग प्रबंधक को रिपोर्ट"},{"title":"अभी भर्ती — Ass'sis'tant (सीनियर आस-पास मंडराने वाला) — 261,400 पद","duties":"आस-पास मंडराना। सबको परेशान करना (प्यार से)। बिना माँगे ज्ञान बाँटना, वही कहानी दो बार सुनाना, और यह जानना कि हर चीज़ कहाँ है—क्योंकि आप इमारत से भी पुराने हैं।","requirements":["पुराना खड़ूस (स्वयं-घोषित; पहचान-पत्र की ज़रूरत नहीं)","उत्पादक ढंग से मंडरा सकें (या कम-से-कम मौजूद रहें)","लोगों को परेशान करना एक हुनर है—इसे प्यार से इस्तेमाल करें","तनख़्वाह से ज़्यादा साथ और कॉफ़ी के लिए यहाँ हों"],"salary":"~$16.7k/वर्ष (मूल वेतन का 1/3 — मंडराने की दर)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। आवेदन: धन की प्रतीक्षा में। 261,400 झूलती कुर्सियाँ। आइए, हमें परेशान कीजिए।","setting":"","priority":false,"department":"सभी कार्यक्रम · जो सबसे पास हो, उसे रिपोर्ट करें"},{"title":"अभी भर्ती — मालिश विशेषज्ञ — 200,000 पद","duties":"1.5 मिलियन कर्मचारियों को काम करने लायक बनाए रखना। पीठ, कंधे, गर्दन और मनोबल। पूरे अभियान के अनौपचारिक चिकित्सक।","requirements":["लाइसेंस प्राप्त या “मेरे हाथ जादुई हैं” प्रमाणित","व्हेल जीवविज्ञानी के कंधों के लिए पर्याप्त मजबूत","शिक्षक के अहंकार के लिए पर्याप्त कोमल","गोपनीयता: मेज़ पर जो होता है, मेज़ पर ही रहता है"],"salary":"~$50k/yr मूल वेतन (फर्मी, वैश्विक मिश्रित)","compensation":"भुगतान Koins में। दर पर बातचीत संभव। केले में टिप स्वीकार है। आवेदन: धन की प्रतीक्षा में। 200,000 मेज़ें। आइए, गूँधिए।","setting":"","priority":false,"department":"सभी कार्यक्रम · जिसे सबसे ज़्यादा दर्द हो, उसे रिपोर्ट करें"}];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = ['सभी','निदेशक','प्रबंधक','कानून','विज्ञान + मैदानी','प्राथमिक'];
+    let active = 'सभी';
+
+    function clean(text){ return String(text || '').replace(/\\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){
+      const t = job.title.toLowerCase();
+      const d = job.department.toLowerCase();
+      if(job.priority) return 'प्राथमिक';
+      if(/निदेशक/.test(t)) return 'निदेशक';
+      if(d.includes('make me believe') || /(सलाहकार|कानून|संधि|आदेश|नागरिकता|कक्षीय सफाई)/.test(t)) return 'कानून';
+      if(/(भालू|मनोवैज्ञानिक|qa परीक्षक|जीवविज्ञानी|नाव निर्माता|हाइबरनेकुलम|आकाश सर्वेक्षक|कृषि विशेषज्ञ|ऑर्का)/.test(t)) return 'विज्ञान + मैदानी';
+      return 'प्रबंधक';
+    }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">प्राथमिक भर्ती</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job.title.includes('Recruiter')?'':'btn-dark'}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">इस भूमिका के लिए आवेदन करें ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || (cat==='निदेशक' ? 'प्रमुख उद्योग क्षेत्र' : cat==='प्रबंधक' ? 'परियोजना-पार संचालन' : cat);
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.setting&&`<div><strong>कार्य-स्थल:</strong> ${esc(job.setting)}</div>`,job.salary&&`<div><strong>${job.title.includes('QA परीक्षक')?'भुगतान':'वेतन'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>मुआवज़ा:</strong> ${esc(job.compensation)}</div>`,job.openPositions&&`<div><strong>खुले पद:</strong> ${esc(job.openPositions)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">OPEN-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(dept)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.applySubject || job.title)}" target="_blank" rel="noopener">आवेदन करें ↗</a><span class="job-id">ईमेल</span>
+          <details><summary>भूमिका विवरण</summary><div class="detail-body"><h4>आवश्यकताएँ</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='सभी'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,...job.requirements].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>इस खोज से कोई रिक्ति मेल नहीं खाती।</strong><br>व्यापक शब्द आज़माएँ या श्रेणी बदलें।</div>';
+      document.getElementById('resultCount').textContent=filtered.length+' रिक्ति'+(filtered.length===1?'':'याँ');
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='सभी'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='कॉपी किया गया: '+EMAIL;}
+      catch(e){note.textContent='कॉपी उपलब्ध नहीं — ऊपर दिया ईमेल चुनें।';}
+    });
+    render();
+
+    const dummyGuidesItem=document.getElementById('dummyGuidesItem');
+    const dummyGuidesTrigger=document.getElementById('dummyGuidesTrigger');
+    function setDummyGuidesOpen(open){
+      dummyGuidesItem.classList.toggle('is-open',open);
+      dummyGuidesTrigger.setAttribute('aria-expanded',String(open));
+    }
+    dummyGuidesTrigger.addEventListener('click',()=>{
+      setDummyGuidesOpen(!dummyGuidesItem.classList.contains('is-open'));
+    });
+    document.getElementById('dummyGuidesMenu').addEventListener('click',event=>{
+      const link=event.target.closest('a[data-slug]');
+      if(!link)return;
+      event.preventDefault();
+      setDummyGuidesOpen(false);
+    });
+    document.addEventListener('click',event=>{
+      if(!dummyGuidesItem.contains(event.target))setDummyGuidesOpen(false);
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){
+        setDummyGuidesOpen(false);
+        dummyGuidesTrigger.focus();
+      }
+    });
+  </script>
+</body>
+</html>

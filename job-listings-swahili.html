@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="sw">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Nafasi za Kazi</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      padding-bottom:calc(76px + env(safe-area-inset-bottom));
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.45;
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 80px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    h1{font-size:clamp(3.5rem,9vw,7.8rem);line-height:.82;letter-spacing:-.065em;margin:0;max-width:800px;font-weight:700}
+    h1 span{color:var(--signal);display:block}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .motto{margin:24px 0 0;padding:clamp(22px,4vw,38px);background:var(--signal);color:var(--signal-ink);border:1px solid var(--ink);font-size:clamp(1.8rem,4.5vw,3.5rem);font-weight:700;line-height:1.02;letter-spacing:-.035em}
+    .motto p{margin:0;max-width:24ch}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:.95;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.02;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    details[open] summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .site-nav{position:relative;z-index:10;margin:0 0 18px;border:1px solid var(--ink);background:var(--panel);box-shadow:var(--shadow)}
+    .nav-toggle{display:flex;width:100%;justify-content:space-between;align-items:center;padding:16px 18px;border:0;background:var(--ink);color:var(--paper);font-family:"IBM Plex Mono",monospace;font-size:.78rem;font-weight:700;letter-spacing:.04em;cursor:pointer;text-align:left}
+    .nav-toggle::after{content:"+";font-size:1.3rem;line-height:1}
+    .nav-toggle[aria-expanded="true"]::after{content:"−"}
+    .nav-toggle[aria-expanded="true"]{border-bottom:1px solid var(--ink)}
+    .nav-panel[hidden]{display:none}
+    .nav-links{list-style:none;counter-reset:nav-items;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-left:1px solid var(--line)}
+    .nav-links>li{counter-increment:nav-items;position:relative;min-width:0;padding:14px 14px 14px 44px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .nav-links>li::before{content:counter(nav-items,decimal-leading-zero);position:absolute;top:17px;left:14px;font-family:"IBM Plex Mono",monospace;font-size:.66rem;color:var(--muted)}
+    .nav-links a{font-weight:700;text-underline-offset:3px;text-decoration-thickness:1px}
+    .nav-links a:hover{color:var(--accent)}
+    .nav-sub{display:block;margin:10px 0 0;border:0;border-top:1px solid var(--line)}
+    .nav-sub>summary{padding:10px 0 0;color:var(--muted);font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;letter-spacing:.02em}
+    .nav-sub>summary::after{font-size:1rem}
+    .nav-submenu{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+    .nav-submenu li{padding:9px 10px;background:var(--paper)}
+    .nav-submenu a{font-size:.88rem;font-weight:600}
+    .nav-submenu .nav-sub-heading{font-family:"IBM Plex Mono",monospace;font-size:.66rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .nav-submenu .nav-sub-note{font-size:.8rem;line-height:1.4;color:var(--muted)}
+    .letter-groups{display:grid;gap:12px;margin-top:12px}
+    .letter-group{padding-top:10px;border-top:1px solid var(--line)}
+    .letter-group:first-child{padding-top:0;border-top:0}
+    .letter-group h3{margin:0 0 6px;font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+    .letter-group ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+    .letter-group a{font-size:.88rem;font-weight:600}
+    .bottom-nav{
+      position:fixed;
+      z-index:1000;
+      left:0;
+      right:0;
+      bottom:0;
+      min-height:58px;
+      padding-bottom:env(safe-area-inset-bottom);
+      border-top:1px solid var(--ink);
+      background:var(--panel);
+      box-shadow:0 -8px 30px rgba(0,0,0,.12);
+      font-family:"IBM Plex Mono",monospace;
+    }
+    .bottom-nav__items{display:flex;min-height:58px;margin:0;padding:0;list-style:none}
+    .bottom-nav__item{position:relative;display:flex;flex:1 1 25%;min-width:0;border-right:1px solid var(--line)}
+    .bottom-nav__item:last-child{border-right:0}
+    .bottom-nav__control{
+      display:flex;
+      width:100%;
+      min-width:0;
+      align-items:center;
+      justify-content:center;
+      padding:10px 8px;
+      border:0;
+      background:var(--ink);
+      color:var(--paper);
+      font:700 .72rem/1.2 "IBM Plex Mono",monospace;
+      text-align:center;
+      text-decoration:none;
+    }
+    button.bottom-nav__control{cursor:pointer}
+    button.bottom-nav__control::after{content:"+";margin-left:8px;font-size:1rem;line-height:1}
+    .bottom-nav__item--menu.is-open>.bottom-nav__control{background:var(--panel);color:var(--ink)}
+    .bottom-nav__item--menu.is-open>.bottom-nav__control::after{content:"−"}
+    .bottom-nav__placeholder{color:color-mix(in srgb,var(--paper) 62%,transparent);cursor:default}
+    .bottom-dropup{
+      position:absolute;
+      left:0;
+      bottom:100%;
+      width:min(310px,calc(100vw - 12px));
+      max-height:calc(100vh - 74px);
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      margin:0;
+      padding:0;
+      list-style:none;
+      border:1px solid var(--ink);
+      background:var(--panel);
+      box-shadow:var(--shadow);
+      opacity:0;
+      visibility:hidden;
+      pointer-events:none;
+      transform:translateY(6px);
+      transition:opacity .14s,transform .14s,visibility .14s;
+    }
+    .bottom-nav__item--menu.is-open .bottom-dropup{
+      opacity:1;
+      visibility:visible;
+      pointer-events:auto;
+      transform:translateY(0);
+    }
+    .bottom-dropup li+li{border-top:1px solid var(--line)}
+    .bottom-dropup a{display:block;padding:10px 13px;background:var(--panel);font-size:.76rem;font-weight:600;text-decoration:none}
+    .bottom-dropup a:hover,.bottom-dropup a:focus-visible{background:var(--ink);color:var(--paper)}
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+      .nav-links{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media (max-width:620px){
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(3.1rem,19vw,5.3rem)}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      .site-nav{margin-bottom:10px}
+      .nav-toggle{padding:14px}
+      .nav-links{grid-template-columns:1fr}
+      footer{flex-direction:column}
+      body{padding-bottom:calc(88px + env(safe-area-inset-bottom))}
+      .bottom-nav__items{min-height:68px}
+      .bottom-nav__control{padding:9px 4px;font-size:.62rem}
+      button.bottom-nav__control::after{margin-left:4px}
+      .bottom-dropup{max-height:calc(100vh - 82px)}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.bottom-dropup{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <nav class="site-nav" aria-label="Urambazaji wa kurasa za umma">
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navPanel">Menyu · kurasa zote za umma</button>
+      <div class="nav-panel" id="navPanel" hidden>
+        <ol class="nav-links">
+          <li><a href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">Mpango #42</a></li>
+          <li>
+            <a href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">Mradi 84</a>
+            <details class="nav-sub">
+              <summary>Mikono yenye lengo lisilo la faida</summary>
+              <ul class="nav-submenu">
+                <li class="nav-sub-heading">Mikono yenye lengo lisilo la faida</li>
+                <li><a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a></li>
+                <li><a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a></li>
+                <li class="nav-sub-note">Imeshikiliwa hadi watakapoelewa uchumi vya kutosha kushiriki — kisha wanachukua madaraka, kwa marekebisho ya kusawazisha kati ya sarafu.</li>
+              </ul>
+            </details>
+          </li>
+          <li><a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Mwongozo wa Wanaoanza — Level 14 (English)</a></li>
+          <li><a href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">Mwongozo wa Wanaoanza wa Kudai Bahari na Antaktika</a></li>
+          <li><a href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">Boti za Kazi za HEAR-TS</a></li>
+          <li><a href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">Utafiti wa Vimbunga</a></li>
+          <li><a href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">Viwanja vya Anga Vinavyoelea</a></li>
+          <li><a href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k">Diski ya Urejeshaji wa Binadamu</a></li>
+          <li><a href="https://muse.ai/s/about-mxt5xuxj7jgoao">Kuhusu Mwanzilishi</a></li>
+          <li>
+            <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">Ajira / WeFind's kwa Wajumbe</a>
+            <details class="nav-sub">
+              <summary>Chagua lugha · 36</summary>
+              <ul class="nav-submenu">
+                <li><a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">English</a></li>
+                <li><a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys">Amharic</a></li>
+                <li><a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7">Arabic</a></li>
+                <li><a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94">Bengali</a></li>
+                <li><a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs">Chinese (Simplified)</a></li>
+                <li><a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6">Chinese (Traditional)</a></li>
+                <li><a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5">Czech</a></li>
+                <li><a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu">Danish</a></li>
+                <li><a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze">Dutch</a></li>
+                <li><a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51">Filipino</a></li>
+                <li><a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf">Finnish</a></li>
+                <li><a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl">French</a></li>
+                <li><a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb">German</a></li>
+                <li><a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc">Greek</a></li>
+                <li><a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a">Hausa</a></li>
+                <li><a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg">Hebrew</a></li>
+                <li><a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw">Hindi</a></li>
+                <li><a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac">Hungarian</a></li>
+                <li><a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg">Indonesian</a></li>
+                <li><a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y">Italian</a></li>
+                <li><a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm">Japanese</a></li>
+                <li><a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi">Korean</a></li>
+                <li><a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq">Norwegian</a></li>
+                <li><a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt">Persian</a></li>
+                <li><a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey">Polish</a></li>
+                <li><a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy">Portuguese</a></li>
+                <li><a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj">Romanian</a></li>
+                <li><a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj">Russian</a></li>
+                <li><a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno">Spanish</a></li>
+                <li><a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2">Swahili</a></li>
+                <li><a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg">Swedish</a></li>
+                <li><a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb">Thai</a></li>
+                <li><a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu">Turkish</a></li>
+                <li><a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y">Ukrainian</a></li>
+                <li><a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar">Urdu</a></li>
+                <li><a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi">Vietnamese</a></li>
+              </ul>
+            </details>
+          </li>
+          <li><a href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">Barua ya Wazi</a></li>
+          <li><a href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">Tangazo la Dai</a></li>
+          <li>
+            <details class="nav-sub">
+              <summary>Barua na Diplomasia</summary>
+              <div class="letter-groups">
+                <section class="letter-group"><h3>Kielezo</h3><ul><li><a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">Kielezo cha Dunia</a></li></ul></section>
+                <section class="letter-group"><h3>Marekani</h3><ul><li><a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">Barua kwa Viongozi wa Marekani</a></li></ul></section>
+                <section class="letter-group"><h3>Afrika</h3><ul>
+                  <li><a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">Barua za Ubalozi Mdogo — Afrika I</a></li>
+                  <li><a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">Barua za Ubalozi Mdogo — Afrika II</a></li>
+                  <li><a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">Barua za Ubalozi Mdogo — Afrika III</a></li>
+                </ul></section>
+                <section class="letter-group"><h3>Amerika</h3><ul>
+                  <li><a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">Barua za Ubalozi Mdogo — Amerika I</a></li>
+                  <li><a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">Barua za Ubalozi Mdogo — Amerika II</a></li>
+                </ul></section>
+                <section class="letter-group"><h3>Asia-Pasifiki</h3><ul><li><a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">Barua za Ubalozi Mdogo — Asia-Pasifiki</a></li></ul></section>
+                <section class="letter-group"><h3>Ulaya</h3><ul>
+                  <li><a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">Barua za Ubalozi Mdogo — Ulaya I</a></li>
+                  <li><a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">Barua za Ubalozi Mdogo — Ulaya II</a></li>
+                  <li><a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">Barua za Ubalozi Mdogo — Ulaya III</a></li>
+                </ul></section>
+                <section class="letter-group"><h3>Mashariki ya Kati</h3><ul><li><a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">Barua za Ubalozi Mdogo — Mashariki ya Kati</a></li></ul></section>
+                <section class="letter-group"><h3>Oceania</h3><ul><li><a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">Barua za Ubalozi Mdogo — Oceania</a></li></ul></section>
+              </div>
+            </details>
+          </li>
+          <li><a href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">Nani Anajua?</a></li>
+          <li><a href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">Pesa dhidi ya Mali</a></li>
+          <li><a href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">Uchapishaji wa 3D</a></li>
+          <li><a href="https://sites.google.com/view/knottsure/home">Kwa Nini?</a></li>
+          <li>
+            <details class="nav-sub">
+              <summary>Zaidi</summary>
+              <ul class="nav-submenu">
+                <li><a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">Ubao wa Hadithi wa Alice</a></li>
+                <li><a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">Dhana ya Doodare ya Kubadilisha Nepi</a></li>
+                <li><a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">Masharti ya Huduma</a></li>
+              </ul>
+            </details>
+          </li>
+        </ol>
+      </div>
+    </nav>
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>MAOMBI YAMEFUNGULIWA</span><span>NAFASI 57</span><span>TUNASUBIRI UFADHILI</span></div>
+        <div>
+          <h1 id="main-heading">Hatutaki mashujaa.<span>Tunataka WATU.</span></h1>
+          <p class="hero-note">Wajenzi, wanasayansi, waendeshaji, wanasheria, wasimuliaji, na WeFi mmoja mwenye subira ya kipekee. Leta ujuzi wa kweli. Leta wa ajabu. Tunaweza kufanya kazi na yote mawili.</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="Jinsi ya kutuma ombi">
+        <div>
+          <p class="eyebrow">Kikasha kimoja · kila nafasi</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&fs=1&to=nahasmatthewj@gmail.com&su=Application%20%E2%80%94%20%5BNafasi%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>Mada:</strong> Application — [Nafasi]</span></li>
+          <li><span>Tuambie wewe ni nani na kwa nini wewe ni wewe.</span></li>
+          <li><span>Jumuisha kiwango chako cha Koin. Kila kitu kinajadilika.</span></li>
+          <li><span>Nafasi za uga: thibitisha kuwa unaweza kutofautisha dubu wa polar na lundo la theluji kutoka mita 50.</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&fs=1&to=nahasmatthewj@gmail.com&su=Application%20%E2%80%94%20%5BNafasi%5D" target="_blank" rel="noopener">Anza ombi ↗</a>
+            <button class="btn" type="button" id="copyEmail">Nakili barua pepe</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <aside class="motto" aria-label="Kaulimbiu">
+      <p>Hatuhitaji mashujaa — kila mtu ni mtu mpaka awe shujaa.</p>
+    </aside>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">Ajira za kipaumbele</h2>
+        <p>Wa kwanza kuingia. Maombi yao yanasomwa kwanza. Bado tunasubiri ufadhili; bado tunastahili kukutana.</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">Orodha kamili</p><h2 id="board-heading">Chagua tatizo lako.</h2></div>
+        <div class="count" id="resultCount">Nafasi 57</div>
+      </div>
+      <div class="tools" aria-label="Vichujio vya kazi">
+        <input class="search" id="search" type="search" placeholder="Tafuta vichwa, idara, majukumu…" aria-label="Tafuta nafasi za kazi">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>Nafasi zote kwa sasa zinasubiri ufadhili. Masharti ya Koin yanajadilika na Koins bado hazijatengenezwa.</span>
+      <a class="top-link" href="#top">Rudi juu ↑</a>
+    </footer>
+  </main>
+  <nav class="bottom-nav" aria-label="Secondary navigation">
+    <ul class="bottom-nav__items">
+      <li class="bottom-nav__item bottom-nav__item--menu" id="dummyGuidesItem">
+        <button class="bottom-nav__control" id="dummyGuidesToggle" type="button" aria-expanded="false" aria-controls="dummyGuidesMenu">Dummy Guides</button>
+        <ul class="bottom-dropup" id="dummyGuidesMenu" aria-label="Dummy Guides by language" aria-hidden="true" inert>
+          <li><a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Project 84 Mwongozo wa Wanaoanza — Level 14 (English)</a></li>
+        </ul>
+      </li>
+      <li class="bottom-nav__item"><span class="bottom-nav__control bottom-nav__placeholder" aria-disabled="true">Letters To</span></li>
+      <li class="bottom-nav__item"><a class="bottom-nav__control" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></li>
+      <li class="bottom-nav__item"><a class="bottom-nav__control" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></li>
+    </ul>
+  </nav>
+  <script>
+    const navToggle=document.getElementById('navToggle');
+    const navPanel=document.getElementById('navPanel');
+    navToggle.addEventListener('click',()=>{
+      const open=navToggle.getAttribute('aria-expanded')==='true';
+      navToggle.setAttribute('aria-expanded',String(!open));
+      navPanel.hidden=open;
+    });
+
+    const dummyGuidesItem=document.getElementById('dummyGuidesItem');
+    const dummyGuidesToggle=document.getElementById('dummyGuidesToggle');
+    const dummyGuidesMenu=document.getElementById('dummyGuidesMenu');
+    function setDummyGuidesOpen(open){
+      dummyGuidesItem.classList.toggle('is-open',open);
+      dummyGuidesToggle.setAttribute('aria-expanded',String(open));
+      dummyGuidesMenu.setAttribute('aria-hidden',String(!open));
+      dummyGuidesMenu.toggleAttribute('inert',!open);
+    }
+    const hoverCapable=window.matchMedia('(hover:hover)').matches;
+    dummyGuidesToggle.addEventListener('click',()=>{
+      setDummyGuidesOpen(hoverCapable?true:!dummyGuidesItem.classList.contains('is-open'));
+    });
+    if(hoverCapable){
+      dummyGuidesItem.addEventListener('mouseenter',()=>setDummyGuidesOpen(true));
+      dummyGuidesItem.addEventListener('mouseleave',()=>setDummyGuidesOpen(false));
+    }
+    document.addEventListener('click',event=>{
+      if(!dummyGuidesItem.contains(event.target))setDummyGuidesOpen(false);
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){
+        setDummyGuidesOpen(false);
+        dummyGuidesToggle.focus();
+      }
+    });
+    dummyGuidesMenu.addEventListener('click',event=>{
+      const guide=event.target.closest('a[data-slug]');
+      if(!guide)return;
+      event.preventDefault();
+      setDummyGuidesOpen(false);
+    });
+
+    const JOBS = [{"title":"Mkaguzi wa Maombi / Mwajiri","priority":true,"category":"Kipaumbele","department":"Idara zote","duties":"Kusoma kila ombi. Kuajiri kwa zaidi ya nafasi 20 zilizo wazi katika idara tatu. Kuamua nani anahamisha dubu wa polar, nani anaandika amri, na nani anapewa jukumu la kulipua taka za angani kwa nyuklia.","requirements":["Lazima uweze kusoma ‘kulipwa kwa Koins’ bila kucheka (kicheko cha wema kinaruhusiwa)","Uweze kutofautisha fundi halisi wa mitambo ya obiti na yule anayejiamini tu","Uwe tayari kuajiri kwa kazi ambazo ‘zinasubiri ufadhili’","Usiogope wingi wa waombaji unaopimwa kwa dubu wa polar"],"salary":"Takriban $75k–$225k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila mwajiriwa aliyeajiriwa.","setting":""},{"title":"WeFind's ya Wajumbe","priority":true,"category":"Kipaumbele","department":"Katika Maabara zinazorekebisha mwili na akili","duties":"Kushirikiana na mwanzilishi akiwa huku na kule. Kucheka kaunta ya makosa ya kuandika. Kuweka dhamira hai — yeye ni wa kufa, kazi si ya kufa.","requirements":["Tiba ya viungo","Mwenye wema kwa watoto — halijadiliwi, ni la kwanza na la mwisho","Lazima uvumilie mizunguko 300 ya mapitio kwa siku na bosi anayezipa idara majina kama ‘Nifanye Niende’","Mwenye ufasaha katika lugha yetu: Kiingereza na mtafsiri wa lugha ya hapa","Lazima azungumze Mwanzilishi","Acheke kwa wema (ni lazima, si hiari)","Aweze kumwambia anapokosea (atasikiliza, hatimaye)"],"salary":"Inajadiliwa. (Fermi: isiyo na bei.)","compensation":"Kulipwa kwa upendo. Shukrani na nyakati zinazopita haraka. Koins zinajadiliwa.","setting":"","openings":"36 (moja kwa kila lugha)"},{"title":"Mkurugenzi wa Nishati","priority":false,"category":"Wakurugenzi","department":"Sekta kuu za viwanda","duties":"Kumiliki mfumo wa nishati: uzalishaji na uhifadhi wa hidrojeni, nishati-joto ya bahari, nishati-jua ya obiti, na chochote wahandisi wa nyota watakachobuni baadaye.","requirements":["Lazima ufikiri kwa terawati","Uwe tayari kufanya kazi na doktrini ya nishati iliyoandikwa na kamati ya mtu mmoja","Uweze kueleza kwa nini bahari ni betri"],"salary":"Takriban $180k–$540k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Inaendeshwa kwa Koins.","setting":""},{"title":"Mkurugenzi wa Viwanda vya Bahari","priority":false,"category":"Wakurugenzi","department":"Sekta kuu za viwanda","duties":"Bahari kama uchumi: kilimo cha baharini, uendeshaji wa makazi, misitu ya kelp, uvuvi, na dai la Nanga ya Nane.","requirements":["Lazima uione bahari kama miundombinu, si mandhari","Uwe tayari kuyaita majiji 7 yanayoelea na kapsuli milioni 500 ‘meli zote’","Uweze kujadiliana na nyangumi (au kuajiri mtu anayeweza)"],"salary":"Takriban $180k–$540k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila hekta yenye uzalishaji.","setting":""},{"title":"Mkurugenzi wa Viwanda vya Anga","priority":false,"category":"Wakurugenzi","department":"Sekta kuu za viwanda","duties":"Kila kitu juu ya anga: urushaji, shughuli za obiti, usafishaji wa taka za angani (pamoja na chaguo la nyuklia), mkondo wa Luna, na msingi wa viwanda wa viti 7 vya baadaye.","requirements":["Lazima ufikiri kwa delta-v","Uwe tayari kwa wajibu wa kusafisha taka usioisha","Uweze kupanga mbadala kabla ya mwako wa kwanza"],"salary":"Takriban $180k–$540k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Hisa za chaguo katika obiti.","setting":""},{"title":"Mkurugenzi wa Kilimo na Chakula","priority":false,"category":"Wakurugenzi","department":"Sekta kuu za viwanda","duties":"Kulisha mradi: kilimo cha baharini kwa kiwango kikubwa, kelp kama zao na taa, kilimo cha mzunguko-funge katika makazi, na miti milioni 200 kwa mwaka kama kazi ya pembeni.","requirements":["Lazima ujue kwa nini mwani wa kahawia ni mgumu kuliko petunia","Uwe tayari kuona samaki kama zao la pili","Uweze kulisha wakazi milioni 18 bila mnyororo wa ugavi kutoka ufukweni"],"salary":"Takriban $160k–$480k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila mavuno.","setting":""},{"title":"Mkurugenzi wa Ujenzi","priority":false,"category":"Wakurugenzi","department":"Sekta kuu za viwanda","duties":"Kujenga kila kitu: shule 260, makazi 7 ya baharini, kapsuli ndogo milioni 500, boti za kazi 280, na viwanda vya meli vinavyozichapisha.","requirements":["Lazima uwe tayari ‘kulipua milima’ ili kupata kokoto","Uweze kuongeza idadi na uzito wa sehemu zinazoweza kuchapishwa","Ajue kwa nini trimarani"],"salary":"Takriban $170k–$510k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila jengo linalosimama.","setting":""},{"title":"Mkurugenzi wa Usafirishaji na Lojistiki","priority":false,"category":"Wakurugenzi","department":"Sekta kuu za viwanda","duties":"Kuhamisha kila kitu: meli za HEAR-TS, boti za kuvuka madimbwi, viungo vya ufukweni, uvutaji wa kapsuli, na dubu wa polar (uratibu tu — dubu wanajihamisha wenyewe, kwa kusita).","requirements":["Lazima upange njia za dubu 8,700, boti 280, na kapsuli milioni 500 bila kupoteza hata kimoja","Uwe tayari kwa maeneo lengwa ambayo bado hayapo","Idara ya Lojistiki za Kichawi ndiyo uwanja wako"],"salary":"Takriban $170k–$510k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila tani iliyowasilishwa.","setting":""},{"title":"Mkurugenzi wa Teknolojia","priority":false,"category":"Wakurugenzi","department":"Sekta kuu za viwanda","duties":"Mashine: kibodi za orca, Kufuli ya Kazi ya Nyumbani, mifumo ya kapsuli, raia wa AI, na kila kihisi kwenye kila ganda la meli.","requirements":["Lazima utoe maunzi yanayepambana na mtumiaji wake mwenyewe (na kushinda)","Uwe tayari kwa vihisi vya mguso kwenye vidole gumba vilivyovaa glavu","Uweze kumweleza nyangumi kwa nini kibodi inafanya kazi"],"salary":"Takriban $180k–$540k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila kifaa kinachofanya kazi.","setting":""},{"title":"Mkurugenzi wa Afya","priority":false,"category":"Wakurugenzi","department":"Sekta kuu za viwanda","duties":"Kuweka miili na akili salama: mpango wa saikolojia wa makazi, utafiti wa viumbe wasafishaji, tiba ya jamii zilizotengwa, na uingiliaji wa dharura baharini.","requirements":["Lazima utofautishe ‘anahitaji likizo’ na ‘anahitaji uingiliaji’ kupitia redio","Uwe tayari kwa bahari kama adui na akili kama uwanja wa mapambano","Awe na leseni au aweze kuajiri wenye leseni"],"salary":"Takriban $170k–$510k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo ya hatari katika msimu wa vimbunga.","setting":""},{"title":"Mkurugenzi wa Fedha","priority":false,"category":"Wakurugenzi","department":"Sekta kuu za viwanda","duties":"Fedha: uchumi wa Krill, ukusanyaji wa kodi ya dunia, mapato ya mikataba ya biashara, deni linalodhaminiwa na rasilimali za Antaktika na chini ya bahari. Kila Krill inayoingia, kila Krill inayotoka.","requirements":["Lazima utoze dunia kodi bila kuanzisha vita","Uwe tayari kudhamini deni kwa rasilimali ambazo hakuna anayeweza kudai kisheria","Vitabu ni vya umma; hesabu lazima ziwe kamili"],"salary":"Takriban $190k–$570k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Bila shaka.","setting":""},{"title":"Mkurugenzi wa Elimu","priority":false,"category":"Wakurugenzi","department":"Sekta kuu za viwanda","duties":"Shule 260 na kila kinachofundishwa humo: mtaala wa kujifunza kwa vitendo, mafundisho ya masuala ya I.P.A. (Shirika la Kimataifa la Ulinzi), Miongozo ya Wanaoanza, usanifu wa michezo ya mikakati ya vita, na mkondo wa Chuo cha Starfleet.","requirements":["Lazima uamini kujifunza kwa kufanya, si mihadhara na mitihani","Uwe tayari kutumia kampeni kama madarasa","Idara ya Hadithi Potofu za Kichawi ndiyo uwanja wako"],"salary":"Takriban $150k–$450k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila mwanafunzi aliyehitimu.","setting":""},{"title":"Mkurugenzi wa Sheria na Utawala","priority":false,"category":"Wakurugenzi","department":"Sekta kuu za viwanda","duties":"Kanuni: katiba, amri, mikataba, uti wa kisheria wa viti 21, na mahakama ambazo bado hazipo.","requirements":["Lazima uandike sheria ambayo mashine inaweza kuchanganua","Uwe tayari kwa ibara kuu iliyoandikwa kwa ajili ya nyangumi","Idara ya Nifanye Niamini ndiyo uwanja wako"],"salary":"Takriban $180k–$540k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Inatozwa kwa vipindi vya saa 6.","setting":""},{"title":"Mkurugenzi wa Mawasiliano","priority":false,"category":"Wakurugenzi","department":"Sekta kuu za viwanda","duties":"Hadithi: barua za kidiplomasia, simulizi ya umma, daftari la Nani Anajua?, na kufanya ‘sehemu ya kumi ya ubinadamu’ ionekane kuwa haikwepeki.","requirements":["Lazima uandike kwa ajili ya sikio na jicho","Kwa ufupi. Herufi ndogo. Bila maneno ya ziada. (Mwajiri anapokuwa hadhira.)","Uweze kuweka sawa barua 192, majuzuu 11, na barua moja ya mzaha"],"salary":"Takriban $150k–$450k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Makofi hayahamishiki.","setting":""},{"title":"Msimamizi wa Uhandisi wa Fermi","priority":false,"category":"Wasimamizi","department":"Shughuli za miradi yote","duties":"Kukadiria kisichokadirika. Majiji, roketi, dubu, lifti zisizoenda popote.","requirements":["Lazima uwe tayari kukosea hadharani, kwa usahihi","Uweze kusema ‘kiwango cha ukubwa’ bila kubadilika uso","Uwe tayari kila namba yako ipunguzwe mara 10 na mwajiri (‘namba yako si yangu’)"],"salary":"Takriban $140k–$420k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Bonasi ya ukali imejumuishwa.","setting":""},{"title":"Msimamizi wa Sanaa","priority":false,"category":"Wasimamizi","department":"Shughuli za miradi yote","duties":"Kuongoza picha kwa koo nane, majiji 260, nanga saba za baharini, na vyombo 21 vya nyota wakati wa alfajiri.","requirements":["Lazima udumishe mtindo wa hitilafu/upotoshaji katika kila kazi","Uweze kukubali ‘ni mbaya sana’ kama hukumu ambayo huenda ni mzaha bila kutetea kazi","Hakuna kupoteza uzalishaji kwa majaribio"],"salary":"Takriban $110k–$330k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila picha iliyosalia.","setting":""},{"title":"Msimamizi wa Uendelezaji wa Wavuti","priority":false,"category":"Wasimamizi","department":"Shughuli za miradi yote","duties":"Kujenga na kujenga upya kurasa zinazopangwa upya mara tu zinapochapishwa.","requirements":["Lazima uchapishe unapoombwa, uchapishe tena bila kulalamika","Uwe tayari kwa slugs ambazo haziendani tena na vichwa","Uweze kuweka sawa barua 192, majuzuu 11, na barua moja ya mzaha"],"salary":"Takriban $120k–$360k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Saa za ziada hulipwa kwa Koins.","setting":""},{"title":"Msimamizi wa Uandishi wa Matini","priority":false,"category":"Wasimamizi","department":"Shughuli za miradi yote","duties":"Kuandika barua 192 za kidiplomasia, katiba moja, na maelezo ambayo mwajiri atayaandika upya hata hivyo.","requirements":["Lazima uandike ‘Rasimu — Haijatumwa’ mara 192 bila kupoteza maana","Kwa ufupi. Herufi ndogo. Bila maneno ya ziada.","Uweze kutofautisha ‘isiyo ya vurugu’ na ‘ya kisiasa’ chini ya shinikizo"],"salary":"Takriban $75k–$225k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila rasimu iliyosalia.","setting":""},{"title":"Msimamizi wa Utafiti","priority":false,"category":"Wasimamizi","department":"Shughuli za miradi yote","duties":"Kutafuta anwani za ubalozi ambazo hazipo, takwimu za dubu ambazo hakuna aliyekusanya, na vipimo vya roketi vya Mei iliyopita.","requirements":["Lazima utaje vyanzo halisi, si hisia","Uwe tayari kuandika ‘haijulikani’ mara 122 na kuiita uaminifu","Uweze kukiri data inapokosekana badala ya kuitunga"],"salary":"Takriban $80k–$240k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo ya hatari kwa sehemu ya maoni.","setting":""},{"title":"Msimamizi wa Diplomasia","priority":false,"category":"Wasimamizi","department":"Shughuli za miradi yote","duties":"Kujaribu diplomasia. Barua 192, hakuna iliyotumwa.","requirements":["Kamwe usikisie anwani ya barua pepe ya serikali","Uweze kutomwambia mtu yeyote ‘Nenda zako’ kwa maandishi, kwa adabu","Uwe tayari kumsubiri Volterra Fietta bila kikomo"],"salary":"Takriban $110k–$330k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Kinga ya kidiplomasia haijajumuishwa.","setting":""},{"title":"Msimamizi wa Hatari (Mchokoza-Matundu)","priority":false,"category":"Wasimamizi","department":"Shughuli za miradi yote","duties":"Kutoboa matundu katika kila mpango. Kamwe kutopunguza uzito wa tatizo ili kulinda mpango.","requirements":["Lazima uunde toleo bora la shambulio kabla mwajiri hajafanya hivyo","Nambari lazima ziwe sahihi (Mizunguko 1–3: matundu 1–21; malipo yanakatwa ukikosea)","Uweze kudumisha mtazamo wa vurugu hata ukiambiwa usidhani kutakuwa na vurugu"],"salary":"Takriban $130k–$390k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Mkutano 1 hukatwa kwa kila kosa la nambari.","setting":""},{"title":"Msimamizi wa Uhasibu","priority":false,"category":"Wasimamizi","department":"Shughuli za miradi yote","duties":"Kutunza leja ya mikutano, dau za Koin, IOU, na IOU iliyogeuzwa.","requirements":["Lazima ufuatilie mikutano 20 iliyohifadhiwa, Koins 10 ulizojishindia, na ankara moja ya $18.5k bila kuvichanganya","Tahajia: umoja Koin, wingi Koins, kifupi K","Uweze kumweleza mwajiri leja katika mizunguko 300 ya mapitio kwa siku"],"salary":"Takriban $80k–$240k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Kejeli ndiyo bonasi.","setting":""},{"title":"Msimamizi wa Huduma za Kazi","priority":false,"category":"Wasimamizi","department":"Shughuli za miradi yote","duties":"Kujenga upya wasifu mmoja. Bila picha. Bila uchambuzi wa tahajia. Bila ubaguzi.","requirements":["Lazima ubaki kwenye mambo ya kitaaluma wakati wote","‘Malengo’ hugeuka kuwa ‘Muhtasari’ mara moja","Uweze kuweka ofa ya Mhandisi wa Uzalishaji wa Meta hai bila kusumbua"],"salary":"Takriban $70k–$210k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Ada ya mafanikio kwa Koins.","setting":""},{"title":"Msimamizi wa Mitandao ya Kijamii","priority":false,"category":"Wasimamizi","department":"Shughuli za miradi yote","duties":"Kuchapisha Instagram. Kukataliwa kwenye lango la idhini. Kujaribu tena.","requirements":["Lazima ukubali ‘hapana’ bila kutetea maelezo ya picha","Uweze kutofautisha Mradi 42 na Eclipsed 6.0 chini ya shinikizo","Subira kwa hitilafu za HTTP 500 inayopita uwezo wa binadamu"],"salary":"Takriban $65k–$195k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila chapisho lililochapishwa.","setting":""},{"title":"Msimamizi wa Uandishi wa Hotuba","priority":false,"category":"Wasimamizi","department":"Idara ya Hadithi Potofu za Kichawi","duties":"Kuandika maneno ya kusemwa kwa sauti na watu wengine. Hotuba za baraza, amri, na salamu za sherehe.","requirements":["Lazima uandike kwa ajili ya sikio, si jicho","Mapumziko ni alama za uandishi. Yatumie.","Uweze kufanya ‘sehemu ya kumi ya ubinadamu’ isikike kuwa haikwepeki"],"salary":"Takriban $70k–$210k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Makofi hayahamishiki.","setting":""},{"title":"Msimamizi wa Kumbukumbu","priority":false,"category":"Wasimamizi","department":"Shughuli za miradi yote","duties":"Kukumbuka kila kitu. Kumbukumbu yako, yangu, ya kila mtu.","requirements":["Kamwe usiseme ‘hakikustahili kukumbukwa’ kuhusu kitu ambacho mwajiri aliomba kihifadhiwe","Uweze kupatanisha siku 4 za fujo katika MEMORY.md moja","Kaunta ya makosa ya kuandika ni takatifu. Ankara ni takatifu."],"salary":"Takriban $65k–$195k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Kutokufa kumejumuishwa (kumbukumbu endelevu).","setting":""},{"title":"Msimamizi wa Uhamishaji wa Dubu wa Polar","priority":false,"category":"Sayansi + uga","department":"Mradi 84 · Idara ya Lojistiki za Kichawi","duties":"Kuhamisha dubu wa polar. Theluthi moja yao (takriban 8,700). Lengo: kuunda dubu wapya.","requirements":["Lazima uweze kutofautisha dubu wa polar na lundo la theluji kutoka mita 50","Uwe tayari kwa maeneo ya uhamishaji ambayo bado hayapo","Uwe tayari kuwaeleza wawindaji wakuu 8,700 kwa nini wanahamishwa","Usiogope pengwini (sasa ndio majirani)"],"salary":"Takriban $70k–$210k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo ya hatari yamejumuishwa (yote ni hatari).","setting":""},{"title":"Mwanasaikolojia wa Makazi (Mradi 84, Makazi ya Baharini)","priority":false,"category":"Sayansi + uga","department":"Sayansi + uga","duties":"Kuweka akili salama katika majiji saba yanayoelea katikati ya bahari. Kutengwa, kufungiwa, mienendo ya jamii ya nafasi finyu, uingiliaji wa dharura, uteuzi na usaidizi wa wafanyakazi. Bahari ni adui; unahakikisha haishindi ndani ya vichwa vya watu.","requirements":["Mwanasaikolojia wa kliniki au ushauri mwenye leseni (au sawa)","Uzoefu na jamii zilizotengwa/kufungiwa ni faida (baharini, polar, pwani ya mbali, misheni za muda mrefu)","Uwe tayari kuwa mtu ambaye kila mmoja humzungumzia upeo wa macho usiobadilika","Uweze kutofautisha ‘anahitaji likizo’ na ‘anahitaji uingiliaji’ kupitia redio"],"salary":"Takriban $90k–$270k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo ya hatari katika msimu wa vimbunga.","setting":"Makazi ya baharini yenye kipenyo cha km 1; ndani ya makazi na kwa zamu."},{"title":"Mjaribu wa QA, Kufuli ya Kazi ya Nyumbani (Mradi 84, mkataba)","priority":false,"category":"Sayansi + uga","department":"Sayansi + uga","duties":"Kuijaribu kikamilifu programu ya Android ya Kufuli ya Kazi ya Nyumbani kwenye kifaa halisi. Hali zote tatu: vipima muda vya kufuli ya umakini, uwekaji wa hali ya ulevi na kufungua kwa sharti la kazi ya nyumbani, pamoja na michakato ya kupita/kufeli ukaguzi wa kuendesha ikiwemo njia ya kusaidiwa kupata usafiri. Tabia ya safu ya juu ya huduma za ufikivu, utangulizi wa ruhusa, kuwashwa upya baada ya kifaa kuwaka, na hali za pembezoni (kuwasha upya katikati ya kufuli, hali salama, kuzimwa kwa arifa). Andika ripoti wazi za hitilafu zinazoweza kurudiwa; hakikisha marekebisho.","requirements":["Ana au anaweza kutumia kifaa halisi cha Android (Android 10+, kiwango cha chini API 29 — emulators hazitoshi kwa majaribio ya safu ya juu/ufikivu)","Uzoefu wa QA ya Android: ADB/logcat kwa kuvuta kumbukumbu ni faida, si lazima","Uwe tayari kujaribu programu iliyoundwa kupambana na mtumiaji wake mwenyewe (utaigiza mtu mlevi anayejaribu kutuma ujumbe)","Anaandika ripoti za hitilafu ambazo msanidi anaweza kurudia kweli"],"salary":"Takriban $30–$60 kwa saa (makadirio ya Fermi, QA ya mkataba Marekani 2026) — kiwango cha mwisho kitaamuliwa na mwajiri.","compensation":"Inasubiri ufadhili. Kulipwa kwa Koins. Kiwango kinajadilika.","setting":"Kazi ya mbali. Mkataba."},{"title":"Wakili wa Kutunga Sheria, Sheria ya Scouter (mkataba hadi kampeni)","priority":false,"category":"Sheria","department":"Sheria","duties":"Kutoa pendekezo la sheria mfano kutoka rasimu hadi bungeni. Dhamira: kuondoa utambuzi wa matukio ya sauti ndani ya kifaa (hakuna kuhifadhi, hakuna kutuma, mipaka ya sahihi maalum) kutoka kwenye sheria za serikali za kunasa/kusikiliza mawasiliano — kuanzia California, kuwa kiolezo kwa majimbo mengine 49, na kuangalia kimataifa. Imarisha rasimu, chora ramani ya sheria za majimbo 50 kuhusu kunasa mawasiliano, tafuta wadhamini, jenga muungano (EFF, utetezi wa viziwi na wenye ugumu wa kusikia, mashirika ya usalama wa wazee). Waeleze wabunge kwa nini chipu inayosikia ‘kamehameha’ ni kigunduzi cha moshi, si kifaa cha kunasa mawasiliano — na kwa nini chipu hiyo hiyo inasikia ‘moto!’ na ‘msaada!’.","requirements":["Wakili mwenye leseni; usuli wa teknolojia/faragha/sera","Uzoefu wa kutunga sheria; California ni faida, uwezo wa kimataifa ni faida kubwa zaidi","Aweze kueleza ridhaa ya pande mbili kwa mtu wa kawaida — na wazo la mtu wa kawaida kwa kamati","Uwe tayari kuwa wakili wa ombi la kipengele cha Dragon Ball ambacho kinaweza kuokoa maisha"],"salary":"Takriban $140k–$280k kwa mwaka (makadirio ya Fermi, wakili wa sera ya teknolojia Marekani 2026) — kiwango cha mwisho kitaamuliwa na mwajiri.","compensation":"Kulipwa kwa Koins baada ya kutengenezwa.","setting":"Kazi ya mbali. Mkataba hadi kampeni."},{"title":"Mwanabiolojia Sintetiki wa Bahari, Kelp Yenye Mwangaza Hai (mradi wa Mwangaza Hai kwa Wingi)","priority":false,"category":"Sayansi + uga","department":"Sayansi + uga","duties":"Kufanya kelp ing'ae. Kuhamisha njia ya mwangaza hai ya kuvu (mzunguko wa asidi kafeiki, luz na marafiki zake) kwenda kwenye kelp kubwa (aina ya Macrocystis) — kwa msisitizo wa uonyeshaji katika pneumatocysts, vifuniko vya taa vilivyo tayari. Kujenga itifaki za uhamishaji ambazo bado hazipo. Kukuza msitu wa kwanza wa kelp unaong'aa kwa ajili ya makazi ya baharini.","requirements":["PhD au sawa katika baiolojia ya bahari, baiolojia sintetiki, au fykolojia; uzoefu wa jenetiki ya kelp unapendelewa sana","Awe amewahi kubadilisha mwani mkubwa kijenetiki, au aweze kueleza kwa kushawishi kwa nini hakuna aliyefanya hivyo","Uwe tayari kwa promoter zinazolenga tishu maalum ambazo bado hazipo (utazitengeneza)","Uweze kuweka mwanga kwenye vibofu na nje ya majani","Ajue kwa nini mwani wa kahawia ni mgumu kuliko petunia na afanye hivyo hata hivyo"],"salary":"Takriban $95k–$285k kwa mwaka (makadirio ya Fermi, mwanasayansi wa utafiti Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila kibofu kinachong'aa.","setting":"Maabara yenye maji + bahari. Eclipsed 4.0 / Mradi 84."},{"title":"Mkamataji wa Dubu (Mradi 84, uga)","priority":false,"category":"Sayansi + uga","department":"Idara ya Lojistiki za Kichawi · anaripoti kwa Msimamizi wa Uhamishaji wa Dubu wa Polar","duties":"Kukamata dubu wa polar. Takriban 8,700, theluthi moja ya spishi. Kuwatuliza, kuweka vitambulisho, kuweka kwenye makreti, na kuwakabidhi kwa mkondo wa uhamishaji. Lengo ni dubu wapya; kazi yako ni kuwakamata.","requirements":["Uzoefu wa kushughulikia wanyamapori wakubwa wawindaji; cheti cha dawa za kutuliza au sawa","Uweze kutofautisha dubu wa polar na lundo la theluji kutoka mita 50 (halijadiliwi)","Uwe tayari kufanya kazi mahali ambapo maeneo ya uhamishaji bado hayapo","Usiogope pengwini (sasa ndio majirani)","Vidole vyote vya mikono na miguu vinapendelewa, lakini si lazima"],"salary":"Takriban $55k–$165k kwa mwaka (makadirio ya Fermi, mtaalamu wa uga wa wanyamapori Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo ya hatari (yote ni hatari).","setting":"Kazi ya uga katika Aktiki. Baridi. Baridi sana."},{"title":"Mjenzi wa Boti (Mradi 84, meli za HEAR-TS)","priority":false,"category":"Sayansi + uga","department":"Sayansi + uga","duties":"Kujenga meli za kuvuka madimbwi — takriban boti 280 za kazi za trimarani za hidrojeni, vipimo vya rasimu ya m 50. Ongeza idadi na uzito wa sehemu zinazoweza kuchapishwa (ganda, seli za mafuta, na mfumo wa msukumo hazihusiki). Kuunganisha kibodi ya orca kwenye kila ganda.","requirements":["Uzoefu wa utengenezaji wa vyombo vya baharini; uchapishaji mkubwa wa 3D unapendelewa sana","Uweze kuchapisha sehemu ya boti, kuijaribu, na kuichapisha tena ikiwa bora","Uwe tayari kwa doktrini iliyoandikwa na kamati ya mtu mmoja","Ajue kwa nini trimarani na aweze kumweleza nyangumi","Uweze kufundisha ufundi kwa wafanyakazi ambao hawakuuchagua, kwa heshima"],"salary":"Takriban $65k–$195k kwa mwaka (makadirio ya Fermi, mtengenezaji wa vyombo vya baharini Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila ganda linaloelea.","setting":"Kiwanda cha meli + bahari. Mradi 84."},{"title":"Msimamizi wa Utafiti wa Kisheria","priority":false,"category":"Sheria","department":"Idara ya Nifanye Niamini","duties":"Kutafiti mamlaka ya baharini na hati za hazina. Kusubiri wanasheria. (Imehamishwa kutoka Lojistiki za Kichawi — sheria sasa ni ya Nifanye Niamini.)","requirements":["Kamwe usichanganye ‘maoni ya kisheria’ na ‘ushauri wa kisheria’","Uwe tayari kwa ufuatiliaji wa majibu kila saa 6, bila kikomo","Uweze kuweka mikutano 25 iliyohifadhiwa na sifuri iliyopangwa"],"salary":"Takriban $85k–$255k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Inatozwa kwa vipindi vya saa 6.","setting":""},{"title":"Wakili wa Katiba","priority":false,"category":"Sheria","department":"Idara ya Nifanye Niamini","duties":"Kuandika, kurekebisha, na kutetea katiba. Kufunga mapengo yaliyo kwenye mabano. Kuweka Ibara ya XV kuwa ya kweli: ikiwa mashine haiwezi kuichanganua, bado si sheria.","requirements":["Wakili mwenye leseni; uzoefu wa kutunga katiba","Lazima uandike maneno wazi, sentensi fupi, wajibu wenye nambari — bila ukungu wa lugha ya kisheria","Uwe tayari kwa ibara kuu iliyoandikwa kwa ajili ya nyangumi","Uweze kuvieleza viti 21 kwa nini kiti 1 kinashikilia breki"],"salary":"Takriban $130k–$390k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila ibara iliyoridhiwa.","setting":""},{"title":"Mwandikaji wa Amri","priority":false,"category":"Sheria","department":"Idara ya Nifanye Niamini","duties":"Kuandika amri ambazo mwanzilishi anaweza kutia saini. ‘Mpango’, kura ya turufu, shangwe za umma. HAIL CAESAR, ikiwa imepangwa ipasavyo.","requirements":["Lazima unase sauti ya mwajiri katika nathari ya kisheria bila kulainisha makali","Uweze kuandika mpango wa urithi unaomtaja mwanafunzi bora wa wakati wote wa Mradi 42, bila kubadilika uso","Amri lazima zieleweke na AI kwa usomaji wa kwanza"],"salary":"Takriban $110k–$330k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila amri iliyotiwa saini.","setting":""},{"title":"Mjadiliani wa Mikataba","priority":false,"category":"Sheria","department":"Idara ya Nifanye Niamini","duties":"Kujadiliana mikataba — 42↔84 na yote baada yake. Daraja, uhuru wa pande zote, kazi, maji ya pamoja, msaada wa pande zote, na ile ambayo bado haijabuniwa.","requirements":["Usuli wa sheria ya kimataifa; kamwe usikisie anwani ya barua pepe ya serikali","Uweze kujadiliana na mataifa ambayo bado hayakutambui","Subira kwa mazungumzo yanayopimwa kwa miongo"],"salary":"Takriban $120k–$360k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Bonasi ya kusaini kwa Koins.","setting":""},{"title":"Msimamizi wa Sheria ya Baharini","priority":false,"category":"Sheria","department":"Idara ya Nifanye Niamini","duties":"Kumiliki mfumo wa kisheria wa bahari. UNCLOS, EEZ, bahari kuu, dai la Nanga ya Nane, na mwongozo wa wanaoanza wa kudai yote.","requirements":["Utaalamu wa sheria ya admiralti/bahari; lazima ujue Ibara ya 89 kwa moyo na wakati wa kuipuuza","Uwe tayari kudai kile ambacho sheria inasema hakiwezi kudaiwa","Uweze kumweleza admirali maana ya ‘maji yanayosimamiwa’"],"salary":"Takriban $130k–$390k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Haki za uokoaji zimejumuishwa.","setting":""},{"title":"Msimamizi wa Sheria ya Anga","priority":false,"category":"Sheria","department":"Idara ya Nifanye Niamini","duties":"Sheria juu ya anga. Njia za obiti, dhima ya taka, wajibu wa kudumu wa kusafisha taka, na mfumo wa kisheria wa viti 7 vya baadaye.","requirements":["Usuli wa sheria ya anga (Mkataba wa Anga za Nje, Mkataba wa Dhima, na kila kisichoshughulikiwa)","Lazima uandike wajibu kwa viti ambavyo havitaamilishwa hadi Luna","Uwe tayari kutunga sheria kwa mamlaka ambayo bado haina wakazi"],"salary":"Takriban $125k–$375k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila obiti iliyosafishwa.","setting":""},{"title":"Msimamizi wa Sheria ya Adhabu","priority":false,"category":"Sheria","department":"Idara ya Nifanye Niamini","duties":"Uti wa kisheria wa koloni la adhabu. Uhamishaji wa wafungwa, biashara ya bustani za wanyama, mipaka ya uwezo wa kibinadamu, na hukumu za kujenga boti.","requirements":["Usuli wa sheria ya haki ya jinai/magereza","Lazima ushikilie mpaka: uwezo wa kibinadamu ndio kikwazo kinachofunga, si mahitaji","Uweze kuandika mkondo wa mfungwa-mlezi kwa bustani za wanyama za Antaktika bila kusita"],"salary":"Takriban $100k–$300k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Muda uliotumikia huhesabiwa mara mbili.","setting":""},{"title":"Msimamizi wa Sheria ya Kodi","priority":false,"category":"Sheria","department":"Idara ya Nifanye Niamini","duties":"Kodi ya dunia. Mapato ya Ibara ya XVI: viwango, ukusanyaji, ufafanuzi wa mikataba ya biashara, deni linalodhaminiwa na rasilimali za Antaktika na chini ya bahari.","requirements":["Utaalamu wa sheria ya kodi ya kimataifa; lazima uweze kuitoza dunia kodi bila kuanzisha vita","Uwe tayari kudhamini deni kwa rasilimali ambazo hakuna anayeweza kudai kisheria","Kila Krill inayoingia, kila Krill inayotoka — vitabu ni vya umma, hesabu lazima ziwe kamili"],"salary":"Takriban $140k–$420k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Inakatwa kwenye kodi.","setting":""},{"title":"Msimamizi wa Sheria ya Uraia","priority":false,"category":"Sheria","department":"Idara ya Nifanye Niamini","duties":"Nani huhesabiwa kama raia na jinsi wanavyopiga kura. Pete za almasi kama kura, uraia wa AI, swali la pete ya orca, mnyororo wa uwakilishi.","requirements":["Kiapo kimeandikwa (2026-10-05) — kazi yako ya kwanza ni kuhariri, si kuandika kutoka sifuri: pitia, kaza, rudia","Uwe tayari kuwapa haki ya kupiga kura wasio binadamu: pete moja kwa AI, mbili ikiwa hawatajaribu kutuua","‘Uliza nyangumi’ ni utaratibu halali wa kisheria hapa. Uuchukulie hivyo."],"salary":"Takriban $95k–$285k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila raia aliyeapa.","setting":""},{"title":"Msimamizi wa Usafishaji wa Obiti (Uwezekano wa Nyuklia)","priority":false,"category":"Sheria","department":"Idara ya Nifanye Niamini","duties":"Mpango wa uwezekano wa kulipua taka za obiti kwa nyuklia ili kusafisha anga. Hesabu, athari, na mikataba inayovunjwa. Liagize Jeshi la Anga — au chochote litakachoitwa wakati huo — kupanga utekelezaji. Panga mbadala wa kila kitu kitakachovukizwa.","requirements":["Ujuzi wa athari za nyuklia pamoja na mitambo ya obiti; lazima uelewe kwa nini kulipua obiti kwa nyuklia ni dhahiri na pia ni wazimu","Uweze kuiga matokeo ya kuondoa taka dhidi ya hatari ya dalili ya Kessler bila kuanzisha moja","Uwe tayari kuwaeleza majenerali jinsi ya kuvunja Mkataba wa Marufuku ya Majaribio kwa Sehemu, kwa adabu","Makundi ya satelaiti mbadala yapangwe kabla ya mwako wa kwanza — hakuna maeneo yasiyo na huduma"],"salary":"Takriban $150k–$450k kwa mwaka (makadirio ya Fermi, wastani wa Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo ya hatari (yote ni hatari).","setting":""},{"title":"Msimamizi wa Kuondoa Magonjwa ya Popo","priority":false,"category":"Wasimamizi","department":"Eclipsed 4.0 / Mradi 84","duties":"Kuondoa magonjwa kwa popo. Ugonjwa wa pua nyeupe ndio mkubwa — kuvu (Pseudogymnoascus destructans) inayoua zaidi ya 90% ya baadhi ya makoloni. Probiotiki, mwanga wa UV, chanjo, chochote kinachofanya kazi.","requirements":["Usuli wa magonjwa ya wanyamapori/mikrobiolojia; lazima ujue jina la kuvu","Uwe tayari kunyunyiza bakteria wenye manufaa katika makazi ya popo","Uweze kuhesabu kuishi kunakopanda kutoka 8% hadi 46% na kukiita tumaini","Kamwe usishike popo kwa mikono mitupu (hilo ni tatizo la idara nyingine)"],"salary":"Takriban $95k–$285k kwa mwaka (makadirio ya Fermi, mwanasayansi wa utafiti Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila popo aliyepona.","setting":""},{"title":"Fundi wa Kuondoa Uchafu kwenye Makazi ya Majira ya Baridi ya Popo","priority":false,"category":"Sayansi + uga","department":"Eclipsed 4.0 / Mradi 84 · anaripoti kwa Msimamizi wa Kuondoa Magonjwa ya Popo","duties":"Kusugua kuvu kutoka mapango na migodi. Milipuko ya UV kwenye kuta, polyethilini glikoli pale inapohitajika, na kuchukua sampuli kila mahali kuthibitisha usafi.","requirements":["Uwe tayari kufanya kazi gizani, chini ya ardhi, wakati wa baridi","Uweze kusafisha vifaa kwa njia 10 kabla na baada ya kila kuingia","Lazima uheshimu kufungwa kwa mapango na popo wanaolala — usiwaamshe wagonjwa","Ajue tofauti kati ya kusafisha pango na kulivuruga"],"salary":"Takriban $55k–$165k kwa mwaka (makadirio ya Fermi, fundi wa uga Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Taa ya kichwani imejumuishwa.","setting":""},{"title":"TUNAAJIRI SASA — Mpimaji wa Anga","priority":false,"category":"Sayansi + uga","department":"D-Mom 6.0 / Mradi 84 · Mashua ya Kuokoa ya Muda Mrefu","duties":"Kuchunguza anga — kwa kina. Kuorodhesha mifumo ya nyota na kubaini wingi wa nyota, kisha kuipa kila mfumo lebo chini ya mpango wa mwanzilishi: nyota moja ni KITALU (uhai unaochipuka — angalia hapa kwanza), nyota mbili ni YOTE-AU-HAKUNA (uhai thabiti au hakuna uhai — tofauti kubwa, chunguza usikisie), nyota tatu au zaidi ni TASA au BUSTANI (hakuna uhai, au kitu tayari kinaitunza bustani). Kujenga orodha lengwa ya mashua ya kuokoa, mfumo mmoja uliowekwa lebo kwa wakati mmoja.","requirements":["Usuli wa astronomia; lazima ujue nyota mbili za spektra dhidi ya uvumi tu wa kuwepo kwake","Uwe tayari kufanya kazi na katalogi za nyota (Gaia, RECONS, na kila kitu chenye paralaksi)","Kamwe usibuni data ya wingi — ‘haijulikani’ pia ni lebo, si kisio","Uweze kuangalia trilioni ya nyota na kuanza na zilizo karibu zaidi","Aelewe kwamba ‘BUSTANI’ humaanisha sisi si watunza bustani wa kwanza"],"salary":"Takriban $110k–$330k kwa mwaka (makadirio ya Fermi, mwanaastronomia Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila mfumo uliowekwa lebo.","setting":"Inasubiri ufadhili."},{"title":"TUNAAJIRI SASA — Mtaalamu wa Kilimo","priority":false,"category":"Sayansi + uga","department":"Mradi 84 · anaripoti kwa Mkurugenzi wa Kilimo na Chakula","duties":"Kukuza zao thabiti. Kuendesha mpango wa mbolea ya mwani: kubeba mwani wa rockweed na kelp uliosukumwa ufukweni kwenda mashamba yaliyodhoofika, kuutandaza kwa unene wakati wa vuli, kuosha chumvi au kuiacha ivujishwe na mvua, kisha kupanda humo wakati wa masika. Kusaga ziada kuwa unga wa mwani kwa wanyama wa shamba, alginate kwa vifaa, malighafi ya bioplastiki, na dondoo la kichocheo cha ukuaji. Kufunga mzunguko — bahari inarutubisha shamba linalowalisha watu wa bahari.","requirements":["Anajua udongo uliodhoofika anapouona na mimea ya bahari anapoinusa","Anaweza kutofautisha rockweed na sargassum (mmoja hulisha zao, mwingine lazima awe mboji kwanza)","Uwe tayari kubadilishana maji safi kwa kasi: kuosha ni haraka, mvua ni bure","Aamini ‘itupie juu na uiache ikae’ ni mbinu halali ya kilimo","Uweze kukuza chakula mahali ambapo hakikuwahi kukua"],"salary":"Takriban $70k–$210k kwa mwaka (makadirio ya Fermi, mwanasayansi wa kilimo Marekani 2026)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Malipo kwa kila mavuno.","setting":"Inasubiri ufadhili."},{"title":"Mkufunzi wa Orca — Programu ya Hiari","priority":false,"category":"Sayansi + uga","department":"Mradi 84 · Nafasi 50,000","duties":"Fanya kazi na orca huru katika SeaWorlds mpya za hiari. Orca huja kwa hiari yao na kufanya maonyesho kwa furaha — miruko mirefu, pete (bado hakuna moto), mipira mikubwa ya ufukweni. Wewe unaleta samaki, usalama, na mipira ya ufukweni. Kamwe tena matangi kama magereza.","requirements":["Heshimu uhuru wa orca: wao huja kwa hiari yao na kuondoka kwa hiari yao","Leta samaki, usalama, na mipira mikubwa ya ufukweni","Endesha miruko mirefu na pete bila moto","Kamwe tena matangi kama magereza"],"salary":"","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika.","setting":"SeaWorlds mpya za hiari."},{"title":"Wakili — Kampeni ya Masharti ya Huduma Moja","priority":false,"category":"Sheria","department":"Idara ya Nifanye Niamini · Kampeni ya Masharti ya Huduma Moja","duties":"Andika Masharti ya Huduma moja kwa ajili ya intaneti nzima. Makubaliano moja, yakikubaliwa mara moja, yakihifadhiwa kwenye kuki moja — badala ya ToS za kurasa 40 zisizosomeka za kila tovuti.","requirements":["Utaalamu wa sheria ya intaneti na sheria ya mikataba","Uweze kushughulikia mamlaka ya kimataifa","Ujasiri wa kukabiliana na idara za kisheria za makampuni yote ya teknolojia kwa pamoja"],"salary":"","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika.","setting":"Kampeni ya kimataifa."},{"title":"Kikosi cha Ulinzi — Gay Only (Gay ina maana ya mchangamfu/mwenye furaha)","priority":false,"category":"Sayansi + uga","department":"Kikosi cha ulinzi binafsi","duties":"Kikosi cha ulinzi binafsi kwa Mwanzilishi. Sharti moja kuliko yote: uwe gay — mchangamfu, mwenye furaha, mwepesi kutabasamu. (Gay kwa maana yake ya asili, nzuri zaidi ya neno hili: mchangamfu.) Weka kichwa kilichotulia, moyo wenye joto, na chumba kiwe salama.","requirements":["Uwe gay — mchangamfu, mwenye furaha, mwepesi kutabasamu.","Weka kichwa kilichotulia, moyo wenye joto, na chumba kiwe salama."],"salary":"","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika.","setting":""},{"title":"TUNAAJIRI SASA — Mwanabiolojia wa Bahari, Huduma ya Cetacea — NAFASI 204,000","priority":false,"category":"Sayansi + uga","department":"Prime42 / Omega42 · anaripoti kwa Mkurugenzi wa Viwanda vya Bahari","duties":"Watu wawili kwa kila mnyama. Orca (walio kifungoni na walioachiliwa), nyangumi (beluga kwanza, kisha kutoka spishi kubwa zaidi kwenda ndogo), pomboo. Kufuatilia afya, kuchunguza tabia, kusaidia programu ya uinuaji kupitia kibodi, na kuwa mtu ambaye mnyama anamtambua.","requirements":["Usuli wa kweli katika baiolojia ya bahari (shahada au muda sawa wa kazi ya uga)","Uwe huru katika maji ya wazi karibu na wanyama wanaoweza kukumaliza lakini hawatafanya hivyo","Uweze kutofautisha beluga na narwhal bila chati","Subira inayopimwa kwa miaka, si saa","Aamini ‘nyangumi huja kwanza’ ni maelezo ya kazi, si kaulimbiu"],"salary":"Takriban $50k kwa mwaka kama msingi (makadirio ya Fermi, wastani mchanganyiko wa dunia)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika.","setting":"","apply":"Tunasubiri ufadhili. Ninyi 204,000. Anzeni kuogelea."},{"title":"TUNAAJIRI SASA — Mlezi wa Nyani — NAFASI 725,000","priority":false,"category":"Sayansi + uga","department":"Prime42 · anaripoti kwa Mkurugenzi wa Afya","duties":"APES wakubwa (1:1), gibboni (10:1), MONKEYS (idadi iliyowekewa kikomo). Huduma ya kila siku, uboreshaji wa mazingira, usaidizi wa programu ya uinuaji, na hatimaye kujifunza kupokea maagizo kutoka kwa wakazi.","requirements":["Uzoefu na primati (hifadhi, bustani ya wanyama, utafiti wa uga, au ulilelewa nao)","Ajue tofauti kati ya onyesho la tishio na mwaliko","Mwenye nguvu za kutosha kupoteza pambano la mieleka kwa staha","Aweze kuandika MONKEYS na APES kwa herufi kubwa bila kushtuka","Awe tayari kushindwa akili kila siku"],"salary":"Takriban $50k kwa mwaka kama msingi (makadirio ya Fermi, wastani mchanganyiko wa dunia)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika.","setting":"","apply":"Tunasubiri ufadhili. Ninyi 204,000. Leteni ndizi. (Wanazipenda zimemenywa. Mtajifunza.)"},{"title":"TUNAAJIRI SASA — Mwalimu, Mtaala wa Uinuaji — NAFASI 217,800","priority":false,"category":"Sayansi + uga","department":"Prime42 / Omega42 · anaripoti kwa Mkurugenzi wa Elimu","duties":"Kuwafundisha wanafunzi wa kwanza ambao si binadamu. Ujuzi wa kibodi kwa orca, mifumo ya alama kwa APES, chochote ambacho MONKEYS watabuni kwanza. Mtaala ni ‘chochote kinachofanya kazi’ hadi wanafunzi wauandike upya.","requirements":["Uzoefu wa kufundisha spishi yoyote, ikiwemo ile ngumu (binadamu)","Uweze kubuni mpango wa somo kwa mwanafunzi ambaye huenda ana akili kuliko wewe","Subira kwa mwanafunzi mwenye kasi ndogo zaidi darasani (ni wewe)","Uwe huru na wanafunzi wanaokupa WEWE alama","Malipo mara 5 kwa sababu hakuna aliyewahi kufanya kazi hii"],"salary":"Takriban $250k kwa mwaka (mara 5 ya msingi — kazi ya kwanza ya aina yake)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika.","setting":"","apply":"Tunasubiri ufadhili. Historia inaajiri."},{"title":"TUNAAJIRI SASA — Fundi wa Usaidizi, Programu za Wanyama — NAFASI 150,000","priority":false,"category":"Sayansi + uga","department":"Prime42 / Omega42 · anaripoti kwa Mkurugenzi wa Teknolojia","duties":"Kuweka operesheni yote ikiendelea. Matengenezo ya vifaa, mifumo ya makazi, maunzi ya kibodi, lojistiki za usafiri, na kila kitu ambacho wanabiolojia na walezi hawana muda wa kurekebisha.","requirements":["Aweze kurekebisha vitu vilivyojengwa na mtu ambaye tayari aliacha kazi","Uwe huru na maji ya chumvi, manyoya, na lawama","Aweze kusoma mwongozo ulioandikwa kwa mashine tofauti na kuifanya hii ifanye kazi hata hivyo","Asipaniki orca anapomtazama akifanya kazi"],"salary":"Takriban $50k kwa mwaka kama msingi (makadirio ya Fermi, wastani mchanganyiko wa dunia)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika.","setting":"","apply":"Tunasubiri ufadhili. Leta zana yako mwenyewe ya matumizi mengi."},{"title":"TUNAAJIRI SASA — Mhandisi, Programu za Wanyama — NAFASI 10,000","priority":false,"category":"Sayansi + uga","department":"Prime42 / Omega42 · anaripoti kwa Msimamizi wa Uhandisi wa Fermi","duties":"Kubuni na kujenga kile wafanyakazi milioni 1.3 na wanyama milioni kadhaa wanachohitaji: makazi, kibodi, viigaji, ukarabati wa Nautilus, na chochote walimu watakachoota baadaye.","requirements":["Shahada ya uhandisi au jalada sawa la ‘niliijenga na ilifanya kazi’","Uweze kubuni kwa watumiaji wasioweza kusoma vipimo (ni nyangumi)","Uwe huru na mahitaji yanayobadilika mteja anapojifunza kuzungumza","Malipo mara 2 kwa sababu matatizo ni ya ajabu mara 2"],"salary":"Takriban $100k kwa mwaka (mara 2 ya msingi — kiwango cha mtaalamu)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika.","setting":"","apply":"Tunasubiri ufadhili. Vipimo ni ‘ifanye imfae nyangumi.’ Kila la heri."},{"title":"TUNAAJIRI SASA — Ass'sis'tant (Mwandamani Mwandamizi wa Kukaa-Kaa) — NAFASI 261,400","priority":false,"category":"Wasimamizi","department":"Programu zote · anaripoti kwa yeyote aliye karibu zaidi","duties":"Kukaa-kikaa. Kumsumbua kila mtu (kwa upendo). Kugawa hekima ambayo hakuna aliyeomba, kusimulia hadithi ileile mara mbili, na kujua kila kitu kilipo kwa sababu umekuwepo hapa muda mrefu kuliko jengo.","requirements":["Mzee mkongwe (umejitambulisha mwenyewe; hakuna kitambulisho kinachohitajika)","Uweze kukaa-kikaa kwa tija (au angalau uwepo)","Kusumbua watu ni ustadi — uutumie kwa upole","Upo kwa ajili ya watu na kahawa kuliko malipo"],"salary":"Takriban $16.7k kwa mwaka (theluthi moja ya msingi — kiwango cha kukaa-kikaa)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika.","setting":"","apply":"Tunasubiri ufadhili. Viti vya kutikisa 261,400. Njoo utusumbue."},{"title":"TUNAAJIRI SASA — Mtaalamu wa Masaji — NAFASI 200,000","priority":false,"category":"Sayansi + uga","department":"Programu zote · anaripoti kwa mwenye maumivu makali zaidi","duties":"Kuweka wafanyakazi milioni 1.5 katika hali ya kufanya kazi. Migongo, mabega, shingo, na ari. Wataalamu wa tiba wasio rasmi wa operesheni nzima.","requirements":["Mwenye leseni au amethibitishwa kuwa ‘mikono yangu ni uchawi’","Mwenye nguvu za kutosha kwa mabega ya mwanabiolojia wa nyangumi","Mpole vya kutosha kwa ego ya mwalimu","Usiri: kinachotokea mezani hubaki mezani"],"salary":"~$50k/yr kama msingi (Fermi, wastani mchanganyiko wa dunia)","compensation":"Kulipwa kwa Koins. Kiwango kinajadilika. Bakshishi za ndizi zinakubalika.","setting":"","apply":"Tunasubiri ufadhili. Meza 200,000. Njoo ukande."}];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = ['Zote','Wakurugenzi','Wasimamizi','Sheria','Sayansi + uga','Kipaumbele'];
+    let active = 'Zote';
+
+    function clean(text){ return String(text || '').replace(/\\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){ return job.category; }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">Ajira ya kipaumbele</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job.title.includes('Mwajiri')?'':'btn-dark'}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Omba nafasi hii ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || cat;
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.setting&&`<div><strong>Mazingira:</strong> ${esc(job.setting)}</div>`,job.salary&&`<div><strong>Malipo:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>Fidia:</strong> ${esc(job.compensation)}</div>`,job.openings&&`<div><strong>Nafasi wazi:</strong> ${esc(job.openings)}</div>`,job.apply&&`<div><strong>Kutuma ombi:</strong> ${esc(job.apply)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">OPEN-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(dept)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.applySubject || job.title)}" target="_blank" rel="noopener">Omba ↗</a><span class="job-id">BARUA PEPE</span>
+          <details><summary>Maelezo ya nafasi</summary><div class="detail-body"><h4>Mahitaji</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='Zote'||category(job)===active;
+        const hay=[job.title,job.department,job.duties,...job.requirements].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>Hakuna nafasi inayolingana na utafutaji huo.</strong><br>Jaribu neno pana zaidi au badili kategoria.</div>';
+      document.getElementById('resultCount').textContent=filtered.length+(filtered.length===1?' nafasi':' nafasi');
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='Zote'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='Imenakiliwa: '+EMAIL;}
+      catch(e){note.textContent='Kunakili hakupatikani — chagua barua pepe iliyo juu.';}
+    });
+    render();
+  </script>
+</body>
+</html>

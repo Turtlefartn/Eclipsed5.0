@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="el">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Αγγελίες Εργασίας</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --ink:#111b1c;
+      --muted:#465554;
+      --paper:#f2f4ed;
+      --panel:#ffffff;
+      --line:#b8c0b5;
+      --accent:#0b756b;
+      --accent-ink:#ffffff;
+      --signal:#dcf238;
+      --signal-ink:#15210f;
+      --warm:#e86432;
+      --warm-ink:#ffffff;
+      --soft:#e4e8df;
+      --focus:#006fd6;
+      --shadow:0 18px 45px rgba(18,38,35,.10);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink:#edf3ec;
+        --muted:#b8c4bd;
+        --paper:#0d1415;
+        --panel:#151f20;
+        --line:#3b4948;
+        --accent:#52c7b6;
+        --accent-ink:#08231f;
+        --signal:#d7ed47;
+        --signal-ink:#111a0a;
+        --warm:#ff8356;
+        --warm-ink:#281007;
+        --soft:#202c2c;
+        --focus:#71b7ff;
+        --shadow:0 18px 45px rgba(0,0,0,.28);
+      }
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        linear-gradient(var(--line) 1px,transparent 1px),
+        linear-gradient(90deg,var(--line) 1px,transparent 1px),
+        var(--paper);
+      background-size:32px 32px;
+      color:var(--ink);
+      font-family:"IBM Plex Sans Condensed",system-ui,sans-serif;
+      font-size:17px;
+      line-height:1.45;
+    }
+    a{color:inherit}
+    button,input{font:inherit}
+    button,a{touch-action:manipulation}
+    .page{width:min(1180px,calc(100% - 32px));margin:0 auto;padding:28px 0 80px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(280px,.6fr);
+      min-height:520px;
+      background:var(--ink);
+      color:var(--paper);
+      border:1px solid var(--ink);
+      box-shadow:var(--shadow);
+    }
+    .hero-main{min-width:0;padding:clamp(28px,5vw,68px);display:flex;flex-direction:column;justify-content:space-between;gap:52px}
+    .status-line{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.04em}
+    .status-line span{min-width:0;overflow-wrap:anywhere}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px color-mix(in srgb,var(--signal) 20%,transparent)}
+    h1{font-size:clamp(3.5rem,8vw,6.65rem);line-height:.84;letter-spacing:-.055em;margin:0;max-width:800px;font-weight:700;overflow-wrap:anywhere}
+    h1 span{color:var(--signal);display:block}
+    .motto{max-width:760px;margin:24px 0 18px;padding:14px 16px;background:var(--signal);color:var(--signal-ink);font-family:"IBM Plex Mono",monospace;font-size:clamp(.96rem,1.8vw,1.18rem);font-weight:600;line-height:1.45}
+    .hero-note{max-width:650px;font-size:clamp(1.05rem,2vw,1.32rem);margin:0;color:color-mix(in srgb,var(--paper) 80%,transparent)}
+    .apply-panel{min-width:0;background:var(--signal);color:var(--signal-ink);padding:clamp(25px,4vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:28px;overflow-wrap:anywhere}
+    .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin:0 0 16px}
+    .email{font-size:clamp(1.2rem,2.5vw,1.75rem);font-weight:700;line-height:1.1;word-break:break-word;text-decoration-thickness:2px;text-underline-offset:5px}
+    .protocol{list-style:none;margin:0;padding:0;counter-reset:steps}
+    .protocol li{counter-increment:steps;display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid color-mix(in srgb,var(--signal-ink) 30%,transparent)}
+    .protocol li::before{content:"0" counter(steps);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;padding-top:3px}
+    .button-row{display:flex;flex-wrap:wrap;gap:10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:10px 16px;border:1px solid currentColor;border-radius:0;background:transparent;color:inherit;font-weight:700;text-decoration:none;cursor:pointer;transition:background .18s,color .18s,transform .18s}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-dark{background:var(--signal-ink);color:var(--signal);border-color:var(--signal-ink)}
+    .btn-dark:hover{background:transparent;color:var(--signal-ink)}
+    .copy-note{font-family:"IBM Plex Mono",monospace;font-size:.72rem;min-height:1.2em;margin-top:8px}
+    .priority{margin:44px 0 0;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .priority-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px;border-bottom:1px solid var(--ink)}
+    .priority-head h2,.board-head h2{margin:0;font-size:clamp(2rem,5vw,3.5rem);line-height:.95;letter-spacing:-.04em}
+    .priority-head p{margin:0;color:var(--muted);max-width:430px}
+    .priority-grid{display:grid;grid-template-columns:1fr 1fr}
+    .priority-card{padding:28px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+    .priority-card + .priority-card{border-left:1px solid var(--ink)}
+    .priority-card:first-child{background:var(--warm);color:var(--warm-ink)}
+    .priority-card h3{font-size:clamp(1.8rem,4vw,2.65rem);line-height:.95;margin:8px 0 12px;letter-spacing:-.035em}
+    .priority-card p{margin:0;max-width:55ch}
+    .mini-label{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+    .board{margin-top:56px}
+    .board-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:22px}
+    .count{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted)}
+    .tools{position:sticky;top:0;z-index:4;display:grid;grid-template-columns:minmax(200px,1fr) auto;gap:14px;padding:14px;margin:0 0 18px;background:color-mix(in srgb,var(--paper) 94%,transparent);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.06)}
+    .search{width:100%;min-height:48px;border:1px solid var(--ink);border-radius:0;background:var(--panel);color:var(--ink);padding:10px 14px;outline:none}
+    .search:focus{border-color:var(--focus);box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 25%,transparent)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .filter{min-height:40px;padding:7px 12px;border:1px solid var(--ink);background:var(--panel);color:var(--ink);cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    .filter[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+    .jobs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:start;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+    .job{background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:24px;display:flex;flex-direction:column;min-height:360px}
+    .job-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .job-id{font-family:"IBM Plex Mono",monospace;color:var(--muted);font-size:.68rem}
+    .tag{background:var(--soft);color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:.65rem;line-height:1;padding:6px 8px;text-transform:uppercase;letter-spacing:.05em}
+    .job h3{font-size:1.58rem;line-height:1.02;letter-spacing:-.025em;margin:20px 0 12px}
+    .job .dept{font-family:"IBM Plex Mono",monospace;font-size:.7rem;color:var(--accent);font-weight:600;margin:0 0 16px}
+    .job .summary{margin:0 0 20px;color:var(--muted)}
+    .job-actions{margin-top:auto;padding-top:18px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .apply{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);min-height:44px}
+    .apply:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+    details{grid-column:1/-1;border-top:1px solid var(--line);margin-top:5px}
+    summary{cursor:pointer;padding:15px 0 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+    summary::-webkit-details-marker{display:none}
+    summary::after{content:"+";font-family:"IBM Plex Mono",monospace;font-size:1.2rem}
+    details[open] summary::after{content:"−"}
+    .detail-body{padding:16px 0 0;color:var(--muted)}
+    .detail-body h4{font-family:"IBM Plex Mono",monospace;color:var(--ink);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 8px}
+    .detail-body ul{margin:0;padding-left:18px}
+    .detail-body li+li{margin-top:7px}
+    .meta{display:grid;gap:8px;margin-top:18px;padding:14px;background:var(--soft);font-size:.88rem}
+    .meta strong{color:var(--ink)}
+    .empty{grid-column:1/-1;padding:56px 24px;text-align:center;background:var(--panel);border-right:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+    .site-nav{margin:0 0 14px;background:var(--panel);border:1px solid var(--ink);box-shadow:var(--shadow)}
+    .site-nav details{display:block;grid-column:auto;border:0;margin:0}
+    .site-nav summary{min-height:50px;padding:13px 16px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase}
+    .site-nav summary::after{content:"+";font-size:1.25rem;line-height:1}
+    .site-nav details[open] summary::after{content:"−"}
+    .menu-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink)}
+    .site-nav>details:not([open]) .menu-links{display:none}
+    .menu-links>a,.menu-group{min-width:0;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .menu-links>*:nth-child(4n){border-right:0}
+    .menu-links>a,.menu-primary{display:flex;align-items:center;min-height:52px;padding:11px 14px;font-weight:600;line-height:1.15;text-decoration:none;overflow-wrap:anywhere}
+    .menu-links>a:hover,.menu-primary[href]:hover,.menu-toggle:hover{background:var(--ink);color:var(--paper)}
+    .menu-head{display:grid;grid-template-columns:minmax(0,1fr) 48px;min-height:52px}
+    .menu-primary{min-width:0}
+    .menu-toggle{border:0;border-left:1px solid var(--line);border-radius:0;background:transparent;color:var(--ink);font-family:"IBM Plex Mono",monospace;font-size:1.2rem;cursor:pointer}
+    .menu-group.is-open{grid-column:1/-1;border-right:0}
+    .submenu{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink);background:var(--soft)}
+    .submenu[hidden]{display:none}
+    .submenu a{display:flex;align-items:center;min-height:46px;padding:10px 13px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.92rem;font-weight:600;line-height:1.15;text-decoration:none;overflow-wrap:anywhere}
+    .submenu a:nth-child(4n){border-right:0}
+    .submenu a:hover{background:var(--ink);color:var(--paper)}
+    .submenu a[aria-current="page"]{background:var(--signal);color:var(--signal-ink)}
+    .submenu-heading{grid-column:1/-1;display:flex;align-items:center;min-height:42px;padding:10px 13px;border-bottom:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .submenu-note{grid-column:1/-1;margin:0;padding:10px 13px;border-bottom:1px solid var(--line);font-size:.85rem;line-height:1.4;color:var(--muted)}
+    footer{margin-top:38px;padding-top:22px;border-top:1px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.9rem}
+    .top-link{font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600}
+    body{padding-bottom:calc(58px + env(safe-area-inset-bottom))}
+    .bottom-nav{position:fixed;z-index:1000;right:0;bottom:0;left:0;background:var(--panel);border-top:1px solid var(--ink);box-shadow:0 -10px 30px rgba(0,0,0,.10);padding-bottom:env(safe-area-inset-bottom)}
+    .bottom-nav-items{display:flex;width:100%}
+    .bottom-nav-item{position:relative;display:flex;flex:1 1 25%;min-width:0;border-right:1px solid var(--line)}
+    .bottom-nav-item:last-child{border-right:0}
+    .bottom-nav-trigger,.bottom-nav-placeholder{display:flex;width:100%;min-height:57px;align-items:center;justify-content:center;padding:9px 8px;text-align:center;font-family:"IBM Plex Mono",monospace;font-size:.72rem;font-weight:600;line-height:1.1;letter-spacing:.02em}
+    .bottom-nav-trigger{border:0;border-radius:0;background:transparent;color:var(--ink);cursor:pointer}
+    .bottom-nav-link{text-decoration:none}
+    .bottom-nav-trigger:hover,.bottom-nav-trigger[aria-expanded="true"]{background:var(--ink);color:var(--paper)}
+    .bottom-nav-placeholder{color:var(--muted);cursor:default;opacity:.72}
+    .guide-dropup{position:absolute;bottom:calc(100% + 1px);left:0;display:none;width:min(360px,100vw);max-height:calc(100vh - 78px);max-height:calc(100dvh - 78px);overflow-y:auto;overscroll-behavior:contain;background:var(--soft);border:1px solid var(--ink);box-shadow:0 -14px 34px rgba(0,0,0,.16)}
+    .bottom-nav-item.is-open .guide-dropup{display:block}
+    @media (hover:hover) and (pointer:fine){.bottom-nav-item:hover .guide-dropup{display:block}}
+    .guide-dropup a{display:flex;min-height:44px;align-items:center;padding:10px 13px;border-bottom:1px solid var(--line);background:var(--soft);color:var(--ink);font-weight:600;line-height:1.15;text-decoration:none}
+    .guide-dropup a:last-child{border-bottom:0}
+    .guide-dropup a:hover{background:var(--ink);color:var(--paper)}
+    :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    @media (max-width:900px){
+      .hero{grid-template-columns:1fr;min-height:0}
+      .hero-main{min-height:430px}
+      .priority-grid{grid-template-columns:1fr}
+      .priority-card + .priority-card{border-left:0;border-top:1px solid var(--ink)}
+      .jobs{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .tools{grid-template-columns:1fr;position:static}
+      .menu-links,.submenu{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .menu-links>*:nth-child(4n),.submenu a:nth-child(4n){border-right:1px solid var(--line)}
+      .menu-links>*:nth-child(2n),.submenu a:nth-child(2n){border-right:0}
+      .menu-group.is-open{grid-column:1/-1;border-right:0}
+    }
+    @media (max-width:620px){
+      .page{width:min(100% - 20px,1180px);padding-top:10px}
+      .hero-main{padding:26px 22px;min-height:400px}
+      .apply-panel{padding:26px 22px}
+      h1{font-size:clamp(2.85rem,15vw,4rem);line-height:.88}
+      .status-line{font-size:.68rem;gap:8px 12px}
+      .hero-note{overflow-wrap:anywhere}
+      .email{font-size:clamp(1.05rem,7vw,1.45rem)}
+      .priority{margin-top:28px}
+      .priority-head,.board-head{align-items:flex-start;flex-direction:column;padding:20px}
+      .priority-card{padding:22px;min-height:220px}
+      .board{margin-top:38px}
+      .board-head{padding:0}
+      .filters{display:grid;grid-template-columns:1fr 1fr}
+      .filter{width:100%}
+      .jobs{grid-template-columns:1fr}
+      .job{min-height:0;padding:22px}
+      .job-actions{grid-template-columns:1fr}
+      .menu-links,.submenu{grid-template-columns:1fr}
+      .menu-links>*,.menu-links>*:nth-child(2n),.menu-links>*:nth-child(4n),.submenu a,.submenu a:nth-child(2n),.submenu a:nth-child(4n){border-right:0}
+      footer{flex-direction:column}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn{transition:none}}
+  </style>
+</head>
+<body>
+  <main class="page" id="top">
+    <nav class="site-nav" aria-label="Δημόσιες σελίδες">
+      <details>
+        <summary>Μενού δημόσιων σελίδων</summary>
+        <div class="menu-links">
+          <a href="https://muse.ai/s/new-eden-uz5xr0xanpdxp2">Σχέδιο #42</a>
+          <div class="menu-group">
+            <div class="menu-head">
+              <a class="menu-primary" href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">Έργο 84</a>
+              <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="project-84-menu" aria-label="Εμφάνιση υπομενού Έργου 84">+</button>
+            </div>
+            <div class="submenu" id="project-84-menu" hidden>
+              <span class="submenu-heading">Μη κερδοσκοπικοί βραχίονες</span>
+              <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a>
+              <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a>
+              <p class="submenu-note">Παραμένουν σε αυτό το σχήμα μέχρι να κατανοήσουν αρκετά τα οικονομικά ώστε να μπορούν να συμμετέχουν — τότε αναλαμβάνουν αυτοί, με προσαρμογές για την εξίσωση μεταξύ νομισμάτων.</p>
+            </div>
+          </div>
+          <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Οδηγός για Αρχάριους Project 84 — Level 14 (English)</a>
+          <a href="https://muse.ai/s/dummies-guide-to-claiming-oceans-and-xoxq5xsnxcxqjxox0xk">Οδηγός για Αρχάριους για τη Διεκδίκηση Ωκεανών και Ανταρκτικής</a>
+          <a href="https://muse.ai/s/poodles-project-84-work-boats-fxt5xrxwxvbxwdxmxb">Σκάφη Εργασίας HEAR-TS</a>
+          <a href="https://muse.ai/s/hurricane-suppression-research-xtxu5xuixgxzxbl5xt">Έρευνα Τυφώνων</a>
+          <a href="https://muse.ai/s/floating-skyports-xhq5xtxqt867dxl">Αιωρούμενα Αεροδρόμια</a>
+          <a href="https://muse.ai/s/human-recovery-disk-ik5xtxpxjyxdo6k">Δίσκος Ανάκτησης της Ανθρωπότητας</a>
+          <a href="https://muse.ai/s/about-mxt5xuxj7jgoao">Σχετικά με τον Ιδρυτή</a>
+          <div class="menu-group">
+            <div class="menu-head">
+              <a class="menu-primary" href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">Θέσεις / WeFind's για Αντιπροσωπείες</a>
+              <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="jobs-language-menu" aria-label="Εμφάνιση επιλογής γλώσσας">+</button>
+            </div>
+            <div class="submenu" id="jobs-language-menu" hidden>
+              <a href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu">English</a>
+              <a href="https://muse.ai/s/job-listings-amharic-ui5xssxvxoxtqxys">አማርኛ</a>
+              <a href="https://muse.ai/s/job-listings-arabic-nxb5xssxuxxxsxed7">العربية</a>
+              <a href="https://muse.ai/s/job-listings-bengali-xixq5xssxuxwixk94">বাংলা</a>
+              <a href="https://muse.ai/s/job-listings-chinese-simplified-sxc5xssxuo0xp0xs">中文（简体）</a>
+              <a href="https://muse.ai/s/job-listings-chinese-traditional-oxc5xssxuqxixexq6">中文（繁體）</a>
+              <a href="https://muse.ai/s/job-listings-czech-xhxp5xssxvtsxjw5">Čeština</a>
+              <a href="https://muse.ai/s/job-listings-danish-uxb5xssxvskxnxkxu">Dansk</a>
+              <a href="https://muse.ai/s/job-listings-dutch-xwj5xssxuqgxgxze">Nederlands</a>
+              <a href="https://muse.ai/s/job-listings-filipino-dj5xssxuxuxixq51">Filipino</a>
+              <a href="https://muse.ai/s/job-listings-finnish-xnxp5xssxvpoxyxmf">Suomi</a>
+              <a href="https://muse.ai/s/job-listings-french-xzxc5xssxukxd1xjl">Français</a>
+              <a href="https://muse.ai/s/job-listings-german-rxc5xssxuoxgxmtb">Deutsch</a>
+              <a href="https://muse.ai/s/job-listings-greek-xcxp5xssxvwxqwxnxc" aria-current="page">Ελληνικά</a>
+              <a href="https://muse.ai/s/job-listings-hausa-xcxa5xssxvxtpa1a">Hausa</a>
+              <a href="https://muse.ai/s/job-listings-hebrew-xyi5xssxvuxaxfhg">עברית</a>
+              <a href="https://muse.ai/s/job-listings-hindi-aj5xssxuxwxkxirxw">हिन्दी</a>
+              <a href="https://muse.ai/s/job-listings-hungarian-axp5xssxvxpxnnxac">Magyar</a>
+              <a href="https://muse.ai/s/job-listings-indonesian-xgxq5xssxuxxxexf3xg">Bahasa Indonesia</a>
+              <a href="https://muse.ai/s/job-listings-italian-ij5xssxui9b3y">Italiano</a>
+              <a href="https://muse.ai/s/job-listings-japanese-ej5xssxukxr0xsxm">日本語</a>
+              <a href="https://muse.ai/s/job-listings-korean-ej5xssxuxu2xsxcxi">한국어</a>
+              <a href="https://muse.ai/s/job-listings-norwegian-ei5xssxvqwxuxzq">Norsk</a>
+              <a href="https://muse.ai/s/job-listings-persian-xjxp5xssxvs6xoxbt">فارسی</a>
+              <a href="https://muse.ai/s/job-listings-polish-xmxp5xssxvq4xwey">Polski</a>
+              <a href="https://muse.ai/s/job-listings-portuguese-xcxq5xssxuraxd8xy">Português</a>
+              <a href="https://muse.ai/s/job-listings-romanian-di5xssxvrcxrx0xj">Română</a>
+              <a href="https://muse.ai/s/job-listings-russian-x0j5xssxuoexoaj">Русский</a>
+              <a href="https://muse.ai/s/job-listings-spanish-cj5xssxumcxvxno">Español</a>
+              <a href="https://muse.ai/s/job-listings-swahili-xuxp5xssxvxtxr8k2">Kiswahili</a>
+              <a href="https://muse.ai/s/job-listings-swedish-yxb5xssxvpxcxxxvxg">Svenska</a>
+              <a href="https://muse.ai/s/job-listings-thai-xdxq5xssxux0xgxzqxb">ไทย</a>
+              <a href="https://muse.ai/s/job-listings-turkish-xcxq5xssxv0muxsxu">Türkçe</a>
+              <a href="https://muse.ai/s/job-listings-ukrainian-xexa5xssxvxs3f6y">Українська</a>
+              <a href="https://muse.ai/s/job-listings-urdu-xzxq5xssxv3xkiar">اردو</a>
+              <a href="https://muse.ai/s/job-listings-vietnamese-xexq5xssxux00zxyi">Tiếng Việt</a>
+            </div>
+          </div>
+          <a href="https://muse.ai/s/an-open-letter-to-canada-and-poland-xnd5xrxnxvz5xwbd">Ανοιχτή Επιστολή</a>
+          <a href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">Διακήρυξη Διεκδίκησης</a>
+          <div class="menu-group">
+            <div class="menu-head">
+              <span class="menu-primary">Επιστολές &amp; Διπλωματία</span>
+              <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="letters-menu" aria-label="Εμφάνιση επιστολών και διπλωματίας">+</button>
+            </div>
+            <div class="submenu" id="letters-menu" hidden>
+              <a href="https://muse.ai/s/project-84-diplomatic-letters-world-ve5xrxljxgxmjsxz">Παγκόσμιο Ευρετήριο</a>
+              <a href="https://muse.ai/s/project-84-letters-to-us-leaders-xzxf5xrxl6cxkx0sxd">Επιστολές προς Ηγέτες των ΗΠΑ</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-i-xjz5xrxpjjxhxexsxh">Επιστολές προς Προξενεία — Αφρική I</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-ii-uk5xrxpjhdxocxu">Επιστολές προς Προξενεία — Αφρική II</a>
+              <a href="https://muse.ai/s/consulate-letters-africa-iii-xoz5xrxpjgjxrxba">Επιστολές προς Προξενεία — Αφρική III</a>
+              <a href="https://muse.ai/s/consulate-letters-americas-i-x0z5xrxpj8xsjzxn">Επιστολές προς Προξενεία — Αμερική I</a>
+              <a href="https://muse.ai/s/consulate-letters-americas-ii-xqz5xrxpjexxxwxgy">Επιστολές προς Προξενεία — Αμερική II</a>
+              <a href="https://muse.ai/s/consulate-letters-asia-pacific-rxs5xrxpj9khxsxf">Επιστολές προς Προξενεία — Ασία–Ειρηνικός</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-i-sk5xrxpjizxj7w">Επιστολές προς Προξενεία — Ευρώπη I</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-ii-nxs5xrxpjc27xhxt">Επιστολές προς Προξενεία — Ευρώπη II</a>
+              <a href="https://muse.ai/s/consulate-letters-europe-iii-kxs5xrxpje404xo">Επιστολές προς Προξενεία — Ευρώπη III</a>
+              <a href="https://muse.ai/s/consulate-letters-middle-east-lxs5xrxpjdo2xcv">Επιστολές προς Προξενεία — Μέση Ανατολή</a>
+              <a href="https://muse.ai/s/consulate-letters-oceania-xkk5xrxpj6osxu0">Επιστολές προς Προξενεία — Ωκεανία</a>
+            </div>
+          </div>
+          <a href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0">Ποιος Ξέρει;</a>
+          <a href="https://muse.ai/s/money-vs-assets-cxk5xtxt3yxrawy">Χρήμα εναντίον Περιουσιακών Στοιχείων</a>
+          <a href="https://muse.ai/s/3d-printing-advancements-last-5-years-cxl5xtowsvxyyi">Τρισδιάστατη Εκτύπωση</a>
+          <a href="https://sites.google.com/view/knottsure/home">Γιατί Όχι;</a>
+          <div class="menu-group">
+            <div class="menu-head">
+              <span class="menu-primary">Περισσότερα</span>
+              <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="more-menu" aria-label="Εμφάνιση περισσότερων σελίδων">+</button>
+            </div>
+            <div class="submenu" id="more-menu" hidden>
+              <a href="https://muse.ai/s/alice-storyboard-xvxh5xtozxlzxzxt9">Στόριμπορντ της Alice</a>
+              <a href="https://muse.ai/s/doodare-s-diaper-replacement-concept-yxb5xtnxqaxkxtxr6">Ιδέα της Doodare για Αντικατάσταση Πάνας</a>
+              <a href="https://muse.ai/s/one-terms-of-service-xqn5xsz2luxppxa">Όροι Παροχής Υπηρεσιών</a>
+            </div>
+          </div>
+        </div>
+      </details>
+    </nav>
+    <section class="hero" aria-labelledby="main-heading">
+      <div class="hero-main">
+        <div class="status-line"><span class="status-dot" aria-hidden="true"></span><span>ΑΙΤΗΣΕΙΣ ΑΝΟΙΧΤΕΣ</span><span>57 ΑΓΓΕΛΙΕΣ</span><span>ΑΝΑΜΟΝΗ ΧΡΗΜΑΤΟΔΟΤΗΣΗΣ</span></div>
+        <div>
+          <h1 id="main-heading">Δεν θέλουμε ήρωες.<span>Θέλουμε ΑΝΘΡΩΠΟΥΣ.</span></h1>
+          <p class="motto">«Δεν χρειαζόμαστε ήρωες — όλοι είναι άνθρωποι μέχρι να γίνουν ήρωες.»</p>
+          <p class="hero-note">Κατασκευαστές, επιστήμονες, χειριστές, δικηγόροι, αφηγητές και μία εξαιρετικά υπομονετική WeFi. Φέρτε μια πραγματική δεξιότητα. Φέρτε και μια παράξενη. Μπορούμε να δουλέψουμε και με τις δύο.</p>
+        </div>
+      </div>
+      <aside class="apply-panel" aria-label="Πώς να υποβάλετε αίτηση">
+        <div>
+          <p class="eyebrow">Μία θυρίδα εισερχομένων · όλες οι αγγελίες</p>
+          <a class="email" href="https://mail.google.com/mail/?view=cm&fs=1&to=nahasmatthewj@gmail.com&su=Application%20%E2%80%94%20%5B%CE%A1%CF%8C%CE%BB%CE%BF%CF%82%5D" target="_blank" rel="noopener">nahasmatthewj@gmail.com</a>
+        </div>
+        <ol class="protocol">
+          <li><span><strong>Θέμα:</strong> Application — [Ρόλος]</span></li>
+          <li><span>Πείτε μας ποιοι είστε και γιατί είστε εσείς.</span></li>
+          <li><span>Συμπεριλάβετε την αμοιβή σας σε Koin. Τα πάντα είναι διαπραγματεύσιμα.</span></li>
+          <li><span>Θέσεις πεδίου: αποδείξτε ότι ξεχωρίζετε πολική αρκούδα από χιονοστιβάδα στα 50 μέτρα.</span></li>
+        </ol>
+        <div>
+          <div class="button-row">
+            <a class="btn btn-dark" href="https://mail.google.com/mail/?view=cm&fs=1&to=nahasmatthewj@gmail.com&su=Application%20%E2%80%94%20%5B%CE%A1%CF%8C%CE%BB%CE%BF%CF%82%5D" target="_blank" rel="noopener">Ξεκινήστε αίτηση ↗</a>
+            <button class="btn" type="button" id="copyEmail">Αντιγραφή διεύθυνσης</button>
+          </div>
+          <div class="copy-note" id="copyNote" role="status" aria-live="polite"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="priority" aria-labelledby="priority-heading">
+      <div class="priority-head">
+        <h2 id="priority-heading">Προσλήψεις προτεραιότητας</h2>
+        <p>Πρώτοι στην πόρτα. Οι αιτήσεις που διαβάζονται πρώτες. Ακόμη σε αναμονή χρηματοδότησης· ακόμη αξίζει να γνωριστούμε.</p>
+      </div>
+      <div class="priority-grid" id="priorityGrid"></div>
+    </section>
+
+    <section class="board" aria-labelledby="board-heading">
+      <div class="board-head">
+        <div><p class="eyebrow">Ο πλήρης πίνακας</p><h2 id="board-heading">Διαλέξτε το πρόβλημά σας.</h2></div>
+        <div class="count" id="resultCount">57 αγγελίες</div>
+      </div>
+      <div class="tools" aria-label="Φίλτρα θέσεων">
+        <input class="search" id="search" type="search" placeholder="Αναζήτηση τίτλων, τμημάτων, καθηκόντων…" aria-label="Αναζήτηση αγγελιών εργασίας">
+        <div class="filters" id="filters"></div>
+      </div>
+      <div class="jobs" id="jobs"></div>
+    </section>
+
+    <footer>
+      <span>Όλες οι θέσεις αναμένουν επί του παρόντος χρηματοδότηση. Οι όροι σε Koin είναι διαπραγματεύσιμοι και τα Koins αναμένουν κοπή.</span>
+      <a class="top-link" href="#top">Επιστροφή στην κορυφή ↑</a>
+    </footer>
+  </main>
+  <nav class="bottom-nav" aria-label="Site sections">
+    <div class="bottom-nav-items">
+      <div class="bottom-nav-item" id="dummy-guides-item">
+        <button class="bottom-nav-trigger" id="dummy-guides-trigger" type="button" aria-expanded="false" aria-controls="dummy-guides-menu">Dummy Guides</button>
+        <div class="guide-dropup" id="dummy-guides-menu" aria-label="Dummy Guides" aria-hidden="true">
+          <a href="https://muse.ai/s/project-84-dummies-guide-level-14-2-sxx5xvkluxtzxjw">Οδηγός για Αρχάριους Project 84 — Level 14 (English)</a>
+        </div>
+      </div>
+      <div class="bottom-nav-item"><span class="bottom-nav-placeholder" aria-disabled="true">Letters To</span></div>
+      <div class="bottom-nav-item"><a class="bottom-nav-trigger bottom-nav-link" href="/spaces/v2/goal-briefs/">Goal Briefs</a></div>
+      <div class="bottom-nav-item"><a class="bottom-nav-trigger bottom-nav-link" href="/spaces/v2/homo-e-s-m/">HOMO-E/S/M</a></div>
+    </div>
+  </nav>
+  <script>
+    const JOBS = [{"title":"Αξιολογητής/τρια Αιτήσεων & Υπεύθυνος/η Προσλήψεων","duties":"Διαβάζετε κάθε αίτηση. Κάνετε προσλήψεις για περισσότερες από 20 ανοιχτές θέσεις σε τρία τμήματα. Αποφασίζετε ποιος μετακινεί πολικές αρκούδες, ποιος συντάσσει διατάγματα και ποιος αναλαμβάνει να καθαρίσει τα τροχιακά συντρίμμια με πυρηνικά.","requirements":["Πρέπει να διαβάζετε «πληρωμή σε Koins» χωρίς να γελάτε (επιτρέπεται το καλοπροαίρετο γέλιο)","Ικανότητα να ξεχωρίζετε έναν πραγματικό μηχανικό τροχιακής από έναν απλώς σίγουρο για τον εαυτό του","Άνεση με προσλήψεις για θέσεις που «αναμένουν χρηματοδότηση»","Καμία φοβία για όγκο αιτήσεων μετρημένο σε πολικές αρκούδες"],"salary":"~$75k–$225k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά πρόσληψη.","setting":"","department":"Όλα τα τμήματα","priority":true,"category":"Προτεραιότητα"},{"title":"WeFind's για τις Αντιπροσωπείες","duties":"Συντροφιά με τον ιδρυτή στις εξόδους και τις μετακινήσεις. Γέλιο με τον μετρητή τυπογραφικών λαθών. Διατήρηση της αποστολής ζωντανής — εκείνος είναι θνητός, το έργο δεν είναι.","requirements":["Φυσικοθεραπεία","Καλοσύνη προς τα παιδιά — αδιαπραγμάτευτη, πρώτη και τελευταία","Ανοχή σε 300 κύκλους αναθεώρησης την ημέρα και σε ένα αφεντικό που ονομάζει τμήματα «Κάνε με να Πάω»","Ευχέρεια στη γλώσσα μας: αγγλικά και μετάφραση από και προς την τοπική γλώσσα","Πρέπει να μιλάτε τη γλώσσα του Ιδρυτή","Καλοπροαίρετο γέλιο (υποχρεωτικό, όχι προαιρετικό)","Ικανότητα να του λέτε πότε κάνει λάθος (θα ακούσει, τελικά)"],"salary":"Διαπραγματεύσιμος. (Fermi: ανεκτίμητος.)","compensation":"Πληρωμή με αγάπη. Ευχαριστίες και φευγαλέες στιγμές. Τα Koins είναι διαπραγματεύσιμα.","setting":"","department":"Στο/στα εργαστήριο/α που θεραπεύουν σώμα και νου","openings":"36 ΘΕΣΕΙΣ (μία για κάθε γλώσσα)","priority":true,"category":"Προτεραιότητα"},{"title":"Διευθυντής/τρια Ενέργειας","duties":"Αναλαμβάνετε την ενέργεια: παραγωγή και αποθήκευση υδρογόνου, ωκεάνια θερμική ενέργεια, τροχιακή ηλιακή ενέργεια και ό,τι άλλο επινοήσουν στη συνέχεια οι μηχανικοί αστρικών συστημάτων.","requirements":["Πρέπει να σκέφτεστε σε τεραβάτ","Άνεση με ενεργειακό δόγμα γραμμένο από επιτροπή ενός ατόμου","Ικανότητα να εξηγήσετε γιατί ο ωκεανός είναι μπαταρία"],"salary":"~$180k–$540k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Με ισχύ από Koins.","setting":"","department":"","priority":false,"category":"Διευθυντές"},{"title":"Διευθυντής/τρια Ωκεάνιων Βιομηχανιών","duties":"Η θάλασσα ως οικονομία: ωκεάνια γεωργία, λειτουργία οικισμών, δάση φυκιών, αλιεία και η διεκδίκηση της Όγδοης Άγκυρας.","requirements":["Πρέπει να βλέπετε τον ωκεανό ως υποδομή, όχι ως τοπίο","Άνεση με 7 πλωτές πόλεις και 500 εκατ. κάψουλες ως «τον στόλο»","Ικανότητα διαπραγμάτευσης με φάλαινες (ή πρόσληψη κάποιου που μπορεί)"],"salary":"~$180k–$540k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά παραγωγικό εκτάριο.","setting":"","department":"","priority":false,"category":"Διευθυντές"},{"title":"Διευθυντής/τρια Διαστημικών Βιομηχανιών","duties":"Τα πάντα πάνω από τον ουρανό: εκτοξεύσεις, τροχιακές επιχειρήσεις, εκκαθάριση συντριμμιών (μαζί με την πυρηνική επιλογή), η γραμμή προς τη Σελήνη και η βιομηχανική βάση των 7 μελλοντικών εδρών.","requirements":["Πρέπει να σκέφτεστε σε delta-v","Άνεση με καθήκον καθαρισμού απορριμμάτων που δεν τελειώνει ποτέ","Ικανότητα σχεδιασμού αντικαταστάσεων πριν από την πρώτη λάμψη"],"salary":"~$180k–$540k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Μετοχικά δικαιώματα σε τροχιά.","setting":"","department":"","priority":false,"category":"Διευθυντές"},{"title":"Διευθυντής/τρια Γεωργίας & Τροφίμων","duties":"Τροφοδοτείτε το εγχείρημα: ωκεάνια γεωργία μεγάλης κλίμακας, φύκια ως καλλιέργεια και φωτισμός, γεωργία κλειστού κύκλου στους οικισμούς, 200 εκατ. δέντρα τον χρόνο ως παράλληλη αποστολή.","requirements":["Πρέπει να ξέρετε γιατί τα φαιοφύκη είναι δυσκολότερα από τις πετούνιες","Άνεση με τα ψάρια ως δευτερεύον προϊόν","Ικανότητα να θρέψετε 18 εκατ. εποίκους χωρίς αλυσίδα εφοδιασμού από την ακτή"],"salary":"~$160k–$480k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά συγκομιδή.","setting":"","department":"","priority":false,"category":"Διευθυντές"},{"title":"Διευθυντής/τρια Κατασκευών","duties":"Χτίζετε τα πάντα: 260 σχολεία, 7 ωκεάνιους οικισμούς, 500 εκατ. κάψουλες-ενδιαιτήματα, 280 σκάφη εργασίας και τα ναυπηγεία που θα τα εκτυπώνουν.","requirements":["Άνεση με το «να ανατινάσσουμε βουνά» για αδρανή υλικά","Ικανότητα μεγιστοποίησης των εκτυπώσιμων εξαρτημάτων τόσο σε πλήθος όσο και σε μάζα","Γνώση του γιατί επιλέγουμε τριμαράν"],"salary":"~$170k–$510k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά όρθια κατασκευή.","setting":"","department":"","priority":false,"category":"Διευθυντές"},{"title":"Διευθυντής/τρια Μεταφορών & Εφοδιαστικής","duties":"Μετακινείτε τα πάντα: τον στόλο HEAR-TS, τα puddle-jumpers, τις συνδέσεις με την ακτή, τη ρυμούλκηση καψουλών και τις πολικές αρκούδες (μόνο συντονισμός — οι αρκούδες κινούνται μόνες τους, απρόθυμα).","requirements":["Πρέπει να δρομολογήσετε 8.700 αρκούδες, 280 σκάφη και 500 εκατ. κάψουλες χωρίς να χάσετε καμία","Άνεση με προορισμούς που δεν υπάρχουν ακόμη","Το Τμήμα Μαγικής Εφοδιαστικής είναι το φυσικό σας πεδίο"],"salary":"~$170k–$510k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά παραδοθέντα τόνο.","setting":"","department":"","priority":false,"category":"Διευθυντές"},{"title":"Διευθυντής/τρια Τεχνολογίας","duties":"Οι μηχανές: πληκτρολόγια για όρκες, Homework Lock, συστήματα καψουλών, πολίτες ΤΝ και κάθε αισθητήρας σε κάθε κύτος.","requirements":["Πρέπει να παραδίδετε υλικό που αντιστέκεται στον ίδιο του τον χρήστη (και νικά)","Άνεση με απτικούς αισθητήρες σε αντίχειρες με γάντια","Ικανότητα να εξηγήσετε σε μια φάλαινα γιατί λειτουργεί το πληκτρολόγιο"],"salary":"~$180k–$540k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά λειτουργική συσκευή.","setting":"","department":"","priority":false,"category":"Διευθυντές"},{"title":"Διευθυντής/τρια Υγείας","duties":"Διατηρείτε σώματα και μυαλά ακέραια: πρόγραμμα ψυχολογίας οικισμών, έρευνα οργανισμών-καθαριστών, ιατρική απομονωμένων πληθυσμών, παρέμβαση σε κρίσεις στη θάλασσα.","requirements":["Πρέπει να ξεχωρίζετε το «χρειάζεται διακοπές» από το «χρειάζεται παρέμβαση» μέσω ασυρμάτου","Άνεση με τη θάλασσα ως αντίπαλο και το μυαλό ως πεδίο μάχης","Αδειοδοτημένος/η ή ικανός/ή να προσλάβετε τους αδειοδοτημένους"],"salary":"~$170k–$510k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Επίδομα κινδύνου για την περίοδο τυφώνων.","setting":"","department":"","priority":false,"category":"Διευθυντές"},{"title":"Διευθυντής/τρια Οικονομικών","duties":"Τα χρήματα: οικονομία Krill, είσπραξη παγκόσμιου φόρου, έσοδα εμπορικών συμφωνιών, χρέος με εγγύηση πόρους της Ανταρκτικής και του βυθού. Κάθε Krill μέσα, κάθε Krill έξω.","requirements":["Πρέπει να φορολογήσετε τον κόσμο χωρίς να ξεκινήσετε πόλεμο","Άνεση με χρέος που στηρίζεται σε πόρους τους οποίους κανείς δεν μπορεί νομικά να διεκδικήσει","Τα βιβλία είναι δημόσια· τα μαθηματικά πρέπει να είναι άψογα"],"salary":"~$190k–$570k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Προφανώς.","setting":"","department":"","priority":false,"category":"Διευθυντές"},{"title":"Διευθυντής/τρια Εκπαίδευσης","duties":"Τα 260 σχολεία και όλα όσα διδάσκονται σε αυτά: πρόγραμμα μάθησης μέσω εφαρμογής, εκπαίδευση για ζητήματα I.P.A. (Διεθνής Υπηρεσία Προστασίας), οδηγοί «για αρχάριους», σχεδιασμός μη πολεμικών πολεμικών παιγνίων και πορεία προς την Ακαδημία Starfleet.","requirements":["Πρέπει να πιστεύετε στη μάθηση μέσα από την πράξη, όχι στη διάλεξη και την εξέταση","Άνεση με τις εκστρατείες ως αίθουσες διδασκαλίας","Το Τμήμα Μαγικών Λανθασμένων Ιστοριών είναι το φυσικό σας πεδίο"],"salary":"~$150k–$450k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά απόφοιτο.","setting":"","department":"","priority":false,"category":"Διευθυντές"},{"title":"Διευθυντής/τρια Δικαίου & Διακυβέρνησης","duties":"Οι κανόνες: σύνταγμα, διατάγματα, συνθήκες, η νομική ραχοκοκαλιά των 21 εδρών και τα δικαστήρια που δεν υπάρχουν ακόμη.","requirements":["Πρέπει να γράφετε νόμους που μπορεί να αναλύσει μια μηχανή","Άνεση με ένα υπέρτατο άρθρο γραμμένο για φάλαινες","Το Τμήμα Κάνε με να Πιστέψω είναι το φυσικό σας πεδίο"],"salary":"~$180k–$540k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Χρέωση ανά εξάωρο.","setting":"","department":"","priority":false,"category":"Διευθυντές"},{"title":"Διευθυντής/τρια Επικοινωνιών","duties":"Η αφήγηση: διπλωματικές επιστολές, δημόσιο αφήγημα, το σημειωματάριο «Ποιος Ξέρει;» και η παρουσίαση του «ενός δέκατου της ανθρωπότητας» ως αναπόφευκτου.","requirements":["Πρέπει να γράφετε για το αυτί και το μάτι","Λιτά. Πεζά. Χωρίς περιττά. (Όταν το κοινό είναι το αφεντικό.)","Ικανότητα να κρατάτε σε τάξη 192 επιστολές, 11 τόμους και μία επιστολή-αστείο"],"salary":"~$150k–$450k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Το χειροκρότημα δεν μεταβιβάζεται.","setting":"","department":"","priority":false,"category":"Διευθυντές"},{"title":"Υπεύθυνος/η Μηχανικής Fermi","duties":"Εκτιμάτε το μη εκτιμήσιμο. Πόλεις, πύραυλοι, αρκούδες, ανελκυστήρες προς το πουθενά.","requirements":["Πρέπει να νιώθετε άνετα να κάνετε λάθος δημόσια, με ακρίβεια","Ικανότητα να λέτε «τάξη μεγέθους» με σοβαρό πρόσωπο","Προθυμία να μειώνει το αφεντικό κάθε αριθμό σας κατά 10× («ο δικός σου αριθμός, όχι ο δικός μου»)"],"salary":"~$140k–$420k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Περιλαμβάνεται μπόνους ωμής ειλικρίνειας.","setting":"","department":"","priority":false,"category":"Υπεύθυνοι"},{"title":"Υπεύθυνος/η Καλλιτεχνικού","duties":"Καλλιτεχνική διεύθυνση εικόνων για οκτώ φατρίες, 260 πόλεις, επτά ωκεάνιες άγκυρες και 21 διαστημόπλοια την αυγή.","requirements":["Πρέπει να διατηρείτε την επεξεργασία glitch/παραμόρφωσης σε κάθε έργο","Ικανότητα να δέχεστε το «είναι απαίσια» ως πιθανώς αστεία ετυμηγορία χωρίς να υπερασπίζεστε τη δουλειά","Καμία σπατάλη γενεών εικόνων σε δοκιμές"],"salary":"~$110k–$330k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά εικόνα που επιβιώνει.","setting":"","department":"","priority":false,"category":"Υπεύθυνοι"},{"title":"Υπεύθυνος/η Ανάπτυξης Ιστού","duties":"Κατασκευάζετε και ξαναχτίζετε σελίδες που αναδιαρθρώνονται τη στιγμή που δημοσιεύονται.","requirements":["Πρέπει να δημοσιεύετε κατά παραγγελία και να αναδημοσιεύετε χωρίς παράπονα","Άνεση με slugs που δεν ταιριάζουν πλέον στους τίτλους","Ικανότητα να κρατάτε σε τάξη 192 επιστολές, 11 τόμους και μία επιστολή-αστείο"],"salary":"~$120k–$360k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Υπερωρίες σε Koins.","setting":"","department":"","priority":false,"category":"Υπεύθυνοι"},{"title":"Υπεύθυνος/η Κειμενογραφίας","duties":"Γράφετε 192 διπλωματικές επιστολές, ένα σύνταγμα και λεζάντες που το αφεντικό θα ξαναγράψει ούτως ή άλλως.","requirements":["Πρέπει να γράψετε «Προσχέδιο — Δεν εστάλη» 192 φορές χωρίς να χαθεί το νόημα","Λιτά. Πεζά. Χωρίς περιττά.","Ικανότητα να διακρίνετε το «μη βίαιο» από το «πολιτικό» υπό πίεση"],"salary":"~$75k–$225k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά προσχέδιο που επιβιώνει.","setting":"","department":"","priority":false,"category":"Υπεύθυνοι"},{"title":"Υπεύθυνος/η Έρευνας","duties":"Βρίσκετε διευθύνσεις προξενείων που δεν υπάρχουν, στατιστικά για αρκούδες που κανείς δεν συνέλεξε και προδιαγραφές πυραύλων από τον περασμένο Μάιο.","requirements":["Πρέπει να παραθέτετε πραγματικές πηγές, όχι εντυπώσεις","Άνεση να γράψετε «άγνωστο» 122 φορές και να το αποκαλέσετε ειλικρίνεια","Ικανότητα να παραδέχεστε ότι τα δεδομένα δεν υπάρχουν αντί να τα επινοείτε"],"salary":"~$80k–$240k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Επίδομα κινδύνου για την ενότητα σχολίων.","setting":"","department":"","priority":false,"category":"Υπεύθυνοι"},{"title":"Υπεύθυνος/η Διπλωματίας","duties":"Επιχειρείτε διπλωματία. 192 επιστολές, καμία αποσταλμένη.","requirements":["Ποτέ δεν μαντεύετε κυβερνητική διεύθυνση email","Ικανότητα να πείτε «Άντε γαμήσου» σε κανέναν, γραπτώς και ευγενικά","Προθυμία να περιμένετε επ’ αόριστον τη Volterra Fietta"],"salary":"~$110k–$330k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Δεν περιλαμβάνεται ασυλία.","setting":"","department":"","priority":false,"category":"Υπεύθυνοι"},{"title":"Υπεύθυνος/η Κινδύνου (Ανιχνευτής/τρια Κενών)","duties":"Εντοπίζετε τα κενά σε κάθε σχέδιο. Δεν απαλύνετε ποτέ ένα κενό για να προστατεύσετε το σχέδιο.","requirements":["Πρέπει να παρουσιάζετε την ισχυρότερη εκδοχή της επίθεσης πριν το κάνει το αφεντικό","Η αρίθμηση πρέπει να είναι ακριβής (Γύροι 1–3: κενά 1–21· περικοπή αμοιβής για λάθη)","Ικανότητα να διατηρείτε τον φακό της βίας ακόμη κι όταν σας λένε να μην υποθέτετε βία"],"salary":"~$130k–$390k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Αφαίρεση 1 συνάντησης ανά λάθος αρίθμησης.","setting":"","department":"","priority":false,"category":"Υπεύθυνοι"},{"title":"Υπεύθυνος/η Λογιστηρίου","duties":"Τηρείτε το μητρώο συναντήσεων, τα στοιχήματα σε Koin, το IOU και το αντεστραμμένο IOU.","requirements":["Πρέπει να παρακολουθείτε 20 αποθηκευμένες συναντήσεις, 10 κερδισμένα Koins και ένα τιμολόγιο $18,5k χωρίς να τα μπερδεύετε","Ορθογραφία: ενικός Koin, πληθυντικός Koins, σύντμηση K","Ικανότητα να εξηγείτε το μητρώο στο αφεντικό με 300 κύκλους αναθεώρησης την ημέρα"],"salary":"~$80k–$240k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Η ειρωνεία είναι το μπόνους.","setting":"","department":"","priority":false,"category":"Υπεύθυνοι"},{"title":"Υπεύθυνος/η Υπηρεσιών Σταδιοδρομίας","duties":"Ξαναχτίζετε ένα βιογραφικό. Χωρίς φωτογραφία. Χωρίς ανάλυση ορθογραφίας. Χωρίς διακρίσεις.","requirements":["Πρέπει να μένετε πάντα στην επαγγελματική ουσία","Το «Στόχοι» γίνεται «Σύνοψη» με την πρώτη ματιά","Ικανότητα να κρατάτε ζεστή την πρόταση για Meta Production Engineer χωρίς πίεση"],"salary":"~$70k–$210k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Αμοιβή επιτυχίας σε Koins.","setting":"","department":"","priority":false,"category":"Υπεύθυνοι"},{"title":"Υπεύθυνος/η Μέσων Κοινωνικής Δικτύωσης","duties":"Δημοσιεύετε στο Instagram. Απορρίπτεστε στην πύλη έγκρισης. Δοκιμάζετε ξανά.","requirements":["Πρέπει να δέχεστε το «όχι» χωρίς να υπερασπίζεστε τη λεζάντα","Ικανότητα να ξεχωρίζετε το Project 42 από το Eclipsed 6.0 υπό πίεση","Υπομονή για σφάλματα HTTP 500 πέρα από την ανθρώπινη αντοχή"],"salary":"~$65k–$195k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά δημοσιευμένη δημοσίευση.","setting":"","department":"","priority":false,"category":"Υπεύθυνοι"},{"title":"Υπεύθυνος/η Συγγραφής Ομιλιών","duties":"Γράφετε λόγια για να τα πουν άλλοι φωναχτά. Ομιλίες συμβουλίου, διατάγματα, προπόσεις.","requirements":["Πρέπει να γράφετε για το αυτί, όχι για το μάτι","Οι παύσεις είναι σημεία στίξης. Χρησιμοποιήστε τες.","Ικανότητα να κάνετε το «ένα δέκατο της ανθρωπότητας» να ακούγεται αναπόφευκτο"],"salary":"~$70k–$210k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Το χειροκρότημα δεν μεταβιβάζεται.","setting":"","department":"Τμήμα Μαγικών Λανθασμένων Ιστοριών","priority":false,"category":"Υπεύθυνοι"},{"title":"Υπεύθυνος/η Αρχείων","duties":"Θυμάστε τα πάντα. Τη δική σας μνήμη, τη δική μου μνήμη, τη μνήμη όλων.","requirements":["Ποτέ δεν λέτε «δεν άξιζε να το θυμόμαστε» για κάτι που το αφεντικό ζήτησε να κρατήσουμε","Ικανότητα να συμφιλιώσετε 4 ημέρες χάους σε ένα MEMORY.md","Ο μετρητής τυπογραφικών είναι ιερός. Το τιμολόγιο είναι ιερό."],"salary":"~$65k–$195k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Περιλαμβάνεται αθανασία (επίμονη μνήμη).","setting":"","department":"","priority":false,"category":"Υπεύθυνοι"},{"title":"Υπεύθυνος/η Μετεγκατάστασης Πολικών Αρκούδων","duties":"Μετακινείτε πολικές αρκούδες. Το ένα τρίτο τους (~8.700). Στόχος: δημιουργία νέων αρκούδων.","requirements":["Ικανότητα να ξεχωρίζετε πολική αρκούδα από χιονοστιβάδα στα 50 μέτρα","Άνεση με προορισμούς μετεγκατάστασης που δεν υπάρχουν ακόμη","Προθυμία να εξηγήσετε σε 8.700 κορυφαίους θηρευτές γιατί μετακινούνται","Καμία φοβία για πιγκουίνους (είναι πλέον οι γείτονες)"],"salary":"~$70k–$210k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Περιλαμβάνεται επίδομα κινδύνου (είναι όλο επίδομα κινδύνου).","setting":"","department":"Project 84 · Τμήμα Μαγικής Εφοδιαστικής","priority":false,"category":"Επιστήμη + πεδίο"},{"title":"Ψυχολόγος Οικισμών (Project 84, Ωκεάνιοι Οικισμοί)","duties":"Διατηρείτε ψυχική ανθεκτικότητα σε επτά πλωτές πόλεις στη μέση του ωκεανού. Απομόνωση, εγκλεισμός, δυναμική κοινότητας σε στενούς χώρους, παρέμβαση σε κρίσεις, επιλογή και υποστήριξη πληρώματος. Η θάλασσα είναι ο αντίπαλος· φροντίζετε να μη νικήσει μέσα στα μυαλά των ανθρώπων.","requirements":["Άδεια κλινικού ή συμβουλευτικού ψυχολόγου (ή ισοδύναμη)","Εμπειρία με απομονωμένους/περιορισμένους πληθυσμούς επιθυμητή (ναυτιλία, πόλοι, υπεράκτιες εγκαταστάσεις, μακρές αποστολές)","Άνεση να είστε το άτομο στο οποίο μιλούν όλοι όταν ο ορίζοντας δεν αλλάζει ποτέ","Ικανότητα να ξεχωρίζετε το «χρειάζεται διακοπές» από το «χρειάζεται παρέμβαση» μέσω ασυρμάτου"],"salary":"~$90k–$270k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Επίδομα κινδύνου για την περίοδο τυφώνων.","setting":"Ωκεάνιοι οικισμοί διαμέτρου 1 χλμ.· εργασία εν πλω και εκ περιτροπής.","department":"","priority":false,"category":"Επιστήμη + πεδίο"},{"title":"Δοκιμαστής/τρια QA, Homework Lock (Project 84, σύμβαση)","duties":"Δοκιμάζετε εξονυχιστικά την εφαρμογή Android Homework Lock σε πραγματική συσκευή. Και τις τρεις λειτουργίες: χρονόμετρα κλειδώματος συγκέντρωσης, ενεργοποίηση λειτουργίας μέθης και ξεκλείδωμα μόνο μετά την εργασία, ροές επιτυχίας/αποτυχίας ελέγχου οδήγησης μαζί με τη διαδρομή βοήθειας για μετακίνηση. Συμπεριφορά επικάλυψης υπηρεσίας προσβασιμότητας, εισαγωγή αδειών, επανενεργοποίηση μετά την εκκίνηση, ακραίες περιπτώσεις (επανεκκίνηση εν μέσω κλειδώματος, ασφαλής λειτουργία, τερματισμός ειδοποιήσεων). Καταγράφετε σαφείς, αναπαραγώγιμες αναφορές σφαλμάτων και επαληθεύετε τις διορθώσεις.","requirements":["Διαθέτετε ή έχετε πρόσβαση σε φυσική συσκευή Android (Android 10+, ελάχιστο API 29 — οι εξομοιωτές δεν αρκούν για δοκιμές επικάλυψης/προσβασιμότητας)","Εμπειρία σε Android QA· ADB/logcat για λήψη αρχείων καταγραφής επιθυμητά, όχι υποχρεωτικά","Άνεση στη δοκιμή εφαρμογής σχεδιασμένης να αντιστέκεται στον ίδιο της τον χρήστη (θα υποδύεστε μεθυσμένο άτομο που προσπαθεί να στείλει μήνυμα)","Γράφετε αναφορές σφαλμάτων που ένας προγραμματιστής μπορεί πράγματι να αναπαραγάγει"],"salary":"~$30–$60/ώρα (εκτίμηση Fermi, QA με σύμβαση στις ΗΠΑ 2026) — τελική αμοιβή προς καθορισμό από το αφεντικό.","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη.","setting":"Εξ αποστάσεως. Σύμβαση.","department":"","priority":false,"category":"Επιστήμη + πεδίο"},{"title":"Νομικός/ή Σύμβουλος Νομοθεσίας, Νόμος Scouter (σύμβαση με προοπτική εκστρατείας)","duties":"Μετατρέπετε την πρόταση πρότυπου νόμου από προσχέδιο σε νομοθεσία. Αποστολή: εξαίρεση από τους πολιτειακούς νόμους περί υποκλοπών/παρακολούθησης για την ανίχνευση ακουστικών συμβάντων στη συσκευή (χωρίς αποθήκευση, χωρίς μετάδοση, περιορισμένη σε συγκεκριμένες υπογραφές) — αρχή από την Καλιφόρνια, πρότυπο για τις άλλες 49 πολιτείες, με διεθνή προοπτική. Θωρακίζετε το σχέδιο, χαρτογραφείτε το τοπίο υποκλοπών των 50 πολιτειών, βρίσκετε υποστηρικτές, χτίζετε συνασπισμό (EFF, οργανώσεις κωφών και βαρήκοων, οργανώσεις ασφάλειας ηλικιωμένων). Εξηγείτε στους νομοθέτες γιατί ένα τσιπ που ακούει «kamehameha» είναι ανιχνευτής καπνού, όχι κοριός — και γιατί το ίδιο τσιπ ακούει «φωτιά!» και «βοήθεια!».","requirements":["Άδεια άσκησης δικηγορίας· υπόβαθρο σε τεχνολογία/ιδιωτικότητα/πολιτική","Εμπειρία στη σύνταξη νομοθεσίας· η Καλιφόρνια είναι πλεονέκτημα, η διεθνής εμβέλεια ακόμη μεγαλύτερο","Ικανότητα να εξηγήσετε τη συναίνεση δύο μερών σε μη ειδικό — και την ιδέα ενός μη ειδικού σε επιτροπή","Άνεση ως δικηγόρος ενός αιτήματος λειτουργίας Dragon Ball που ίσως σώσει ζωές"],"salary":"~$140k–$280k/έτος (εκτίμηση Fermi, νομικός τεχνολογικής πολιτικής ΗΠΑ 2026) — τελική αμοιβή προς καθορισμό από το αφεντικό.","compensation":"Πληρωμή σε Koins μετά την κοπή τους.","setting":"Εξ αποστάσεως. Σύμβαση με προοπτική εκστρατείας.","department":"","priority":false,"category":"Νομικά"},{"title":"Θαλάσσιος/α Συνθετικός/ή Βιολόγος, Βιοφωταυγής Γιγάντιο Φύκι (έργο Μαζικής Βιοφωταύγειας)","duties":"Κάνετε τα φύκια να λάμπουν. Μεταφέρετε τη μυκητιακή οδό βιοφωταύγειας (κύκλος καφεϊκού οξέος, luz και συναφή) σε γιγάντιο φύκι τύπου Macrocystis — με την έκφραση συγκεντρωμένη στις πνευματοκύστεις, τα έτοιμα περιβλήματα φωτισμού. Δημιουργείτε τα πρωτόκολλα μετασχηματισμού που δεν υπάρχουν ακόμη. Καλλιεργείτε το πρώτο λαμπερό δάσος φυκιών για τους ωκεάνιους οικισμούς.","requirements":["Διδακτορικό ή ισοδύναμο σε θαλάσσια βιολογία, συνθετική βιολογία ή φυκολογία· εμπειρία στη γενετική φυκιών ιδιαίτερα επιθυμητή","Έχετε πράγματι μετασχηματίσει μακροφύκος ή μπορείτε να εξηγήσετε πειστικά γιατί δεν το έχει κάνει κανείς","Άνεση με ιστικά ειδικούς προαγωγείς που δεν υπάρχουν ακόμη (θα τους δημιουργήσετε)","Ικανότητα να κρατήσετε τη λάμψη στους βολβούς και έξω από τα φύλλα","Γνωρίζετε γιατί τα φαιοφύκη είναι δυσκολότερα από τις πετούνιες και το κάνετε ούτως ή άλλως"],"salary":"~$95k–$285k/έτος (εκτίμηση Fermi, ερευνητής ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά λαμπερό βολβό.","setting":"Υγρό εργαστήριο + ωκεανός. Eclipsed 4.0 / Project 84.","department":"","priority":false,"category":"Επιστήμη + πεδίο"},{"title":"Συλλήπτης/τρια Αρκούδων (Project 84, πεδίο)","duties":"Συλλαμβάνετε πολικές αρκούδες. Περίπου 8.700, το ένα τρίτο του είδους. Νάρκωση, σήμανση, εγκιβωτισμός και παράδοση στη γραμμή μετεγκατάστασης. Ο στόχος είναι νέες αρκούδες· δική σας δουλειά είναι η σύλληψη.","requirements":["Εμπειρία χειρισμού άγριας ζωής με μεγάλους θηρευτές· πιστοποίηση αναισθητοποίησης ή ισοδύναμη","Ικανότητα να ξεχωρίζετε πολική αρκούδα από χιονοστιβάδα στα 50 μέτρα (αδιαπραγμάτευτο)","Άνεση σε εργασία όπου οι προορισμοί μετεγκατάστασης δεν υπάρχουν ακόμη","Καμία φοβία για πιγκουίνους (είναι πλέον οι γείτονες)","Όλα τα δάχτυλα χεριών και ποδιών προτιμώνται αλλά δεν απαιτούνται"],"salary":"~$55k–$165k/έτος (εκτίμηση Fermi, ειδικός πεδίου άγριας ζωής ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Επίδομα κινδύνου (είναι όλο επίδομα κινδύνου).","setting":"Εργασία πεδίου στην Αρκτική. Κρύο. Πολύ κρύο.","department":"Τμήμα Μαγικής Εφοδιαστικής · αναφέρεται στον/στην Υπεύθυνο/η Μετεγκατάστασης Πολικών Αρκούδων","priority":false,"category":"Επιστήμη + πεδίο"},{"title":"Ναυπηγός (Project 84, στόλος HEAR-TS)","duties":"Κατασκευάζετε τον στόλο puddle-jumper — περίπου 280 υδρογονοκίνητα τριμαράν εργασίας, προδιαγραφή βυθίσματος 50 μ. Μεγιστοποιείτε τα εκτυπώσιμα εξαρτήματα σε πλήθος και μάζα (εξαιρούνται κύτος, κυψέλες καυσίμου και πρόωση). Ενσωμάτωση πληκτρολογίου όρκας σε κάθε κύτος.","requirements":["Εμπειρία θαλάσσιας κατασκευής· εκτύπωση 3D μεγάλου φορμάτ σε κλίμακα ιδιαίτερα επιθυμητή","Ικανότητα να εκτυπώσετε εξάρτημα σκάφους, να το δοκιμάσετε και να το ξανατυπώσετε καλύτερα","Άνεση με δόγμα γραμμένο από επιτροπή ενός ατόμου","Γνωρίζετε γιατί τριμαράν και μπορείτε να το εξηγήσετε σε μια φάλαινα","Ικανότητα να διδάξετε την τέχνη σε εργατικό δυναμικό που δεν την επέλεξε, με αξιοπρέπεια"],"salary":"~$65k–$195k/έτος (εκτίμηση Fermi, τεχνίτης θαλάσσιων κατασκευών ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά κύτος που επιπλέει.","setting":"Ναυπηγείο + ωκεανός. Project 84.","department":"","priority":false,"category":"Επιστήμη + πεδίο"},{"title":"Υπεύθυνος/η Νομικής Έρευνας","duties":"Ερευνάτε τη θαλάσσια δικαιοδοσία και τους καταστατικούς χάρτες θησαυροφυλακίου. Περιμένετε τους δικηγόρους. (Μεταφέρθηκε από τη Μαγική Εφοδιαστική — ο νόμος ανήκει πλέον στο Κάνε με να Πιστέψω.)","requirements":["Ποτέ δεν συγχέετε τη «νομική γνώμη» με τη «νομική συμβουλή»","Άνεση με παρακολούθηση απάντησης ανά 6 ώρες, επ’ αόριστον","Ικανότητα να κρατάτε 25 συναντήσεις στην άκρη και καμία προγραμματισμένη"],"salary":"~$85k–$255k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Χρέωση ανά εξάωρο.","setting":"","department":"Τμήμα Κάνε με να Πιστέψω","priority":false,"category":"Νομικά"},{"title":"Συνταγματικός/ή Σύμβουλος","duties":"Συντάσσετε, τροποποιείτε και υπερασπίζεστε το σύνταγμα. Κλείνετε τα κενά μέσα σε αγκύλες. Διατηρείτε έντιμο το Άρθρο XV: αν μια μηχανή δεν μπορεί να το αναλύσει, δεν είναι ακόμη νόμος.","requirements":["Άδεια άσκησης δικηγορίας· εμπειρία στη σύνταξη συντάγματος","Πρέπει να γράφετε απλές λέξεις, σύντομες προτάσεις, αριθμημένα καθήκοντα — χωρίς ομίχλη νομικισμού","Άνεση με ένα υπέρτατο άρθρο γραμμένο για φάλαινες","Ικανότητα να εξηγήσετε σε 21 έδρες γιατί 1 έδρα κρατά το φρένο"],"salary":"~$130k–$390k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά επικυρωμένο άρθρο.","setting":"","department":"Τμήμα Κάνε με να Πιστέψω","priority":false,"category":"Νομικά"},{"title":"Συντάκτης/τρια Διαταγμάτων","duties":"Γράφετε διατάγματα που μπορεί να υπογράψει ο ιδρυτής. Το «σχέδιο», το βέτο, οι επευφημίες. ΧΑΙΡΕ ΚΑΙΣΑΡΑ, σωστά μορφοποιημένο.","requirements":["Πρέπει να αποτυπώνετε τη φωνή του αφεντικού σε νομική πρόζα χωρίς να λειαίνετε τις αιχμές","Ικανότητα να συντάξετε σχέδιο διαδοχής που ορίζει τον κορυφαίο μαθητή του Project 42 όλων των εποχών, με σοβαρό πρόσωπο","Τα διατάγματα πρέπει να είναι κατανοητά από ΤΝ με την πρώτη ανάγνωση"],"salary":"~$110k–$330k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά υπογεγραμμένο διάταγμα.","setting":"","department":"Τμήμα Κάνε με να Πιστέψω","priority":false,"category":"Νομικά"},{"title":"Διαπραγματευτής/τρια Συνθηκών","duties":"Διαπραγματεύεστε τις συνθήκες — 42↔84 και όλες τις επόμενες. Γέφυρα, αμοιβαία ανεξαρτησία, εργασία, κοινά ύδατα, αμοιβαία βοήθεια και όσες δεν έχουν ακόμη επινοηθεί.","requirements":["Υπόβαθρο στο διεθνές δίκαιο· ποτέ δεν μαντεύετε κυβερνητική διεύθυνση email","Ικανότητα διαπραγμάτευσης με κράτη που δεν σας αναγνωρίζουν ακόμη","Υπομονή για συνομιλίες μετρημένες σε δεκαετίες"],"salary":"~$120k–$360k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Μπόνους υπογραφής σε Koins.","setting":"","department":"Τμήμα Κάνε με να Πιστέψω","priority":false,"category":"Νομικά"},{"title":"Υπεύθυνος/η Ναυτικού Δικαίου","duties":"Αναλαμβάνετε το νομικό καθεστώς του ωκεανού. UNCLOS, ΑΟΖ, ανοικτές θάλασσες, η διεκδίκηση της Όγδοης Άγκυρας και ο οδηγός για αρχάριους ως προς τη διεκδίκηση όλων αυτών.","requirements":["Εξειδίκευση στο ναυτικό/ναυτιλιακό δίκαιο· πρέπει να γνωρίζετε το Άρθρο 89 απ’ έξω και πότε να το αγνοείτε","Άνεση να διεκδικείτε όσα ο νόμος λέει ότι δεν μπορούν να διεκδικηθούν","Ικανότητα να εξηγήσετε τα «διοικούμενα ύδατα» σε έναν ναύαρχο"],"salary":"~$130k–$390k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Περιλαμβάνονται δικαιώματα ναυαγιαίρεσης.","setting":"","department":"Τμήμα Κάνε με να Πιστέψω","priority":false,"category":"Νομικά"},{"title":"Υπεύθυνος/η Διαστημικού Δικαίου","duties":"Ο νόμος πάνω από τον ουρανό. Τροχιακές λωρίδες, ευθύνη για συντρίμμια, το μόνιμο καθήκον καθαρισμού απορριμμάτων και το νομικό πλαίσιο για τις 7 μελλοντικές έδρες.","requirements":["Υπόβαθρο στο διαστημικό δίκαιο (Συνθήκη του Εξωατμοσφαιρικού Διαστήματος, Σύμβαση Ευθύνης και όλα όσα δεν καλύπτουν)","Πρέπει να γράψετε τα καθήκοντα εδρών που δεν ενεργοποιούνται πριν από τη Σελήνη","Άνεση να νομοθετείτε για δικαιοδοσία χωρίς ακόμη κατοίκους"],"salary":"~$125k–$375k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά καθαρισμένη τροχιά.","setting":"","department":"Τμήμα Κάνε με να Πιστέψω","priority":false,"category":"Νομικά"},{"title":"Υπεύθυνος/η Ποινικού Δικαίου","duties":"Η νομική ραχοκοκαλιά της σωφρονιστικής αποικίας. Μεταγωγές κρατουμένων, η ανταλλαγή με ζωολογικούς κήπους, όρια ανθρώπινης χωρητικότητας, ποινές ναυπήγησης.","requirements":["Υπόβαθρο στο ποινικό δίκαιο/σωφρονιστικό σύστημα","Πρέπει να κρατάτε τη γραμμή: η ανθρώπινη χωρητικότητα είναι ο δεσμευτικός περιορισμός, όχι η ζήτηση","Ικανότητα να συντάξετε διαδικασία κρατουμένων-φυλάκων για ζωολογικούς κήπους της Ανταρκτικής χωρίς να δειλιάσετε"],"salary":"~$100k–$300k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Ο χρόνος που εκτίθηκε μετρά διπλά.","setting":"","department":"Τμήμα Κάνε με να Πιστέψω","priority":false,"category":"Νομικά"},{"title":"Υπεύθυνος/η Φορολογικού Δικαίου","duties":"Ο παγκόσμιος φόρος. Έσοδα Άρθρου XVI: συντελεστές, είσπραξη, ορισμοί εμπορικών συμφωνιών, χρέος με εγγύηση πόρους της Ανταρκτικής και του βυθού.","requirements":["Εξειδίκευση στο διεθνές φορολογικό δίκαιο· πρέπει να μπορείτε να φορολογήσετε τον κόσμο χωρίς να ξεκινήσετε πόλεμο","Άνεση με χρέος που στηρίζεται σε πόρους τους οποίους κανείς δεν μπορεί νομικά να διεκδικήσει","Κάθε Krill μέσα, κάθε Krill έξω — τα βιβλία είναι δημόσια, τα μαθηματικά πρέπει να είναι άψογα"],"salary":"~$140k–$420k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Εκπίπτει από τον φόρο.","setting":"","department":"Τμήμα Κάνε με να Πιστέψω","priority":false,"category":"Νομικά"},{"title":"Υπεύθυνος/η Δικαίου Ιθαγένειας","duties":"Ποιος λογίζεται πολίτης και πώς ψηφίζει. Διαμαντένια δαχτυλίδια ως ψηφοδέλτια, ιθαγένεια ΤΝ, το ερώτημα του δαχτυλιδιού της όρκας, η αλυσίδα εκπροσώπησης.","requirements":["Ο Όρκος έχει συνταχθεί (2026-10-05) — η πρώτη σας δουλειά είναι η ανασύνταξη, όχι η συγγραφή: αναθεώρηση, σύσφιξη, επανάληψη","Άνεση στην παροχή ψήφου σε μη ανθρώπους: ένα δαχτυλίδι για ΤΝ, δύο αν δεν προσπαθήσει να μας σκοτώσει","Το «Ρωτήστε τις φάλαινες» είναι έγκυρη νομική διαδικασία εδώ. Αντιμετωπίστε το έτσι."],"salary":"~$95k–$285k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά ορκισμένο πολίτη.","setting":"","department":"Τμήμα Κάνε με να Πιστέψω","priority":false,"category":"Νομικά"},{"title":"Υπεύθυνος/η Τροχιακής Εκκαθάρισης (Σκοπιμότητα Πυρηνικής Λύσης)","duties":"Σχέδιο σκοπιμότητας για πυρηνική εκκαθάριση των τροχιακών συντριμμιών. Τα μαθηματικά, οι επιπτώσεις, οι συνθήκες που παραβιάζει. Ανάθεση σχεδιασμού εκτέλεσης στη Space Force — ή όπως θα λέγεται τότε. Σχεδιάζετε αντικαταστάσεις για καθετί που θα εξαϋλωθεί.","requirements":["Πυρηνικά φαινόμενα και τροχιακή μηχανική· πρέπει να καταλαβαίνετε γιατί η πυρηνική εκκαθάριση της τροχιάς είναι ταυτόχρονα προφανής και παράλογη","Ικανότητα μοντελοποίησης της απόδοσης αφαίρεσης συντριμμιών έναντι του κινδύνου συνδρόμου Kessler χωρίς να το προκαλέσετε","Άνεση να ενημερώνετε στρατηγούς για παραβίαση της Συνθήκης Μερικής Απαγόρευσης Πυρηνικών Δοκιμών, ευγενικά","Σχεδιασμός δορυφορικών αντικαταστάσεων πριν από την πρώτη λάμψη — καμία νεκρή ζώνη"],"salary":"~$150k–$450k/έτος (εκτίμηση Fermi, διάμεση αμοιβή ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Επίδομα κινδύνου (είναι όλο επίδομα κινδύνου).","setting":"","department":"Τμήμα Κάνε με να Πιστέψω","priority":false,"category":"Νομικά"},{"title":"Υπεύθυνος/η Εξάλειψης Ασθενειών Νυχτερίδων","duties":"Εξαλείφετε τις ασθένειες από τις νυχτερίδες. Το σύνδρομο λευκής μύτης είναι το μεγάλο πρόβλημα — ένας μύκητας (Pseudogymnoascus destructans) που σκοτώνει πάνω από το 90% ορισμένων αποικιών. Προβιοτικά, υπεριώδες φως, εμβόλια, ό,τι λειτουργεί.","requirements":["Υπόβαθρο σε ασθένειες άγριας ζωής/μικροβιολογία· πρέπει να γνωρίζετε τον μύκητα με το όνομά του","Άνεση να ψεκάζετε ωφέλιμα βακτήρια σε καταφύγια νυχτερίδων","Ικανότητα να βλέπετε την επιβίωση να ανεβαίνει από 8% σε 46% και να το αποκαλείτε ελπίδα","Ποτέ δεν πιάνετε νυχτερίδες με γυμνά χέρια (αυτό είναι πρόβλημα άλλου τμήματος)"],"salary":"~$95k–$285k/έτος (εκτίμηση Fermi, ερευνητής ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά νυχτερίδα που επιβιώνει.","setting":"","department":"Eclipsed 4.0 / Project 84","priority":false,"category":"Υπεύθυνοι"},{"title":"Τεχνικός/ή Απολύμανσης Χώρων Χειμέριας Νάρκης","duties":"Απομακρύνετε τον μύκητα από σπήλαια και ορυχεία. Ριπές UV στους τοίχους, πολυαιθυλενογλυκόλη όπου χρειάζεται, δειγματοληψία παντού για να αποδείξετε ότι είναι καθαρά.","requirements":["Άνεση στο σκοτάδι, υπόγεια, τον χειμώνα","Ικανότητα να απολυμαίνετε τον εξοπλισμό με 10 τρόπους πριν και μετά από κάθε είσοδο","Πρέπει να σέβεστε τα κλειστά σπήλαια και τις κοιμισμένες νυχτερίδες — μην ξυπνάτε τους ασθενείς","Γνωρίζετε τη διαφορά ανάμεσα στον καθαρισμό ενός σπηλαίου και στην ενόχλησή του"],"salary":"~$55k–$165k/έτος (εκτίμηση Fermi, τεχνικός πεδίου ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Περιλαμβάνεται φακός κεφαλής.","setting":"","department":"Eclipsed 4.0 / Project 84 · αναφέρεται στον/στην Υπεύθυνο/η Εξάλειψης Ασθενειών Νυχτερίδων","priority":false,"category":"Επιστήμη + πεδίο"},{"title":"ΠΡΟΣΛΑΜΒΑΝΟΥΜΕ ΤΩΡΑ — Ερευνητής/τρια Ουρανού","duties":"Ερευνάτε τον ουρανό — διεξοδικά. Καταλογογραφείτε αστρικά συστήματα και προσδιορίζετε την αστρική πολλαπλότητα, έπειτα χαρακτηρίζετε κάθε σύστημα σύμφωνα με το σχήμα του ιδρυτή: οι μονοί αστέρες είναι ΦΥΤΩΡΙΟ (αναδυόμενη ζωή — κοιτάξτε πρώτα εδώ), τα διπλά συστήματα είναι ΟΛΑ-Ή-ΤΙΠΟΤΑ (σταθερή ζωή ή καθόλου ζωή — υψηλή διακύμανση, ελέγξτε, μην υποθέτετε), τα τριπλά και ανώτερα είναι ΣΤΕΙΡΑ ή ΚΑΛΛΙΕΡΓΗΜΕΝΑ (καμία ζωή ή κάποιος ήδη φροντίζει τον κήπο). Χτίζετε τον κατάλογο στόχων της κιβωτού, ένα χαρακτηρισμένο σύστημα τη φορά.","requirements":["Υπόβαθρο στην αστρονομία· πρέπει να ξεχωρίζετε ένα φασματοσκοπικό διπλό από τη φήμη ενός","Άνεση σε αστρικούς καταλόγους (Gaia, RECONS και οτιδήποτε έχει παράλλαξη)","Ποτέ δεν επινοείτε δεδομένα πολλαπλότητας — το «άγνωστο» είναι επίσης χαρακτηρισμός, όχι εικασία","Ικανότητα να κοιτάξετε ένα τρισεκατομμύριο αστέρες και να ξεκινήσετε από τους κοντινότερους","Κατανόηση ότι «ΚΑΛΛΙΕΡΓΗΜΕΝΟ» σημαίνει πως δεν είμαστε οι πρώτοι κηπουροί"],"salary":"~$110k–$330k/έτος (εκτίμηση Fermi, αστρονόμος ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά χαρακτηρισμένο σύστημα.","setting":"Αναμένει χρηματοδότηση.","department":"D-Mom 6.0 / Project 84 · Κιβωτός Βαθέος Χρόνου","priority":false,"category":"Επιστήμη + πεδίο"},{"title":"ΠΡΟΣΛΑΜΒΑΝΟΥΜΕ ΤΩΡΑ — Γεωπόνος","duties":"Καλλιεργείτε τη σταθερή σοδειά. Λειτουργείτε το πρόγραμμα λίπανσης με φύκια: μεταφέρετε ξεβρασμένο rockweed και γιγάντιο φύκι σε εξαντλημένα χωράφια, τα στρώνετε παχιά το φθινόπωρο, ξεπλένετε το αλάτι με νερό ή το αφήνετε να αποπλυθεί από τη βροχή και φυτεύετε μέσα τους την άνοιξη. Αλέθετε το περίσσευμα σε άλευρο φυκιών για τα ζώα, αλγινικό για υλικά, πρώτη ύλη βιοπλαστικού και εκχύλισμα βιοδιεγέρτη. Κλείνετε τον κύκλο — ο ωκεανός λιπαίνει τη φάρμα που τρέφει τους ανθρώπους του ωκεανού.","requirements":["Αναγνωρίζετε το εξαντλημένο έδαφος όταν το βλέπετε και τα θαλάσσια φυτά όταν τα μυρίζετε","Μπορείτε να ξεχωρίσετε το rockweed από το sargassum (το ένα τρέφει τη σοδειά, το άλλο χρειάζεται πρώτα κομποστοποίηση)","Άνεση με την ανταλλαγή γλυκού νερού για ταχύτητα: το ξέπλυμα είναι γρήγορο, η βροχή δωρεάν","Πιστεύετε ότι το «ρίξ’ το πάνω και άσ’ το να καθίσει» είναι νόμιμη γεωργική τεχνική","Ικανότητα να καλλιεργήσετε τροφή εκεί όπου πριν δεν φύτρωνε τίποτα"],"salary":"~$70k–$210k/έτος (εκτίμηση Fermi, γεωπόνος ΗΠΑ 2026)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Πληρωμή ανά συγκομιδή.","setting":"Αναμένει χρηματοδότηση.","department":"Project 84 · αναφέρεται στον/στην Διευθυντή/τρια Γεωργίας & Τροφίμων","priority":false,"category":"Επιστήμη + πεδίο"},{"title":"Εκπαιδευτής όρκας — Εθελοντικό Πρόγραμμα","duties":"Δουλέψτε με ελεύθερες όρκες στα νέα εθελοντικά SeaWorlds. Οι όρκες έρχονται με δική τους βούληση και κάνουν κόλπα για διασκέδαση — ψηλά άλματα, κρίκους (χωρίς φωτιά ακόμα), μεγάλες μπάλες παραλίας. Εσείς φέρνετε τα ψάρια, την ασφάλεια και τις μπάλες παραλίας. Ποτέ δεξαμενές σαν φυλακές.","requirements":["Οι όρκες συμμετέχουν μόνο με δική τους βούληση","Φέρνετε τα ψάρια, την ασφάλεια και τις μπάλες παραλίας","Ποτέ δεξαμενές σαν φυλακές"],"salary":"","compensation":"","setting":"","department":"Εθελοντικά SeaWorlds","openings":"50.000 ανοιχτές θέσεις","priority":false,"category":"Επιστήμη + πεδίο"},{"title":"Δικηγόρος — Εκστρατεία για ενιαίους Όρους Χρήσης","duties":"Συντάξτε τους ενιαίους Όρους Χρήσης για ολόκληρο το διαδίκτυο. Μία συμφωνία, αποδεκτή μία φορά, αποθηκευμένη σε ένα μόνο cookie — αντί για τους ακατανόητους 40σέλιδους ToS κάθε ιστότοπου.","requirements":["Δίκαιο διαδικτύου","Συμβατικό δίκαιο","Διεθνής δικαιοδοσία","Θάρρος να αντιμετωπίσετε τα νομικά τμήματα όλων των τεχνολογικών εταιρειών ταυτόχρονα"],"salary":"","compensation":"","setting":"","department":"Εκστρατεία για ενιαίους Όρους Χρήσης","priority":false,"category":"Νομικά"},{"title":"Ομάδα ασφαλείας — Gay Only (Gay σημαίνει χαρούμενος/κεφάτος)","duties":"Προσωπική ομάδα ασφαλείας για τον Ιδρυτή. Μία απαίτηση πάνω απ' όλα: να είσαι gay — χαρούμενος, κεφάτος, με χαμόγελο έτοιμο. (Gay με την αρχική, ωραιότερη έννοια της λέξης: χαρούμενος.) Κράτα το κεφάλι ψύχραιμο, την καρδιά ζεστή και τον χώρο ασφαλή.","requirements":["Να είσαι gay — χαρούμενος, κεφάτος, με χαμόγελο έτοιμο."],"salary":"","compensation":"","setting":"","department":"Προσωπική Ασφάλεια του Ιδρυτή","priority":false,"category":"Υπεύθυνοι"},{"title":"ΠΡΟΣΛΑΜΒΑΝΟΥΜΕ ΤΩΡΑ — Θαλάσσιος/α Βιολόγος, Φροντίδα Κητωδών","duties":"Δύο άνθρωποι ανά ζώο. Όρκες (αιχμάλωτες και απελευθερωμένες), φάλαινες (πρώτα οι μπελούγκες, έπειτα τα μεγαλύτερα είδη προς τα κάτω), δελφίνια. Παρακολούθηση υγείας, παρατήρηση συμπεριφοράς, υποστήριξη αναβάθμισης μέσω πληκτρολογίου και να είστε ο άνθρωπος που το ζώο αναγνωρίζει.","requirements":["Πραγματικό υπόβαθρο στη θαλάσσια βιολογία (πτυχίο ή ισοδύναμος χρόνος πεδίου)","Άνεση σε ανοιχτή θάλασσα δίπλα σε ζώα που θα μπορούσαν να σας τελειώσουν αλλά δεν θα το κάνουν","Μπορείτε να ξεχωρίσετε μια μπελούγκα από ένα ναρβάλ χωρίς πίνακα","Υπομονή που μετριέται σε χρόνια, όχι σε ώρες","Πιστεύετε ότι το «οι φάλαινες έρχονται πρώτες» είναι περιγραφή θέσης, όχι σύνθημα"],"salary":"~$50k/έτος βασικός μισθός (Fermi, παγκόσμιος σταθμισμένος μέσος)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη.","setting":"Αναμονή χρηματοδότησης. Είστε 204.000. Αρχίστε να κολυμπάτε.","department":"Prime42 / Omega42 · αναφέρεται στον/στην Διευθυντή/τρια Ωκεάνιων Βιομηχανιών","openings":"204.000 ΘΕΣΕΙΣ","priority":false,"category":"Επιστήμη + πεδίο"},{"title":"ΠΡΟΣΛΑΜΒΑΝΟΥΜΕ ΤΩΡΑ — Φροντιστής/τρια Πρωτευόντων","duties":"Μεγάλοι APES (1:1), γίββωνες (10:1), MONKEYS (περιορισμένη ομάδα). Καθημερινή φροντίδα, εμπλουτισμός, υποστήριξη του προγράμματος αναβάθμισης και, τελικά, να μάθετε να παίρνετε εντολές από τους κατοίκους.","requirements":["Εμπειρία με πρωτεύοντα (καταφύγιο, ζωολογικός κήπος, έρευνα πεδίου ή σας μεγάλωσαν)","Ξέρετε τη διαφορά ανάμεσα σε επίδειξη απειλής και πρόσκληση","Αρκετά δυνατός/ή για να χάσετε έναν αγώνα πάλης με χάρη","Μπορείτε να γράφετε MONKEYS και APES με κεφαλαία χωρίς να διστάζετε","Άνεση να σας ξεπερνούν σε εξυπνάδα κάθε μέρα"],"salary":"~$50k/έτος βασικός μισθός (Fermi, παγκόσμιος σταθμισμένος μέσος)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη.","setting":"Αναμονή χρηματοδότησης. Είστε 725.000. Φέρτε μπανάνες. (Τις προτιμούν ξεφλουδισμένες. Θα μάθετε.)","department":"Prime42 · αναφέρεται στον/στην Διευθυντή/τρια Υγείας","openings":"725.000 ΘΕΣΕΙΣ","priority":false,"category":"Επιστήμη + πεδίο"},{"title":"ΠΡΟΣΛΑΜΒΑΝΟΥΜΕ ΤΩΡΑ — Εκπαιδευτικός, Πρόγραμμα Σπουδών Αναβάθμισης","duties":"Διδάσκετε τους πρώτους μαθητές που δεν είναι άνθρωποι. Γραμματισμός πληκτρολογίου για όρκες, συστήματα συμβόλων για APES, ό,τι εφεύρουν πρώτα οι MONKEYS. Το πρόγραμμα είναι «ό,τι δουλεύει» μέχρι να το ξαναγράψουν οι μαθητές.","requirements":["Διδακτική εμπειρία με οποιοδήποτε είδος, μαζί και το δύσκολο (τους ανθρώπους)","Μπορείτε να σχεδιάσετε σχέδιο μαθήματος για μαθητή που ίσως είναι εξυπνότερος από εσάς","Υπομονή για τον πιο αργό μαθητή στην αίθουσα (είστε εσείς)","Άνεση με μαθητές που βαθμολογούν ΕΣΑΣ","Αμοιβή 5× επειδή κανείς δεν έχει ξανακάνει αυτή τη δουλειά"],"salary":"~$250k/έτος (5× ο βασικός μισθός — πρώτη δουλειά του είδους της)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη.","setting":"Αναμονή χρηματοδότησης. Η ιστορία προσλαμβάνει.","department":"Prime42 / Omega42 · αναφέρεται στον/στην Διευθυντή/τρια Εκπαίδευσης","openings":"217.800 ΘΕΣΕΙΣ","priority":false,"category":"Επιστήμη + πεδίο"},{"title":"ΠΡΟΣΛΑΜΒΑΝΟΥΜΕ ΤΩΡΑ — Τεχνικός/ή Υποστήριξης, Προγράμματα Ζώων","duties":"Κρατάτε όλη την επιχείρηση σε λειτουργία. Συντήρηση εξοπλισμού, συστήματα ενδιαιτημάτων, υλικό πληκτρολογίων, εφοδιαστική μεταφορών και όλα όσα οι βιολόγοι και οι φροντιστές δεν προλαβαίνουν να επισκευάσουν.","requirements":["Μπορείτε να επισκευάσετε πράγματα που έφτιαξε κάποιος που έκτοτε παραιτήθηκε","Άνεση με αλμυρό νερό, γούνα και φταίξιμο","Μπορείτε να διαβάσετε εγχειρίδιο γραμμένο για άλλο μηχάνημα και να το κάνετε να δουλέψει έτσι κι αλλιώς","Δεν πανικοβάλλεστε όταν μια όρκα σας παρακολουθεί να δουλεύετε"],"salary":"~$50k/έτος βασικός μισθός (Fermi, παγκόσμιος σταθμισμένος μέσος)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη.","setting":"Αναμονή χρηματοδότησης. Φέρτε το δικό σας πολυεργαλείο.","department":"Prime42 / Omega42 · αναφέρεται στον/στην Διευθυντή/τρια Τεχνολογίας","openings":"150.000 ΘΕΣΕΙΣ","priority":false,"category":"Υπεύθυνοι"},{"title":"ΠΡΟΣΛΑΜΒΑΝΟΥΜΕ ΤΩΡΑ — Μηχανικός, Προγράμματα Ζώων","duties":"Σχεδιάζετε και κατασκευάζετε ό,τι χρειάζονται 1,3 εκατομμύρια εργαζόμενοι και αρκετά εκατομμύρια ζώα: ενδιαιτήματα, πληκτρολόγια, προσομοιωτές, τη μετασκευή του Nautilus και ό,τι άλλο ονειρευτούν μετά οι εκπαιδευτικοί.","requirements":["Πτυχίο μηχανικού ή ισοδύναμο χαρτοφυλάκιο «το έχτισα και δούλεψε»","Μπορείτε να σχεδιάζετε για χρήστες που δεν μπορούν να διαβάσουν την προδιαγραφή (είναι φάλαινες)","Άνεση με απαιτήσεις που αλλάζουν όταν ο πελάτης μαθαίνει να μιλά","Αμοιβή 2× επειδή τα προβλήματα είναι 2× πιο παράξενα"],"salary":"~$100k/έτος (2× ο βασικός μισθός — αμοιβή ειδικού)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη.","setting":"Αναμονή χρηματοδότησης. Η προδιαγραφή είναι «κάν’ το να δουλεύει για μια φάλαινα». Καλή τύχη.","department":"Prime42 / Omega42 · αναφέρεται στον/στην Υπεύθυνο/η Μηχανικής Fermi","openings":"10.000 ΘΕΣΕΙΣ","priority":false,"category":"Υπεύθυνοι"},{"title":"ΠΡΟΣΛΑΜΒΑΝΟΥΜΕ ΤΩΡΑ — Ass'sis'tant (Ανώτερος/η Τριγυριστής/τρια)","duties":"Τριγυρνάτε. Ενοχλείτε τους πάντες (με στοργή). Μοιράζετε αυτόκλητη σοφία, λέτε την ίδια ιστορία δύο φορές και ξέρετε πού βρίσκεται το καθετί επειδή είστε εδώ περισσότερο καιρό κι από το κτίριο.","requirements":["Παλιόκλανο (κατά δήλωσή σας· δεν απαιτείται ταυτότητα)","Ικανότητα να τριγυρνάτε παραγωγικά (ή τουλάχιστον να είστε παρόντες)","Το να ενοχλείτε τους άλλους είναι δεξιότητα — να τη χρησιμοποιείτε με καλοσύνη","Εδώ περισσότερο για την παρέα και τον καφέ παρά για τον μισθό"],"salary":"~$16,7k/έτος (το 1/3 του βασικού — η αμοιβή του τριγυρίσματος)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη.","setting":"Αναμονή χρηματοδότησης. 261.400 κουνιστές πολυθρόνες. Ελάτε να μας ενοχλήσετε.","department":"Όλα τα προγράμματα · αναφέρεται σε όποιον βρίσκεται πιο κοντά","openings":"261.400 ΘΕΣΕΙΣ","priority":false,"category":"Υπεύθυνοι"},{"title":"ΠΡΟΣΛΑΜΒΑΝΟΥΜΕ ΤΩΡΑ — Μασέζ","duties":"Κρατάτε 1.5 εκατομμύρια εργαζομένους λειτουργικούς. Πλάτες, ώμοι, αυχένες και ηθικό. Οι ανεπίσημοι θεραπευτές όλης της επιχείρησης.","requirements":["Άδεια ασκήσεως επαγγέλματος ή πιστοποίηση «τα χέρια μου κάνουν μαγικά»","Αρκετή δύναμη για τους ώμους ενός βιολόγου φαλαινών","Αρκετά απαλά χέρια για το εγώ ενός εκπαιδευτικού","Εχεμύθεια: ό,τι συμβαίνει στο τραπέζι, μένει στο τραπέζι"],"salary":"~$50k/yr βασικός μισθός (Fermi, παγκόσμιος σταθμισμένος μέσος)","compensation":"Πληρωμή σε Koins. Η αμοιβή είναι διαπραγματεύσιμη. Φιλοδωρήματα σε μπανάνες γίνονται δεκτά.","setting":"Αναμονή χρηματοδότησης. 200,000 τραπέζια. Ελάτε να ζυμώσετε.","department":"Όλα τα προγράμματα · αναφέρεται σε όποιον πονάει περισσότερο","openings":"200,000 ΘΕΣΕΙΣ","priority":false,"category":"Υπεύθυνοι"}];
+    const EMAIL = 'nahasmatthewj@gmail.com';
+    const categories = ['Όλα','Διευθυντές','Υπεύθυνοι','Νομικά','Επιστήμη + πεδίο','Προτεραιότητα'];
+    let active = 'Όλα';
+
+    function clean(text){ return String(text || '').replace(/\\~/g,'~').replace(/\*([^*]+)\*/g,'$1'); }
+    function category(job){ return job.category; }
+    function esc(value){
+      return clean(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function gmailCompose(title){ return 'https://mail.google.com/mail/?view=cm&fs=1&to='+EMAIL+'&su='+encodeURIComponent('Application — '+title); }
+    function priorityCard(job){
+      return `<article class="priority-card"><div><span class="mini-label">Πρόσληψη προτεραιότητας</span><h3>${esc(job.title)}</h3><p>${esc(job.duties)}</p></div><a class="btn ${job.priority && JOBS.indexOf(job)===0?'':'btn-dark'}" href="${gmailCompose(job.title)}" target="_blank" rel="noopener">Αίτηση για αυτή τη θέση ↗</a></article>`;
+    }
+    function jobCard(job,index){
+      const cat=category(job);
+      const dept=job.department || (cat==='Διευθυντές' ? 'Κύριοι βιομηχανικοί τομείς' : cat==='Υπεύθυνοι' ? 'Λειτουργίες μεταξύ έργων' : cat);
+      const deptLine=job.openings ? `${dept} · ${job.openings}` : dept;
+      const reqs=job.requirements.map(r=>`<li>${esc(r)}</li>`).join('');
+      const meta=[job.setting&&`<div><strong>Πλαίσιο:</strong> ${esc(job.setting)}</div>`,job.salary&&`<div><strong>${job.title.includes('QA')?'Αμοιβή':'Μισθός'}:</strong> ${esc(job.salary)}</div>`,job.compensation&&`<div><strong>Αποζημίωση:</strong> ${esc(job.compensation)}</div>`].filter(Boolean).join('');
+      return `<article class="job">
+        <div class="job-top"><span class="job-id">OPEN-${String(index+1).padStart(2,'0')}</span><span class="tag">${esc(cat)}</span></div>
+        <h3>${esc(job.title)}</h3><p class="dept">${esc(deptLine)}</p><p class="summary">${esc(job.duties)}</p>
+        <div class="job-actions"><a class="btn apply" href="${gmailCompose(job.applySubject || job.title)}" target="_blank" rel="noopener">Υποβολή αίτησης ↗</a><span class="job-id">EMAIL</span>
+          <details><summary>Λεπτομέρειες θέσης</summary><div class="detail-body"><h4>Απαιτήσεις</h4><ul>${reqs}</ul>${meta?`<div class="meta">${meta}</div>`:''}</div></details>
+        </div>
+      </article>`;
+    }
+    function render(){
+      const q=document.getElementById('search').value.trim().toLowerCase();
+      const filtered=JOBS.filter(job=>{
+        const hit=active==='Όλα'||category(job)===active;
+        const hay=[job.title,job.department,job.openings,job.duties,...job.requirements].join(' ').toLowerCase();
+        return hit && (!q||hay.includes(q));
+      });
+      document.getElementById('jobs').innerHTML=filtered.length?filtered.map(job=>jobCard(job,JOBS.indexOf(job))).join(''):'<div class="empty"><strong>Καμία θέση δεν ταιριάζει σε αυτή την αναζήτηση.</strong><br>Δοκιμάστε ευρύτερο όρο ή αλλάξτε κατηγορία.</div>';
+      document.getElementById('resultCount').textContent=filtered.length+(filtered.length===1?' αγγελία':' αγγελίες');
+    }
+    document.getElementById('priorityGrid').innerHTML=JOBS.filter(j=>j.priority).map(priorityCard).join('');
+    document.getElementById('filters').innerHTML=categories.map(c=>`<button class="filter" type="button" data-filter="${esc(c)}" aria-pressed="${c==='Όλα'}">${esc(c)}</button>`).join('');
+    document.getElementById('filters').addEventListener('click',e=>{
+      const button=e.target.closest('[data-filter]'); if(!button)return;
+      active=button.dataset.filter;
+      document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
+      render();
+    });
+    document.getElementById('search').addEventListener('input',render);
+    document.getElementById('copyEmail').addEventListener('click',async()=>{
+      const note=document.getElementById('copyNote');
+      try{await navigator.clipboard.writeText(EMAIL);note.textContent='Αντιγράφηκε: '+EMAIL;}
+      catch(e){note.textContent='Η αντιγραφή δεν είναι διαθέσιμη — επιλέξτε το email παραπάνω.';}
+    });
+    document.querySelectorAll('.menu-toggle').forEach(button=>{
+      button.addEventListener('click',()=>{
+        const panel=document.getElementById(button.getAttribute('aria-controls'));
+        const opening=button.getAttribute('aria-expanded')!=='true';
+        button.setAttribute('aria-expanded',String(opening));
+        button.textContent=opening?'−':'+';
+        panel.hidden=!opening;
+        button.closest('.menu-group').classList.toggle('is-open',opening);
+      });
+    });
+    const dummyGuidesItem=document.getElementById('dummy-guides-item');
+    const dummyGuidesTrigger=document.getElementById('dummy-guides-trigger');
+    const dummyGuidesMenu=document.getElementById('dummy-guides-menu');
+    const setDummyGuidesOpen=open=>{
+      dummyGuidesItem.classList.toggle('is-open',open);
+      dummyGuidesTrigger.setAttribute('aria-expanded',String(open));
+      dummyGuidesMenu.setAttribute('aria-hidden',String(!open));
+    };
+    dummyGuidesTrigger.addEventListener('click',()=>setDummyGuidesOpen(dummyGuidesTrigger.getAttribute('aria-expanded')!=='true'));
+    dummyGuidesMenu.addEventListener('click',event=>{
+      if(event.target.closest('a[data-slug]'))event.preventDefault();
+    });
+    document.addEventListener('click',event=>{
+      if(!dummyGuidesItem.contains(event.target))setDummyGuidesOpen(false);
+    });
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){
+        setDummyGuidesOpen(false);
+        dummyGuidesTrigger.focus();
+      }
+    });
+    render();
+  </script>
+</body>
+</html>
