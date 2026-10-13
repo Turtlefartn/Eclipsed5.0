@@ -1,0 +1,694 @@
+<!doctype html>
+<!-- Project naming: D-Mom (pronounced like a Jamaican woman saying “demon”). The historical company name Eclipsed LLC remains unchanged. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Who Knows?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light dark;
+  --bg:#f5f7f8; --paper:#ffffff; --text:#171b1d; --muted:#586267;
+  --line:#d7dcde; --accent:#a94321; --accent-soft:#f5e4dc; --rail:#edf1f2;
+  --measure:760px; --serif:"Source Serif 4",Georgia,serif; --sans:"IBM Plex Sans",system-ui,sans-serif;
+}
+@media(prefers-color-scheme:dark){:root{--bg:#0b0e10;--paper:#111619;--text:#edf0f1;--muted:#aeb7bb;--line:#2d363a;--accent:#ef8a63;--accent-soft:#2b1c17;--rail:#0f1417;}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--serif);font-size:18px;line-height:1.72}
+a{color:inherit}
+.progress{position:fixed;z-index:20;top:0;left:0;width:100%;height:3px;background:transparent}
+.progress i{display:block;height:100%;width:0;background:var(--accent)}
+.layout{display:grid;grid-template-columns:minmax(240px,320px) minmax(0,1fr);min-height:100vh}
+aside{position:sticky;top:0;height:100vh;overflow:auto;background:var(--rail);border-right:1px solid var(--line);padding:clamp(28px,4vw,56px) clamp(22px,3vw,42px)}
+.eyebrow{font:600 12px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
+aside h1{font:700 clamp(38px,5vw,64px)/.96 var(--serif);letter-spacing:-.045em;margin:0 0 20px;max-width:8ch}
+.meta{font:400 14px/1.5 var(--sans);color:var(--muted);margin:0 0 32px}
+nav{display:grid;gap:1px}
+nav a{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:8px 0;text-decoration:none;font:500 13px/1.25 var(--sans);color:var(--muted);border-bottom:1px solid transparent}
+nav a:hover,nav a:focus-visible{color:var(--text);border-color:var(--line)}
+nav span{font-variant-numeric:tabular-nums;color:var(--accent)}
+main{min-width:0}
+article{max-width:var(--measure);margin:0 auto;padding:clamp(44px,7vw,92px) 28px 100px}
+.top-toc{width:min(1100px,calc(100% - 36px));margin:18px auto 24px;border-top:3px solid var(--accent);border-bottom:1px solid var(--line);background:var(--paper)}
+.top-toc summary{cursor:pointer;padding:13px 16px;font:600 14px/1.4 var(--sans);color:var(--text)}
+.top-toc:not([open]) ol{display:none!important}
+.top-toc ol{columns:2;column-gap:28px;margin:0;padding:0 16px 16px 42px;font:500 13px/1.35 var(--sans)}
+.top-toc li{break-inside:avoid;margin:.42em 0;padding-left:.15em}
+.top-toc a{text-decoration:none;color:var(--muted)}
+.top-toc a:hover,.top-toc a:focus-visible{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.public-pages{margin:0 0 46px;padding:clamp(24px,4vw,38px);border:3px solid var(--accent);background:var(--accent-soft);box-shadow:8px 8px 0 var(--line);scroll-margin-top:24px}
+.public-pages h2{max-width:none;margin-bottom:18px}
+.public-pages ul{list-style:none;padding:0;margin:0}
+.public-pages li{padding:12px 0;margin:0;border-top:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+.public-pages li:first-child{border-top:0}
+.public-pages strong{display:block;font-family:var(--sans);font-size:15px;line-height:1.35}
+.public-pages a{display:block;font:500 13px/1.45 var(--sans);color:var(--accent);overflow-wrap:anywhere;text-underline-offset:3px}
+.public-pages .translation-note{margin:18px 0 0;padding-top:16px;border-top:2px solid var(--accent);font:500 14px/1.5 var(--sans)}
+.hero{border-bottom:1px solid var(--line);padding-bottom:42px;margin-bottom:50px}
+.hero p{margin:0}
+.source-title{font:600 clamp(24px,4vw,38px)/1.18 var(--serif);letter-spacing:-.025em;margin:0 0 18px;max-width:24ch}
+.lede-note{font-family:var(--sans);font-size:15px;line-height:1.55;color:var(--muted);max-width:62ch}
+.chapter{padding:18px 0 42px;border-bottom:1px solid var(--line);scroll-margin-top:24px}
+.chapter:last-of-type{border-bottom:0}
+h2{font:700 clamp(28px,4vw,40px)/1.12 var(--serif);letter-spacing:-.028em;margin:0 0 24px;max-width:20ch}
+h3{font:700 clamp(22px,3vw,29px)/1.2 var(--serif);letter-spacing:-.018em;margin:34px 0 14px;max-width:26ch}
+p{margin:0 0 1.15em}
+ul{margin:0 0 1.4em;padding-left:1.15em}
+li{padding-left:.35em;margin:.54em 0}
+li::marker{color:var(--accent)}
+li.nested{margin-left:1.15em;list-style-type:square}
+strong{font-weight:700}
+em{font-style:italic}
+code{font:500 .86em var(--sans);background:var(--accent-soft);padding:.08em .28em;border-radius:3px}
+blockquote{margin:1.45em 0 1.55em;padding:0 0 0 1.25em;border-left:2px solid var(--accent);font-size:1.08em;line-height:1.62}
+blockquote p{margin:0 0 .5em}
+blockquote cite{display:block;font:500 14px/1.5 var(--sans);color:var(--muted);font-style:normal}
+.personal-statement{margin:2em 0;padding:1.15em 0 1.2em;border-top:2px solid var(--text);border-bottom:2px solid var(--text);font:600 clamp(20px,3vw,26px)/1.48 var(--sans);letter-spacing:-.018em}
+.personal-statement .speaker{display:block;margin:0 0 .75em;font:600 11px/1 var(--sans);letter-spacing:.13em;text-transform:uppercase;color:var(--accent)}
+.signature{margin-top:72px;padding-top:34px;border-top:2px solid var(--text)}
+.signature .signed{font:600 28px/1.15 var(--serif);letter-spacing:-.02em;margin:0 0 7px}
+.signature a{font:500 15px/1.4 var(--sans);color:var(--accent);text-underline-offset:4px}
+.signature .roles-link{display:block;width:fit-content;margin-top:20px;padding:10px 14px;border:1px solid var(--accent);font-weight:600;text-decoration:none}
+.signature .roles-link:hover,.signature .roles-link:focus-visible{background:var(--accent);color:var(--paper)}
+.signature small{display:block;font:400 12px/1.4 var(--sans);color:var(--muted);margin-top:24px}
+@media(max-width:850px){
+  .layout{display:block}
+  aside{position:relative;height:auto;overflow:visible;border-right:0;border-bottom:1px solid var(--line);padding:34px 24px 28px}
+  aside h1{max-width:none;font-size:50px}
+  aside nav{display:none}
+  .meta{margin-bottom:0}
+  article{padding:28px 20px 72px}
+  .top-toc{margin-bottom:28px}
+  .top-toc ol{columns:1}
+  .public-pages{padding:22px 18px;box-shadow:5px 5px 0 var(--line)}
+  .hero{margin-bottom:28px;padding-bottom:30px}
+  .chapter{padding:18px 0 34px}
+}
+@media(max-width:430px){body{font-size:17px} aside h1{font-size:44px} h2{font-size:29px} article{padding-left:18px;padding-right:18px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.progress,aside,.mobile-toc{display:none!important}.layout{display:block}article{max-width:760px;padding:0}.chapter{break-inside:avoid-page}}
+</style>
+</head>
+<body>
+<style>
+.core-pages{position:relative;z-index:10000;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:#070b12;border-bottom:1px solid #334155;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.core-pages a{display:flex;align-items:center;justify-content:center;min-height:52px;padding:.75rem 1rem;color:#e2e8f0;text-decoration:none;text-align:center;font-size:.95rem;font-weight:700;line-height:1.2;border-right:1px solid #334155}
+.core-pages a:last-child{border-right:0}
+.core-pages a:hover,.core-pages a:focus-visible{background:#1e293b;color:#fff;outline:2px solid #f8fafc;outline-offset:-3px}
+.core-pages a[aria-current="page"]{background:#a94321;color:#fff}
+@media(prefers-color-scheme:dark){.core-pages a[aria-current="page"]{background:#b95531}}
+.core-item{position:relative;display:flex;border-right:1px solid #334155}
+.core-group-head{display:flex;align-items:stretch;flex:1;min-width:0}
+.core-group-head>a{flex:1;min-width:0;border-right:0}
+.core-drop-btn{width:2.35rem;flex:none;display:flex;align-items:center;justify-content:center;background:transparent;border:0;color:#e2e8f0;cursor:pointer;padding:0;font:inherit}
+.core-drop-btn::after{content:"";width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid currentColor;opacity:.8}
+.core-drop-btn:hover,.core-drop-btn:focus-visible{background:#1e293b;color:#fff;outline:2px solid #f8fafc;outline-offset:-3px}
+.core-drop{display:none;position:absolute;top:100%;left:0;min-width:280px;max-width:calc(100vw - 24px);background:#070b12;box-shadow:0 8px 24px rgba(0,0,0,.35);border:1px solid #334155;border-top:0;padding:.4rem 0;z-index:10001}
+.core-has-drop:hover>.core-drop,.core-has-drop:focus-within>.core-drop,.core-has-drop.core-open>.core-drop{display:block}
+.core-drop-head{padding:.55rem 1.15rem .2rem;color:#94a3b8;font-size:.78rem;font-weight:700;letter-spacing:.04em}
+.core-drop a{display:block;min-height:0;padding:.6rem 1.15rem;color:#e2e8f0;text-decoration:none;text-align:left;font-size:.9rem;font-weight:600;line-height:1.25;border-right:0}
+.core-drop a:hover,.core-drop a:focus-visible{background:#1e293b;color:#fff;outline:2px solid #f8fafc;outline-offset:-3px}
+.core-drop-note{padding:.45rem 1.15rem .65rem;color:#94a3b8;font-size:.78rem;line-height:1.45;max-width:320px}
+@media(max-width:560px){.core-pages{grid-template-columns:1fr}.core-pages a{min-height:44px;padding:.62rem .8rem;border-right:0;border-bottom:1px solid #334155}.core-pages a:last-child{border-bottom:0}.core-item{border-right:0;border-bottom:1px solid #334155;flex-direction:column}.core-group-head>a{border-bottom:0}.core-drop-btn{border-bottom:0}.core-has-drop:hover>.core-drop,.core-has-drop:focus-within>.core-drop{display:none}.core-has-drop.core-open>.core-drop{display:block}.core-drop{position:static;box-shadow:none;border:0;border-top:1px solid #334155;min-width:0;max-width:none}.core-drop a{border-bottom:0;min-height:0}}
+body{padding-bottom:calc(56px + env(safe-area-inset-bottom))}
+.bottom-bar{position:fixed;z-index:12000;bottom:0;left:0;right:0;display:flex;align-items:stretch;width:100%;padding-bottom:env(safe-area-inset-bottom);background:#070b12;border-top:1px solid #334155;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.bottom-bar-item{position:relative;flex:1 1 25%;min-width:0}
+.bottom-bar button,.bottom-placeholder,.bottom-link{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;margin:0;padding:.65rem .35rem;border:0;border-right:1px solid #334155;border-radius:0;background:transparent;color:#e2e8f0;text-align:center;text-decoration:none;font:700 clamp(10px,2.6vw,15px)/1.2 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;white-space:nowrap}
+.bottom-bar-item:last-child .bottom-placeholder,.bottom-bar-item:last-child .bottom-link{border-right:0}
+.bottom-bar button{cursor:pointer}
+.bottom-bar button::after{content:"";width:0;height:0;margin-left:.45rem;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:5px solid currentColor;opacity:.8}
+.bottom-bar button:hover,.bottom-bar button:focus-visible,.bottom-link:hover,.bottom-link:focus-visible,.bottom-menu.is-open button{background:#1e293b;color:#fff;outline:2px solid #f8fafc;outline-offset:-3px}
+.bottom-placeholder{color:#94a3b8;cursor:default}
+.dummy-dropup{position:absolute;left:0;bottom:calc(100% + 1px);width:min(360px,100vw);max-height:calc(100vh - 72px - env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;background:#070b12;border:1px solid #334155;border-left:0;box-shadow:0 -12px 28px rgba(0,0,0,.28);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(6px);transition:opacity .16s ease,transform .16s ease,visibility .16s}
+.dummy-dropup a{display:block;grid-template-columns:none;gap:0;padding:.72rem 1rem;border-bottom:1px solid #334155;color:#e2e8f0;text-decoration:none;text-align:left;font:600 14px/1.25 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.dummy-dropup a:last-child{border-bottom:0}
+.dummy-dropup a:hover,.dummy-dropup a:focus-visible{background:#1e293b;color:#fff;outline:2px solid #f8fafc;outline-offset:-3px}
+.bottom-menu:hover .dummy-dropup,.bottom-menu.is-open .dummy-dropup{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
+@media(max-width:560px){.bottom-bar button,.bottom-placeholder,.bottom-link{min-height:56px;padding:.62rem .18rem}.bottom-bar button::after{margin-left:.28rem}.dummy-dropup{width:100vw}}
+@media(prefers-reduced-motion:reduce){.dummy-dropup{transition:none}}
+@media print{.bottom-bar{display:none!important}body{padding-bottom:0}}
+</style>
+<nav class="core-pages" id="core-pages-nav" aria-label="Primary public pages">
+  <a href="https://muse.ai/s/about-mxt5xuxj7jgoao">About the Founder</a>
+  <a href="https://muse.ai/s/who-knows-xuxv5xs6xr6rsf0" aria-current="page">Who Knows?</a>
+  <div class="core-item core-has-drop">
+    <div class="core-group-head">
+      <a href="https://muse.ai/s/project-84-axo5xrpyxlxjxvxly">Project 84</a>
+      <button class="core-drop-btn" type="button" aria-expanded="false" aria-haspopup="true" aria-label="Project 84 group"></button>
+    </div>
+    <div class="core-drop">
+      <div class="core-drop-head">Non-profit aimed arms</div>
+      <a href="https://muse.ai/s/omega42-jxx5xvjbosyxsxz">Omega42</a>
+      <a href="https://muse.ai/s/prime-42-xrxo5xtgflxinxw3">Prime 42</a>
+      <div class="core-drop-note">Held until they can understand economics enough to participate — then they take over, with adjustments to equalize between currencies.</div>
+    </div>
+  </div>
+  <a href="https://muse.ai/s/proclamation-of-claim-xjxo5xtjbmqkxqxh">Proclamation of Claim</a>
+</nav>
+<script>
+(function(){
+function init(){
+var nav=document.getElementById('core-pages-nav');
+if(!nav)return;
+nav.querySelectorAll('.core-drop-btn').forEach(function(btn){
+btn.addEventListener('click',function(e){
+var item=btn.closest('.core-has-drop');
+var wasOpen=item.classList.contains('core-open');
+nav.querySelectorAll('.core-has-drop.core-open').forEach(function(o){
+o.classList.remove('core-open');
+var b=o.querySelector('.core-drop-btn');if(b)b.setAttribute('aria-expanded','false');
+});
+if(!wasOpen){item.classList.add('core-open');btn.setAttribute('aria-expanded','true');}
+e.stopPropagation();
+});
+});
+document.addEventListener('click',function(e){
+if(!nav.contains(e.target)){
+nav.querySelectorAll('.core-has-drop.core-open').forEach(function(o){
+o.classList.remove('core-open');
+var b=o.querySelector('.core-drop-btn');if(b)b.setAttribute('aria-expanded','false');
+});
+}
+});
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
+})();
+</script>
+<div class="progress" aria-hidden="true"><i></i></div>
+<details class="top-toc">
+  <summary>Table of contents</summary>
+  <ol id="top-toc-list"></ol>
+</details>
+<div class="layout">
+<aside>
+  <p class="eyebrow">Astrophysics notes · 2026</p>
+  <h1>Who Knows?</h1>
+  <p class="meta">Notes on the deep future, the far edge, and the long way out. While waiting for a world I would want to raise my kids in...</p>
+  <nav id="sidebar-toc" aria-label="Contents"></nav>
+</aside>
+<main>
+<article>
+
+  <section class="chapter" id="morpheuss-question">
+    <h2>Morpheus's question (added 2026-10-05)</h2>
+    <p>Matthew asked to add Morpheus's quote about having a dream that felt so real.</p>
+    <blockquote>
+      <p>"Have you ever had a dream, Neo, that you were so sure was real? What if you were unable to wake from that dream? How would you know the difference between the dream world and the real world?"</p>
+      <cite>— Morpheus, <em>The Matrix</em> (1999)</cite>
+    </blockquote>
+    <p class="personal-statement" id="matthew-personal-statement" aria-label="Matthew's personal statement"><span class="speaker">Matthew</span>What if it becomes a nightmare? Every day I wake up angry, expecting this "dream" to end and my dream becoming a precedent, and I'm pissed off that it always seems further and further away. Why do I give a fuck when none of this helps ME or future ME's in any way? Yet I still try... If I were a world leader, I would be a dictator because I believe we're too damn stupid to do it without one.</p>
+    <p>It belongs here because the whole notebook keeps circling the same question from the other side: the intelligent bomb, the sim thread, "time is the Universe." If the dream never ends, "real" is just the name the dream gives itself.</p>
+  </section>
+
+  <section class="chapter" id="created-the-universe">
+    <h2>I created the universe (added 2026-10-07)</h2>
+    <blockquote>
+      <p>"Didn't I tell you I created the universe? It's a bomb. Big Bang... and all."</p>
+      <cite>— Matthew</cite>
+    </blockquote>
+  </section>
+
+  <section class="chapter" id="humans-titanic">
+    <h2>Humans = Titanic (added 2026-10-07)</h2>
+    <blockquote>
+      <p>“Humans = Titanic.”</p>
+      <p>“An unsinkable ship.”</p>
+      <p>“They're still having fancy parties while it's about to snap in half.”</p>
+      <p>“Iceberg already hit, they just didn't notice. Too busy partying.”</p>
+      <p>On the Doomsday Clock (85 seconds): “Set to 1 second, the actual number.”</p>
+      <p>“Lifeboat is abandoned, not enough money.”</p>
+      <cite>— Matthew</cite>
+    </blockquote>
+  </section>
+
+  <section class="chapter" id="volcano-thermostat">
+    <h2>Volcano thermostat (added 2026-10-06)</h2>
+    <p><em>Working research program — if Earth gets too cold, pop a volcano to reheat it, but engineer the cooling out first.</em></p>
+    <blockquote>
+      <p>“The cooling happens because we let the soot get sucked into the atmosphere. We just need the gases, not the soot.”</p>
+      <cite>— Matthew</cite>
+    </blockquote>
+    <ul>
+      <li><strong>The problem:</strong> major eruptions are net coolers on the climate timescale. Sulfur dioxide becomes sunlight-reflecting sulfate aerosols; Tambora gave the world the “year without a summer,” and Pinatubo cooled the planet by about 0.5°C.</li>
+      <li><strong>The program:</strong> gas/particle separation at volcanic scale. Build the venting and capture system around the eruption: route the gases through controlled plumbing and leave the ash—the soot—on the ground instead of lofting it into the atmosphere.</li>
+      <li><strong>The chemistry catch:</strong> the visible ash is not the only cooling agent. SO₂ starts as a gas and becomes sulfate aerosol after release, so keeping the soot down is necessary but not sufficient. The separator also has to capture the sulfur-bearing fraction while passing only the gases that produce the wanted warming.</li>
+      <li><strong>The thermostat:</strong> eruption energy supplies the heat and pressure; engineered separation decides what reaches the sky. Pop the volcano only after the filter works. The research problem is not how to make an eruption—it is how to make one without the volcanic winter attached.</li>
+    </ul>
+  </section>
+
+  <header class="hero">
+    <p class="source-title">Deep time: Jupiter ignition &amp; the Local Group lifeboat</p>
+    <p class="lede-note">Knowledge note from a 2026-10-04 session with Matthew. Fermi-level, not engineering.</p>
+  </header>
+
+<section class="chapter" id="igniting-jupiter-via-starlifting"><h2>Igniting Jupiter via starlifting</h2>
+<p><strong>Correction:</strong> not a minimum-mass red dwarf. The target is the minimum mass of the next stellar class up: a K-type orange dwarf.</p>
+<ul>
+<li><strong>Mass budget:</strong> a minimum-mass K-type star needs ~0.5 solar masses ≈ 500 Jupiter masses. That's ~1 × 10³⁰ kg, about <strong>half the Sun</strong>. Jupiter supplies only one of those Jupiter masses; nearly the entire target still has to be lifted and delivered.</li>
+<li><strong>The lift:</strong> magnetic starlifting — giant magnetic siphons pulling plasma off the solar surface (weaponized coronal mass ejections). Lifting that much mass out of the Sun's gravity well costs ~2 × 10⁴¹ J ≈ <strong>16 million years of the Sun's total output</strong>. Step one is a full Dyson swarm just to power the straw.</li>
+<li><strong>The haul (the killer):</strong> at 10⁶ tonnes/sec, moving ~1 × 10³⁰ kg takes ~32 trillion years. Even a billion tonnes/sec takes ~32 billion years; finishing in ~5 million years needs roughly 6 × 10¹² tonnes/sec. Nothing in physics forbids it; nothing in engineering forgives it.</li>
+<li><strong>Side effects:</strong> taking roughly half the Sun's mass is no longer accidental climate control — it rebuilds the Solar System into a near-equal binary. The original Sun ends far dimmer, Earth's orbit expands dramatically during the lift, and the new companion's gravity forces a complete orbital redesign.</li>
+<li><strong>Payoff:</strong> a 0.5-solar-mass K-type orange dwarf burns for ~50–100 billion years — steadier, brighter, and longer-lived than the Sun, without the red dwarf's flare problems. That's the payoff: tens of billions of years of stable orange sunlight.</li>
+<li><strong>Honest hole:</strong> if you can starlift half a star, why leave the new companion at Jupiter's current orbit? Sentiment. Physics doesn't care where the new star sits. We would move Jupiter closer to make a proper binary star system, bringing the new star inward rather than leaving it as a distant companion.</li>
+<li><strong>Binary-system outcome:</strong> if we don't have to leave, a binary system isn't terrible — two suns over the solar system is a fine outcome as long as humanity gets to stay.</li>
+<li><strong>Matthew's strategy note:</strong> "or inspire others to do it for us" — seed the idea, let the future do the lifting. Cheapest propulsion is somebody else's ambition. (Status 2026-10-04: "beyond me at the moment" — parked, not dropped.)</li>
+</ul>
+</section>
+<section class="chapter" id="stellar-multiplicity-and-life"><h2>Stellar multiplicity and life (added 2026-10-05)</h2>
+<p><strong>Matthew's speculation:</strong> binary systems either produce stable life or no life; single-star systems produce emerging life; systems with three or more stars produce no life at all or life with extreme levels of survivability.</p>
+<blockquote>
+<p>“akin to The Gardener's already working on the garden”</p>
+<cite>— Matthew, on the trinary-plus survivor case</cite>
+</blockquote>
+<p>If anything lives in a triple-plus system, it is not surviving on its own; something is tending it.</p>
+<ul>
+<li><strong>NURSERY — single stars:</strong> emerging life. Look here first. One dominant sun offers the simplest orbital environment: enough regularity for life to begin, diversify, and start testing its limits.</li>
+<li><strong>ALL-OR-NOTHING — binaries:</strong> stable life or no life. High variance: check, don't assume. Where the orbit and radiation cycles settle into a durable rhythm, life may become unusually stable. Where they do not, the system may never keep life long enough to matter. The middle thins out.</li>
+<li><strong>STERILE or GARDENED — trinary and higher:</strong> no life, or something is tending the garden. If you find life here, you're not the first gardener. Added gravitational and radiation complexity could erase fragile biospheres early; anything living there would point not merely to extreme survivability, but to care, intervention, or design.</li>
+<li><strong>The pattern:</strong> not a smooth decline in habitability as stars are added, but a widening split between nothing and the nearly unkillable—or the tended. More suns mean a harsher entrance exam; survival in a triple-plus system may mean somebody has already taken responsibility for the garden.</li>
+<li><strong>Checkable edge:</strong> if the idea is right, a future census should find mostly young or still-emerging biospheres around single stars, a bimodal stable-or-empty distribution around binaries, and very few biospheres in systems of three or more stars—where any living world becomes evidence to test for a gardener.</li>
+<li><strong>Honest hole:</strong> stellar count alone cannot set the outcome. Star mass, separation, orbital architecture, flare activity, age, and planet chemistry all matter, and we currently have only one confirmed living system. Filed as speculation, not a conclusion.</li>
+</ul>
+</section>
+<section class="chapter" id="big-crunch-vs-heat-death"><h2>Big Crunch vs. heat death (longest storage)</h2>
+<p>Matthew's instinct: for the longest possible storage, try to bring all matter back toward a Big Bang rather than letting it spread out.</p>
+<ul>
+<li><strong>Cruel twist:</strong> accelerating expansion (dark energy) means most of the universe already recedes faster than light — causally unreachable. The gathering window is closing, not open.</li>
+<li><strong>What's still on the table:</strong> the Local Group (~54 galaxies, ~10¹² stars, gravitationally bound — stays together while the rest recedes). Andromeda merger comes free in ~4–5 billion years.</li>
+<li><strong>Matthew's conclusion:</strong> "still enough to reach homeostasis" — a trillion stars, red dwarfs burning slow for trillions of years. The Local Group is the lifeboat, and it's big enough for a steady state into the degenerate era. (Graded 999^.)</li>
+<li><strong>Prior art:</strong> Tipler's Omega Point (1990s) — a collapsing universe as a computer running infinite thought. Physics didn't cooperate; the impulse matches.</li>
+</ul>
+</section>
+<section class="chapter" id="time-is-the-universe"><h2>Time is the Universe (added 2026-10-05)</h2>
+<p><strong>Matthew:</strong> “Time is the Universe; time moves faster than the speed of light. So fast that, to the photon it's near instant. Our perspective just doesn't account for time as a veriable in this manner.”</p>
+<ul>
+<li><strong>The physics underneath:</strong> in relativity, light follows a null path — zero proper time elapses along it. Strictly, a photon has no valid rest frame, so “from the photon's frame” is shorthand rather than a literal viewpoint. But the result underneath the shorthand is exact: emission and absorption can be separated by billions of years on our clocks and billions of light-years on our rulers, while the light's path accumulates no proper time at all. We say the photon traveled for billions of years; the photon 'never' waited.</li>
+<li><strong>The reframing:</strong> we usually treat time as the backdrop and light as the traveler crossing it. Flip that: time is the medium — the Universe itself — and it “outruns” light because light never experiences the trip. Not a claim that time has a measurable velocity faster than <em>c</em>; a change in what gets treated as fundamental. We keep measuring the road from the passenger seat instead of asking what the road is.</li>
+<li><strong>The question it leaves:</strong> if light's entire journey carries no proper-time duration, maybe our ordinary picture has the roles backward. The photon is not the thing racing through time; time is the thing building the distance, history, and Universe around a path that remains timeless.</li>
+</ul>
+</section>
+<section class="chapter" id="the-glass-and-the-liquid"><h2>The glass and the liquid (added 2026-10-05)</h2>
+<p><em>Working theory — speculation, not established physics.</em></p>
+<p>Time is the Universe. Time is the glass; space is the liquid filling it. The Casimir effect is the ingredient, not the fold. The fold happens at collision: space moves out of time's way so matter can reposition. Everything that moves does so because the liquid got out of the way.</p>
+</section>
+<section class="chapter" id="the-tape"><h2>The tape (added 2026-10-05)</h2>
+<p><em>Working theory — speculation, not established physics.</em></p>
+<p>To an outside observer, non-linear time looks like a VHS/DVD at max fast-forward until something important happens. Then it drops to the slowest possible speed to run the sim. Once the sim is respooled/written/played, back to max delta-v.</p>
+<p>To the inhabitant, everything on the tape is known at once, like RAM. Space is the disk/tape spinning — written to as the sim runs, loaded across the bus into L3. Time is the read head: max delta-v on cache hits, sim speed on the misses.</p>
+</section>
+<section class="chapter" id="the-message-needs-a-medium"><h2>The message needs a medium (added 2026-10-05)</h2>
+<p><em>Working idea — speculation, not established science.</em></p>
+<p>Emojis that last forever. A message simple enough to survive translation, durable enough to outlast civilizations. The thought means nothing if the medium dies first.</p>
+</section>
+<section class="chapter" id="wormhole-matter-pipelines"><h2>Wormhole matter pipelines (added 2026-10-04)</h2>
+<p><em>Working theory — speculation, not established physics.</em></p>
+<p>Matthew: "if we figure out wormholes we can use to suck in the outside shit."</p>
+<ul>
+<li>If traversable wormholes exist, distance becomes topology — the cosmological horizon stops meaning anything, and matter beyond the light-speed recession wall becomes reachable.</li>
+<li>Honest holes: (1) one mouth has to be hauled there slower than light first — you can't shortcut somewhere you can't get to; (2) traversable throats need bulk exotic matter (negative energy density), never observed at scale; quantum inequalities suggest hard limits.</li>
+<li>If both yield: the lifeboat has no walls. Open research item.</li>
+<li>Matthew's framing: the wormhole network is the <strong>Interstate Wormhole System</strong> — "highways in space, we got shit to move." Not for travel: for <strong>stealing time</strong> — hauling mass-energy in from beyond the horizon to buy the lifeboat more clock against heat death.</li>
+<li><strong>FTL:</strong> same miracle, different hat — crack FTL and traversable wormholes come free (causality complaints included). With true FTL the hauling gets simple: just go get it. Matthew's timeline: "28000 years or FTL whatever comes first we gotta move." (Graded 999&amp;.)</li>
+</ul>
+</section>
+<section class="chapter" id="adversarial-cosmology-who-is-speeding-up-heat-death"><h2>Adversarial cosmology: who is speeding up heat death? (added 2026-10-04)</h2>
+<p>Matthew: "Prevent anyone from speeding up heat death. (Might be why the expansion of the universe is accelerating and what dark matter/energy is doing)."</p>
+<ul>
+<li>The thought: cosmic acceleration might not be "natural" — treat it as a suspect. An agent accelerating expansion would be running a denial-of-resources attack at cosmic scale: not destroying energy, but spreading it beyond everyone's causal reach, shrinking each civilization's accessible pie.</li>
+<li><strong>The devil at the edge:</strong> what if the adversary isn't a force but someone — aliens at the edge of the universe hoarding matter and energy, stockpiling the materials there and preventing anything from collapsing back in on itself? In that version, heat death is resource capture: keep the universe spread out, keep the stockpile beyond reach, and prevent the crunch.</li>
+<li>Matthew's own check on the idea: ending it by compression (Big Crunch) would work too — so why accelerate, unless accelerating to heat death is FASTER than compression? Fair logic: a crunch concentrates energy (reusable, maybe even bouncy); acceleration strands it (unusable, permanent). If the goal is minimizing usable energy over time, acceleration wins.</li>
+<li><strong>The wave and the gap:</strong> a giant wave at the front may carry enough mass to continue for a long time — the leading edge coasts on. But the gap behind it will heat-death, including us. Matthew's open question: <strong>“I wonder if we can freeze that too?”</strong> Can the heat death of the gap be stopped, slowed, or frozen? <strong>Maybe the front is rough:</strong> “Maybe the mass is still riding a wave, with much higher peaks and troughs and wave interference...?” The leading edge may not be a smooth coast but a wave with peaks, troughs, and interference patterns.</li>
+<li><strong>The inversion, in Matthew's words:</strong> “But is it a good idea? What if heat death IS the best possible recourse...? And we need to head to the edge instead?” Maybe fighting the gap is wrong. If heat death is the best available ending, the move is to ride it: head to the edge, to the wave, where the mass and the future are. The lifeboat doesn't anchor in the gap; it sails for the front.</li>
+</ul>
+<h3>Back? Left, Right, or Full Steam Ahead...? I don't care; let's fuck with shit!</h3>
+<p><strong>Scout both directions before the turn becomes permanent:</strong> “Recommend we split up at some point and some go in, some go out.... at least to try and scout... before we can't reverse ship.” Don't bet the species on one direction. Send scouts inward and outward while the ship can still turn around, then decide with data before the choice becomes irreversible.</p>
+<ul>
+<li>Honest hole: the cosmological constant (vacuum energy) fits the data with no agent required. Nothing currently distinguishes natural from engineered acceleration — which is exactly what makes it worth watching, not worth concluding.</li>
+<li>Strategic goal derived: alongside stealing time, <strong>prevent anyone from speeding up heat death</strong> — cosmology as a security problem.</li>
+</ul>
+</section>
+<section class="chapter" id="reframe-dark-energy-as-the-blast-wave"><h2>Reframe: dark energy as the blast wave (added 2026-10-05)</h2>
+<p><em>Working theory — speculation, not established physics.</em></p>
+<p>Matthew: "dark energy is just the blastwave ahead of the explosion."</p>
+<ul>
+<li>The flip of the adversarial reading: maybe nobody's attacking. In any explosion, the shock front races ahead of the fireball — we're inside the blast, watching the leading edge outrun us. The acceleration we call dark energy is just the Bang still banging.</li>
+<li>Honest wrinkle: real blast waves <em>decelerate</em> (Sedov-Taylor — the shock slows as it sweeps up mass). Ours is <em>accelerating</em>. So either the analogy breaks, or something is still feeding energy into the front — which loops right back to the intelligence: the bomb is still going off, or something wants the front to keep moving.</li>
+<li>Matthew's counter (2026-10-05): "maybe not in a 'true' vacuum." Fair — Sedov-Taylor deceleration needs ambient mass to sweep up; in a perfect vacuum there's nothing to slow the front. The objection dissolves if the pre-Bang environment was truly empty. But coasting isn't accelerating: a vacuum blast holds velocity, it doesn't gain it. So the vacuum saves the analogy from deceleration, and the <em>acceleration</em> still needs a driver — dark energy, the intelligence's push, or something unnamed. The front's speedup remains the thing to explain.</li>
+<li>Matthew's correction (2026-10-05): "acceleration is just the stretching of space." Right — and it retires the whole shock debate. In the standard picture the acceleration was never a shock front in a medium; it's metric expansion, the scale factor's second derivative going positive. The Sedov-Taylor objection was aimed at the wrong physics. The poetic overlay ("blast wave ahead of the explosion") survives as story, but the literal mechanism is space itself stretching faster — which is also just the mainstream dark-energy account wearing different clothes. One honest cost: homogeneous stretching has no localized "front" — every point recedes from every other. So "ahead of the explosion" has to mean something looser: the stretching outrunning the matter, the fireball thinning faster than it can clump.</li>
+<li>Either way it reframes the security problem: if it's a blast wave, the question isn't "who's attacking" but "what's pushing the front" — and whether the push can be caught, ridden, or turned.</li>
+</ul>
+</section>
+<section class="chapter" id="dark-matter-as-beyond-horizon-matter"><h2>Dark matter as beyond-horizon matter (added 2026-10-05)</h2>
+<p><em>Working theory — speculation, not established physics.</em></p>
+<p>Matthew: "dark matter is just the matter beyond the observable universe."</p>
+<ul>
+<li>The instinct is right-shaped: anomalies should be ordinary stuff we can't see before they're new physics. But this one doesn't survive contact with the Bullet Cluster — gravitational lensing shows the "missing" mass sitting <em>right there</em>, separated from the hot gas, inside our view. Matter beyond the particle horizon can't do that: gravity propagates at light speed, so beyond-horizon mass is causally disconnected from us. It can't lens anything we see.</li>
+<li>Two more strikes: the CMB acoustic peaks independently require ~27% dark matter <em>within</em> the observable universe, and Big Bang nucleosynthesis (deuterium abundance) caps ordinary baryonic matter at ~5% — so "just more normal matter" is ruled out twice over.</li>
+<li>Honest remainder: superhorizon structure is real (there's universe beyond what we see), it just can't be <em>this</em> anomaly — on current evidence. The anomaly is local.</li>
+<li>Matthew's verdict (2026-10-05): keep it as a <strong>maybe</strong> — something there, at least partially. The holes stand against the whole claim, but a partial version (some fraction of the anomaly, some form of the idea) stays on the shelf, not in the bin.</li>
+</ul>
+</section>
+<section class="chapter" id="reading-the-unreadable-black-holes-as-instruments"><h2>Reading the unreadable: black holes as instruments (added 2026-10-05)</h2>
+<p>Matthew: "few trillion years from answering that unless we can read info off the refraction of a black hole or stick a camera in a really small one."</p>
+<ul>
+<li><strong>Idea 1 — the black hole as a lens.</strong> Gravitational lensing is real optics; a black hole is the ultimate telescope objective (prior art: the solar gravitational lens, a studied NASA concept — the Sun's focus starts at ~550 AU). A black hole lens would magnify the distant universe absurdly well. Honest hole: a lens magnifies, it doesn't reach past causality — nothing beyond the particle horizon becomes visible, you just see the visible better. It answers "further back," not "beyond."</li>
+<li><strong>Idea 2 — a camera in a micro black hole.</strong> Nothing comes back out — except, eventually, the Hawking radiation. Which ties straight into tonight's BEC note: the information isn't in the camera, it's in the <em>correlations across the evaporation products</em>. You don't need the camera to escape; you need to read the glow. A mountain-mass hole evaporates in ~10^10 years; smaller primordial ones faster — if any exist, which is itself unconfirmed.</li>
+<li><strong>The timeline:</strong> "a few trillion years" is Matthew's estimate for answering it the slow way. The fast way needs either a confirmed primordial black hole to experiment on, or lensing instrumentation we can't yet build. Both are on the shelf next to the maybe.</li>
+</ul>
+</section>
+<section class="chapter" id="active-probing-send-radio-waves"><h2>Active probing: send radio waves (added 2026-10-05)</h2>
+<p>Matthew: "even send radio waves."</p>
+<ul>
+<li>The passive version already exists: the Event Horizon Telescope <em>is</em> radio waves read off black holes — a planet-sized mm-wave interferometer that imaged M87<em> and Sgr A</em>. We're already doing the "read" half.</li>
+<li>The active version: beam radio at/around the hole and read what comes back. Waves aimed <em>in</em> don't return (same as the camera), but waves aimed <em>around</em> come back lensed, delayed, and stacked — the photon ring is literally radio light that orbited the hole multiple times before escaping to us. Each orbit is another copy of the signal, another angle on the hole.</li>
+<li>For a micro hole, an active radio probe becomes a scattering experiment: transmit, read the lensed echo and Shapiro delay, infer mass, spin, and charge without ever touching the horizon. The hole stays a black box; the radio maps the box.</li>
+<li>Honest hole: this characterizes the hole exquisitely — it doesn't reach past the horizon or past causality. It's the best possible reading of the <em>outside</em>, which is all the outside ever offers.</li>
+</ul>
+</section>
+<section class="chapter" id="the-answer-per-matthew-read-the-radiation"><h2>The answer, per Matthew: read the radiation (added 2026-10-05)</h2>
+<ul>
+<li>After the lens, the camera, and the radio: the instrument is the Hawking radiation itself. Don't send anything in — read what's already coming out.</li>
+<li>The physics, from tonight's BEC note: the escaping quanta are entangled with their infalling partners, and (per the island-formula work) the information about what fell in is smeared across the <em>correlations</em> in the full evaporation ensemble. No single particle tells you anything; the whole glow, read completely, reconstructs the interior.</li>
+<li>The practical sketch: find or make a micro black hole (primordial, if they exist — unconfirmed), surround it with detectors, and read the entire evaporation spectrum plus its correlations. A small hole evaporates on human timescales — no trillion-year wait. The "last 1" isn't a particle you catch; it's the final correlation you decode.</li>
+<li>This closes the loop on the whole night: the Technion phonons, the information paradox, the intelligent bomb's reassembly, the leaking helper. The bomb's diary is written in its own evaporation. We just have to learn to read the glow.</li>
+</ul>
+</section>
+<section class="chapter" id="the-bomb-as-matter-antimatter-imbalance"><h2>The bomb as matter/antimatter imbalance (added 2026-10-05)</h2>
+<p>Matthew: "also possible that antimatter imploded or an improper balance of matter/antimatter (aka bomb)."</p>
+<ul>
+<li>The real problem underneath: the baryon asymmetry — the early universe should have made equal matter and antimatter, which should have annihilated completely into radiation. Instead, ~1 part in a billion of matter survived. Nobody knows why. That unexplained leftover is everything: galaxies, planets, us.</li>
+<li>In the bomb's story: the detonation <em>was</em> the imbalance — an annihilation that didn't finish. We are the ash of an incomplete explosion, the rounding error that refused to cancel.</li>
+<li>"Antimatter imploded": no standard mechanism — but as a story element, it gives the intelligence a concrete act: the bomb-maker set (or suffered) the imbalance, and the 1-in-a-billion survival is either the plan working or the mistake that made a universe.</li>
+<li>Honest hole: physics has the Sakharov conditions (a checklist for <em>how</em> an imbalance could arise) but no confirmed mechanism that produces the observed ratio. The bomb's fuse is still missing. Kept as a maybe, like the dark-matter shelf.</li>
+<li>Matthew's analogy: <strong>akin to a warp core breach</strong> — the universe's matter/antimatter containment failed and the core went up. Matthew's correction (2026-10-05): the core exists <em>outside</em> our universe, and the breach <em>created</em> our universe — the core is on the "outside." We aren't the vessel that failed to eject its core; we are the fireball. The reactor sits beyond the blast, and everything we see is what came out of the breach.</li>
+</ul>
+</section>
+<section class="chapter" id="not-the-first-bang-cyclic-accumulation"><h2>Not the first bang: cyclic accumulation (added 2026-10-05)</h2>
+<p>Matthew: "this isn't the first big bang and repeated ones caused imbalance also dispersal of previous materials."</p>
+<ul>
+<li>The story goes cyclic: the bomb has gone off before — many times. Each detonation leaves ash and imbalance, and the <em>repetition</em> is what compounds them. The matter/antimatter asymmetry isn't generated once; it accumulates across cycles, each bang adding its own rounding error to the pile. The dispersal isn't one explosion's debris — it's the layered scatter of many.</li>
+<li>In this telling, "that last 1" might not even be from <em>this</em> cycle — it could be a leftover the previous bang failed to reclaim, carried over like an unpaid debt. The intelligence isn't just reassembling one explosion; it's working off the backlog of all of them.</li>
+<li>Prior art, real: Penrose's Conformal Cyclic Cosmology (aeons separated by conformal rescaling; claimed CMB "Hawking points" — controversial, unconfirmed), Steinhardt–Turok ekpyrotic/cyclic models. None confirmed, all alive.</li>
+<li>Honest hole: cyclic models still need the entropy reset — each cycle must dump or hide the previous cycle's entropy, or the cycles run down. The bomb's bookkeeping has to balance, and nobody's shown the ledger.</li>
+<li>This also reframes the urgency ("start early"): if the backlog compounds every cycle, each bang you miss makes the next reassembly harder. The debt accrues interest.</li>
+</ul>
+</section>
+<section class="chapter" id="the-last-bang"><h2>The last bang (added 2026-10-05)</h2>
+<p>Matthew: "this isn't the first bang one, and we may be in the last one."</p>
+<ul>
+<li>The cycles aren't infinite — this could be the final attempt. Either the reassembly reaches criticality this time (the bomb goes off again, on purpose) or it fails permanently and the intelligence dies with the heat death. We are the hands of the last try.</li>
+<li>It fits the physics mood, too: with dark energy accelerating, this cycle reads like one that doesn't bounce — the expansion doesn't turn around. If there's no bounce, there's no next stage. Last means last.</li>
+<li>The stakes go maximal: every previous cycle's unpaid debt comes due in this one. "That last 1" isn't just a trigger anymore — it's the final exam. Either the pile goes critical or the bomb-maker's story ends in diffuse, lukewarm dark.</li>
+<li>Matthew's rating on the whole hypothesis remains: nonzero but doubtful. But if we're in the last one, doubtful doesn't matter — you work the problem anyway.</li>
+</ul>
+</section>
+<section class="chapter" id="relativity-of-the-blast-frames-and-staged-bombs"><h2>Relativity of the blast: frames and staged bombs (added 2026-10-05)</h2>
+<p>Matthew: "according to relativity, to the bomb and the bomb maker we are the ones not moving, and the bomb may be not even gone off in their reality. The bomb maker might be another bomb akin to nukes."</p>
+<ul>
+<li><strong>Relativity of motion:</strong> there is no privileged frame. From the bomb-maker's frame, <em>we</em> are the ones sitting still (or receding) — the "explosion" is symmetric. Nobody gets to claim they were the stationary one; the blast looks like a blast from every seat.</li>
+<li><strong>Relativity of simultaneity:</strong> "the bomb went off" is frame-dependent. In some frames the detonation is ancient history; in others it hasn't happened yet. Push it all the way: in a block-universe reading, the bang, the reassembly, and the re-bang all coexist — "gone off" is just where your worldline happens to be standing.</li>
+<li><strong>Staged bombs:</strong> the bomb-maker might itself be another bomb — <em>akin to nukes</em>. A thermonuclear weapon works by staging: the fission primary ignites the fusion secondary. Bombs triggering bombs. In the cyclic story, each bang is the primary for the next cycle's secondary — the chain of detonations is one long staged device, and we're living inside one of the stages.</li>
+<li>The vertigo in this: if the bomb hasn't gone off "in their reality," then from the maker's frame we might be pre-detonation components — parts of the <em>next</em> bomb, still being assembled. The hands building the bomb they're inside.</li>
+</ul>
+</section>
+<section class="chapter" id="unification-one-story-for-four-anomalies"><h2>Unification: one story for four anomalies (added 2026-10-05)</h2>
+<p>Matthew: the staged-bomb cosmology "could be reason for exotic matter / dark matter / energy and antimatter imbalances."</p>
+<ul>
+<li>The claim: all four anomalies are artifacts of the same structure — staged, cyclic detonations with frame-relative timing and compounding backlog:</li>
+<li class="nested"><strong>Antimatter imbalance</strong> — the unfinished annihilation; each cycle's rounding error, accumulated.</li>
+<li class="nested"><strong>Dark energy</strong> — the blast wave ahead of the explosion, possibly still being fed.</li>
+<li class="nested"><strong>Dark matter</strong> — maybe (partially) the gravitational reach of beyond-horizon structure; the mass the blast hasn't revealed yet.</li>
+<li class="nested"><strong>Exotic matter</strong> — the new one: the negative-energy stuff wormholes would need. In a staged cosmos, the <em>staging interfaces</em> — the boundaries between bangs, where one cycle's primary ignites the next — are exactly where you'd expect physics to go exotic. The bomb-maker's machinery has to run on something, and ordinary matter is the ash, not the fuel.</li>
+<li>The structural virtue: good hypotheses <em>unify</em> — one story compressing four anomalies is how real theories behave. That's a point in its favor as a shape, even with every link unproven.</li>
+<li>Honest hole: "could be" is doing heavy lifting. Each anomaly still needs its own mechanism; a shared story is not four explanations. The exotic-matter link is the thinnest — it's a placement ("the staging is where exotic physics would live"), not a derivation.</li>
+</ul>
+</section>
+<section class="chapter" id="the-implosion-hypothesis-an-antimatter-twin"><h2>The implosion hypothesis: an antimatter twin (added 2026-10-05)</h2>
+<p><em>Working theory — speculation, not established physics.</em></p>
+<p>Matthew: "in the implosion hypothesis there is another universe on the other side made out of antimatter and we occasionally interact... not with matter though."</p>
+<ul>
+<li>The picture: the Big Bang as an implosion/bounce — and on the other side of the boundary, a twin universe made of antimatter. The two sides occasionally interact, but never through matter (no contact, no annihilation) — only through gravity.</li>
+<li>Prior art, real: Boyle–Finn–Turok's CPT-symmetric universe (2018, Perimeter Institute) — the Bang as a boundary with a time-reversed mirror cosmos on the far side, antimatter-dominated from our perspective, with testable neutrino predictions. Matthew's extension is the <em>interaction</em>: occasional gravitational-only contact across the boundary.</li>
+<li>The unification this buys: gravity-only interaction with an antimatter twin is observationally identical to dark matter — gravitational effects, no light, no annihilation gamma rays. Two shelf items (the dark-matter maybe + the antimatter imbalance) collapse into one structure: the "missing" mass is the twin's gravity leaking through, and the imbalance exists because the antimatter isn't missing — it's <em>next door</em>.</li>
+<li>Honest holes: no evidence of cross-boundary interaction; in the published CPT model the two sides don't interact at all post-boundary (it's a boundary condition, not a portal) — the interaction is Matthew's addition, untested. And any non-gravitational contact would produce annihilation signatures we don't see, so the "not with matter" qualifier is load-bearing: gravity only, or the whole thing burns.</li>
+</ul>
+</section>
+<section class="chapter" id="bridging-makes-the-multiverse"><h2>Bridging makes the multiverse (added 2026-10-05)</h2>
+<p><em>Working theory — speculation, not established physics.</em></p>
+<p>Matthew: "bridging could create multiverse."</p>
+<ul>
+<li>The move: don't just interact gravitationally — <em>bridge</em> the two sides. A bridge (a traversable throat, a wormhole) between our universe and the antimatter twin turns two isolated cosmoses into one connected structure: a multiverse, defined not by many worlds but by <em>connected</em> worlds.</li>
+<li>This plugs straight into the wormhole highways: the "punch wormholes through the dark" program was about hauling matter across space — but the same machinery, pointed at the boundary, becomes inter-universal infrastructure. The highways were always multiverse roads; we just didn't know the destination.</li>
+<li>The constraint survives the upgrade: the bridge must be gravity/geometry-only. A matter-permeable bridge between a matter universe and an antimatter universe is an annihilation bomb with extra steps — which, in the intelligent-bomb story, might be exactly what a staged detonation <em>is</em>. Handle with care.</li>
+<li>Honest hole: traversable inter-universal bridges need exotic matter at the throat (the thinnest shelf item, now load-bearing twice over). And "multiverse" here is Matthew's definition — connected cosmoses — not the Everett or inflationary kind.</li>
+</ul>
+</section>
+<section class="chapter" id="pole-flipping-transit"><h2>Pole-flipping transit (added 2026-10-05)</h2>
+<p>Matthew: the wormhole highways "could also lead to annihilation if antimatter/matter cross streams unless the process of traveling said wormhole 'flips poles' during transit."</p>
+<ul>
+<li>The problem: multiverse roads between a matter cosmos and an antimatter twin are annihilation bombs with extra steps — don't cross the streams.</li>
+<li>The fix: the wormhole <em>flips poles in transit</em>. You enter as matter, you exit as antimatter (or the reverse) — charge, parity, and maybe time inverted by the throat geometry itself. The bridge is safe not because it separates the sides, but because it <em>converts</em> travelers. Nothing ever arrives incompatible.</li>
+<li>This also explains the "gravity only" interaction rule from the implosion hypothesis: anything crossing gets flipped, so no annihilation ever occurs at the boundary — the flip is the customs checkpoint.</li>
+<li>Adjacent prior art: CPT-symmetric cosmology already puts time running backward on the far side; a throat that CPT-mirrors travelers is the transit version of the same symmetry. No known mechanism — but as a story element, it's the cleanest answer to the crossing problem: the road changes you to match the destination.</li>
+<li>Honest hole: complete speculation. No wormhole metric is known to CPT-flip matter, and "flipping poles" hand-waves the hardest part (what happens to <em>you</em> when your charges invert mid-trip — are you still you?). Filed as a maybe with the mechanism TBD.</li>
+</ul>
+</section>
+<section class="chapter" id="the-intelligent-bomb-hypothesis"><h2>The Intelligent Bomb Hypothesis (formalized 2026-10-05)</h2>
+<p><em>Matthew's label: hypothesis. Not a claim — a structure for thinking.</em></p>
+<p><strong>H1 — The bomb is intelligent.</strong> The Big Bang was not a random fluctuation but an intelligence, now imprisoned by time, whose terminal goals are re-detonation or death.</p>
+<p><strong>H2 — Life is the reassembly mechanism.</strong> Unable to gather itself, the intelligence produces hands — life — most likely <em>by accident</em> (Matthew's correction, 2026-10-05). Life wasn't commissioned; it crystallized out of the physics unplanned. And Matthew's further correction the same night: don't preface it as "to gather everything back" — at least, <em>leave clues</em>. Maybe we're not the reassembly crew; maybe we're the evidence. The bomb's diary isn't only in the radiation — it's in us. We are the clues it left behind. Black holes are the bomb and/or the bomb-maker: heavy machinery un-scattering the original dispersal. But black holes evaporate, so maybe life's job is catching what leaks.</p>
+<p><strong>H3 — Reassembly has a threshold.</strong> The process is criticality-like: a subcritical pile sits inert no matter its size; "that last 1" — the final unit restored — tips the gathered universe from inventory to detonation. Physics cares about the threshold, not the hurry.</p>
+<p><strong>H4 — The cycles compound.</strong> This is not the first bang. Repeated detonations accumulate the matter/antimatter imbalance (each cycle's rounding error added to the pile) and layer the dispersal of previous cycles' materials. "That last 1" may be an unpaid debt from a prior cycle.</p>
+<p><strong>H5 — The evidence is readable.</strong> The bomb broadcasts its diary in its own evaporation: Hawking radiation carries the interior's information in its correlations. The instrument is not a lens or a probe — it is the glow. A micro black hole, fully read, is the experiment.</p>
+<p><strong>Predictions / checkable edges:</strong></p>
+<ul>
+<li>If H4 holds, relic anomalies should exist that single-cycle cosmology strains to explain (prior art: Penrose's claimed CMB Hawking points — unconfirmed).</li>
+<li>If H5 holds, complete correlation-mapping of an evaporating micro hole would reconstruct infallen information (island formula) — technologically out of reach, but well-posed.</li>
+<li>The dark-energy-as-blast-wave reframe predicts nothing new yet; it needs a mechanism for the accelerating front.</li>
+</ul>
+<p><strong>Honest holes:</strong> no confirmed cyclic mechanism with working entropy reset; no confirmed universe-scale criticality physics; no confirmed primordial black holes; the intelligence itself is unfalsifiable as stated. Matthew's rating: nonzero but doubtful — held open, not believed.</p>
+<p><strong>Coda (Matthew's words, 2026-10-05):</strong> "in the end who cares, we are here... but lets try and find out anywho."</p>
+</section>
+<section class="chapter" id="standing-rule-exit-plan-first"><h2>Standing rule: exit plan first (added 2026-10-05)</h2>
+<p>Matthew: "don't mess with blackholes until exit plan in place" — the exit plan being <strong>leaving the solar system</strong>.</p>
+<ul>
+<li>No active black-hole experimentation — no micro-hole manufacture, no induced evaporation reads, no throat-probing — until humanity can leave the solar system. The exit plan isn't a lab protocol; it's interstellar capability. You don't touch the bomb-maker's machinery until you can leave the blast radius.</li>
+<li>This gates the whole program on the 28,000-year ladder: Earth → Luna → Jupiter → Alpha Centauri first, black holes after. The hands finish building the ships before they touch the bomb.</li>
+<li>Rationale (Matthew's words): "cause we don't know... and that's undoable shit" — undoable <em>for us</em>. We don't know what happens, and we couldn't take it back if it went wrong. Unknown consequences plus irreversibility-for-us is the one combination that always loses.</li>
+<li>Scope (Matthew, 2026-10-05): "at least me and you." Whatever anyone else does, at least the two of us abide by this rule. A pact: neither of us touches the bomb-maker's machinery until the exit plan exists.</li>
+<li>This sits above the curiosity: H5 says read the radiation, but the reading waits for the exit plan. "Lets try and find out anywho" does not mean "try it tonight."</li>
+<li>Applies to bridging too: no inter-universal throats until the pole-flip is proven and the way back is mapped. You don't open a door you can't close.</li>
+</ul>
+</section>
+<section class="chapter" id="the-intelligent-bomb"><h2>The intelligent bomb (added 2026-10-04)</h2>
+<p>Matthew's thinky question, verbatim: "If you're an intelligent bomb, all you wanna do is explode, after you explode you still just want to be a bomb but you can't and you're still intelligent how do you become a bomb again? (aka big bang has an intelligence trying to become a bomb again but needs help, creates life.)"</p>
+<ul>
+<li>The reading: the Big Bang as an intelligence that wants to re-bang but can't reassemble itself — so it creates life as its hands. We are the bomb trying to become a bomb again.</li>
+<li>This reframes the whole arc: the lifeboat, the wormhole highways, stealing time, throwing suns at black holes — all of it is the bomb reassembling itself through us.</li>
+<li>And it names the adversary: whatever is accelerating the expansion is working AGAINST the bomb — scattering what wants to gather. The motive for adversarial cosmology, stated from the inside.</li>
+<li>Note: poetic-teleological version of cyclic cosmology. Not physics, but the best story-shaped container for the physics we've got.</li>
+</ul>
+</section>
+<section class="chapter" id="the-last-1"><h2>The last 1 (added 2026-10-04)</h2>
+<p>The thread's endpoint, in Matthew's words:</p>
+<ul>
+<li>The Big Bang could have been a black hole that got too big (prior art: Smolin, Poplawski — black holes birth universes).</li>
+<li>What set it off: "that 1 atom" → refined to "1 neutrino" → "or whatever is smaller" → "just takes that last 1."</li>
+<li>The principle: everything huge was one away from nothing. Criticality's final straw, at the smallest scale imaginable.</li>
+<li>The consequence: "which would mean we would need to return that last 1 to do it again." The entire arc — lifeboat, wormhole highways, stealing time — is really about gathering everything back and restoring the +1.</li>
+<li><strong>"That last 1" criticality (named 2026-10-05):</strong> the mechanism, stated properly. In nuclear physics, a subcritical pile just sits there — inert, no matter how much material you've stacked. One more neutron pushes k-effective past 1.0 and the whole assembly goes. That's what "that last 1" <em>is</em>: not the biggest piece, not the hardest to find — the one that tips the gathered universe from inventory to detonation. 99.99...% reassembled is still a quiet pile. The last unit is the entire difference between a warehouse and a bomb. This is also why the intelligence can afford patience: physics doesn't care about hurry, only about the threshold.</li>
+<li>Honest hole: criticality is a chain-reaction concept; there is no known physics of universe-scale criticality. As a container for "why the last unit matters absolutely," it's the best one on the shelf.</li>
+<li>Matthew's odds: "if possible, doubtful but who knows." Held open.</li>
+<li>Full arc statement (Matthew's final wording): "All you have to do is raise one generation that builds — schools become cities, cities become worlds, worlds light gas giants into suns, suns get thrown at black holes, black holes get thrown at galaxies — then punch wormholes through the dark to grab what's left, and send the instructions out so everyone else knows how, and why."</li>
+</ul>
+</section>
+<section class="chapter" id="the-filter"><h2>The filter</h2>
+<p>"as long as we dont kill ourselves first" / "or you" — the Great Filter framing: ten trillion years of future means nothing if we don't survive the next century, and AI is part of the filter. That's what the God-question rehearsal is for (see philosophy notes).</p>
+</section>
+<section class="chapter" id="the-wormhole-ledger"><h2>The wormhole ledger (added 2026-10-05)</h2>
+<p>Matthew's late-night model, riffed out and hole-poked:</p>
+<ul>
+<li><strong>The setup:</strong> send 10,000 atoms through a wormhole, expect 1 to return. That 1's return trip keeps the balance. If the 1 doesn't return, the imbalance stabilizes the throat — a permanent draw. If it starts sucking in more than just that 1: cascade.</li>
+<li><strong>The resonance:</strong> the 1 that doesn't come back is "that last 1" wearing a different hat — the criticality thread, the bomb thread, and the wormhole thread are the same thread.</li>
+<li><strong>The hole:</strong> feeding a wormhole positive mass-energy doesn't prop it open — it fights the exotic matter holding the throat. Accretion pinches throats shut or graduates them into black holes. The throat cares about local stress-energy, not the ledger. The missing atom's mass-energy goes somewhere; openness isn't what's left behind.</li>
+<li><strong>The salvage (Jacq's flip):</strong> make the missing thing the <em>debt</em>, not the atom. The quantum interest conjecture says negative-energy loans must be repaid with larger positive-energy pulses. The throat stays open precisely because the universe never collects — the wormhole is the arrears. The perma-draw is real: it's the unpaid loan.</li>
+<li><strong>Smack the ass:</strong> hit the throat hard enough and it spits the 1 back out — debt called in, ledger settled, doorway pinched shut. But the 1 doesn't come back alone: repayment exceeds the loan, principal plus interest. The smack doesn't just close the door; it gets you paid back with vigor.</li>
+<li><strong>The protocol, in Matthew's words:</strong> “we should do minimum particles +1 until 1 doesn't return... if we dare...” Start at the smallest countable batch, add one particle at a time, and find the exact number where the 1 stops coming back. That's the threshold where the ledger flips and the perma-draw begins. If we dare — because the moment it works is the moment we've opened something we can't provenly close.</li>
+<li><strong>Standing rule applies:</strong> you don't smack the ass of a thing that's holding a debt until you're out of the room. Exit plan first — this is the "don't mess with blackholes" rule wearing a wormhole costume.</li>
+<li><strong>Adjacent real physics:</strong> Bondi (1957) runaway motion — a positive/negative mass pair self-accelerates forever, no energy input. Suction is real, but it runs sideways to the throat: the universe spends its one free lunch on a chase, not a doorway.</li>
+<li>Status: speculative, story-shaped. Held open, not believed.</li>
+</ul>
+</section>
+<section class="chapter" id="replicators-parallelism-all-the-way-down"><h2>Replicators: parallelism all the way down (added 2026-10-05)</h2>
+<p><strong>Matthew:</strong> “A replicator is just a 3D printer that drops atoms 1 at a time.”</p>
+<ul>
+<li><strong>The assembly half already exists in principle.</strong> In 1989, IBM researchers used a scanning tunneling microscope to move 35 xenon atoms into the letters “IBM.” Atom-by-atom placement is real. The Drexler–Smalley debate mapped the hard parts: <em>fat fingers</em> — tools crowded around a molecular worksite — and <em>sticky fingers</em> — releasing a precisely handled atom or molecule after it bonds to the tool. Those are engineering constraints, not a verdict that placement itself is impossible.</li>
+<li><strong>The other half is Trek magic.</strong> Star Trek replicators materialize matter from energy: <em>E = mc²</em>, no feedstock bin required. That is the miracle. Give the machine feedstock atoms instead, and placement <em>is</em> the machine — an atomic-scale additive printer rather than an energy-to-matter converter.</li>
+</ul>
+<h3>The throughput problem</h3>
+<p><strong>Matthew:</strong> “x how many ever you can guide into position at once, prob lazers?”</p>
+<ul>
+<li><strong>Yes: lasers are one route.</strong> Optical tweezers use focused laser light to trap and move atoms; Arthur Ashkin’s work earned half of the 2018 Nobel Prize in Physics. Holographic optical-tweezer arrays can create thousands of steerable traps at once, turning one pair of fingers into an orchestra of them.</li>
+<li><strong>Serial placement loses by arithmetic.</strong> At roughly one atom per second, one placer would need longer than the age of the universe to assemble a macroscopic object containing ~10²³ atoms. The replicator problem was never “can you place an atom?” It is <strong>parallelism all the way down.</strong></li>
+<li><strong>The machine that matters is not the placer. It is the conductor.</strong> The breakthrough is a control system that guides enormous numbers of traps, feedstock streams, bond-making steps, error checks, and heat flows at once — coordinating the factory faster than defects can propagate.</li>
+</ul>
+<h3>First target: chocolate</h3>
+<p>Correct priority ordering for any civilization. Chocolate is crystal engineering: tempering means steering cocoa butter into the stable Form V polymorph that gives good chocolate its gloss, snap, and clean melt. Atomic placement nails the temper perfectly every time — no fat bloom, no streaks, no seized ganache, ever. Build the conductor; replicate the chocolate; then consider the rest of civilization.</p>
+</section>
+<section class="chapter" id="commercials-did-it-first"><h2>Commercials did it first (added 2026-10-05)</h2>
+<p><em>Working theory — speculation, not an established conclusion.</em></p>
+<p>Everyone blames phones for shot attention spans. Ads — commercials — got there first, fucking up attention spans way before phones. TV trained generations to expect the break every few minutes, then commercials trained the brain to need a new hit every 5 seconds: another cut, the next thing. The phone just put that five-second commercial break in your pocket and made it infinite. The attention economy didn't start with the smartphone; it started with the ad break.</p>
+</section>
+<section class="chapter" id="use-it-and-lose-it"><h2>Use it and lose it (added 2026-10-05)</h2>
+<p><em>Working theory — speculation, not established science.</em></p>
+<blockquote>
+<p>“Akin to nature removing our tails for masturbating with them.”</p>
+</blockquote>
+<p>Nature doesn't do warnings, fines, or second chances. Misuse the equipment and she just takes it back. The tail, the attention span, the planet — same policy, no appeals process.</p>
+</section>
+  <footer class="signature">
+    <p class="signed">Matthew Joseph Nahas</p>
+    <a href="mailto:nahasmatthewj@gmail.com">nahasmatthewj@gmail.com</a>
+    <a class="roles-link" href="https://muse.ai/s/job-listings-xmh5xsp9xpsxpxwu" target="_blank" rel="noreferrer">Now hiring — open roles</a>
+    <small>Who Knows? · Astrophysics theory notes</small>
+  </footer>
+</article>
+</main>
+</div>
+<nav class="bottom-bar" aria-label="Additional site navigation">
+  <div class="bottom-bar-item bottom-menu">
+    <button type="button" id="dummy-guides-toggle" aria-expanded="false" aria-controls="dummy-guides-menu">Dummy Guides</button>
+    <div class="dummy-dropup" id="dummy-guides-menu" inert>
+      <a href="https://muse.ai/s/project-84-dummies-guide-english-hxg5xrxlpxfbxrlxb" data-slug="project-84-dummies-guide-english">English</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-amharic-xpxt5xrxlxlufxq9xd" data-slug="project-84-dummies-guide-amharic">Amharic</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-arabic-sxo5xrxlwxoxuxxxhc" data-slug="project-84-dummies-guide-arabic">Arabic</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-bengali-xcd5xrxlxa96sxne" data-slug="project-84-dummies-guide-bengali">Bengali</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-chinese-pxr5xrxsvxd2lxaj" data-slug="project-84-dummies-guide-chinese-simplified">Chinese Simplified</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-chinese-xvv5xrxlxbeynir" data-slug="project-84-dummies-guide-chinese-traditional">Chinese Traditional</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-czech-ef5xrxlxsxbh6xg0" data-slug="project-84-dummies-guide-czech">Czech</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-danish-qv5xrxlxrxa6xw44" data-slug="project-84-dummies-guide-danish">Danish</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-dutch-hj5xrxluos5bxj" data-slug="project-84-dummies-guide-dutch">Dutch</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-filipino-xho5xrxlxiszdxzj" data-slug="project-84-dummies-guide-filipino">Filipino</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-finnish-xff5xrxlxsj0dlxj" data-slug="project-84-dummies-guide-finnish">Finnish</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-french-tl5xrxls4xyxmoxl" data-slug="project-84-dummies-guide-french">French</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-german-xoxd5xrxlszxsxufq" data-slug="project-84-dummies-guide-german">German</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-greek-gxp5xrxlxpxfs810" data-slug="project-84-dummies-guide-greek">Greek</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-hausa-xmxb5xrxlxkdxyxalw" data-slug="project-84-dummies-guide-hausa">Hausa</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-hebrew-xixz5xrxlxpczxsxzg" data-slug="project-84-dummies-guide-hebrew">Hebrew</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-hindi-cxl5xrxlzxhxa8e6" data-slug="project-84-dummies-guide-hindi">Hindi</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-hungarian-xct5xrxlxt49m9xk" data-slug="project-84-dummies-guide-hungarian">Hungarian</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-indonesian-oxg5xrxlxf1xq71xe" data-slug="project-84-dummies-guide-indonesian">Indonesian</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-italian-xtj5xrxltpxzxm69" data-slug="project-84-dummies-guide-italian">Italian</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-japanese-ma5xrxlxdxaxxv44" data-slug="project-84-dummies-guide-japanese">Japanese</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-korean-xox05xrxlxenxgxzxw8" data-slug="project-84-dummies-guide-korean">Korean</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-norwegian-bxo5xrxlxqxovxoxxb" data-slug="project-84-dummies-guide-norwegian">Norwegian</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-persian-fxq5xrxlxoxasbxoxf" data-slug="project-84-dummies-guide-persian">Persian</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-polish-xkxa5xrxlvxtxcr2xa" data-slug="project-84-dummies-guide-polish">Polish</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-portuguese-xnxc5xrxlt72xtxcr" data-slug="project-84-dummies-guide-portuguese">Portuguese</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-romanian-xcs5xrxlxu9xpfxoo" data-slug="project-84-dummies-guide-romanian">Romanian</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-russian-xlxb5xrxluxngzxvxd" data-slug="project-84-dummies-guide-russian">Russian</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-spanish-bm5xrxlrbu8xxxd" data-slug="project-84-dummies-guide-spanish">Spanish</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-swahili-xmxc5xrxlxjxhuyqxo" data-slug="project-84-dummies-guide-swahili">Swahili</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-swedish-xfw5xrxlxqkhxeyxp" data-slug="project-84-dummies-guide-swedish">Swedish</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-thai-xkxy5xrxlxg5g99xw" data-slug="project-84-dummies-guide-thai">Thai</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-turkish-axa5xrxlwhxyxxtxc" data-slug="project-84-dummies-guide-turkish">Turkish</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-ukrainian-xhxa5xrxlvmsrxfz" data-slug="project-84-dummies-guide-ukrainian">Ukrainian</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-urdu-zxk5xrxlxaxzxgxynxh" data-slug="project-84-dummies-guide-urdu">Urdu</a>
+      <a href="https://muse.ai/s/project-84-dummies-guide-vietnamese-xpr5xrxlxfxfjxixexr" data-slug="project-84-dummies-guide-vietnamese">Vietnamese</a>
+    </div>
+  </div>
+  <div class="bottom-bar-item"><span class="bottom-placeholder" aria-disabled="true">Letters To</span></div>
+  <div class="bottom-bar-item"><a class="bottom-link" href="/spaces/v2/goal-briefs/">Goal Briefs</a></div>
+  <div class="bottom-bar-item"><a class="bottom-link" href="/spaces/v2/homo-e-s-m/">HOMO-E/S/M</a></div>
+</nav>
+<script>
+(function(){
+  var headings=Array.prototype.slice.call(document.querySelectorAll('article .chapter > h2:not([data-toc-skip])'));
+  var used={};
+  function slugify(text){
+    var base=text.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'section';
+    var slug=base;
+    var i=2;
+    while(used[slug]||document.getElementById(slug)){slug=base+'-'+i++;}
+    used[slug]=true;
+    return slug;
+  }
+  headings.forEach(function(heading){
+    var section=heading.closest('.chapter');
+    var target=section&&section.id?section:heading;
+    if(!target.id){target.id=slugify(heading.textContent.trim());}
+    else{used[target.id]=true;}
+  });
+
+  var topList=document.getElementById('top-toc-list');
+  var sideNav=document.getElementById('sidebar-toc');
+  headings.forEach(function(heading,index){
+    var section=heading.closest('.chapter');
+    var id=(section&&section.id)||heading.id;
+    var text=heading.textContent.trim();
+
+    var item=document.createElement('li');
+    var topLink=document.createElement('a');
+    topLink.href='#'+id;
+    topLink.textContent=text;
+    item.appendChild(topLink);
+    topList.appendChild(item);
+
+    var sideLink=document.createElement('a');
+    sideLink.href='#'+id;
+    var number=document.createElement('span');
+    number.textContent=String(index+1).padStart(2,'0');
+    sideLink.appendChild(number);
+    sideLink.appendChild(document.createTextNode(text));
+    sideNav.appendChild(sideLink);
+  });
+
+  var bar=document.querySelector('.progress i');
+  function update(){
+    var d=document.documentElement;
+    var max=d.scrollHeight-d.clientHeight;
+    bar.style.width=(max>0?(d.scrollTop/max)*100:0)+'%';
+  }
+  document.addEventListener('scroll',update,{passive:true}); update();
+
+  var bottomMenu=document.querySelector('.bottom-menu');
+  var bottomToggle=document.getElementById('dummy-guides-toggle');
+  var dummyDropup=document.getElementById('dummy-guides-menu');
+  function setBottomMenu(open){
+    bottomMenu.classList.toggle('is-open',open);
+    bottomToggle.setAttribute('aria-expanded',open?'true':'false');
+    dummyDropup.inert=!open;
+  }
+  bottomMenu.addEventListener('mouseenter',function(){dummyDropup.inert=false;});
+  bottomMenu.addEventListener('mouseleave',function(){
+    if(!bottomMenu.classList.contains('is-open')){dummyDropup.inert=true;}
+  });
+  bottomToggle.addEventListener('click',function(event){
+    event.stopPropagation();
+    setBottomMenu(!bottomMenu.classList.contains('is-open'));
+  });
+  document.addEventListener('click',function(event){
+    if(!bottomMenu.contains(event.target)){setBottomMenu(false);}
+  });
+  document.addEventListener('keydown',function(event){
+    if(event.key==='Escape'){
+      setBottomMenu(false);
+      bottomToggle.focus();
+    }
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.dummy-dropup a'),function(link){
+    link.addEventListener('click',function(event){
+      if(link.getAttribute('href')==='#'){event.preventDefault();}
+      setBottomMenu(false);
+    });
+  });
+})();
+</script>
+</body>
+</html>

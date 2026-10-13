@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:," />
+  <title>Remove 90% of Ads</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Mono:wght@500;600&family=Newsreader:opsz,wght@6..72,400;6..72,650&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper: #f4f0e6;
+      --ink: #11110f;
+      --muted: #555149;
+      --red: #d92f25;
+      --yellow: #f0cf37;
+      --panel: #fffaf0;
+      --line: #171714;
+      --shadow: rgba(17,17,15,.16);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #141412;
+        --ink: #f5f0e5;
+        --muted: #bbb5a8;
+        --red: #ff594f;
+        --yellow: #f5d447;
+        --panel: #1e1d19;
+        --line: #f5f0e5;
+        --shadow: rgba(0,0,0,.42);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "Newsreader", Georgia, serif;
+      font-size: 18px;
+      line-height: 1.48;
+      overflow-x: hidden;
+    }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
+    .mono { font-family: "IBM Plex Mono", monospace; }
+    .display { font-family: "Archivo Black", Impact, sans-serif; }
+
+    .signal {
+      min-height: 11px;
+      background: repeating-linear-gradient(135deg, var(--yellow) 0 13px, var(--yellow) 13px 24px, var(--ink) 24px 37px, var(--ink) 37px 48px);
+      border-bottom: 2px solid var(--line);
+    }
+
+    main { width: 100%; }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.14fr) minmax(300px, .86fr);
+      min-height: min(820px, calc(100vh - 11px));
+      border-bottom: 3px solid var(--line);
+    }
+    .hero-copy {
+      padding: clamp(38px, 6.5vw, 104px) clamp(24px, 6vw, 96px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .issue {
+      font: 600 12px/1.25 "IBM Plex Mono", monospace;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      margin: 0 0 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .issue::before { content: ""; width: 42px; height: 5px; background: var(--red); }
+    h1 {
+      margin: 0;
+      max-width: 800px;
+      font: 400 clamp(50px, 8.1vw, 122px)/.89 "Archivo Black", Impact, sans-serif;
+      letter-spacing: -.055em;
+      text-transform: uppercase;
+    }
+    .strike-word { position: relative; display: inline-block; }
+    .strike-word::after {
+      content: "";
+      position: absolute;
+      height: .11em;
+      left: -1%; right: -2%; top: 48%;
+      background: var(--red);
+      transform: rotate(-4deg);
+      box-shadow: 0 .035em 0 var(--paper);
+    }
+    .dek {
+      max-width: 670px;
+      margin: 30px 0 0;
+      font-size: clamp(23px, 2.4vw, 34px);
+      line-height: 1.2;
+      font-weight: 650;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 36px;
+    }
+    .btn {
+      min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 18px;
+      border: 2px solid var(--line);
+      background: var(--ink);
+      color: var(--paper);
+      font: 600 13px/1.2 "IBM Plex Mono", monospace;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      cursor: pointer;
+      box-shadow: 5px 5px 0 var(--yellow);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .btn.secondary { background: transparent; color: var(--ink); box-shadow: none; }
+    .btn:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--yellow); }
+    .btn.secondary:hover { box-shadow: 5px 5px 0 var(--red); }
+    .btn:focus-visible, a:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+
+    .hero-visual {
+      border-left: 3px solid var(--line);
+      padding: clamp(28px, 4vw, 62px);
+      background-color: var(--yellow);
+      background-image: linear-gradient(rgba(17,17,15,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(17,17,15,.09) 1px, transparent 1px);
+      background-size: 24px 24px;
+      color: #11110f;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+    .big-number {
+      margin: 0;
+      font: 400 clamp(100px, 16vw, 250px)/.75 "Archivo Black", Impact, sans-serif;
+      letter-spacing: -.095em;
+      white-space: nowrap;
+    }
+    .big-number span { color: var(--red); }
+    .visual-caption {
+      margin: 26px 0 34px;
+      max-width: 410px;
+      font: 600 clamp(16px, 1.6vw, 23px)/1.35 "IBM Plex Mono", monospace;
+    }
+    .ten-bars { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; height: 95px; }
+    .ten-bars span { background: var(--red); position: relative; border: 2px solid #11110f; }
+    .ten-bars span:not(:last-child)::after {
+      content: ""; position: absolute; left: 50%; top: -7px; width: 3px; height: calc(100% + 14px); background: #11110f; transform: rotate(25deg);
+    }
+    .ten-bars span:last-child { background: #11110f; }
+    .bar-key { display: flex; justify-content: space-between; gap: 12px; margin-top: 10px; font: 600 11px/1.3 "IBM Plex Mono", monospace; text-transform: uppercase; }
+
+    .marquee {
+      overflow: hidden;
+      border-bottom: 3px solid var(--line);
+      background: var(--ink);
+      color: var(--paper);
+      white-space: nowrap;
+    }
+    .marquee div {
+      width: max-content;
+      padding: 15px 0;
+      font: 600 15px/1 "IBM Plex Mono", monospace;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      animation: crawl 22s linear infinite;
+    }
+    @keyframes crawl { to { transform: translateX(-50%); } }
+
+    .section { padding: clamp(68px, 9vw, 128px) clamp(24px, 7vw, 112px); }
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(250px, .65fr) minmax(0, 1.35fr);
+      gap: clamp(34px, 8vw, 128px);
+      border-bottom: 3px solid var(--line);
+    }
+    .section-label { margin: 0; font: 600 12px/1.4 "IBM Plex Mono", monospace; text-transform: uppercase; letter-spacing: .12em; }
+    .section-label strong { color: var(--red); }
+    .manifesto { margin: 0; max-width: 980px; font-size: clamp(31px, 4.2vw, 62px); line-height: 1.08; letter-spacing: -.025em; }
+    .manifesto em { color: var(--red); font-style: normal; }
+
+    .rulebook { border-bottom: 3px solid var(--line); }
+    .rulebook-head { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 44px; }
+    h2 { margin: 0; font: 400 clamp(39px, 5.6vw, 82px)/.94 "Archivo Black", Impact, sans-serif; text-transform: uppercase; letter-spacing: -.045em; }
+    .rulebook-head p { max-width: 430px; margin: 0; font-size: 20px; line-height: 1.35; }
+    .rules { border-top: 3px solid var(--line); }
+    .rule {
+      display: grid;
+      grid-template-columns: 100px minmax(210px, .75fr) minmax(260px, 1.25fr);
+      gap: clamp(20px, 4vw, 60px);
+      padding: 30px 0;
+      border-bottom: 2px solid var(--line);
+      align-items: baseline;
+    }
+    .rule:last-child { border-bottom: 0; }
+    .rule-num { font: 400 45px/1 "Archivo Black", Impact, sans-serif; color: var(--red); }
+    .rule h3 { margin: 0; font-size: clamp(27px, 3vw, 40px); line-height: 1; }
+    .rule p { margin: 0; font-size: 18px; color: var(--muted); }
+
+    .live-standard {
+      display: grid;
+      grid-template-columns: minmax(250px, .72fr) minmax(0, 1.28fr);
+      gap: clamp(34px, 8vw, 128px);
+      align-items: start;
+      background: var(--ink);
+      color: var(--paper);
+      border-bottom: 3px solid var(--line);
+    }
+    .live-standard h2 { color: var(--yellow); }
+    .live-copy { max-width: 820px; }
+    .live-copy p { margin: 0; font-size: clamp(25px, 3.2vw, 44px); line-height: 1.14; }
+    .live-copy p + p { margin-top: 24px; font: 600 14px/1.5 "IBM Plex Mono", monospace; color: var(--yellow); }
+
+    .split { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 3px solid var(--line); }
+    .split > section { padding: clamp(58px, 7vw, 100px) clamp(24px, 6vw, 88px); }
+    .split > section + section { border-left: 3px solid var(--line); }
+    .split h2 { font-size: clamp(34px, 4.2vw, 60px); margin-bottom: 32px; }
+    .list { list-style: none; margin: 0; padding: 0; }
+    .list li { position: relative; padding: 17px 0 17px 36px; border-top: 1.5px solid var(--line); font-size: clamp(20px, 2vw, 28px); line-height: 1.2; }
+    .list li::before { position: absolute; left: 0; top: 15px; font: 600 20px/1 "IBM Plex Mono", monospace; }
+    .goes { background: var(--red); color: #fff8eb; }
+    .goes .list li { border-color: rgba(255,248,235,.6); }
+    .goes .list li::before { content: "×"; }
+    .stays .list li::before { content: "+"; color: var(--red); }
+
+    .money {
+      display: grid;
+      grid-template-columns: minmax(280px, .8fr) minmax(0, 1.2fr);
+      gap: clamp(40px, 9vw, 140px);
+      border-bottom: 3px solid var(--line);
+      align-items: center;
+    }
+    .money-number { margin: 0; font: 400 clamp(76px, 12vw, 170px)/.82 "Archivo Black", Impact, sans-serif; letter-spacing: -.075em; }
+    .money-number small { display: block; margin-top: 22px; font: 600 13px/1.35 "IBM Plex Mono", monospace; letter-spacing: .02em; }
+    .money-copy h2 { font-size: clamp(36px, 4.6vw, 66px); }
+    .money-copy p { max-width: 640px; font-size: clamp(20px, 2.3vw, 29px); line-height: 1.3; }
+    .source { font: 500 12px/1.45 "IBM Plex Mono", monospace; color: var(--muted); }
+    .source a { text-underline-offset: 3px; }
+
+    .pledge-wrap { background: var(--ink); color: var(--paper); padding: clamp(70px, 10vw, 140px) clamp(24px, 7vw, 112px); }
+    .pledge-card {
+      max-width: 1120px;
+      margin: 0 auto;
+      border: 3px solid var(--paper);
+      padding: clamp(28px, 6vw, 78px);
+      box-shadow: 12px 12px 0 var(--yellow);
+    }
+    .pledge-card .section-label { color: var(--yellow); }
+    .pledge-text { margin: 30px 0 34px; font-size: clamp(28px, 4vw, 52px); line-height: 1.13; }
+    .pledge-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .pledge-card .btn { background: var(--yellow); color: #11110f; border-color: var(--paper); box-shadow: 5px 5px 0 var(--red); }
+    .pledge-card .btn.secondary { background: transparent; color: var(--paper); box-shadow: none; }
+    .status { min-height: 22px; margin: 14px 0 0; font: 500 12px/1.4 "IBM Plex Mono", monospace; color: var(--yellow); }
+
+    footer {
+      padding: 26px clamp(24px, 7vw, 112px) calc(26px + env(safe-area-inset-bottom));
+      display: flex; justify-content: space-between; gap: 22px; align-items: center;
+      font: 600 12px/1.45 "IBM Plex Mono", monospace;
+      text-transform: uppercase; letter-spacing: .05em;
+    }
+    footer strong { color: var(--red); }
+
+    @media (max-width: 820px) {
+      .hero { grid-template-columns: 1fr; min-height: 0; }
+      .hero-copy { min-height: 67vh; }
+      .hero-visual { border-left: 0; border-top: 3px solid var(--line); }
+      .big-number { font-size: clamp(110px, 31vw, 190px); }
+      .intro, .live-standard, .money { grid-template-columns: 1fr; }
+      .intro { gap: 26px; }
+      .rulebook-head { display: block; }
+      .rulebook-head p { margin-top: 22px; }
+      .rule { grid-template-columns: 62px minmax(0, 1fr); gap: 14px 18px; }
+      .rule p { grid-column: 2; }
+      .rule-num { font-size: 34px; }
+      .split { grid-template-columns: 1fr; }
+      .split > section + section { border-left: 0; border-top: 3px solid var(--line); }
+      .money { gap: 34px; }
+    }
+    @media (max-width: 480px) {
+      body { font-size: 17px; }
+      h1 { font-size: clamp(48px, 15.3vw, 72px); }
+      .hero-copy { padding-top: 52px; padding-bottom: 54px; }
+      .hero-actions, .pledge-actions { display: grid; grid-template-columns: 1fr; }
+      .btn { width: 100%; }
+      .ten-bars { gap: 3px; height: 74px; }
+      .rule { grid-template-columns: 48px minmax(0, 1fr); }
+      .rule-num { font-size: 27px; }
+      .rule h3 { font-size: 25px; }
+      footer { align-items: flex-start; flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .marquee div { animation: none; transform: none; }
+      .btn { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="signal" aria-hidden="true"></div>
+  <main>
+    <section class="hero" aria-labelledby="campaign-title">
+      <div class="hero-copy">
+        <p class="issue">A campaign for a quieter internet</p>
+        <h1 id="campaign-title">Remove <span class="strike-word">90%</span> of ads.</h1>
+        <p class="dek">Keep the useful ten percent. Delete the noise, the surveillance and the interruptions.</p>
+        <div class="hero-actions">
+          <a class="btn" href="#pledge">Read the pledge <span aria-hidden="true">↓</span></a>
+          <a class="btn secondary" href="#standard">See the standard</a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-label="Nine of ten bars are crossed out, representing a 90 percent reduction in advertising">
+        <p class="big-number">90<span>%</span></p>
+        <p class="visual-caption">Not a better ad blocker. A smaller advertising system.</p>
+        <div class="ten-bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="bar-key"><span>remove nine</span><span>keep one</span></div>
+      </div>
+    </section>
+
+    <div class="marquee" aria-hidden="true"><div>LESS TRACKING · FEWER BREAKS · LIVE STAYS LIVE · INTERACTIVE, NOT INTERRUPTIVE · LESS TRACKING · FEWER BREAKS · LIVE STAYS LIVE · INTERACTIVE, NOT INTERRUPTIVE ·&nbsp;</div></div>
+
+    <section class="section intro">
+      <p class="section-label"><strong>01</strong> / The premise</p>
+      <p class="manifesto">Advertising can fund the internet without <em>occupying it.</em> The target is simple enough to remember and large enough to matter: remove nine placements out of every ten.</p>
+    </section>
+
+    <section class="section rulebook" id="standard" aria-labelledby="standard-heading">
+      <div class="rulebook-head">
+        <h2 id="standard-heading">The 90/10 standard</h2>
+        <p>A practical line for publishers, platforms, browsers and regulators—not a wish for advertising to vanish.</p>
+      </div>
+      <div class="rules">
+        <article class="rule">
+          <span class="rule-num">01</span>
+          <h3>Cut the surface</h3>
+          <p>Reduce the number and area of paid placements by 90% against a clearly declared baseline. Fewer slots. Higher standards.</p>
+        </article>
+        <article class="rule">
+          <span class="rule-num">02</span>
+          <h3>End surveillance pricing</h3>
+          <p>The remaining ads may use the page’s context—not a dossier assembled from a person’s behavior across the web.</p>
+        </article>
+        <article class="rule">
+          <span class="rule-num">03</span>
+          <h3>Make ads interactive</h3>
+          <p>The useful ten percent should earn attention with viewer-chosen polls, sponsor overlays and formats people actively open or join—not interruptions they have to sit through.</p>
+        </article>
+        <article class="rule">
+          <span class="rule-num">04</span>
+          <h3>Keep live sport live</h3>
+          <p>TV—especially football and live sport—should barely leave the action for commercials. Fit optional ads around natural stoppages instead of adding more breaks.</p>
+        </article>
+        <article class="rule">
+          <span class="rule-num">05</span>
+          <h3>Publish the count</h3>
+          <p>Show ad density in plain language and let independent audits test the claim. “90% fewer” must be measurable.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section live-standard" aria-labelledby="live-heading">
+      <h2 id="live-heading">Live stays live.</h2>
+      <div class="live-copy">
+        <p>Football, live TV and live sport should barely break for commercials. Keep the event on screen and make the ads optional, interactive and worth engaging with.</p>
+        <p>Fewer commercial breaks. More viewer choice. The game comes first.</p>
+      </div>
+    </section>
+
+    <div class="split">
+      <section class="goes" aria-labelledby="goes-heading">
+        <h2 id="goes-heading">What goes</h2>
+        <ul class="list">
+          <li>Pop-ups and takeover screens</li>
+          <li>Ads disguised as navigation</li>
+          <li>Cross-site behavioral tracking</li>
+          <li>Infinite repeat impressions</li>
+          <li>Autoplay sound and video</li>
+          <li>Commercial breaks that pull viewers out of live play</li>
+        </ul>
+      </section>
+      <section class="stays" aria-labelledby="stays-heading">
+        <h2 id="stays-heading">What can stay</h2>
+        <ul class="list">
+          <li>Clearly labeled placements</li>
+          <li>Interactive ads viewers choose to open</li>
+          <li>Low-profile sponsor overlays during live TV</li>
+          <li>Formats built around natural stoppages</li>
+          <li>Contextual, not behavioral, targeting</li>
+          <li>One useful ad instead of ten</li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="section money" aria-labelledby="money-heading">
+      <div>
+        <p class="money-number">$668.4B<small>forecast global digital ad spend, 2025</small></p>
+      </div>
+      <div class="money-copy">
+        <h2 id="money-heading">This is not a fragile market.</h2>
+        <p>Digital advertising represented 67.6% of worldwide ad spending in Dentsu’s December 2025 forecast. The campaign asks a mature industry to compete on usefulness—not volume.</p>
+        <p class="source">Source: <a href="https://abramark.com.br/wp-content/uploads/2025/12/Global-Ad-Spend-Forecasts-Dec-2025.pdf" target="_blank" rel="noopener noreferrer">Dentsu, Global Ad Spend Forecasts, Dec. 2025</a>. “90% fewer” refers to ad placements and occupied surface, not a claim that revenue will fall by the same amount.</p>
+      </div>
+    </section>
+
+    <section class="pledge-wrap" id="pledge" aria-labelledby="pledge-heading">
+      <div class="pledge-card">
+        <p class="section-label">The campaign pledge</p>
+        <h2 id="pledge-heading" class="pledge-text">I support an internet with 90% fewer ads: no surveillance as the price of entry, interactive ads instead of forced interruptions, barely any commercial breaks in live sport, and a clear public count of what remains.</h2>
+        <div class="pledge-actions">
+          <button class="btn" type="button" id="copyPledge">Copy the pledge</button>
+          <button class="btn secondary" type="button" id="downloadBrief">Download the one-page brief</button>
+        </div>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span><strong>Remove 90%</strong> / keep the useful 10%</span>
+    <span>#Remove90</span>
+  </footer>
+
+  <script>
+    (function () {
+      var pledge = "I support an internet with 90% fewer ads: no surveillance as the price of entry, interactive ads instead of forced interruptions, barely any commercial breaks in live sport, and a clear public count of what remains. #Remove90";
+      var brief = [
+        "REMOVE 90% OF ADS FROM THE INTERNET",
+        "",
+        "THE GOAL",
+        "Remove nine out of every ten ad placements and cut the surface occupied by advertising by 90%.",
+        "",
+        "THE 90/10 STANDARD",
+        "1. Cut the surface: publishers and platforms reduce ad count and occupied area by 90% against a declared baseline.",
+        "2. End surveillance pricing: remaining ads use page context, not cross-site behavioral dossiers.",
+        "3. Make ads interactive: the useful ten percent should be viewer-chosen, engaging, and never something people must sit through.",
+        "4. Keep live sport live: football, live TV, and live sport should barely break for commercials; fit optional formats around natural stoppages.",
+        "5. Publish the count: disclose ad density and allow independent verification.",
+        "",
+        "THE PLEDGE",
+        pledge,
+        "",
+        "#Remove90"
+      ].join("\n");
+      var status = document.getElementById("status");
+
+      function showStatus(message) {
+        status.textContent = message;
+        window.setTimeout(function () { status.textContent = ""; }, 3500);
+      }
+
+      document.getElementById("copyPledge").addEventListener("click", function () {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(pledge).then(function () {
+            showStatus("Pledge copied.");
+          }).catch(function () { fallbackCopy(); });
+        } else {
+          fallbackCopy();
+        }
+      });
+
+      function fallbackCopy() {
+        var area = document.createElement("textarea");
+        area.value = pledge;
+        area.setAttribute("readonly", "");
+        area.style.position = "fixed";
+        area.style.opacity = "0";
+        document.body.appendChild(area);
+        area.select();
+        try {
+          document.execCommand("copy");
+          showStatus("Pledge copied.");
+        } catch (error) {
+          showStatus("Copy unavailable. Select the pledge text above.");
+        }
+        document.body.removeChild(area);
+      }
+
+      document.getElementById("downloadBrief").addEventListener("click", function () {
+        var blob = new Blob([brief], { type: "text/plain;charset=utf-8" });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement("a");
+        link.href = url;
+        link.download = "remove-90-percent-of-ads-brief.txt";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showStatus("Brief downloaded.");
+      });
+    }());
+  </script>
+</body>
+</html>

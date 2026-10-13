@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Stellar Engineering — Crash Course</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper: #f5f4ef;
+      --paper-raised: #ffffff;
+      --ink: #151515;
+      --muted: #555650;
+      --line: #c7c6bf;
+      --line-strong: #8a8b85;
+      --accent: #c43b24;
+      --accent-soft: #f0ddd7;
+      --inverse: #17191a;
+      --inverse-ink: #f4f3ec;
+      --inverse-muted: #bfc2bc;
+      --max: 1180px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #111314;
+        --paper-raised: #181a1b;
+        --ink: #f2f0e8;
+        --muted: #b5b7b1;
+        --line: #3b3e3e;
+        --line-strong: #747876;
+        --accent: #ff704f;
+        --accent-soft: #3b211e;
+        --inverse: #e8e7df;
+        --inverse-ink: #151718;
+        --inverse-muted: #50534e;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: "IBM Plex Sans", sans-serif;
+      font-size: 17px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      width: min(100%, var(--max));
+      margin: 0 auto;
+      padding: clamp(26px, 5vw, 74px) clamp(20px, 5vw, 64px) 72px;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 460px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(260px, .8fr);
+      gap: clamp(32px, 7vw, 100px);
+      align-items: end;
+      padding: clamp(38px, 7vw, 88px) 0 52px;
+      border-top: 5px solid var(--ink);
+      border-bottom: 1px solid var(--line-strong);
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      top: 42px;
+      right: 5%;
+      width: clamp(150px, 23vw, 265px);
+      aspect-ratio: 1;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      box-shadow: 0 0 0 20px var(--paper), 0 0 0 21px var(--line);
+      z-index: -1;
+    }
+
+    .hero-title {
+      margin: 0;
+      max-width: 780px;
+      font-size: clamp(3rem, 7.2vw, 6.4rem);
+      line-height: .91;
+      letter-spacing: -.065em;
+      font-weight: 700;
+    }
+
+    .hero-title span {
+      display: block;
+      color: var(--accent);
+    }
+
+    .hero-meta {
+      align-self: end;
+      padding-bottom: 7px;
+    }
+
+    .duration {
+      margin: 0 0 22px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .88rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .hero-meta p:last-child {
+      margin: 0;
+      max-width: 32ch;
+      color: var(--muted);
+      font-size: 1.03rem;
+    }
+
+    .section {
+      display: grid;
+      grid-template-columns: 205px minmax(0, 1fr);
+      gap: clamp(34px, 6vw, 82px);
+      padding: clamp(64px, 8vw, 106px) 0;
+      border-bottom: 1px solid var(--line-strong);
+    }
+
+    .section:last-child { border-bottom: 0; }
+
+    .section-head {
+      align-self: start;
+      position: sticky;
+      top: 24px;
+    }
+
+    .section-index {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .78rem;
+      font-weight: 600;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+      line-height: 1.15;
+      letter-spacing: -.025em;
+    }
+
+    .mission-copy {
+      margin: -.15em 0 0;
+      max-width: 730px;
+      font-size: clamp(1.5rem, 3.2vw, 2.55rem);
+      line-height: 1.22;
+      letter-spacing: -.035em;
+    }
+
+    .mission-copy strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .field-note {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 38px;
+    }
+
+    .tag {
+      padding: 6px 11px;
+      border: 1px solid var(--line-strong);
+      border-radius: 99px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .74rem;
+      line-height: 1.2;
+    }
+
+    .module-list,
+    .result-list,
+    .anchor-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .module-list { border-top: 1px solid var(--line-strong); }
+
+    .module {
+      position: relative;
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr);
+      gap: 18px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .module::before {
+      content: "";
+      display: block;
+      width: 18px;
+      height: 18px;
+      margin-top: 5px;
+      border: 1.5px solid var(--line-strong);
+      background: var(--paper);
+    }
+
+    .module:last-child { border-bottom-color: var(--line-strong); }
+    .module p { margin: 0; }
+
+    .module strong {
+      font-size: 1.09rem;
+      font-weight: 600;
+    }
+
+    .module .detail { color: var(--muted); }
+
+    .equation {
+      white-space: nowrap;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .92em;
+      color: inherit;
+    }
+
+    .module.meta::before {
+      border-radius: 50%;
+      border-color: var(--accent);
+    }
+
+    .module.meta strong { color: var(--accent); }
+    .anchor-list { border-top: 2px solid var(--ink); }
+
+    .anchor {
+      display: grid;
+      grid-template-columns: minmax(120px, .8fr) minmax(180px, 1.5fr);
+      gap: 22px;
+      align-items: baseline;
+      padding: 19px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .anchor-name {
+      font-weight: 600;
+      letter-spacing: -.01em;
+    }
+
+    .anchor-value {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .93rem;
+      line-height: 1.55;
+    }
+
+    .anchor-emphasis .anchor-value { color: var(--accent); }
+
+    .results-shell {
+      background: var(--inverse);
+      color: var(--inverse-ink);
+      margin: 0 calc(clamp(20px, 5vw, 64px) * -1) -72px;
+      padding: clamp(62px, 8vw, 100px) clamp(20px, 5vw, 64px) 76px;
+    }
+
+    .results-shell .section {
+      padding: 0;
+      border: 0;
+    }
+
+    .results-shell .section-head { position: static; }
+    .results-shell .section-index { color: var(--accent); }
+
+    .result-list {
+      counter-reset: result;
+      border-top: 1px solid var(--inverse-muted);
+    }
+
+    .result {
+      counter-increment: result;
+      display: grid;
+      grid-template-columns: 44px minmax(0, 1fr);
+      gap: 18px;
+      padding: 24px 0 26px;
+      border-bottom: 1px solid color-mix(in srgb, var(--inverse-muted) 55%, transparent);
+      font-size: clamp(1.12rem, 2vw, 1.42rem);
+      line-height: 1.42;
+    }
+
+    .result::before {
+      content: counter(result, decimal-leading-zero);
+      color: var(--accent);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .77rem;
+      font-weight: 600;
+      padding-top: .35rem;
+    }
+
+    .result strong { font-weight: 600; }
+
+    .open-question {
+      margin: 38px 0 0 62px;
+      padding: 20px 0 0;
+      border-top: 3px solid var(--accent);
+      color: var(--inverse-muted);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: .86rem;
+      line-height: 1.6;
+    }
+
+    .open-question strong {
+      color: var(--inverse-ink);
+      font-weight: 600;
+    }
+
+    @media (max-width: 760px) {
+      .page { padding-bottom: 52px; }
+
+      .hero {
+        min-height: 0;
+        grid-template-columns: 1fr;
+        gap: 48px;
+        padding: 48px 0 40px;
+      }
+
+      .hero::after {
+        top: 28px;
+        right: 12px;
+        width: 118px;
+        opacity: .65;
+      }
+
+      .hero-title {
+        max-width: 100%;
+        font-size: clamp(2.85rem, 13vw, 3.5rem);
+      }
+      .hero-meta p:last-child { max-width: 38ch; }
+
+      .section {
+        grid-template-columns: 1fr;
+        gap: 34px;
+        padding: 64px 0;
+      }
+
+      .section-head { position: static; }
+      .mission-copy { font-size: clamp(1.42rem, 6.2vw, 2rem); }
+
+      .module {
+        grid-template-columns: 23px minmax(0, 1fr);
+        gap: 13px;
+        padding: 21px 0;
+      }
+
+      .anchor {
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 18px 0;
+      }
+
+      .results-shell {
+        margin-bottom: -52px;
+        padding-bottom: 58px;
+      }
+
+      .result {
+        grid-template-columns: 34px minmax(0, 1fr);
+        gap: 12px;
+      }
+
+      .open-question { margin-left: 46px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <h1 class="hero-title">Stellar Engineering <span>Crash Course</span></h1>
+      <div class="hero-meta">
+        <p class="duration">≈ 15 FOCUSED HOURS</p>
+        <p>Ten physical ideas, one numerical meta-skill, and the anchors needed to reason at stellar scale.</p>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="mission-heading">
+      <header class="section-head">
+        <span class="section-index">01 / MISSION</span>
+        <h2 id="mission-heading">Why this exists</h2>
+      </header>
+      <div>
+        <p class="mission-copy">Relocate the whole solar system with a stellar engine—toward Alpha Centauri, or into rendezvous with inbound Barnard’s Star—while carrying an ignited, higher-mass Jupiter as the <strong>second lamp.</strong></p>
+        <p class="mission-copy" style="margin-top: .8em;">Then learn to aim solar flares for planetary defense, including the problem of parking next to flare-star Proxima.</p>
+        <div class="field-note" aria-label="Field and civilization scale">
+          <span class="tag">stellar engineering</span>
+          <span class="tag">Kardashev Type II</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="modules-heading">
+      <header class="section-head">
+        <span class="section-index">02 / COURSE</span>
+        <h2 id="modules-heading">The modules</h2>
+      </header>
+      <ol class="module-list" aria-label="Unchecked study checklist">
+        <li class="module">
+          <p><strong>1. Vector calculus, the intuitions.</strong> <span class="detail">div = does stuff flow outward, curl = does it swirl, grad = which way is steepest. ~2 hrs. You need these to read everything below.</span></p>
+        </li>
+        <li class="module">
+          <p><strong>2. Maxwell’s four, the stories.</strong> <span class="detail">Skip the proofs. The one that matters: <span class="equation">∇·B = 0</span>—field lines can’t end, which is exactly why they can only “break” by reconnection.</span></p>
+        </li>
+        <li class="module">
+          <p><strong>3. Field energy: <span class="equation">B²/2μ₀</span>.</strong> <span class="detail">Magnetic pressure. The single most-used number in these projects—it’s how you price any magnetic idea in joules.</span></p>
+        </li>
+        <li class="module">
+          <p><strong>4. Frozen-in flux.</strong> <span class="detail">In a plasma, field lines move <em>with</em> the fluid. You can’t grab one without grabbing the ocean it’s frozen into. This is why steering is hard.</span></p>
+        </li>
+        <li class="module">
+          <p><strong>5. Alfvén speed and plasma beta.</strong> <span class="detail"><span class="equation">v<sub>A</sub> = B/√(μ₀ρ)</span>: how fast magnetic news travels. <span class="equation">β</span> = gas pressure ÷ magnetic pressure: who wins, the gas or the field. Two numbers that tell you which regime you’re in.</span></p>
+        </li>
+        <li class="module">
+          <p><strong>6. Reconnection.</strong> <span class="detail">Squeeze oppositely-directed lines together → they snap, rejoin, dump energy as heat and motion. Slow version and fast version. This is flares. This is the aiming lever.</span></p>
+        </li>
+        <li class="module">
+          <p><strong>7. Hydrostatic equilibrium.</strong> <span class="detail"><span class="equation">dP/dr = −ρg</span>. Squeeze a ball of gas and the middle gets hot. The entire Jupiter answer: mass, not matches.</span></p>
+        </li>
+        <li class="module">
+          <p><strong>8. Lawson criterion.</strong> <span class="detail">Fusion needs temperature × density × confinement time, all at once. Why you can’t spark a gas giant.</span></p>
+        </li>
+        <li class="module">
+          <p><strong>9. Orbital mechanics, one equation.</strong> <span class="detail">vis-viva: <span class="equation">v² = GM(2/r − 1/a)</span>. Moving mass around stars—star-lifting logistics, parking a Shkadov mirror.</span></p>
+        </li>
+        <li class="module">
+          <p><strong>10. Radiation pressure.</strong> <span class="detail"><span class="equation">F = L/c</span>. The entire Shkadov thruster in four characters.</span></p>
+        </li>
+        <li class="module meta">
+          <p><strong>Meta-skill: numerical simulation.</strong> <span class="detail">Nobody solves real MHD by hand; the field runs on codes.</span></p>
+        </li>
+      </ol>
+    </section>
+
+    <section class="section" aria-labelledby="anchors-heading">
+      <header class="section-head">
+        <span class="section-index">03 / SCALE</span>
+        <h2 id="anchors-heading">Anchors to memorize</h2>
+      </header>
+      <ul class="anchor-list">
+        <li class="anchor"><span class="anchor-name">Sun</span><span class="anchor-value">2×10³⁰ kg · 3.8×10²⁶ W</span></li>
+        <li class="anchor"><span class="anchor-name">Jupiter</span><span class="anchor-value">1.9×10²⁷ kg</span></li>
+        <li class="anchor anchor-emphasis"><span class="anchor-name">Fusion floor</span><span class="anchor-value">0.075 solar masses · 13 M<sub>J</sub> for deuterium</span></li>
+        <li class="anchor"><span class="anchor-name">Big flare</span><span class="anchor-value">10²⁵ J · ~50M Tsar Bombas · ~15,000 yrs of human energy</span></li>
+        <li class="anchor"><span class="anchor-name">1 AU</span><span class="anchor-value">1.5×10¹¹ m</span></li>
+        <li class="anchor anchor-emphasis"><span class="anchor-name">Caplan thruster</span><span class="anchor-value">10⁻⁹ m/s² · ~53 ly displacement after 1 Myr · Alpha Centauri (4.37 ly) in ~288k yrs without braking</span></li>
+        <li class="anchor"><span class="anchor-name">Shkadov · passive</span><span class="anchor-value">10⁻¹² m/s² · far too slow for relocation</span></li>
+        <li class="anchor"><span class="anchor-name">Barnard’s Star</span><span class="anchor-value">inbound · ~3.8 ly closest approach in ~12,000 yrs</span></li>
+      </ul>
+    </section>
+
+    <div class="results-shell">
+      <section class="section" aria-labelledby="results-heading">
+        <header class="section-head">
+          <span class="section-index">04 / 2026-10-04</span>
+          <h2 id="results-heading">Key results</h2>
+        </header>
+        <div>
+          <ol class="result-list">
+            <li class="result"><span>Field lines can’t be “snapped”—but <strong>reconnection</strong> is the real equivalent, and the Sun does it constantly.</span></li>
+            <li class="result"><span><strong>Moving the Sun:</strong> easy physics, impossible engineering. <strong>Aiming flares:</strong> possible engineering, hostile physics.</span></li>
+            <li class="result"><span>Planets ride along for free under gentle thrust: <span class="equation">push ≪ orbital binding</span>.</span></li>
+            <li class="result"><span>Siphoning plasma can’t ignite Jupiter—heat alone isn’t enough. Sustained fusion needs temperature, density, and confinement; making Jupiter star-like also requires substantially more mass. That’s star lifting, and the numbers don’t close via solar wind.</span></li>
+          </ol>
+          <p class="open-question"><strong>OPEN:</strong> Aim flares at <em>what</em>—and what does the full mission design become?</p>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
