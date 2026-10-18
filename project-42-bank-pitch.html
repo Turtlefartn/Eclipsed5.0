@@ -1,475 +1,125 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="light dark" />
-  <link rel="icon" href="data:," />
-  <title>Project 42 — Planning Facility</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Manrope:wght@400;500;600;700&display=swap');
-
-    :root {
-      color-scheme: light dark;
-      --page: #f3f5f2;
-      --paper: #ffffff;
-      --paper-2: #e9eee9;
-      --ink: #111713;
-      --muted: #536158;
-      --line: #cbd4cd;
-      --brand: #123e2e;
-      --brand-2: #0a2b20;
-      --accent: #d7ff64;
-      --accent-ink: #14200a;
-      --warm: #a44728;
-      --shadow: 0 16px 44px rgba(20, 36, 27, .10);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --page: #0e1410;
-        --paper: #151d18;
-        --paper-2: #202b24;
-        --ink: #eef5ef;
-        --muted: #aebbb1;
-        --line: #354239;
-        --brand: #9dd9b5;
-        --brand-2: #061b12;
-        --accent: #c8ee5c;
-        --accent-ink: #102006;
-        --warm: #e28e70;
-        --shadow: 0 18px 48px rgba(0, 0, 0, .28);
-      }
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      background: var(--page);
-      color: var(--ink);
-      font-family: Manrope, sans-serif;
-      font-size: 16px;
-      line-height: 1.55;
-      text-rendering: optimizeLegibility;
-    }
-    a { color: inherit; }
-    .shell { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
-
-    .mast {
-      padding: 48px 0 34px;
-      border-bottom: 1px solid var(--line);
-    }
-    .mast-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      margin-bottom: 42px;
-    }
-    .project-mark {
-      margin: 0;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: .78rem;
-      font-weight: 600;
-      letter-spacing: .11em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .draft {
-      padding: 6px 10px;
-      background: var(--paper-2);
-      color: var(--muted);
-      font-size: .75rem;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(280px, .6fr);
-      gap: clamp(34px, 7vw, 96px);
-      align-items: end;
-    }
-    .kicker {
-      margin: 0 0 14px;
-      color: var(--warm);
-      font-weight: 700;
-      letter-spacing: .02em;
-    }
-    h1 {
-      max-width: 760px;
-      margin: 0;
-      font-size: clamp(3.35rem, 8vw, 7.35rem);
-      line-height: .9;
-      letter-spacing: -.07em;
-      font-weight: 700;
-    }
-    h1 .term {
-      display: block;
-      margin-top: 18px;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: clamp(.95rem, 1.9vw, 1.25rem);
-      letter-spacing: -.02em;
-      line-height: 1.3;
-      color: var(--muted);
-      font-weight: 500;
-    }
-    .hero-note {
-      border-top: 4px solid var(--brand);
-      padding-top: 18px;
-    }
-    .hero-note strong {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 1.3rem;
-      line-height: 1.25;
-    }
-    .hero-note p { margin: 0; color: var(--muted); }
-
-    main { padding: 70px 0 90px; }
-    section + section { margin-top: 84px; }
-    .section-head {
-      display: grid;
-      grid-template-columns: 185px 1fr;
-      gap: 28px;
-      align-items: start;
-      margin-bottom: 28px;
-    }
-    .section-no {
-      margin: 7px 0 0;
-      font-family: "IBM Plex Mono", monospace;
-      color: var(--warm);
-      font-size: .78rem;
-      font-weight: 600;
-      letter-spacing: .08em;
-    }
-    h2 {
-      margin: 0;
-      max-width: 750px;
-      font-size: clamp(2rem, 4.6vw, 4rem);
-      line-height: 1.03;
-      letter-spacing: -.045em;
-    }
-    .lede {
-      max-width: 730px;
-      margin: 16px 0 0;
-      color: var(--muted);
-      font-size: 1.05rem;
-    }
-
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border: 1px solid var(--line);
-      background: var(--paper);
-      box-shadow: var(--shadow);
-    }
-    .metric { padding: 28px; min-height: 150px; }
-    .metric + .metric { border-left: 1px solid var(--line); }
-    .metric b {
-      display: block;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: clamp(1.7rem, 4vw, 3rem);
-      line-height: 1;
-      letter-spacing: -.05em;
-      color: var(--brand);
-    }
-    .metric span { display: block; margin-top: 14px; color: var(--muted); font-size: .9rem; }
-
-    .table-wrap { background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow); }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { padding: 16px 20px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
-    thead th {
-      background: var(--brand-2);
-      color: #f1f6f2;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: .72rem;
-      font-weight: 600;
-      letter-spacing: .07em;
-      text-transform: uppercase;
-    }
-    tbody th { font-weight: 700; }
-    td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child(6), th:nth-child(2), th:nth-child(3), th:nth-child(4), th:nth-child(5), th:nth-child(6) { white-space: nowrap; }
-    tbody td { font-size: .9rem; }
-    tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
-    .scope { color: var(--muted); font-size: .9rem; }
-    tfoot th, tfoot td {
-      background: var(--accent);
-      color: var(--accent-ink);
-      border: 0;
-      font-family: "IBM Plex Mono", monospace;
-      font-weight: 600;
-    }
-    .basis {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 16px 20px;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: .82rem;
-    }
-
-    .deliverables {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      border-top: 1px solid var(--line);
-    }
-    .deliverable {
-      display: grid;
-      grid-template-columns: 46px 1fr;
-      gap: 12px;
-      padding: 24px 18px 24px 0;
-      border-bottom: 1px solid var(--line);
-    }
-    .deliverable:nth-child(odd) { border-right: 1px solid var(--line); }
-    .deliverable:nth-child(even) { padding-left: 24px; }
-    .deliverable-num {
-      font-family: "IBM Plex Mono", monospace;
-      color: var(--warm);
-      font-size: .82rem;
-      font-weight: 600;
-    }
-    .deliverable h3 { margin: 0 0 7px; font-size: 1.03rem; line-height: 1.25; }
-    .deliverable p { margin: 0; color: var(--muted); font-size: .9rem; }
-
-    .concept-band {
-      background: var(--brand-2);
-      color: #f1f6f2;
-      padding: clamp(34px, 6vw, 64px);
-      display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(260px, .95fr);
-      gap: clamp(30px, 7vw, 80px);
-      align-items: center;
-    }
-    .concept-band h2 { color: #fff; }
-    .concept-band p { color: #b9c8be; margin: 18px 0 0; }
-    .string {
-      margin: 0;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: clamp(1.8rem, 5vw, 4.2rem);
-      line-height: 1.1;
-      letter-spacing: -.06em;
-      color: var(--accent);
-      overflow-wrap: anywhere;
-    }
-    .rules { margin: 24px 0 0; padding: 0; list-style: none; }
-    .rules li { padding: 11px 0; border-top: 1px solid rgba(255,255,255,.18); color: #d9e2db; }
-    .rules strong { color: #fff; }
-
-    .pilots {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-    }
-    .pilot {
-      position: relative;
-      overflow: hidden;
-      min-height: 240px;
-      padding: 30px;
-      background: var(--paper);
-      border: 1px solid var(--line);
-    }
-    .pilot::after {
-      content: attr(data-number);
-      position: absolute;
-      right: -8px;
-      bottom: -52px;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: 10rem;
-      line-height: 1;
-      color: var(--paper-2);
-      z-index: 0;
-    }
-    .pilot > * { position: relative; z-index: 1; }
-    .pilot .tag { font-family: "IBM Plex Mono", monospace; color: var(--warm); font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
-    .pilot h3 { margin: 34px 0 8px; font-size: 1.8rem; letter-spacing: -.04em; }
-    .pilot p { max-width: 430px; margin: 0; color: var(--muted); }
-
-    .close {
-      padding-top: 46px;
-      border-top: 1px solid var(--line);
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 28px;
-      align-items: end;
-    }
-    .close p { max-width: 690px; margin: 12px 0 0; color: var(--muted); }
-    .ask-stamp {
-      min-width: 220px;
-      padding: 22px;
-      background: var(--accent);
-      color: var(--accent-ink);
-    }
-    .ask-stamp span { display: block; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
-    .ask-stamp strong { display: block; margin-top: 6px; font-family: "IBM Plex Mono", monospace; font-size: 1.75rem; letter-spacing: -.04em; }
-
-    @media (max-width: 760px) {
-      .shell { width: min(100% - 28px, 620px); }
-      .mast { padding-top: 28px; }
-      .mast-top { margin-bottom: 32px; }
-      .hero-grid, .section-head, .concept-band, .close { grid-template-columns: 1fr; }
-      h1 { font-size: clamp(3rem, 17vw, 5.2rem); }
-      .hero-note { margin-top: 6px; }
-      main { padding: 54px 0 70px; }
-      section + section { margin-top: 66px; }
-      .section-head { gap: 10px; }
-      .metrics { grid-template-columns: 1fr; }
-      .metric { min-height: 0; }
-      .metric + .metric { border-left: 0; border-top: 1px solid var(--line); }
-      .table-wrap { border: 0; background: transparent; box-shadow: none; }
-      table, tbody, tr, th, td { display: block; width: 100%; }
-      thead { display: none; }
-      tbody { display: grid; gap: 12px; }
-      tbody tr { padding: 18px; background: var(--paper); border: 1px solid var(--line); }
-      tbody th { padding: 0 0 11px; border-bottom: 1px solid var(--line); }
-      tbody td { display: grid; grid-template-columns: minmax(112px, .72fr) 1fr; gap: 12px; padding: 8px 0 0; border: 0; white-space: normal !important; }
-      tbody td::before { content: attr(data-label); color: var(--muted); font-size: .74rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
-      tfoot { display: block; margin-top: 12px; }
-      tfoot tr { display: block; padding: 18px; background: var(--accent); color: var(--accent-ink); }
-      tfoot th { display: block; padding: 0 0 10px; background: transparent; border-bottom: 1px solid rgba(16,32,6,.2); }
-      tfoot td { display: grid; grid-template-columns: minmax(112px, .72fr) 1fr; gap: 12px; padding: 8px 0 0; background: transparent; border: 0; }
-      tfoot td::before { content: attr(data-label); font-family: Manrope, sans-serif; font-size: .74rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
-      .basis { display: block; padding: 14px 2px 0; border: 0; }
-      .basis span { display: block; margin-top: 5px; }
-      .deliverables { grid-template-columns: 1fr; }
-      .deliverable:nth-child(odd) { border-right: 0; }
-      .deliverable:nth-child(even) { padding-left: 0; }
-      .pilots { grid-template-columns: 1fr; }
-      .pilot { min-height: 210px; }
-      .ask-stamp { min-width: 0; }
-    }
-
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-    @media print {
-      @page { margin: .55in; }
-      body { background: #fff; color: #111; font-size: 11px; }
-      .shell { width: 100%; }
-      .mast { padding: 0 0 22px; }
-      .mast-top { margin-bottom: 24px; }
-      main { padding: 28px 0 0; }
-      section + section { margin-top: 34px; }
-      .metrics, .table-wrap { box-shadow: none; }
-      .concept-band { break-inside: avoid; }
-      .pilot, .deliverable { break-inside: avoid; }
-    }
-  </style>
-</head>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Project 42 — Planning Facility</title>
+<link rel="stylesheet" href="./assets/style.css"></head>
 <body>
-  <header class="mast">
-    <div class="shell">
-      <div class="mast-top">
-        <p class="project-mark">Project 42 · Planning facility</p>
-        <span class="draft">Draft</span>
-      </div>
-      <div class="hero-grid">
-        <div>
-          <p class="kicker">Capital request</p>
-          <h1>$1.721M <span class="term">Six-month planning sprint + one-time costs</span></h1>
-        </div>
-        <div class="hero-note">
-          <strong>16 planning hires. Seven build-ready outputs.</strong>
-          <p>Fund the plan that turns Project 42 from a systems thesis into an executable program with costed pilots and a full build-phase budget.</p>
-        </div>
-      </div>
-    </div>
-  </header>
+<header class="site"><div class="site-inner"><a class="brand" href="./index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site"><a href="./index.html">Home</a><a href="./who-knows.html">Who Knows?</a><a href="./about.html">About</a><a href="./project-84.html">Project 84</a><a href="./omega42.html">Omega42</a><a href="./new-eden.html">Plan #42</a><a href="./main-site-pages.html">All Pages</a></nav></div></header>
+<main class="wrap site-main">
 
-  <main class="shell">
-    <section aria-labelledby="case-title">
-      <div class="section-head">
-        <p class="section-no">01 / THE CASE</p>
-        <div>
-          <h2 id="case-title">A bounded investment in planning certainty.</h2>
-          <p class="lede">The facility funds one six-month planning team. Its mandate is to define the ledger, score, civic framework, pilot operations, New Eden integration, and the cost of the build that follows.</p>
-        </div>
-      </div>
-      <div class="metrics" aria-label="Planning facility summary">
-        <div class="metric"><b>$1.721M</b><span>Total funding request</span></div>
-        <div class="metric"><b>16</b><span>Planning hires</span></div>
-        <div class="metric"><b>$2.742M</b><span>Annual recurring cost</span></div>
-        <div class="metric"><b>$52,731</b><span>Weekly recurring cost</span></div>
-      </div>
-    </section>
+<header class="mast">
+<div class="shell">
+<div class="mast-top">
+<p class="project-mark">Project 42 · Planning facility</p>
+<span class="draft">Draft</span>
+</div>
+<div class="hero-grid">
+<div>
+<p class="kicker">Capital request</p>
+<h1>$1.721M <span class="term">Six-month planning sprint + one-time costs</span></h1>
+</div>
+<div class="hero-note">
+<strong>16 planning hires. Seven build-ready outputs.</strong>
+<p>Fund the plan that turns Project 42 from a systems thesis into an executable program with costed pilots and a full build-phase budget.</p>
+</div>
+</div>
+</div>
+</header>
+<main class="shell">
+<section aria-labelledby="case-title">
+<div class="section-head">
+<p class="section-no">01 / THE CASE</p>
+<div>
+<h2 id="case-title">A bounded investment in planning certainty.</h2>
+<p class="lede">The facility funds one six-month planning team. Its mandate is to define the ledger, score, civic framework, pilot operations, New Eden integration, and the cost of the build that follows.</p>
+</div>
+</div>
+<div aria-label="Planning facility summary" class="metrics">
+<div class="metric"><b>$1.721M</b><span>Total funding request</span></div>
+<div class="metric"><b>16</b><span>Planning hires</span></div>
+<div class="metric"><b>$2.742M</b><span>Annual recurring cost</span></div>
+<div class="metric"><b>$52,731</b><span>Weekly recurring cost</span></div>
+</div>
+</section>
+<section aria-labelledby="team-title">
+<div class="section-head">
+<p class="section-no">02 / USE OF FUNDS</p>
+<div>
+<h2 id="team-title">The planning team.</h2>
+<p class="lede">Recurring costs are annualized. The total ask combines one half of the annual recurring cost with capital expenditure and operating expenditure.</p>
+</div>
+</div>
+<div class="table-wrap">
+<table>
+<thead>
+<tr><th scope="col">Role &amp; mandate</th><th scope="col">Heads</th><th scope="col">Loaded / head</th><th scope="col">Annual total</th><th scope="col">Weekly</th><th scope="col">6 months</th></tr>
+</thead>
+<tbody>
+<tr><th scope="row">Data scientists<br/><span class="scope">Credit score model</span></th><td data-label="Heads">2</td><td data-label="Loaded / head">$180K</td><td data-label="Annual total">$360K</td><td data-label="Weekly">$6,923</td><td data-label="6 months">$180K</td></tr>
+<tr><th scope="row">Economists<br/><span class="scope">Plankton and badge economy</span></th><td data-label="Heads">2</td><td data-label="Loaded / head">$160K</td><td data-label="Annual total">$320K</td><td data-label="Weekly">$6,154</td><td data-label="6 months">$160K</td></tr>
+<tr><th scope="row">Legal / policy<br/><span class="scope">Driving, gun, training and permission frameworks</span></th><td data-label="Heads">3</td><td data-label="Loaded / head">$170K</td><td data-label="Annual total">$510K</td><td data-label="Weekly">$9,808</td><td data-label="6 months">$255K</td></tr>
+<tr><th scope="row">Education specialists<br/><span class="scope">School-to-work pipeline</span></th><td data-label="Heads">2</td><td data-label="Loaded / head">$120K</td><td data-label="Annual total">$240K</td><td data-label="Weekly">$4,615</td><td data-label="6 months">$120K</td></tr>
+<tr><th scope="row">Primatologist<br/><span class="scope">Prime 42 pilot</span></th><td data-label="Heads">1</td><td data-label="Loaded / head">$130K</td><td data-label="Annual total">$130K</td><td data-label="Weekly">$2,500</td><td data-label="6 months">$65K</td></tr>
+<tr><th scope="row">Marine biologist<br/><span class="scope">Omega42 pilot</span></th><td data-label="Heads">1</td><td data-label="Loaded / head">$130K</td><td data-label="Annual total">$130K</td><td data-label="Weekly">$2,500</td><td data-label="6 months">$65K</td></tr>
+<tr><th scope="row">Urban planners<br/><span class="scope">New Eden integration</span></th><td data-label="Heads">2</td><td data-label="Loaded / head">$140K</td><td data-label="Annual total">$280K</td><td data-label="Weekly">$5,385</td><td data-label="6 months">$140K</td></tr>
+<tr><th scope="row">Project manager<br/><span class="scope">Program control and delivery</span></th><td data-label="Heads">1</td><td data-label="Loaded / head">$150K</td><td data-label="Annual total">$150K</td><td data-label="Weekly">$2,885</td><td data-label="6 months">$75K</td></tr>
+<tr><th scope="row">General staff<br/><span class="scope">Flexible planning support</span></th><td data-label="Heads">2</td><td data-label="Loaded / head">$80K</td><td data-label="Annual total">$160K</td><td data-label="Weekly">$3,077</td><td data-label="6 months">$80K</td></tr>
+<tr><th scope="row">Employer payroll taxes<br/><span class="scope">15% burden on $2.28M salary base</span></th><td data-label="Heads">—</td><td data-label="Loaded / head">15%</td><td data-label="Annual total">$342K</td><td data-label="Weekly">$6,577</td><td data-label="6 months">$171K</td></tr>
+<tr><th scope="row">Office space<br/><span class="scope">Planning team workspace</span></th><td data-label="Heads">—</td><td data-label="Loaded / head">$10K/month</td><td data-label="Annual total">$120K</td><td data-label="Weekly">$2,308</td><td data-label="6 months">$60K</td></tr>
+<tr><th scope="row">Capital Expenditure<br/><span class="scope">Upfront equipment package</span></th><td data-label="Heads">—</td><td data-label="Loaded / head">One-time</td><td data-label="Annual total">—</td><td data-label="Weekly">—</td><td data-label="6 months">$100K</td></tr>
+<tr><th scope="row">Operating Expenditure<br/><span class="scope">Operating expenses</span></th><td data-label="Heads">—</td><td data-label="Loaded / head">One-time</td><td data-label="Annual total">—</td><td data-label="Weekly">—</td><td data-label="6 months">$250K</td></tr>
+</tbody>
+<tfoot>
+<tr><th scope="row">Total ask</th><td data-label="Heads">16</td><td data-label="Loaded / head">—</td><td data-label="Annual total">$2.742M</td><td data-label="Weekly">$52,731</td><td data-label="6 months">$1.721M</td></tr>
+</tfoot>
+</table>
+<div class="basis"><strong>Budget basis: recurring + one-time costs</strong><span>$1.371M sprint · $100K capital expenditure · $250K operating expenditure</span></div>
+</div>
+</section>
+<section aria-labelledby="deliver-title">
+<div class="section-head">
+<p class="section-no">03 / OUTPUTS</p>
+<div>
+<h2 id="deliver-title">What six months buys.</h2>
+<p class="lede">Seven decision-grade work products, designed to resolve scope and price the build before major capital is committed.</p>
+</div>
+</div>
+<div class="deliverables">
+<article class="deliverable"><span class="deliverable-num">01</span><div><h3>Ledger architecture</h3><p>Issuer roles, verification model, record structure, permissions and lifecycle.</p></div></article>
+<article class="deliverable"><span class="deliverable-num">02</span><div><h3>Scoring model specification</h3><p>Additive logic, upgrade paths, governance, validation and anti-gaming controls.</p></div></article>
+<article class="deliverable"><span class="deliverable-num">03</span><div><h3>Plankton economy design</h3><p>Good deeds earn Plankton badges; shared access replaces unnecessary ownership through durable, repairable resources.</p></div></article>
+<article class="deliverable"><span class="deliverable-num">04</span><div><h3>Civic legal framework</h3><p>Defined scope for driving, gun responsibility, required training and social permissions.</p></div></article>
+<article class="deliverable"><span class="deliverable-num">05</span><div><h3>Pilot operating plans</h3><p>Costed, sequenced plans for Prime 42 and Omega42.</p></div></article>
+<article class="deliverable"><span class="deliverable-num">06</span><div><h3>New Eden blueprint</h3><p>Operating integration for education, civic participation and shared resources.</p></div></article>
+<article class="deliverable"><span class="deliverable-num">07</span><div><h3>Full build-phase budget</h3><p>Staffing, stages, dependencies, risks and capital requirements for execution.</p></div></article>
+</div>
+</section>
+<section aria-labelledby="pilot-title">
+<div class="section-head">
+<p class="section-no">05 / DE-RISKING</p>
+<div>
+<h2 id="pilot-title">Prove the model before human rollout.</h2>
+<p class="lede">Two focused pilot programs establish operating evidence quickly, then feed lessons into the human system design.</p>
+</div>
+</div>
+<div class="pilots">
+<article class="pilot" data-number="42"><span class="tag">Primate pilot</span><h3>Prime 42</h3><p>Monkeys and apes test coordinated systems, learning loops and resource sharing in a faster, stronger population.</p></article>
+<article class="pilot" data-number="42"><span class="tag">Marine pilot</span><h3>Omega42</h3><p>Orcas and dolphins test verified learning, cooperation and shared-resource systems in a faster, stronger population.</p></article>
+</div>
+</section>
+<section aria-labelledby="decision-title" class="close">
+<div>
+<p class="section-no">06 / DECISION</p>
+<h2 id="decision-title">Fund the plan. Price the build.</h2>
+<p>A six-month facility converts the concept into seven executable work products and a defensible build-phase capital requirement.</p>
+</div>
+<div class="ask-stamp"><span>Funding request</span><strong>$1.721M</strong></div>
+</section>
+</main>
 
-    <section aria-labelledby="team-title">
-      <div class="section-head">
-        <p class="section-no">02 / USE OF FUNDS</p>
-        <div>
-          <h2 id="team-title">The planning team.</h2>
-          <p class="lede">Recurring costs are annualized. The total ask combines one half of the annual recurring cost with capital expenditure and operating expenditure.</p>
-        </div>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th scope="col">Role & mandate</th><th scope="col">Heads</th><th scope="col">Loaded / head</th><th scope="col">Annual total</th><th scope="col">Weekly</th><th scope="col">6 months</th></tr>
-          </thead>
-          <tbody>
-            <tr><th scope="row">Data scientists<br><span class="scope">Credit score model</span></th><td data-label="Heads">2</td><td data-label="Loaded / head">$180K</td><td data-label="Annual total">$360K</td><td data-label="Weekly">$6,923</td><td data-label="6 months">$180K</td></tr>
-            <tr><th scope="row">Economists<br><span class="scope">Plankton and badge economy</span></th><td data-label="Heads">2</td><td data-label="Loaded / head">$160K</td><td data-label="Annual total">$320K</td><td data-label="Weekly">$6,154</td><td data-label="6 months">$160K</td></tr>
-            <tr><th scope="row">Legal / policy<br><span class="scope">Driving, gun, training and permission frameworks</span></th><td data-label="Heads">3</td><td data-label="Loaded / head">$170K</td><td data-label="Annual total">$510K</td><td data-label="Weekly">$9,808</td><td data-label="6 months">$255K</td></tr>
-            <tr><th scope="row">Education specialists<br><span class="scope">School-to-work pipeline</span></th><td data-label="Heads">2</td><td data-label="Loaded / head">$120K</td><td data-label="Annual total">$240K</td><td data-label="Weekly">$4,615</td><td data-label="6 months">$120K</td></tr>
-            <tr><th scope="row">Primatologist<br><span class="scope">Prime 42 pilot</span></th><td data-label="Heads">1</td><td data-label="Loaded / head">$130K</td><td data-label="Annual total">$130K</td><td data-label="Weekly">$2,500</td><td data-label="6 months">$65K</td></tr>
-            <tr><th scope="row">Marine biologist<br><span class="scope">Omega42 pilot</span></th><td data-label="Heads">1</td><td data-label="Loaded / head">$130K</td><td data-label="Annual total">$130K</td><td data-label="Weekly">$2,500</td><td data-label="6 months">$65K</td></tr>
-            <tr><th scope="row">Urban planners<br><span class="scope">New Eden integration</span></th><td data-label="Heads">2</td><td data-label="Loaded / head">$140K</td><td data-label="Annual total">$280K</td><td data-label="Weekly">$5,385</td><td data-label="6 months">$140K</td></tr>
-            <tr><th scope="row">Project manager<br><span class="scope">Program control and delivery</span></th><td data-label="Heads">1</td><td data-label="Loaded / head">$150K</td><td data-label="Annual total">$150K</td><td data-label="Weekly">$2,885</td><td data-label="6 months">$75K</td></tr>
-            <tr><th scope="row">General staff<br><span class="scope">Flexible planning support</span></th><td data-label="Heads">2</td><td data-label="Loaded / head">$80K</td><td data-label="Annual total">$160K</td><td data-label="Weekly">$3,077</td><td data-label="6 months">$80K</td></tr>
-            <tr><th scope="row">Employer payroll taxes<br><span class="scope">15% burden on $2.28M salary base</span></th><td data-label="Heads">—</td><td data-label="Loaded / head">15%</td><td data-label="Annual total">$342K</td><td data-label="Weekly">$6,577</td><td data-label="6 months">$171K</td></tr>
-            <tr><th scope="row">Office space<br><span class="scope">Planning team workspace</span></th><td data-label="Heads">—</td><td data-label="Loaded / head">$10K/month</td><td data-label="Annual total">$120K</td><td data-label="Weekly">$2,308</td><td data-label="6 months">$60K</td></tr>
-            <tr><th scope="row">Capital Expenditure<br><span class="scope">Upfront equipment package</span></th><td data-label="Heads">—</td><td data-label="Loaded / head">One-time</td><td data-label="Annual total">—</td><td data-label="Weekly">—</td><td data-label="6 months">$100K</td></tr>
-            <tr><th scope="row">Operating Expenditure<br><span class="scope">Operating expenses</span></th><td data-label="Heads">—</td><td data-label="Loaded / head">One-time</td><td data-label="Annual total">—</td><td data-label="Weekly">—</td><td data-label="6 months">$250K</td></tr>
-          </tbody>
-          <tfoot>
-            <tr><th scope="row">Total ask</th><td data-label="Heads">16</td><td data-label="Loaded / head">—</td><td data-label="Annual total">$2.742M</td><td data-label="Weekly">$52,731</td><td data-label="6 months">$1.721M</td></tr>
-          </tfoot>
-        </table>
-        <div class="basis"><strong>Budget basis: recurring + one-time costs</strong><span>$1.371M sprint · $100K capital expenditure · $250K operating expenditure</span></div>
-      </div>
-    </section>
+</main>
+<footer class="site"><div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="./index.html">All pages</a></div></footer>
 
-    <section aria-labelledby="deliver-title">
-      <div class="section-head">
-        <p class="section-no">03 / OUTPUTS</p>
-        <div>
-          <h2 id="deliver-title">What six months buys.</h2>
-          <p class="lede">Seven decision-grade work products, designed to resolve scope and price the build before major capital is committed.</p>
-        </div>
-      </div>
-      <div class="deliverables">
-        <article class="deliverable"><span class="deliverable-num">01</span><div><h3>Ledger architecture</h3><p>Issuer roles, verification model, record structure, permissions and lifecycle.</p></div></article>
-        <article class="deliverable"><span class="deliverable-num">02</span><div><h3>Scoring model specification</h3><p>Additive logic, upgrade paths, governance, validation and anti-gaming controls.</p></div></article>
-        <article class="deliverable"><span class="deliverable-num">03</span><div><h3>Plankton economy design</h3><p>Good deeds earn Plankton badges; shared access replaces unnecessary ownership through durable, repairable resources.</p></div></article>
-        <article class="deliverable"><span class="deliverable-num">04</span><div><h3>Civic legal framework</h3><p>Defined scope for driving, gun responsibility, required training and social permissions.</p></div></article>
-        <article class="deliverable"><span class="deliverable-num">05</span><div><h3>Pilot operating plans</h3><p>Costed, sequenced plans for Prime 42 and Omega42.</p></div></article>
-        <article class="deliverable"><span class="deliverable-num">06</span><div><h3>New Eden blueprint</h3><p>Operating integration for education, civic participation and shared resources.</p></div></article>
-        <article class="deliverable"><span class="deliverable-num">07</span><div><h3>Full build-phase budget</h3><p>Staffing, stages, dependencies, risks and capital requirements for execution.</p></div></article>
-      </div>
-    </section>
-
-    <section aria-labelledby="pilot-title">
-      <div class="section-head">
-        <p class="section-no">05 / DE-RISKING</p>
-        <div>
-          <h2 id="pilot-title">Prove the model before human rollout.</h2>
-          <p class="lede">Two focused pilot programs establish operating evidence quickly, then feed lessons into the human system design.</p>
-        </div>
-      </div>
-      <div class="pilots">
-        <article class="pilot" data-number="42"><span class="tag">Primate pilot</span><h3>Prime 42</h3><p>Monkeys and apes test coordinated systems, learning loops and resource sharing in a faster, stronger population.</p></article>
-        <article class="pilot" data-number="42"><span class="tag">Marine pilot</span><h3>Omega42</h3><p>Orcas and dolphins test verified learning, cooperation and shared-resource systems in a faster, stronger population.</p></article>
-      </div>
-    </section>
-
-    <section class="close" aria-labelledby="decision-title">
-      <div>
-        <p class="section-no">06 / DECISION</p>
-        <h2 id="decision-title">Fund the plan. Price the build.</h2>
-        <p>A six-month facility converts the concept into seven executable work products and a defensible build-phase capital requirement.</p>
-      </div>
-      <div class="ask-stamp"><span>Funding request</span><strong>$1.721M</strong></div>
-    </section>
-  </main>
-</body>
-</html>
+</body></html>

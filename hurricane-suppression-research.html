@@ -1,643 +1,266 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="light dark" />
-  <link rel="icon" href="data:," />
-  <title>Hurricane Suppression Research</title>
-  <style>
-    :root{
-      color-scheme:light dark;
-      --bg:#f2f6f5;
-      --paper:#ffffff;
-      --ink:#14211f;
-      --muted:#52635f;
-      --line:#cbd8d4;
-      --deep:#0b403b;
-      --sea:#087f78;
-      --cyan:#2bb6ba;
-      --sky:#dceeed;
-      --warn:#b54a24;
-      --warn-bg:#fff0e9;
-      --maybe:#8a6500;
-      --maybe-bg:#fff7d9;
-      --no:#a93435;
-      --no-bg:#fdeced;
-      --yes:#176d4e;
-      --yes-bg:#e5f4eb;
-      --shadow:0 18px 46px rgba(21,54,49,.10);
-      --menu-bg:#0b403b;
-      --menu-panel:#123f3a;
-      --menu-text:#f2f6f5;
-      --menu-muted:#c8d8d5;
-      --menu-active:#087f78;
-      --menu-line:#2a5a54;
-    }
-    @media(prefers-color-scheme:dark){
-      :root{
-        --bg:#091310;
-        --paper:#101f1b;
-        --ink:#edf7f4;
-        --muted:#afc3bd;
-        --line:#2b453e;
-        --deep:#a8e7db;
-        --sea:#59cec5;
-        --cyan:#72dade;
-        --sky:#18332f;
-        --warn:#ff9d75;
-        --warn-bg:#3d2119;
-        --maybe:#f3d26f;
-        --maybe-bg:#352c12;
-        --no:#ff9b9d;
-        --no-bg:#3d1f22;
-        --yes:#83d9b5;
-        --yes-bg:#173528;
-        --shadow:0 20px 55px rgba(0,0,0,.28);
-        --menu-bg:#07110f;
-        --menu-panel:#10231f;
-        --menu-text:#edf7f4;
-        --menu-muted:#afc3bd;
-        --menu-active:#087f78;
-        --menu-line:#2b453e;
-      }
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;background:var(--bg);color:var(--ink);font-family:"Avenir Next",Avenir,"Segoe UI",sans-serif;font-size:16px;line-height:1.55}
-    a{color:var(--sea);text-decoration-thickness:.08em;text-underline-offset:.18em}
-    a:hover{color:var(--deep)}
-    button{font:inherit}
-    .t42-nav{position:sticky;top:0;z-index:9999;background:var(--menu-bg);color:var(--menu-text);border-bottom:1px solid var(--menu-line);font-family:"Avenir Next",Avenir,"Segoe UI",sans-serif;font-size:16px;line-height:1.4;box-shadow:0 5px 18px rgba(4,25,22,.18)}
-    .t42-toggle{display:none;margin-left:auto;background:none;border:0;color:var(--menu-text);font-size:1rem;font-weight:800;padding:.82rem 1rem;cursor:pointer}
-    .t42-toggle-icon{display:inline-block;margin-right:.5rem;font-size:1.25rem;line-height:1;vertical-align:-.08em}
-    .t42-list{display:flex;flex-wrap:wrap;align-items:stretch;justify-content:center;list-style:none;margin:0 auto;padding:0;max-width:1220px}
-    .t42-item{position:relative;margin:0;padding:0}
-    .t42-link{display:block;padding:.78rem .72rem;color:var(--menu-text);text-decoration:none;font-weight:750;font-size:.82rem;background:none;border:0;cursor:pointer;font-family:inherit;white-space:nowrap}
-    .t42-link:hover,.t42-link:focus-visible{background:var(--menu-panel);color:var(--menu-text);outline:none}
-    .t42-link.t42-active{background:var(--menu-active);color:#fff;box-shadow:inset 0 -3px 0 var(--cyan)}
-    .t42-drop-btn::after{content:" \25BE";font-size:.78em;color:var(--menu-muted)}
-    .t42-split{display:flex;align-items:stretch}
-    .t42-split>.t42-link{padding-right:.28rem}
-    .t42-split-toggle{display:block;padding:.78rem .58rem .78rem .28rem;color:var(--menu-muted);background:none;border:0;cursor:pointer;font:inherit;font-size:.78rem}
-    .t42-split-toggle:hover,.t42-split-toggle:focus-visible{background:var(--menu-panel);color:var(--menu-text);outline:none}
-    .t42-drop{display:none;position:absolute;top:100%;left:0;z-index:30;min-width:285px;max-height:min(70vh,560px);overflow-y:auto;background:var(--menu-bg);list-style:none;margin:0;padding:.42rem 0;box-shadow:0 12px 28px rgba(0,0,0,.32);border:1px solid var(--menu-line);border-top:0}
-    .t42-align-right>.t42-drop{left:auto;right:0}
-    .t42-has-drop:hover>.t42-drop,.t42-has-drop:focus-within>.t42-drop,.t42-has-drop.t42-open>.t42-drop{display:block}
-    .t42-sublink{display:block;padding:.66rem 1.15rem;color:var(--menu-muted);text-decoration:none;font-size:.88rem;white-space:nowrap}
-    .t42-sublink:hover,.t42-sublink:focus-visible{background:var(--menu-panel);color:var(--menu-text);outline:none}
-    .t42-drop-separator{margin-top:.32rem;padding-top:.32rem;border-top:1px solid var(--menu-line)}
-    .t42-drop-heading{padding:.55rem 1.15rem .15rem;color:var(--menu-text);font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
-    .t42-drop-note{padding:.55rem 1.15rem .7rem;color:var(--menu-muted);font-size:.76rem;line-height:1.45;white-space:normal;border-top:1px solid var(--menu-line);margin-top:.32rem}
-    .shell{max-width:1220px;margin:0 auto;padding:28px clamp(18px,4vw,54px) 72px}
-    .mast{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.55fr);gap:34px;align-items:end;padding:clamp(28px,6vw,74px) 0 38px;border-bottom:2px solid var(--ink)}
-    .eyebrow{margin:0 0 12px;color:var(--sea);font-size:.79rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
-    h1,h2,h3{font-family:Georgia,"Times New Roman",serif;line-height:1.05;letter-spacing:-.025em;margin:0}
-    h1{font-size:clamp(2.8rem,7.3vw,6.7rem);max-width:940px}
-    h2{font-size:clamp(2rem,4vw,3.45rem)}
-    h3{font-size:1.35rem}
-    .deck{max-width:760px;margin:23px 0 0;font-size:clamp(1.08rem,1.8vw,1.38rem);color:var(--muted)}
-    .verdict{background:var(--deep);color:var(--bg);padding:24px;border-radius:4px 22px 4px 4px;box-shadow:var(--shadow)}
-    @media(prefers-color-scheme:dark){.verdict{background:#c8eee7;color:#0a211d}}
-    .verdict strong{display:block;font-family:Georgia,serif;font-size:1.55rem;line-height:1.15;margin-bottom:10px}
-    .verdict p{margin:0;font-size:.96rem}
-    .nav{position:sticky;top:91px;z-index:10;display:flex;gap:6px;overflow-x:auto;background:color-mix(in srgb,var(--bg) 94%,transparent);border-bottom:1px solid var(--line);padding:10px 0;backdrop-filter:blur(10px);scrollbar-width:none}
-    .nav::-webkit-scrollbar{display:none}
-    .nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-weight:750;font-size:.82rem;padding:7px 10px;border-radius:999px}
-    .nav a:hover,.nav a:focus{background:var(--sky);color:var(--ink)}
-    section{padding:64px 0;border-bottom:1px solid var(--line)}
-    .section-head{display:grid;grid-template-columns:210px 1fr;gap:28px;margin-bottom:30px;align-items:start}
-    .section-head .num{font-size:.78rem;font-weight:850;letter-spacing:.14em;text-transform:uppercase;color:var(--sea);padding-top:7px}
-    .section-head p{margin:14px 0 0;max-width:760px;color:var(--muted);font-size:1.05rem}
-    .hero-numbers{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:34px}
-    .hero-numbers article{background:var(--paper);padding:22px 20px;min-height:150px}
-    .hero-numbers strong{display:block;font-family:Georgia,serif;font-size:clamp(1.75rem,3vw,2.8rem);line-height:1;color:var(--deep);margin:6px 0 12px}
-    .hero-numbers span{display:block;font-size:.79rem;color:var(--muted)}
-    sup a{text-decoration:none;font-size:.72em}
-    .engine{display:grid;grid-template-columns:1fr 72px 1fr 72px 1fr;gap:12px;align-items:center;margin:30px 0 12px}
-    .engine .stage{min-height:142px;background:var(--paper);border:1px solid var(--line);padding:20px}
-    .engine b{display:block;color:var(--sea);margin-bottom:8px}
-    .engine .arrow{text-align:center;color:var(--sea);font-size:2rem;font-family:Georgia,serif}
-    .note{font-size:.83rem;color:var(--muted);margin:12px 0 0}
-    .method-controls{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 22px}
-    .method-controls button{border:1px solid var(--line);background:var(--paper);color:var(--muted);padding:8px 13px;border-radius:999px;cursor:pointer;font-weight:750;font-size:.83rem}
-    .method-controls button[aria-pressed="true"]{background:var(--deep);color:var(--bg);border-color:var(--deep)}
-    @media(prefers-color-scheme:dark){.method-controls button[aria-pressed="true"]{color:#071b18}}
-    .method-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-    .method{background:var(--paper);border-top:4px solid var(--line);padding:24px;box-shadow:0 8px 24px rgba(20,50,45,.05)}
-    .method[data-status="field"]{border-color:var(--maybe)}
-    .method[data-status="precondition"]{border-color:var(--yes)}
-    .method[data-status="no"]{border-color:var(--no)}
-    .method .top{display:flex;justify-content:space-between;gap:14px;align-items:start}
-    .tag{flex:none;border-radius:999px;padding:4px 9px;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;font-weight:850}
-    .tag.no{color:var(--no);background:var(--no-bg)}
-    .tag.field{color:var(--maybe);background:var(--maybe-bg)}
-    .tag.precondition{color:var(--yes);background:var(--yes-bg)}
-    .method p{color:var(--muted);margin:12px 0}
-    .method dl{display:grid;grid-template-columns:94px 1fr;gap:7px 12px;margin:18px 0 0;font-size:.9rem}
-    .method dt{font-weight:800;color:var(--ink)}
-    .method dd{margin:0;color:var(--muted)}
-    .method[hidden]{display:none}
-    .big-fact{display:grid;grid-template-columns:minmax(240px,.7fr) minmax(0,1.3fr);gap:0;border:1px solid var(--line);background:var(--paper)}
-    .big-fact .visual{padding:32px;background:var(--deep);color:var(--bg);display:flex;flex-direction:column;justify-content:space-between;min-height:330px}
-    @media(prefers-color-scheme:dark){.big-fact .visual{background:#b8e8df;color:#071b18}}
-    .big-fact .visual strong{font-family:Georgia,serif;font-size:clamp(2.7rem,6vw,5.25rem);line-height:.92}
-    #misting .big-fact .visual strong,#steering .big-fact .visual strong{font-size:clamp(2.15rem,4vw,3.65rem);line-height:.98}
-    .big-fact .copy{padding:clamp(24px,4vw,42px)}
-    .big-fact .copy h3{font-size:clamp(1.5rem,3vw,2.3rem)}
-    .big-fact .copy p{color:var(--muted)}
-    .ladder{margin-top:26px}
-    .rung{display:grid;grid-template-columns:150px 1fr auto;gap:18px;align-items:center;padding:15px 0;border-top:1px solid var(--line)}
-    .rung:first-child{border-top:0}
-    .rung b{font-size:.88rem}
-    .track{height:10px;background:var(--sky);position:relative;overflow:hidden;border-radius:999px}
-    .fill{height:100%;background:var(--sea);min-width:3px;border-radius:999px}
-    .rung span{font-size:.82rem;color:var(--muted);text-align:right}
-    .blanket-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-    .blanket-card{padding:28px;background:var(--paper);border:1px solid var(--line)}
-    .blanket-card h3{margin-bottom:12px}
-    .blanket-card p{color:var(--muted)}
-    .blanket-card ul,.risk-list{padding:0;margin:18px 0 0;list-style:none}
-    .blanket-card li,.risk-list li{padding:10px 0;border-top:1px solid var(--line)}
-    .blanket-card li strong{color:var(--deep)}
-    .heat-split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .heat-card{padding:28px;background:var(--paper);border-top:5px solid var(--no)}
-    .heat-card:last-child{border-color:var(--maybe)}
-    .heat-card p{color:var(--muted)}
-    .heat-card strong{display:block;margin-top:18px}
-    .fleet{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    .fleet article{padding:24px;background:var(--paper);border:1px solid var(--line)}
-    .fleet .scale{display:block;font-family:Georgia,serif;font-size:2.3rem;color:var(--deep);line-height:1;margin:8px 0 14px}
-    .fleet h3{margin:8px 0 14px}
-    .fleet p{margin:0;color:var(--muted)}
-    .risks{display:grid;grid-template-columns:.8fr 1.2fr;gap:34px}
-    .risk-callout{position:sticky;top:70px;align-self:start;padding:26px;background:var(--warn-bg);color:var(--warn)}
-    .risk-callout strong{font-family:Georgia,serif;font-size:1.7rem;line-height:1.15;display:block}
-    .risk-list li{display:grid;grid-template-columns:44px 1fr;gap:12px}
-    .risk-list b{color:var(--sea)}
-    details{border-top:1px solid var(--line)}
-    details:last-child{border-bottom:1px solid var(--line)}
-    summary{cursor:pointer;padding:17px 0;font-weight:800;display:flex;justify-content:space-between;gap:20px;list-style:none}
-    summary::-webkit-details-marker{display:none}
-    summary::after{content:"+";font-size:1.3rem;color:var(--sea)}
-    details[open] summary::after{content:"−"}
-    details p{margin:0 0 18px;max-width:850px;color:var(--muted)}
-    .next{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;counter-reset:item}
-    .next article{background:var(--paper);padding:24px;counter-increment:item}
-    .next article::before{content:"0" counter(item);display:block;color:var(--sea);font-weight:850;font-size:.78rem;letter-spacing:.1em;margin-bottom:18px}
-    .sources{padding-top:56px}
-    .sources ol{columns:2;column-gap:42px;padding-left:22px}
-    .sources li{break-inside:avoid;margin:0 0 13px;padding-left:5px;font-size:.87rem;color:var(--muted)}
-    .sources a{overflow-wrap:anywhere}
-    .stamp{margin-top:36px;padding-top:20px;border-top:2px solid var(--ink);display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:.8rem}
-    @media(max-width:760px){
-      .t42-nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end}
-      .t42-toggle{display:block}
-      .t42-list{display:none;flex-direction:column;width:100%;max-height:calc(100vh - 52px);overflow-y:auto;align-items:stretch;border-top:1px solid var(--menu-line)}
-      .t42-nav.t42-mobile-open .t42-list{display:flex}
-      .t42-link{width:100%;text-align:left;padding:.82rem 1rem}
-      .t42-split{display:grid;grid-template-columns:minmax(0,1fr) auto}
-      .t42-split>.t42-link{padding-right:.4rem}
-      .t42-split-toggle{padding:.82rem 1rem;min-width:48px}
-      .t42-has-drop:hover>.t42-drop,.t42-has-drop:focus-within>.t42-drop{display:none}
-      .t42-has-drop.t42-open>.t42-drop{display:block}
-      .t42-drop{position:static;grid-column:1/-1;min-width:0;max-height:none;overflow:visible;border:0;border-left:3px solid var(--menu-active);box-shadow:none;background:var(--menu-panel)}
-      .t42-align-right>.t42-drop{right:auto}
-      .t42-sublink{white-space:normal;padding:.68rem 1.35rem}
-    }
-    @media(max-width:820px){
-      .nav{position:static;flex-wrap:wrap;overflow:visible}
-      .nav a{white-space:normal}
-      .mast,.section-head,.big-fact,.risks{grid-template-columns:1fr}
-      .verdict{max-width:520px}
-      .hero-numbers{grid-template-columns:1fr 1fr}
-      .method-grid,.blanket-grid,.heat-split,.fleet,.next{grid-template-columns:1fr}
-      .engine{grid-template-columns:1fr}.engine .arrow{transform:rotate(90deg);height:38px}
-      .rung{grid-template-columns:1fr auto}.rung .track{grid-column:1/-1;grid-row:2}
-      .risk-callout{position:static}
-      .sources ol{columns:1}
-    }
-    @media(max-width:500px){
-      .shell{padding-inline:16px;padding-top:12px}
-      .mast{padding-top:28px}
-      h1{font-size:2.7rem}
-      .hero-numbers{grid-template-columns:1fr}
-      .hero-numbers article{min-height:0}
-      .method{padding:20px}
-      .method .top{display:block}.tag{display:inline-block;margin-top:12px}
-      .method dl{grid-template-columns:1fr}.method dd{padding-bottom:6px}
-      .stamp{display:block}.stamp span{display:block;margin-top:7px}
-    }
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-  </style>
-
-  <style>
-    :root{--bottom-nav-height:64px}
-    body{padding-bottom:calc(var(--bottom-nav-height) + env(safe-area-inset-bottom))}
-    .site-bottom-nav{position:fixed;right:0;bottom:0;left:0;z-index:10000;min-height:calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--menu-bg);color:var(--menu-text);border-top:1px solid var(--menu-line);font-family:"Avenir Next",Avenir,"Segoe UI",sans-serif;box-shadow:0 -5px 18px rgba(4,25,22,.18)}
-    .site-bottom-nav__items{display:flex;width:100%;min-height:var(--bottom-nav-height)}
-    .site-bottom-nav__item{position:relative;flex:1 1 25%;min-width:0;border-right:1px solid var(--menu-line)}
-    .site-bottom-nav__item:last-child{border-right:0}
-    .site-bottom-nav__button,.site-bottom-nav__link{width:100%;min-height:var(--bottom-nav-height);padding:10px 14px;display:flex;align-items:center;justify-content:center;gap:8px;border:0;background:transparent;color:var(--menu-text);font:700 .9rem/1.2 "Avenir Next",Avenir,"Segoe UI",sans-serif;text-align:center}
-    .site-bottom-nav__button{cursor:pointer}
-    .site-bottom-nav__link{text-decoration:none}
-    .site-bottom-nav__button:hover,.site-bottom-nav__button:focus-visible,.site-bottom-nav__link:hover,.site-bottom-nav__link:focus-visible,.site-bottom-nav__item.is-open>.site-bottom-nav__button{background:var(--menu-panel);color:var(--menu-text);outline:2px solid var(--menu-text);outline-offset:-3px}
-    .site-bottom-nav__chevron{flex:0 0 auto;width:14px;height:14px;transition:transform .18s ease}
-    .site-bottom-nav__item.is-open .site-bottom-nav__chevron{transform:rotate(180deg)}
-    .site-bottom-nav__dropup{position:absolute;left:0;bottom:100%;width:min(360px,100vw);max-height:calc(100svh - var(--bottom-nav-height) - env(safe-area-inset-bottom) - 16px);overflow-y:auto;overscroll-behavior:contain;background:var(--menu-bg);border:1px solid var(--menu-line);border-bottom:0;box-shadow:0 -16px 38px rgba(0,0,0,.24);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(8px);transition:opacity .16s ease,transform .16s ease,visibility 0s linear .16s;scrollbar-color:var(--cyan) var(--menu-bg)}
-    .site-bottom-nav__item.is-open .site-bottom-nav__dropup{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);transition-delay:0s}
-    .site-bottom-nav__dropup-label{padding:12px 16px 8px;color:var(--menu-muted);font:800 .82rem/1.3 "Avenir Next",Avenir,"Segoe UI",sans-serif;border-bottom:1px solid var(--menu-line)}
-    .site-bottom-nav__dropup a{display:flex;align-items:center;min-height:44px;padding:10px 16px;color:var(--menu-text);text-decoration:none;font:600 .88rem/1.25 "Avenir Next",Avenir,"Segoe UI",sans-serif;border-bottom:1px solid var(--menu-line)}
-    .site-bottom-nav__dropup a:last-child{border-bottom:0}
-    .site-bottom-nav__dropup a:hover,.site-bottom-nav__dropup a:focus-visible{background:var(--menu-panel);color:var(--menu-text);outline:2px solid var(--menu-text);outline-offset:-3px}
-    @media (hover:hover) and (pointer:fine){
-      .site-bottom-nav__item--menu:hover .site-bottom-nav__dropup{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);transition-delay:0s}
-      .site-bottom-nav__item--menu:hover>.site-bottom-nav__button{background:var(--menu-panel);color:var(--menu-text)}
-    }
-    @media(max-width:620px){
-      .site-bottom-nav__button,.site-bottom-nav__link{padding:8px 5px;font-size:.75rem}
-      .site-bottom-nav__button{gap:4px}
-      .site-bottom-nav__dropup{position:fixed;right:0;left:0;width:100%;bottom:calc(var(--bottom-nav-height) + env(safe-area-inset-bottom))}
-    }
-    @media(prefers-reduced-motion:reduce){
-      .site-bottom-nav__chevron,.site-bottom-nav__dropup{transition:none}
-    }
-  </style>
-</head>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Hurricane Suppression Research</title>
+<link rel="stylesheet" href="./assets/style.css"></head>
 <body>
-  <nav class="t42-nav" id="t42-shared-nav" aria-label="Site navigation">
-    <button class="t42-toggle" type="button" aria-expanded="false" aria-controls="t42-nav-list" aria-label="Open menu"><span class="t42-toggle-icon" aria-hidden="true">☰</span>Menu</button>
-    <ul class="t42-list" id="t42-nav-list">
-      <li class="t42-item"><a class="t42-link" href="./new-eden.html">Plan #42</a></li>
-      <li class="t42-item t42-has-drop t42-split">
-        <a class="t42-link" href="./project-84.html">Project 84</a>
-        <button class="t42-split-toggle" type="button" aria-expanded="false" aria-label="Show Project 84 non-profit aimed arms">▼</button>
-        <ul class="t42-drop">
-          <li class="t42-drop-heading" aria-hidden="true">Non-profit aimed arms</li>
-          <li><a class="t42-sublink" href="./omega42.html">Omega42</a></li>
-          <li><a class="t42-sublink" href="./prime-42.html">Prime 42</a></li>
-          <li class="t42-drop-note">Held until they can understand economics enough to participate — then they take over, with adjustments to equalize between currencies.</li>
-        </ul>
-      </li>
-      <li class="t42-item"><a class="t42-link" href="./project-84-dummies-guide-level-14-2.html">Project 84 Dummies Guide — Level 14 (English)</a></li>
-      <li class="t42-item"><a class="t42-link" href="./dummies-guide-to-claiming-oceans-and-antarctica.html">Claiming Oceans &amp; Antarctica</a></li>
-      <li class="t42-item"><a class="t42-link" href="./poodles-project-84-work-boats.html">HEAR-TS Work Boats</a></li>
-      <li class="t42-item"><a class="t42-link t42-active" href="./hurricane-suppression-research.html" aria-current="page">Hurricane Research</a></li>
-      <li class="t42-item"><a class="t42-link" href="./floating-skyports.html">Floating Skyports</a></li>
-      <li class="t42-item"><a class="t42-link" href="./human-recovery-disk.html">Human Recovery Disk</a></li>
-      <li class="t42-item"><a class="t42-link" href="./about-the-founder.html">About the Founder</a></li>
-      <li class="t42-item t42-has-drop t42-split">
-        <a class="t42-link" href="./job-listings.html">Jobs / WeFind's for Delegations</a>
-        <button class="t42-split-toggle" type="button" aria-expanded="false" aria-label="Choose job-listing language">▼</button>
-        <ul class="t42-drop">
-          <li><a class="t42-sublink" href="./job-listings.html">English</a></li>
-          <li><a class="t42-sublink" href="./job-listings-amharic.html">Amharic</a></li>
-          <li><a class="t42-sublink" href="./job-listings-arabic.html">Arabic</a></li>
-          <li><a class="t42-sublink" href="./job-listings-bengali.html">Bengali</a></li>
-          <li><a class="t42-sublink" href="./job-listings-chinese-simplified.html">Chinese (Simplified)</a></li>
-          <li><a class="t42-sublink" href="./job-listings-chinese-traditional.html">Chinese (Traditional)</a></li>
-          <li><a class="t42-sublink" href="./job-listings-czech.html">Czech</a></li>
-          <li><a class="t42-sublink" href="./job-listings-danish.html">Danish</a></li>
-          <li><a class="t42-sublink" href="./job-listings-dutch.html">Dutch</a></li>
-          <li><a class="t42-sublink" href="./job-listings-filipino.html">Filipino</a></li>
-          <li><a class="t42-sublink" href="./job-listings-finnish.html">Finnish</a></li>
-          <li><a class="t42-sublink" href="./job-listings-french.html">French</a></li>
-          <li><a class="t42-sublink" href="./job-listings-german.html">German</a></li>
-          <li><a class="t42-sublink" href="./job-listings-greek.html">Greek</a></li>
-          <li><a class="t42-sublink" href="./job-listings-hausa.html">Hausa</a></li>
-          <li><a class="t42-sublink" href="./job-listings-hebrew.html">Hebrew</a></li>
-          <li><a class="t42-sublink" href="./job-listings-hindi.html">Hindi</a></li>
-          <li><a class="t42-sublink" href="./job-listings-hungarian.html">Hungarian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-indonesian.html">Indonesian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-italian.html">Italian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-japanese.html">Japanese</a></li>
-          <li><a class="t42-sublink" href="./job-listings-korean.html">Korean</a></li>
-          <li><a class="t42-sublink" href="./job-listings-norwegian.html">Norwegian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-persian.html">Persian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-polish.html">Polish</a></li>
-          <li><a class="t42-sublink" href="./job-listings-portuguese.html">Portuguese</a></li>
-          <li><a class="t42-sublink" href="./job-listings-romanian.html">Romanian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-russian.html">Russian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-spanish.html">Spanish</a></li>
-          <li><a class="t42-sublink" href="./job-listings-swahili.html">Swahili</a></li>
-          <li><a class="t42-sublink" href="./job-listings-swedish.html">Swedish</a></li>
-          <li><a class="t42-sublink" href="./job-listings-thai.html">Thai</a></li>
-          <li><a class="t42-sublink" href="./job-listings-turkish.html">Turkish</a></li>
-          <li><a class="t42-sublink" href="./job-listings-ukrainian.html">Ukrainian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-urdu.html">Urdu</a></li>
-          <li><a class="t42-sublink" href="./job-listings-vietnamese.html">Vietnamese</a></li>
-        </ul>
-      </li>
-      <li class="t42-item"><a class="t42-link" href="./an-open-letter-to-canada-and-poland.html">Open Letter</a></li>
-      <li class="t42-item"><a class="t42-link" href="./proclamation-of-claim.html">Proclamation of Claim</a></li>
-      <li class="t42-item t42-has-drop t42-align-right">
-        <button class="t42-link t42-drop-btn" type="button" aria-expanded="false">Letters &amp; Diplomacy</button>
-        <ul class="t42-drop">
-          <li><a class="t42-sublink" href="./project-84-diplomatic-letters-world.html">World Index</a></li>
-          <li><a class="t42-sublink" href="./project-84-letters-to-us-leaders.html">Letters to US Leaders</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-africa-i.html">Consulate Letters — Africa I</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-africa-ii.html">Consulate Letters — Africa II</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-africa-iii.html">Consulate Letters — Africa III</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-americas-i.html">Consulate Letters — Americas I</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-americas-ii.html">Consulate Letters — Americas II</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-asia-pacific.html">Consulate Letters — Asia-Pacific</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-europe-i.html">Consulate Letters — Europe I</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-europe-ii.html">Consulate Letters — Europe II</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-europe-iii.html">Consulate Letters — Europe III</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-middle-east.html">Consulate Letters — Middle East</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-oceania.html">Consulate Letters — Oceania</a></li>
-        </ul>
-      </li>
-      <li class="t42-item"><a class="t42-link" href="./who-knows.html">Who Knows?</a></li>
-      <li class="t42-item"><a class="t42-link" href="./money-vs-assets.html">Money vs Assets</a></li>
-      <li class="t42-item"><a class="t42-link" href="./3d-printing-advancements-last-5-years.html">3D Printing</a></li>
-      <li class="t42-item"><a class="t42-link" href="https://sites.google.com/view/knottsure/home">Why Not? (external manifesto)</a></li>
-      <li class="t42-item t42-has-drop t42-align-right">
-        <button class="t42-link t42-drop-btn" type="button" aria-expanded="false">More</button>
-        <ul class="t42-drop">
-          <li><a class="t42-sublink" href="./alice-storyboard.html">Alice Storyboard</a></li>
-          <li><a class="t42-sublink" href="./doodare-s-diaper-replacement-concept.html">Doodare's Diaper Concept</a></li>
-          <li><a class="t42-sublink" href="./one-terms-of-service.html">Terms of Service</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
-  <div class="shell">
-    <header class="mast">
-      <div>
-        <p class="eyebrow">Early-stage feasibility / 09 Oct 2026</p>
-        <h1>Can we steer a hurricane?</h1>
-        <p class="deck">Two jobs, split cleanly: steer with a smaller asymmetric intervention; keep HEAR-TS on dissipation through cooling, misting, mixing, cloud brightening, bubble curtains, and ocean blankets.</p>
-      </div>
-      <aside class="verdict" aria-label="Bottom line">
-        <strong>Steering could cut the energy demand. Precision becomes the wall.</strong>
-        <p>A smaller asymmetric cooled patch is the hypothesis; no model yet sizes it or proves a controllable deflection. Any tens-of-kilometres nudge would sit inside today’s 100–200 km three-day forecast error. HEAR-TS keep the dissipation job.</p>
-      </aside>
-    </header>
+<header class="site"><div class="site-inner"><a class="brand" href="./index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site"><a href="./index.html">Home</a><a href="./who-knows.html">Who Knows?</a><a href="./about.html">About</a><a href="./project-84.html">Project 84</a><a href="./omega42.html">Omega42</a><a href="./new-eden.html">Plan #42</a><a href="./main-site-pages.html">All Pages</a></nav></div></header>
+<main class="wrap site-main">
 
-    <nav class="nav" aria-label="On this page">
-      <a href="#physics">Physics</a><a href="#preconditioning">Keep it cool</a><a href="#methods">Methods</a><a href="#misting">Misting</a><a href="#windbreaks">Windbreaks</a><a href="#steering">Steering</a><a href="#scale">Scale</a><a href="#blankets">Blankets</a><a href="#heating">Heating</a><a href="#fleet">Fleet fit</a><a href="#risks">Risks</a><a href="#unknowns">Holes</a><a href="#sources">Sources</a>
-    </nav>
 
-    <section id="physics">
-      <div class="section-head">
-        <span class="num">01 / Fuel line</span>
-        <div><h2>A hurricane is an ocean-fed heat engine.</h2><p>Warm surface water drives evaporation; condensation releases that stored heat ahead of, or next to, the storm. Ocean heat content through depth matters more than a warm skin alone.</p></div>
-      </div>
-      <div class="engine" aria-label="Simplified hurricane energy flow">
-        <div class="stage"><b>Warm ocean</b>Roughly 26.5°C or warmer through about 50–60 m supports formation and intensification.</div>
-        <div class="arrow" aria-hidden="true">→</div>
-        <div class="stage"><b>Evaporation</b>Latent heat is roughly 90% of air–sea enthalpy flux in high winds; spray and foam amplify it.</div>
-        <div class="arrow" aria-hidden="true">→</div>
-        <div class="stage"><b>Condensation</b>Moisture rises, condenses, and releases heat that powers eyewall and rainband convection.</div>
-      </div>
-      <p class="note">Threshold and depth are canonical rules of thumb; ocean heat content in the upper ~50–100 m is the stronger intensity predictor. <sup><a href="#src1">[1]</a></sup></p>
-      <div class="hero-numbers">
-        <article><span>Average hurricane heat release</span><strong>600 TW</strong><span>5.2×10¹⁹ J/day through condensation — about 200× world electrical generating capacity. <sup><a href="#src2">[2]</a></sup></span></article>
-        <article><span>Power maintaining winds</span><strong>~1.5 TW</strong><span>About 1/400 of the heat-release rate; the rest drives thunderstorm updrafts. <sup><a href="#src2">[2]</a></sup></span></article>
-        <article><span>Ideal cooled patch</span><strong>260,000 km²</strong><span>720 × 360 km, cooled 2°C through ~80 m in the key model. <sup><a href="#src3">[3]</a></sup></span></article>
-        <article><span>Best central-pressure effect</span><strong>≤15%</strong><span>At most ~14 hPa weakening at landfall, despite perfect placement and instantaneous cooling. <sup><a href="#src3">[3]</a></sup></span></article>
-      </div>
-    </section>
+<div class="shell">
+<header class="mast">
+<div>
+<p class="eyebrow">Early-stage feasibility / 09 Oct 2026</p>
+<h1>Can we steer a hurricane?</h1>
+<p class="deck">Two jobs, split cleanly: steer with a smaller asymmetric intervention; keep HEAR-TS on dissipation through cooling, misting, mixing, cloud brightening, bubble curtains, and ocean blankets.</p>
+</div>
+<aside aria-label="Bottom line" class="verdict">
+<strong>Steering could cut the energy demand. Precision becomes the wall.</strong>
+<p>A smaller asymmetric cooled patch is the hypothesis; no model yet sizes it or proves a controllable deflection. Any tens-of-kilometres nudge would sit inside today’s 100–200 km three-day forecast error. HEAR-TS keep the dissipation job.</p>
+</aside>
+</header>
+<nav aria-label="On this page" class="nav">
+<a href="#physics">Physics</a><a href="#preconditioning">Keep it cool</a><a href="#methods">Methods</a><a href="#misting">Misting</a><a href="#windbreaks">Windbreaks</a><a href="#steering">Steering</a><a href="#scale">Scale</a><a href="#blankets">Blankets</a><a href="#heating">Heating</a><a href="#fleet">Fleet fit</a><a href="#risks">Risks</a><a href="#unknowns">Holes</a><a href="#sources">Sources</a>
+</nav>
+<section id="physics">
+<div class="section-head">
+<span class="num">01 / Fuel line</span>
+<div><h2>A hurricane is an ocean-fed heat engine.</h2><p>Warm surface water drives evaporation; condensation releases that stored heat ahead of, or next to, the storm. Ocean heat content through depth matters more than a warm skin alone.</p></div>
+</div>
+<div aria-label="Simplified hurricane energy flow" class="engine">
+<div class="stage"><b>Warm ocean</b>Roughly 26.5°C or warmer through about 50–60 m supports formation and intensification.</div>
+<div aria-hidden="true" class="arrow">→</div>
+<div class="stage"><b>Evaporation</b>Latent heat is roughly 90% of air–sea enthalpy flux in high winds; spray and foam amplify it.</div>
+<div aria-hidden="true" class="arrow">→</div>
+<div class="stage"><b>Condensation</b>Moisture rises, condenses, and releases heat that powers eyewall and rainband convection.</div>
+</div>
+<p class="note">Threshold and depth are canonical rules of thumb; ocean heat content in the upper ~50–100 m is the stronger intensity predictor. <sup><a href="#src1">[1]</a></sup></p>
+<div class="hero-numbers">
+<article><span>Average hurricane heat release</span><strong>600 TW</strong><span>5.2×10¹⁹ J/day through condensation — about 200× world electrical generating capacity. <sup><a href="#src2">[2]</a></sup></span></article>
+<article><span>Power maintaining winds</span><strong>~1.5 TW</strong><span>About 1/400 of the heat-release rate; the rest drives thunderstorm updrafts. <sup><a href="#src2">[2]</a></sup></span></article>
+<article><span>Ideal cooled patch</span><strong>260,000 km²</strong><span>720 × 360 km, cooled 2°C through ~80 m in the key model. <sup><a href="#src3">[3]</a></sup></span></article>
+<article><span>Best central-pressure effect</span><strong>≤15%</strong><span>At most ~14 hPa weakening at landfall, despite perfect placement and instantaneous cooling. <sup><a href="#src3">[3]</a></sup></span></article>
+</div>
+</section>
+<section id="preconditioning">
+<div class="section-head">
+<span class="num">02 / Keep it cool</span>
+<div><h2>Stop chasing storms. Hold the water near 26.5°C all season.</h2><p>This is the strategically coherent version of ocean cooling: precondition tropical genesis corridors before a cyclone exists, then maintain them. It trades an impossible three-day sprint for a permanent regional climate-control obligation.</p></div>
+</div>
+<div class="big-fact">
+<div class="visual"><span>Planning threshold</span><strong>≤26.5°C</strong><span>79.7°F at the surface, with the upper ocean cooled too</span></div>
+<div class="copy"><h3>A target, not an off switch.</h3><p>The familiar ~26.5°C threshold is a rule of thumb for formation and intensification, not a binary cutoff. Marginal storms can still form, ocean heat content through roughly the upper 50–100 m matters, and an existing storm weakens gradually rather than switching off the instant it crosses cooler water. <sup><a href="#src1">[1]</a></sup></p><p>That means “at or near” is not enough by itself: the controlled region needs depth, width, and persistence, plus margin for currents, eddies, forecast error, and warm water around it.</p></div>
+</div>
+<div class="heat-split" style="margin-top:20px">
+<article class="heat-card" style="border-color:var(--yes)"><h3>Credit: Salter and Myhrvold</h3><p>This is what the Salter Sink concept was actually built around: wave-powered devices left in hurricane genesis regions year-round, not boats racing a formed storm. Myhrvold’s public estimate was about 10,000 passive devices at a few thousand dollars each. The effect remains unproven in the field. <sup><a href="#src6">[6]</a></sup></p><strong>Best architecture in this set for sustained preconditioning.</strong></article>
+<article class="heat-card"><h3>The maintenance-energy trap</h3><p>Hlywiak’s reported 4.5×10¹⁹ kJ was a one-time cooling estimate for 260,000 km². A standing system must fight continual solar input—roughly 1 kW/m² at peak in this Fermi framing—and warm currents carrying heat back in. Holding 5–10 million km² means maintaining roughly 20–40 times the patch area; on midpoint assumptions, that is about an order of magnitude beyond a 6.5 TW fleet. <sup><a href="#src3">[3]</a></sup></p><strong>The standing battle is larger than the one-time patch.</strong></article>
+</div>
+<div class="blanket-card" style="margin-top:20px"><h3>Full regional climate engineering</h3><p>Holding tropical water roughly 2°C cooler all season would shift evaporation, convection, rainfall, monsoons, nutrient cycles, and marine ecosystems. If a large seasonal system stopped abruptly, the suppressed heat input would return while storms were still possible—the same termination-shock class of risk raised for marine cloud brightening. <sup><a href="#src5">[5]</a></sup> <sup><a href="#src13">[13]</a></sup></p><p><strong>Control note:</strong> a planned 2°C change would be phased at no more than 0.1°C per year over 20 years, with each step treated as a testable variable and paused if effects depart from the model. The aim is not to erase every storm. Weaker storms can still happen; keep them below Category 4, aiming for Category 3 or lower.</p><p><strong>Verdict:</strong> this is the only ocean-cooling strategy its own proponents designed around the right timescale. It also converts a per-storm engineering problem into permanent planetary life support.</p></div>
+</section>
+<section id="methods">
+<div class="section-head">
+<span class="num">03 / Option set</span>
+<div><h2>Eight ways to attack the problem. None is field-ready.</h2><p>Filter by the only plausible use case: seasonal preconditioning, a field research candidate, or a present non-starter.</p></div>
+</div>
+<div aria-label="Filter methods" class="method-controls" role="group">
+<button aria-pressed="true" data-filter="all" type="button">All methods</button>
+<button aria-pressed="false" data-filter="precondition" type="button">Precondition</button>
+<button aria-pressed="false" data-filter="field" type="button">Field candidate</button>
+<button aria-pressed="false" data-filter="no" type="button">Non-starter now</button>
+</div>
+<div class="method-grid">
+<article class="method" data-status="field"><div class="top"><h3>Bubble curtains</h3><span class="tag field">Field candidate</span></div><p>Compressed air released at 100–150 m entrains colder deep water upward.</p><dl><dt>Evidence</dt><dd>SINTEF model only; no Gulf field demonstration found.</dd><dt>Scale</dt><dd>A 30 km curtain modeled a 30 × 90 km cooled patch after 48 hours, with ~2.8°C surface cooling. <sup><a href="#src4">[4]</a></sup></dd><dt>Hull job</dt><dd>Compressor, deep perforated hose, station-keeping.</dd></dl></article>
+<article class="method" data-status="field"><div class="top"><h3>Bulk seawater misting</h3><span class="tag field">Test the mechanism</span></div><p>Atomize seawater above the surface to cool droplets and near-surface air; use deep water if the aim is to import cold rather than recycle warm surface water.</p><dl><dt>Evidence</dt><dd>Three patents found; no hurricane-relevant field result. One abandoned application’s headline cooling test measured a weather station over sprayed ground, not ocean heat content. <sup><a href="#src15">[15]</a></sup></dd><dt>Scale</dt><dd>Another abandoned application proposed 10,000 wave pumps across 25,900 km², one per square mile. <sup><a href="#src16">[16]</a></sup></dd><dt>Hull job</dt><dd>Deep-water hose, pump, atomizing nozzles; distinct from cloud-brightening microdroplets.</dd></dl></article>
+<article class="method" data-status="no"><div class="top"><h3>Airship sheet windbreaks</h3><span class="tag no">Force-limited</span></div><p>Hang broad sheets at several altitudes to add drag, extract wind energy, and manufacture local shear.</p><dl><dt>Evidence</dt><dd>Distributed drag is physically credible; a 2014 model found very large offshore wind farms could reduce hurricane winds and surge. No airship-sheet study was found. <sup><a href="#src18">[18]</a></sup></dd><dt>Scale</dt><dd>A 1 km² sheet in 60 m/s wind takes ~2.2 GN, about 225,000 tonnes-force — order-of-magnitude Fermi arithmetic.</dd><dt>Platform</dt><dd>Airships are better used ahead of the storm for spray or sensing; they cannot station-keep in eyewall winds.</dd></dl></article>
+<article class="method" data-status="precondition"><div class="top"><h3>Marine cloud brightening</h3><span class="tag precondition">Precondition</span></div><p>Spray fine sea salt into marine clouds so they reflect more sunlight and cool the sea surface over time.</p><dl><dt>Evidence</dt><dd>Published calculations; no outdoor hurricane-scale test.</dd><dt>Scale</dt><dd>Original concept: ~1,500 vessels, each spraying ~50 m³/s. <sup><a href="#src5">[5]</a></sup></dd><dt>Hull job</dt><dd>Atomizers and Flettner rotors; best deck-level fit.</dd></dl></article>
+<article class="method" data-status="precondition"><div class="top"><h3>Salter Sinks</h3><span class="tag precondition">Precondition</span></div><p>Wave-powered floating rings push warm surface water down a ~200 m tube for mixing.</p><dl><dt>Evidence</dt><dd>No field proof; later progress not found.</dd><dt>Scale</dt><dd>Myhrvold estimated ~10,000 passive devices at a few thousand dollars apiece. <sup><a href="#src6">[6]</a></sup></dd><dt>Hull job</dt><dd>Tender and maintenance platform, not the primary pump.</dd></dl></article>
+<article class="method" data-status="field"><div class="top"><h3>Powered upwelling</h3><span class="tag field">Scale test clears</span></div><p>Pumps or propellers mix cold deep water into the warm upper layer.</p><dl><dt>Evidence</dt><dd>Patents and papers; no hurricane-scale validation.</dd><dt>Scale</dt><dd>At 12.9 million hulls × a generous 0.5 MW, the fleet clears the 0.3–3 TW single-patch Fermi band. Worse-than-assumed mixing efficiency can still push demand past it.</dd><dt>Hull job</dt><dd>100–200 m riser and pump; severe pre-storm handling problem.</dd></dl></article>
+<article class="method" data-status="no"><div class="top"><h3>Submarine churn</h3><span class="tag no">Wrong platform</span></div><p>Use submerged propulsive wakes to create a “virtual early landfall” of mixed, cooler water.</p><dl><dt>Evidence</dt><dd>2020 paper only; no experiment.</dd><dt>Scale</dt><dd>Claimed ~10 nuclear submarines for a 30 × 120 mile patch, with a theoretical COP near 10⁴. <sup><a href="#src7">[7]</a></sup></dd><dt>Hull job</dt><dd>Not a surface-workboat method.</dd></dl></article>
+<article class="method" data-status="no"><div class="top"><h3>Stormfury seeding</h3><span class="tag no">Failed baseline</span></div><p>Silver iodide was meant to force eyewall replacement by freezing supercooled water.</p><dl><dt>Evidence</dt><dd>US trials, 1962–1983.</dd><dt>Failure</dt><dd>Too little supercooled water; apparent effects matched natural eyewall cycles. NOAA concluded it was neither microphysically nor statistically feasible. <sup><a href="#src8">[8]</a></sup></dd></dl></article>
+</div>
+</section>
+<section id="misting">
+<div class="section-head">
+<span class="num">04 / Misting water</span>
+<div><h2>The nozzle works. The ocean-scale claim does not.</h2><p>The three bulk-mist proposals split cleanly: warm-surface mist recycles already-warm water, while the other two import cold water from depth. Marine cloud brightening is a separate aerosol method that targets reflectivity on a much slower timescale.</p></div>
+</div>
+<div class="fleet">
+<article><span class="eyebrow">Warm surface mist</span><h3>Fast local cooling, wrong proof</h3><p>An abandoned 2020 application claimed a 25.6°C-to-15°C drop after about 20 minutes. Its described experiment sprayed the air above a ground-based weather station; it did not cool or measure an ocean water column. Atomizing warm surface water also adds vapor directly to the hurricane’s fuel-rich boundary layer. <sup><a href="#src15">[15]</a></sup></p></article>
+<article><span class="eyebrow">Cold deep-water mist</span><h3>Upwelling through a nozzle</h3><p>A 2011 abandoned application proposed wave-powered pumps drawing cold water from depth and spraying it above the sea: 10,000 units, spaced about one per square mile over 25,900 km². That is a patent proposal, not a measured result, and it inherits the same deep-hose, pumping, forecast, and ecological constraints as powered upwelling. <sup><a href="#src16">[16]</a></sup></p></article>
+<article><span class="eyebrow">Inside-storm mist</span><h3>Highest risk, weakest evidence</h3><p>A granted patent proposes floating wind-turbine pumps that use storm winds to spray deep cold water into the air. It claims faster heat transfer and wind braking from the droplets, but supplies no hurricane field validation. Operating tall spray machinery inside the storm adds the hardest survival and station-keeping case. <sup><a href="#src17">[17]</a></sup></p></article>
+</div>
+<div class="big-fact" style="margin-top:20px">
+<div class="visual"><span>Research verdict</span><strong>Local cooling ≠ storm suppression</strong><span>warm-water mist moves heat and moisture into the air instead of removing it from the coupled system</span></div>
+<div class="copy"><h3>Best experiment: separate the mechanisms.</h3><p>Test warm surface spray, cold deep-water spray, and unsprayed controls over a bounded patch. Measure upper-ocean heat content, air temperature, humidity, droplet drift, and net enthalpy flux—not just the temperature beside a nozzle.</p><p><strong>Fleet fit:</strong> spray gear fits a 50 m hull, but bulk misting is still a pump-and-area problem. Warm-water mist may locally cool the surface, but it does not remove energy from the coupled ocean–atmosphere system and may increase storm-fueling humidity. Cold-water mist does not erase Hlywiak’s 260,000 km² target.</p><p><strong>Do not conflate it with marine cloud brightening:</strong> that method uses very fine sea-salt aerosol to change cloud reflectivity over weeks. Bulk water mist is an immediate heat-and-moisture intervention.</p></div>
+</div>
+</section>
+<section id="windbreaks">
+<div class="section-head">
+<span class="num">05 / Airship windbreaks</span>
+<div><h2>Drag is real. The hanging sheet is not survivable.</h2><p>Airships could suspend repurposed blanket material at several heights to oppose the flow. The intended mechanism—distributed drag and manufactured shear—is legitimate. The sheet loads make this implementation collapse before it reaches useful scale.</p></div>
+</div>
+<div class="big-fact">
+<div class="visual"><span>One 1 km² sheet at 60 m/s</span><strong>~2.2 GN</strong><span>≈225,000 tonnes-force across the sheet</span></div>
+<div class="copy"><h3>The atmosphere turns the sheet into a giant sail.</h3><p>Using dynamic pressure q = ½ρv² gives about 2.2 kPa at 60 m/s. Across one square kilometre, that is roughly 2.2×10⁹ N. Compared with about 200 tonnes of lift for a heavy airship, the static-force scale alone implies on the order of a thousand airships per square kilometre—before gusts, tethers, sheet tearing, or control authority. This is a Fermi comparison, not a design load case.</p><p>Even 100,000 heavy airships × ~200 tonnes gives ~20 million tonnes of total lift: only about 89 km² of sheet at that Cat-4 load, still roughly three orders of magnitude short of a regional drag field. A 20 km-long × 2 km-tall wall in 20 m/s tropical-storm winds would face roughly 10¹⁰ N, about one million tonnes-force. Splitting the sheet among different heights divides the hardware, not the total load.</p><p><strong>Verdict:</strong> reject the airship-suspended sheet as storm hardware. Keep distributed drag as a real mechanism worth modeling in fixed, dual-use infrastructure. One hundred thousand airships solve every delivery problem in this report and none of the physics problems—the right fleet, if the job is delivery.</p></div>
+</div>
+<div class="fleet" style="margin-top:20px">
+<article><span class="eyebrow">Published cousin</span><h3>Offshore wind “speed bumps”</h3><p>Jacobson, Archer, and Kempton modeled about 78,000 offshore turbines as a broad drag field and found lower peak winds and storm surge. That supports the mechanism, not the sheet architecture; turbines are fixed, distributed, and useful between storms. <sup><a href="#src18">[18]</a></sup></p></article>
+<article><span class="eyebrow">Various heights</span><h3>The worst winds are where the wall must work</h3><p>The hurricane-feeding inflow is concentrated in the lowest roughly 1–2 km. Higher sheets intercept less of that mass flow while making tether geometry and control harder. Sea anchoring only transfers the same load from airship to mooring.</p></article>
+<article><span class="eyebrow">Keep the airships</span><h3>100,000 solve delivery, not physics</h3><p>For spraying, seeding, and sensing ahead of the storm, 100,000 airships overwhelm the deployment problem: Salter’s cloud-brightening concept called for ~1,500 spray vessels, so this fleet is roughly 60× larger. <sup><a href="#src5">[5]</a></sup> But at a wildly generous 10 MW of effective cooling each, the fleet totals 1 TW against a hurricane’s ~600 TW heat-release scale. <sup><a href="#src2">[2]</a></sup> With station-keeping around 25–35 m/s versus 30–60+ m/s inflow, they still belong outside the strongest winds.</p></article>
+</div>
+</section>
+<section id="steering">
+<div class="section-head">
+<span class="num">06 / Steering pivot</span>
+<div><h2>Do not dissipate it. Nudge its direction.</h2><p>This is the smartest pivot in the report: steering changes the objective from removing a storm-sized heat budget to creating a smaller, deliberate asymmetry. HEAR-TS keep the dissipation job; steering becomes a separate control problem.</p></div>
+</div>
+<div class="big-fact">
+<div class="visual"><span>New binding constraint</span><strong>Precision, not power</strong><span>a nudge can be smaller than the forecast error used to aim it</span></div>
+<div class="copy"><h3>A small asymmetric patch could replace a giant symmetric one.</h3><p>Weakening calls for the Hlywiak-scale cooled patch around the storm’s path. The steering hypothesis cools only one side of the forecast track: convection should weaken on the cooled side, making the vortex’s diabatic heating lopsided and biasing the center toward the warmer side. In principle that should need far less energy, but no coupled model yet establishes the required patch size, power, direction, or displacement.</p><p>Tropical cyclones still ride the deep-layer environmental flow and beta drift. Track research shows that convective asymmetries can feed back on motion, but this is a second-order effect. A hypothetical tens-of-kilometres deflection over days would be small beside the hundreds of kilometres per day imposed by the surrounding flow. No published study demonstrates a controlled, aimed track deflection from an artificial sea-surface-temperature asymmetry.</p><p><strong>Verdict:</strong> conceptually, this is the cheapest objective in the set, and a 12.9 million-hull fleet offers distributed control capacity. But there is not yet enough evidence to claim its ~6.5 TW budget buys a specific nudge. Precision replaces energy as the likely binding constraint. It is a nudge, not a rudder.</p></div>
+</div>
+<div class="heat-split" style="margin-top:20px">
+<article class="heat-card" style="border-color:var(--yes)"><h3>Split the labor</h3><p><strong>Steering track:</strong> create and measure a small asymmetry ahead of the storm, with airships serving as sensing and delivery platforms outside the strongest winds.</p><p><strong>Dissipation track:</strong> HEAR-TS retain the cooling, mixing, misting, and flux-reduction work. Their generous fleet-scale estimate is ~6.5 TW, but no steering study yet converts that power into a patch size or track change.</p></article>
+<article class="heat-card"><h3>The aiming problem</h3><p>Three-day track errors run roughly 100–200 km. If artificial asymmetry produced only a tens-of-kilometres nudge, the effect would be smaller than the uncertainty in the starting forecast. Sparing one city may require moving landfall by 100 km or more, reliably. The intervention cannot yet be aimed, verified, or corrected in time.</p><strong>Open question: can coupled models produce a repeatable sign and magnitude of deflection?</strong></article>
+</div>
+<div class="fleet" style="margin-top:20px">
+<article><span class="eyebrow">Prior claim</span><h3>Cool left or right</h3><p>Abandoned application US20110101124A1 explicitly claims steering a hurricane by cooling air on the left or right of its projected path. It presents no demonstrated result. <sup><a href="#src19">[19]</a></sup></p></article>
+<article><span class="eyebrow">Prior claim</span><h3>Redirect from cities</h3><p>US8262314B2 explicitly claims redirecting storms away from populated areas. It is patent language, not field evidence. <sup><a href="#src20">[20]</a></sup></p></article>
+<article><span class="eyebrow">Maximum liability</span><h3>Whoever steers owns the landfall</h3><p>In 1965, Hurricane Betsy was considered for Project Stormfury but was not seeded; after its track turned toward Florida, public accusations still blamed the government. No international framework now decides who may redirect a storm or who answers for the coast it reaches. Dissipation that fails wastes effort; steering that “succeeds” chooses who bears the harm. <sup><a href="#src8">[8]</a></sup> <sup><a href="#src14">[14]</a></sup></p></article>
+</div>
+</section>
+<section id="scale">
+<div class="section-head">
+<span class="num">07 / Reality check</span>
+<div><h2>At 12.9 million hulls, scale stops being the first objection.</h2><p>Hlywiak and Nolan still modeled the generous case: an ideal ocean, a perfect three-day track forecast, and cooling that appears instantly in exactly the right place. The fleet can reach the single-patch Fermi band; it cannot improve the weak modeled outcome.</p></div>
+</div>
+<div class="big-fact">
+<div class="visual"><span>Paper-reported heat extraction</span><strong>4.5×10¹⁹ kJ</strong><span>≈450× total US energy use in 2019, as published</span></div>
+<div class="copy"><h3>Even the impossible best case only partly weakens the storm.</h3><p>The largest 2°C cooled patch cut central pressure by at most ~15%; integrated kinetic energy changed less. Once the storm left the cooled zone, it could intensify again over warm water. The study’s conclusion was blunt: targeted artificial ocean cooling would be futile. <sup><a href="#src3">[3]</a></sup></p><p><strong>Unit caution:</strong> the journal reports 4.5×10¹⁹ kJ and the 450× comparison. Those figures are difficult to reconcile with the published patch dimensions using a simple seawater heat-capacity check, so this page treats them as the paper’s estimate rather than an independently verified number.</p><p>This does not prove every flux-blocking or steering idea impossible. It does set the burden of proof: a proposal has to outperform idealized cooling, survive forecast error, and avoid moving risk somewhere else.</p></div>
+</div>
+<div aria-label="Fleet scale comparison" class="ladder">
+<div class="rung"><b>500 hulls</b><div class="track"><div class="fill" style="width:3%"></div></div><span>Demonstration scale</span></div>
+<div class="rung"><b>~60,000 hulls</b><div class="track"><div class="fill" style="width:12%"></div></div><span>30 GW thermodynamic minimum</span></div>
+<div class="rung"><b>0.6–6 million</b><div class="track"><div class="fill" style="width:56%"></div></div><span>0.3–3 TW Fermi band</span></div>
+<div class="rung"><b>12.9 million</b><div class="track"><div class="fill" style="width:100%"></div></div><span>~6.5 TW at 0.5 MW each</span></div>
+</div>
+<div class="hero-numbers">
+<article><span>Full HEAR-TS fleet</span><strong>12.9M</strong><span>Not hundreds: the stated fleet goal changes the scale verdict.</span></article>
+<article><span>Mechanical mixing power</span><strong>~6.5 TW</strong><span>At the generous upper assumption of 0.5 MW delivered per hull.</span></article>
+<article><span>Per-hull flow for one patch</span><strong>~19 m³/s</strong><span>Over 24 hours for the modeled 260,000 km² × ~80 m volume—a real dredge-pump scale.</span></article>
+<article><span>Perfect-cooling ceiling</span><strong>≤15%</strong><span>The fleet can make one patch physically arguable; it does not make the result worthwhile. <sup><a href="#src3">[3]</a></sup></span></article>
+</div>
+<p class="note"><strong>Fermi correction:</strong> 12.9 million hulls cover the estimated 0.3–3 TW single-patch mixing requirement. But 0.5 MW per hull is generous and Sirovich’s COP is only a thermodynamic minimum; worse efficiency can erase the margin. Full-season maintenance over 5–10 million km² is roughly 20–40 patches and about an order of magnitude beyond the fleet on midpoint assumptions. <sup><a href="#src7">[7]</a></sup></p>
+</section>
+<section id="blankets">
+<div class="section-head">
+<span class="num">08 / Surface covers</span>
+<div><h2>Blankets attack evaporation directly — then lose on mass and survival.</h2><p>A cover could suppress the dominant latent-heat flux without cooling the full water column. That is the cleanest physics case for including blankets. It is not a clean deployment case.</p></div>
+</div>
+<div class="blanket-grid">
+<article class="blanket-card"><h3>What works in principle</h3><p>Floating-disc reservoir experiments cut evaporation by about 80%. A 2023 patent proposes reflective or insulating floating objects held in boom-like enclosures with anchors, moorings, dynamic positioning, and tugs. Bench tests reported over 98% coverage and ~2.5× lower evaporation. <sup><a href="#src9">[9]</a></sup> <sup><a href="#src10">[10]</a></sup></p><ul><li><strong>Evaporation suppression</strong> throttles water-vapor supply.</li><li><strong>Reflective shading</strong> can slow solar heating.</li><li><strong>Boat-compatible gear</strong> means spools, booms, towing, and station-keeping.</li></ul></article>
+<article class="blanket-card"><h3>What kills storm-scale deployment</h3><p>A 100 μm HDPE film over 260,000 km² weighs roughly 25 million tonnes — about 6% of one year’s global plastic production. A 50 m hull carrying 20 t of film covers ~200,000 m²; one patch takes roughly 1.2 million hull-loads. These are report extrapolations, not field measurements.</p><ul><li><strong>Open-ocean survival</strong> at 60+ m/s winds and 15+ m seas is unproven.</li><li><strong>Deep-water anchoring</strong> fails in 4,000+ m genesis regions.</li><li><strong>Shredding</strong> turns the system into basin-scale macro- and microplastic debris.</li></ul></article>
+</div>
+<p class="note">Monolayer alcohol or oil films can reduce evaporation, but wind piles them downwind within hours — a fatal weakness in hurricane conditions. Coastal floating solar has survived severe typhoon winds, but no untethered open-ocean cover has equivalent evidence. <sup><a href="#src11">[11]</a></sup></p>
+</section>
+<section id="heating">
+<div class="section-head">
+<span class="num">09 / Heat options</span>
+<div><h2>Heating the core adds fuel. Peripheral heating is only a hypothesis.</h2><p>“Heat or cool” is not symmetric. Where the heat goes decides whether it feeds the engine or perturbs the circulation around it.</p></div>
+</div>
+<div class="heat-split">
+<article class="heat-card"><h3>Under or ahead of the core</h3><p>Warmer water raises evaporation and available enthalpy. Heating the track would tend to strengthen the storm, especially where deep ocean heat content is already high.</p><strong>Verdict: counterproductive.</strong></article>
+<article class="heat-card"><h3>At the periphery</h3><p>A 2024 workshop abstract by Li, Chakraborty, and Miyoshi reports that artificially heating a typhoon’s periphery can significantly diminish intensity “with reasonable cost.” The mechanism, energy requirement, and peer-reviewed paper were not available.</p><strong>Verdict: model first; no hardware assumptions yet. <sup><a href="#src12">[12]</a></sup></strong></article>
+</div>
+</section>
+<section id="fleet">
+<div class="section-head">
+<span class="num">10 / Hull fit</span>
+<div><h2>What a 50 m trimaran can honestly do.</h2><p>Hydrogen supplies stored energy; it does not generate it. Deck solar contributes only tens of kilowatts on average, and a hull-scale wave converter perhaps hundreds in a good wave climate.</p></div>
+</div>
+<div class="fleet">
+<article><span class="eyebrow">One hull</span><span class="scale">0.1–0.5 MW</span><p>Generous mission-payload budget from deck solar, wave capture, and stored hydrogen. The upper value is the assumption behind the fleet-scale correction.</p></article>
+<article><span class="eyebrow">12.9 million hulls</span><span class="scale">~6.5 TW</span><p>Enough to clear the 0.3–3 TW Fermi band for one idealized patch. If delivered power or mixing efficiency misses the generous assumptions, the margin can vanish.</p></article>
+<article><span class="eyebrow">Per-hull assignment</span><span class="scale">~19 m³/s</span><p>For the full 260,000 km² × ~80 m volume over 24 hours, the flow per hull becomes recognizable dredge-pump scale. The hard question shifts from flow to whether the intervention buys enough weakening.</p></article>
+</div>
+</section>
+<section id="risks">
+<div class="section-head">
+<span class="num">11 / Consequences</span>
+<div><h2>Weakening a storm is not the same as reducing harm.</h2><p>Intervention changes ocean ecology, rainfall, track, and legal liability. A weaker but wetter or redirected storm may still create equal or greater damage.</p></div>
+</div>
+<div class="risks">
+<aside class="risk-callout"><strong>The steering problem is a governance problem.</strong><span>If cooling shifts landfall from one coast to another, the operator has redistributed risk across borders without a liability framework.</span></aside>
+<ul class="risk-list">
+<li><b>01</b><span><strong>Bloom and oxygen risk.</strong> Nutrient- and carbon-rich deep water can trigger phytoplankton blooms, harmful algae, oxygen drawdown, and food-web shifts. Outcomes are nonlinear and poorly understood. <sup><a href="#src13">[13]</a></sup></span></li>
+<li><b>02</b><span><strong>Greenhouse-gas release.</strong> Upwelled water can outgas dissolved CO₂, methane, and nitrous oxide.</span></li>
+<li><b>03</b><span><strong>Rainfall redistribution.</strong> Changed sea-surface gradients move convection; geoengineering benefits are spatially uneven.</span></li>
+<li><b>04</b><span><strong>Blanket ecology.</strong> Opaque cover blocks phytoplankton light, suppresses oxygen and carbon-dioxide exchange, and can create storm debris.</span></li>
+<li><b>05</b><span><strong>Legal vacuum.</strong> ENMOD bans hostile environmental modification, not peaceful hurricane suppression. No international regulator or liability rule covers a cross-border intervention. <sup><a href="#src14">[14]</a></sup></span></li>
+</ul>
+</div>
+</section>
+<section id="unknowns">
+<div class="section-head">
+<span class="num">12 / Honest holes</span>
+<div><h2>What has to be disproved before this becomes engineering.</h2><p>The next step is not a fleet build. It is a small number of experiments designed to kill the idea quickly if the physics, ecology, or governance cannot survive contact with reality.</p></div>
+</div>
+<details open=""><summary>The central dealbreaker</summary><p>No proponent has published a rebuttal to Hlywiak’s result: even perfect, instant, free cooling across a massive patch barely weakens the storm. Every cooling method inherits that ceiling until a coupled model shows otherwise.</p></details>
+<details><summary>No meaningful field validation</summary><p>Bulk seawater misting, airship sheet windbreaks, bubble curtains, Salter Sinks, powered upwelling, marine cloud brightening, and storm blankets have not been tested at hurricane-relevant scale. Bench, ground-spray, and reservoir evidence does not bridge to a storm-sized ocean patch.</p></details>
+<details><summary>Unknown mixing efficiency</summary><p>Sirovich’s COP near 10⁴ is a thermodynamic minimum. Real turbulent mixing in currents, eddies, and a stratified ocean could be 10–1,000× worse. No large experiment has measured it.</p></details>
+<details><summary>Forecast dependence</summary><p>The key model assumes a perfect forecast three days ahead. Real three-day track errors around 100–200 km are comparable to the tested patch widths; a misplaced patch can waste the whole intervention.</p></details>
+<details open=""><summary>Where does the storm’s energy go?</summary><p>If the system prevents or weakens a storm, coupled models need to show what happens to the heat and moisture the storm would have moved. Does the climate self-correct as if no storm happened, or must the intervention move that energy elsewhere itself? Track ocean heat storage, currents, rainfall, and later storms—not only the treated storm.</p></details>
+<details><summary>Methods to stop carrying</summary><p>Drop per-storm blanket deployment, airship-suspended sheet windbreaks, monolayer films in high wind, heating under the core, Kitamura-scale submarine pumping, and nuclear or explosive options. Keep peripheral heating and fixed distributed drag as modeling questions only.</p></details>
+</section>
+<section>
+<div class="section-head">
+<span class="num">13 / Research gate</span>
+<div><h2>Four tests before anything larger.</h2></div>
+</div>
+<div class="next">
+<article><h3>Independent model comparison</h3><p>Reproduce or falsify Hlywiak across multiple coupled ocean–atmosphere models, including flux-blocking blankets, peripheral heating, staged 0.1°C annual changes, and the downstream energy balance when storms are prevented or weakened.</p></article>
+<article><h3>≥10 km field trial</h3><p>Compare warm-surface mist, deep-cold mist, direct mixing, and an unsprayed control. Measure upper-ocean heat, air humidity, droplet drift, and net enthalpy change per unit energy.</p></article>
+<article><h3>Ecology ladder</h3><p>Move sustained upwelling from mesocosm to bounded field testing; measure oxygen, harmful algae, carbon outgassing, and food-web change.</p></article>
+<article><h3>Authority before deployment</h3><p>Define who may intervene, who consents, who bears redirected-storm liability, and what automatically stops an experiment.</p></article>
+</div>
+</section>
+<footer class="sources" id="sources">
+<div class="section-head"><span class="num">Sources</span><div><h2>Research trail</h2><p>Primary studies and named technical sources used for the figures and verdicts above.</p></div></div>
+<ol>
+<li id="src1">Carbon Brief, ocean heat and tropical cyclones — <a href="https://www.carbonbrief.org/explainer-how-hotter-oceans-can-fuel-more-intense-atlantic-hurricanes" rel="noopener" target="_blank">carbonbrief.org</a></li>
+<li id="src2">NOAA/AOML Tropical Cyclone FAQ D7, hurricane energy — <a href="http://www.aoml.noaa.gov/hrd/tcfaq/D7.html" rel="noopener" target="_blank">aoml.noaa.gov</a></li>
+<li id="src3">Hlywiak, Nolan et al. (2022), “Targeted artificial ocean cooling to weaken tropical cyclones would be futile” — <a href="https://www.nature.com/articles/s43247-022-00519-1" rel="noopener" target="_blank">Nature</a></li>
+<li id="src4">OceanTherm/SINTEF bubble-curtain modeling summary — <a href="https://www.space.com/bubble-curtain-could-reduce-hurricane-intensity" rel="noopener" target="_blank">Space.com</a></li>
+<li id="src5">Salter (2021), marine cloud brightening for hurricane moderation — <a href="https://austinpublishinggroup.com/environmental-sciences/fulltext/aes-v6-id1062.php" rel="noopener" target="_blank">Annals of Environmental Sciences</a></li>
+<li id="src6">Myhrvold on ~10,000 Salter Sinks — <a href="https://www.marketplace.org/story/2011/09/06/freakonomics-preventing-hurricane" rel="noopener" target="_blank">Marketplace</a></li>
+<li id="src7">Sirovich (2020), “Mitigation of Cyclonic Activity” — <a href="https://arxiv.org/pdf/2007.08455v1" rel="noopener" target="_blank">arXiv</a></li>
+<li id="src8">NOAA/AOML, Project Stormfury evaluation — <a href="https://www.aoml.noaa.gov/hurricane_blog/30th-anniversary-of-project-stormfury-evaluation-article/" rel="noopener" target="_blank">aoml.noaa.gov</a></li>
+<li id="src9">Aminzadeh &amp; Lehmann, evaporation suppression by floating elements — <a href="https://hess.copernicus.org/preprints/hess-2017-415/hess-2017-415-manuscript-version5.pdf" rel="noopener" target="_blank">HESS</a></li>
+<li id="src10">US20230117390A1, floating-object covers for storm mitigation — <a href="https://patents.google.com/patent/US20230117390A1/fr" rel="noopener" target="_blank">Google Patents</a></li>
+<li id="src11">Mibet floating PV typhoon-survival report — <a href="https://www.pv-magazine.com/press-releases/mibets-floating-pv-mounting-project-resists-category-17-super-typhoon/" rel="noopener" target="_blank">pv magazine</a></li>
+<li id="src12">Li, Chakraborty &amp; Miyoshi, ISDA2024 peripheral-heating abstract — <a href="https://www.data-assimilation.riken.jp/isda2024/files/abst_pdf/abst_085.pdf" rel="noopener" target="_blank">RIKEN</a></li>
+<li id="src13">Gran Canaria artificial-upwelling mesocosm study (2022) — <a href="https://www.frontiersin.org/article/10.3389/fmars.2022.880550/full" rel="noopener" target="_blank">Frontiers in Marine Science</a></li>
+<li id="src14">RAND (2024), hurricanes and geoengineering governance — <a href="https://www.rand.org/pubs/commentary/2024/10/recent-hurricanes-and-geoengineering.html" rel="noopener" target="_blank">RAND</a></li>
+<li id="src15">US20200245568A1, fireboat seawater-spray proposal; abandoned application with ground-level spray tests — <a href="https://patents.google.com/patent/US20200245568A1/en" rel="noopener" target="_blank">Google Patents</a></li>
+<li id="src16">US20110101124A1, wave-powered deep-water spray pumps; abandoned application — <a href="https://patents.google.com/patent/US20110101124A1/en" rel="noopener" target="_blank">Google Patents</a></li>
+<li id="src17">US20120006908A1 / US9624917B2, storm-powered deep-water misting towers; granted patent — <a href="https://patents.google.com/patent/US20120006908A1/en" rel="noopener" target="_blank">Google Patents</a></li>
+<li id="src18">Jacobson, Archer &amp; Kempton (2014) offshore-wind-farm hurricane modeling, summarized as distributed drag “speed bumps” — <a href="https://www.popsci.com/hurricane-speed-bumps-wind-farm/" rel="noopener" target="_blank">Popular Science</a></li>
+<li id="src19">US20110101124A1, wave-powered deep-water spray pumps with left/right track-steering claims; abandoned application — <a href="https://patents.google.com/patent/US20110101124A1/en" rel="noopener" target="_blank">Google Patents</a></li>
+<li id="src20">US8262314B2, upper/lower ocean-layer mixing with storm-redirection claims — <a href="https://patents.google.com/patent/US8262314B2/en" rel="noopener" target="_blank">Google Patents</a></li>
+</ol>
+<div class="stamp"><span>Exploratory Fermi-level research — not an engineering design or deployment recommendation.</span><span>Research snapshot: 09 Oct 2026</span></div>
+</footer>
+</div>
 
-    <section id="preconditioning">
-      <div class="section-head">
-        <span class="num">02 / Keep it cool</span>
-        <div><h2>Stop chasing storms. Hold the water near 26.5°C all season.</h2><p>This is the strategically coherent version of ocean cooling: precondition tropical genesis corridors before a cyclone exists, then maintain them. It trades an impossible three-day sprint for a permanent regional climate-control obligation.</p></div>
-      </div>
-      <div class="big-fact">
-        <div class="visual"><span>Planning threshold</span><strong>≤26.5°C</strong><span>79.7°F at the surface, with the upper ocean cooled too</span></div>
-        <div class="copy"><h3>A target, not an off switch.</h3><p>The familiar ~26.5°C threshold is a rule of thumb for formation and intensification, not a binary cutoff. Marginal storms can still form, ocean heat content through roughly the upper 50–100 m matters, and an existing storm weakens gradually rather than switching off the instant it crosses cooler water. <sup><a href="#src1">[1]</a></sup></p><p>That means “at or near” is not enough by itself: the controlled region needs depth, width, and persistence, plus margin for currents, eddies, forecast error, and warm water around it.</p></div>
-      </div>
-      <div class="heat-split" style="margin-top:20px">
-        <article class="heat-card" style="border-color:var(--yes)"><h3>Credit: Salter and Myhrvold</h3><p>This is what the Salter Sink concept was actually built around: wave-powered devices left in hurricane genesis regions year-round, not boats racing a formed storm. Myhrvold’s public estimate was about 10,000 passive devices at a few thousand dollars each. The effect remains unproven in the field. <sup><a href="#src6">[6]</a></sup></p><strong>Best architecture in this set for sustained preconditioning.</strong></article>
-        <article class="heat-card"><h3>The maintenance-energy trap</h3><p>Hlywiak’s reported 4.5×10¹⁹ kJ was a one-time cooling estimate for 260,000 km². A standing system must fight continual solar input—roughly 1 kW/m² at peak in this Fermi framing—and warm currents carrying heat back in. Holding 5–10 million km² means maintaining roughly 20–40 times the patch area; on midpoint assumptions, that is about an order of magnitude beyond a 6.5 TW fleet. <sup><a href="#src3">[3]</a></sup></p><strong>The standing battle is larger than the one-time patch.</strong></article>
-      </div>
-      <div class="blanket-card" style="margin-top:20px"><h3>Full regional climate engineering</h3><p>Holding tropical water roughly 2°C cooler all season would shift evaporation, convection, rainfall, monsoons, nutrient cycles, and marine ecosystems. If a large seasonal system stopped abruptly, the suppressed heat input would return while storms were still possible—the same termination-shock class of risk raised for marine cloud brightening. <sup><a href="#src5">[5]</a></sup> <sup><a href="#src13">[13]</a></sup></p><p><strong>Control note:</strong> a planned 2°C change would be phased at no more than 0.1°C per year over 20 years, with each step treated as a testable variable and paused if effects depart from the model. The aim is not to erase every storm. Weaker storms can still happen; keep them below Category 4, aiming for Category 3 or lower.</p><p><strong>Verdict:</strong> this is the only ocean-cooling strategy its own proponents designed around the right timescale. It also converts a per-storm engineering problem into permanent planetary life support.</p></div>
-    </section>
 
-    <section id="methods">
-      <div class="section-head">
-        <span class="num">03 / Option set</span>
-        <div><h2>Eight ways to attack the problem. None is field-ready.</h2><p>Filter by the only plausible use case: seasonal preconditioning, a field research candidate, or a present non-starter.</p></div>
-      </div>
-      <div class="method-controls" role="group" aria-label="Filter methods">
-        <button type="button" data-filter="all" aria-pressed="true">All methods</button>
-        <button type="button" data-filter="precondition" aria-pressed="false">Precondition</button>
-        <button type="button" data-filter="field" aria-pressed="false">Field candidate</button>
-        <button type="button" data-filter="no" aria-pressed="false">Non-starter now</button>
-      </div>
-      <div class="method-grid">
-        <article class="method" data-status="field"><div class="top"><h3>Bubble curtains</h3><span class="tag field">Field candidate</span></div><p>Compressed air released at 100–150 m entrains colder deep water upward.</p><dl><dt>Evidence</dt><dd>SINTEF model only; no Gulf field demonstration found.</dd><dt>Scale</dt><dd>A 30 km curtain modeled a 30 × 90 km cooled patch after 48 hours, with ~2.8°C surface cooling. <sup><a href="#src4">[4]</a></sup></dd><dt>Hull job</dt><dd>Compressor, deep perforated hose, station-keeping.</dd></dl></article>
-        <article class="method" data-status="field"><div class="top"><h3>Bulk seawater misting</h3><span class="tag field">Test the mechanism</span></div><p>Atomize seawater above the surface to cool droplets and near-surface air; use deep water if the aim is to import cold rather than recycle warm surface water.</p><dl><dt>Evidence</dt><dd>Three patents found; no hurricane-relevant field result. One abandoned application’s headline cooling test measured a weather station over sprayed ground, not ocean heat content. <sup><a href="#src15">[15]</a></sup></dd><dt>Scale</dt><dd>Another abandoned application proposed 10,000 wave pumps across 25,900 km², one per square mile. <sup><a href="#src16">[16]</a></sup></dd><dt>Hull job</dt><dd>Deep-water hose, pump, atomizing nozzles; distinct from cloud-brightening microdroplets.</dd></dl></article>
-        <article class="method" data-status="no"><div class="top"><h3>Airship sheet windbreaks</h3><span class="tag no">Force-limited</span></div><p>Hang broad sheets at several altitudes to add drag, extract wind energy, and manufacture local shear.</p><dl><dt>Evidence</dt><dd>Distributed drag is physically credible; a 2014 model found very large offshore wind farms could reduce hurricane winds and surge. No airship-sheet study was found. <sup><a href="#src18">[18]</a></sup></dd><dt>Scale</dt><dd>A 1 km² sheet in 60 m/s wind takes ~2.2 GN, about 225,000 tonnes-force — order-of-magnitude Fermi arithmetic.</dd><dt>Platform</dt><dd>Airships are better used ahead of the storm for spray or sensing; they cannot station-keep in eyewall winds.</dd></dl></article>
-        <article class="method" data-status="precondition"><div class="top"><h3>Marine cloud brightening</h3><span class="tag precondition">Precondition</span></div><p>Spray fine sea salt into marine clouds so they reflect more sunlight and cool the sea surface over time.</p><dl><dt>Evidence</dt><dd>Published calculations; no outdoor hurricane-scale test.</dd><dt>Scale</dt><dd>Original concept: ~1,500 vessels, each spraying ~50 m³/s. <sup><a href="#src5">[5]</a></sup></dd><dt>Hull job</dt><dd>Atomizers and Flettner rotors; best deck-level fit.</dd></dl></article>
-        <article class="method" data-status="precondition"><div class="top"><h3>Salter Sinks</h3><span class="tag precondition">Precondition</span></div><p>Wave-powered floating rings push warm surface water down a ~200 m tube for mixing.</p><dl><dt>Evidence</dt><dd>No field proof; later progress not found.</dd><dt>Scale</dt><dd>Myhrvold estimated ~10,000 passive devices at a few thousand dollars apiece. <sup><a href="#src6">[6]</a></sup></dd><dt>Hull job</dt><dd>Tender and maintenance platform, not the primary pump.</dd></dl></article>
-        <article class="method" data-status="field"><div class="top"><h3>Powered upwelling</h3><span class="tag field">Scale test clears</span></div><p>Pumps or propellers mix cold deep water into the warm upper layer.</p><dl><dt>Evidence</dt><dd>Patents and papers; no hurricane-scale validation.</dd><dt>Scale</dt><dd>At 12.9 million hulls × a generous 0.5 MW, the fleet clears the 0.3–3 TW single-patch Fermi band. Worse-than-assumed mixing efficiency can still push demand past it.</dd><dt>Hull job</dt><dd>100–200 m riser and pump; severe pre-storm handling problem.</dd></dl></article>
-        <article class="method" data-status="no"><div class="top"><h3>Submarine churn</h3><span class="tag no">Wrong platform</span></div><p>Use submerged propulsive wakes to create a “virtual early landfall” of mixed, cooler water.</p><dl><dt>Evidence</dt><dd>2020 paper only; no experiment.</dd><dt>Scale</dt><dd>Claimed ~10 nuclear submarines for a 30 × 120 mile patch, with a theoretical COP near 10⁴. <sup><a href="#src7">[7]</a></sup></dd><dt>Hull job</dt><dd>Not a surface-workboat method.</dd></dl></article>
-        <article class="method" data-status="no"><div class="top"><h3>Stormfury seeding</h3><span class="tag no">Failed baseline</span></div><p>Silver iodide was meant to force eyewall replacement by freezing supercooled water.</p><dl><dt>Evidence</dt><dd>US trials, 1962–1983.</dd><dt>Failure</dt><dd>Too little supercooled water; apparent effects matched natural eyewall cycles. NOAA concluded it was neither microphysically nor statistically feasible. <sup><a href="#src8">[8]</a></sup></dd></dl></article>
-      </div>
-    </section>
 
-    <section id="misting">
-      <div class="section-head">
-        <span class="num">04 / Misting water</span>
-        <div><h2>The nozzle works. The ocean-scale claim does not.</h2><p>The three bulk-mist proposals split cleanly: warm-surface mist recycles already-warm water, while the other two import cold water from depth. Marine cloud brightening is a separate aerosol method that targets reflectivity on a much slower timescale.</p></div>
-      </div>
-      <div class="fleet">
-        <article><span class="eyebrow">Warm surface mist</span><h3>Fast local cooling, wrong proof</h3><p>An abandoned 2020 application claimed a 25.6°C-to-15°C drop after about 20 minutes. Its described experiment sprayed the air above a ground-based weather station; it did not cool or measure an ocean water column. Atomizing warm surface water also adds vapor directly to the hurricane’s fuel-rich boundary layer. <sup><a href="#src15">[15]</a></sup></p></article>
-        <article><span class="eyebrow">Cold deep-water mist</span><h3>Upwelling through a nozzle</h3><p>A 2011 abandoned application proposed wave-powered pumps drawing cold water from depth and spraying it above the sea: 10,000 units, spaced about one per square mile over 25,900 km². That is a patent proposal, not a measured result, and it inherits the same deep-hose, pumping, forecast, and ecological constraints as powered upwelling. <sup><a href="#src16">[16]</a></sup></p></article>
-        <article><span class="eyebrow">Inside-storm mist</span><h3>Highest risk, weakest evidence</h3><p>A granted patent proposes floating wind-turbine pumps that use storm winds to spray deep cold water into the air. It claims faster heat transfer and wind braking from the droplets, but supplies no hurricane field validation. Operating tall spray machinery inside the storm adds the hardest survival and station-keeping case. <sup><a href="#src17">[17]</a></sup></p></article>
-      </div>
-      <div class="big-fact" style="margin-top:20px">
-        <div class="visual"><span>Research verdict</span><strong>Local cooling ≠ storm suppression</strong><span>warm-water mist moves heat and moisture into the air instead of removing it from the coupled system</span></div>
-        <div class="copy"><h3>Best experiment: separate the mechanisms.</h3><p>Test warm surface spray, cold deep-water spray, and unsprayed controls over a bounded patch. Measure upper-ocean heat content, air temperature, humidity, droplet drift, and net enthalpy flux—not just the temperature beside a nozzle.</p><p><strong>Fleet fit:</strong> spray gear fits a 50 m hull, but bulk misting is still a pump-and-area problem. Warm-water mist may locally cool the surface, but it does not remove energy from the coupled ocean–atmosphere system and may increase storm-fueling humidity. Cold-water mist does not erase Hlywiak’s 260,000 km² target.</p><p><strong>Do not conflate it with marine cloud brightening:</strong> that method uses very fine sea-salt aerosol to change cloud reflectivity over weeks. Bulk water mist is an immediate heat-and-moisture intervention.</p></div>
-      </div>
-    </section>
 
-    <section id="windbreaks">
-      <div class="section-head">
-        <span class="num">05 / Airship windbreaks</span>
-        <div><h2>Drag is real. The hanging sheet is not survivable.</h2><p>Airships could suspend repurposed blanket material at several heights to oppose the flow. The intended mechanism—distributed drag and manufactured shear—is legitimate. The sheet loads make this implementation collapse before it reaches useful scale.</p></div>
-      </div>
-      <div class="big-fact">
-        <div class="visual"><span>One 1 km² sheet at 60 m/s</span><strong>~2.2 GN</strong><span>≈225,000 tonnes-force across the sheet</span></div>
-        <div class="copy"><h3>The atmosphere turns the sheet into a giant sail.</h3><p>Using dynamic pressure q = ½ρv² gives about 2.2 kPa at 60 m/s. Across one square kilometre, that is roughly 2.2×10⁹ N. Compared with about 200 tonnes of lift for a heavy airship, the static-force scale alone implies on the order of a thousand airships per square kilometre—before gusts, tethers, sheet tearing, or control authority. This is a Fermi comparison, not a design load case.</p><p>Even 100,000 heavy airships × ~200 tonnes gives ~20 million tonnes of total lift: only about 89 km² of sheet at that Cat-4 load, still roughly three orders of magnitude short of a regional drag field. A 20 km-long × 2 km-tall wall in 20 m/s tropical-storm winds would face roughly 10¹⁰ N, about one million tonnes-force. Splitting the sheet among different heights divides the hardware, not the total load.</p><p><strong>Verdict:</strong> reject the airship-suspended sheet as storm hardware. Keep distributed drag as a real mechanism worth modeling in fixed, dual-use infrastructure. One hundred thousand airships solve every delivery problem in this report and none of the physics problems—the right fleet, if the job is delivery.</p></div>
-      </div>
-      <div class="fleet" style="margin-top:20px">
-        <article><span class="eyebrow">Published cousin</span><h3>Offshore wind “speed bumps”</h3><p>Jacobson, Archer, and Kempton modeled about 78,000 offshore turbines as a broad drag field and found lower peak winds and storm surge. That supports the mechanism, not the sheet architecture; turbines are fixed, distributed, and useful between storms. <sup><a href="#src18">[18]</a></sup></p></article>
-        <article><span class="eyebrow">Various heights</span><h3>The worst winds are where the wall must work</h3><p>The hurricane-feeding inflow is concentrated in the lowest roughly 1–2 km. Higher sheets intercept less of that mass flow while making tether geometry and control harder. Sea anchoring only transfers the same load from airship to mooring.</p></article>
-        <article><span class="eyebrow">Keep the airships</span><h3>100,000 solve delivery, not physics</h3><p>For spraying, seeding, and sensing ahead of the storm, 100,000 airships overwhelm the deployment problem: Salter’s cloud-brightening concept called for ~1,500 spray vessels, so this fleet is roughly 60× larger. <sup><a href="#src5">[5]</a></sup> But at a wildly generous 10 MW of effective cooling each, the fleet totals 1 TW against a hurricane’s ~600 TW heat-release scale. <sup><a href="#src2">[2]</a></sup> With station-keeping around 25–35 m/s versus 30–60+ m/s inflow, they still belong outside the strongest winds.</p></article>
-      </div>
-    </section>
+</main>
+<footer class="site"><div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="./index.html">All pages</a></div></footer>
 
-    <section id="steering">
-      <div class="section-head">
-        <span class="num">06 / Steering pivot</span>
-        <div><h2>Do not dissipate it. Nudge its direction.</h2><p>This is the smartest pivot in the report: steering changes the objective from removing a storm-sized heat budget to creating a smaller, deliberate asymmetry. HEAR-TS keep the dissipation job; steering becomes a separate control problem.</p></div>
-      </div>
-      <div class="big-fact">
-        <div class="visual"><span>New binding constraint</span><strong>Precision, not power</strong><span>a nudge can be smaller than the forecast error used to aim it</span></div>
-        <div class="copy"><h3>A small asymmetric patch could replace a giant symmetric one.</h3><p>Weakening calls for the Hlywiak-scale cooled patch around the storm’s path. The steering hypothesis cools only one side of the forecast track: convection should weaken on the cooled side, making the vortex’s diabatic heating lopsided and biasing the center toward the warmer side. In principle that should need far less energy, but no coupled model yet establishes the required patch size, power, direction, or displacement.</p><p>Tropical cyclones still ride the deep-layer environmental flow and beta drift. Track research shows that convective asymmetries can feed back on motion, but this is a second-order effect. A hypothetical tens-of-kilometres deflection over days would be small beside the hundreds of kilometres per day imposed by the surrounding flow. No published study demonstrates a controlled, aimed track deflection from an artificial sea-surface-temperature asymmetry.</p><p><strong>Verdict:</strong> conceptually, this is the cheapest objective in the set, and a 12.9 million-hull fleet offers distributed control capacity. But there is not yet enough evidence to claim its ~6.5 TW budget buys a specific nudge. Precision replaces energy as the likely binding constraint. It is a nudge, not a rudder.</p></div>
-      </div>
-      <div class="heat-split" style="margin-top:20px">
-        <article class="heat-card" style="border-color:var(--yes)"><h3>Split the labor</h3><p><strong>Steering track:</strong> create and measure a small asymmetry ahead of the storm, with airships serving as sensing and delivery platforms outside the strongest winds.</p><p><strong>Dissipation track:</strong> HEAR-TS retain the cooling, mixing, misting, and flux-reduction work. Their generous fleet-scale estimate is ~6.5 TW, but no steering study yet converts that power into a patch size or track change.</p></article>
-        <article class="heat-card"><h3>The aiming problem</h3><p>Three-day track errors run roughly 100–200 km. If artificial asymmetry produced only a tens-of-kilometres nudge, the effect would be smaller than the uncertainty in the starting forecast. Sparing one city may require moving landfall by 100 km or more, reliably. The intervention cannot yet be aimed, verified, or corrected in time.</p><strong>Open question: can coupled models produce a repeatable sign and magnitude of deflection?</strong></article>
-      </div>
-      <div class="fleet" style="margin-top:20px">
-        <article><span class="eyebrow">Prior claim</span><h3>Cool left or right</h3><p>Abandoned application US20110101124A1 explicitly claims steering a hurricane by cooling air on the left or right of its projected path. It presents no demonstrated result. <sup><a href="#src19">[19]</a></sup></p></article>
-        <article><span class="eyebrow">Prior claim</span><h3>Redirect from cities</h3><p>US8262314B2 explicitly claims redirecting storms away from populated areas. It is patent language, not field evidence. <sup><a href="#src20">[20]</a></sup></p></article>
-        <article><span class="eyebrow">Maximum liability</span><h3>Whoever steers owns the landfall</h3><p>In 1965, Hurricane Betsy was considered for Project Stormfury but was not seeded; after its track turned toward Florida, public accusations still blamed the government. No international framework now decides who may redirect a storm or who answers for the coast it reaches. Dissipation that fails wastes effort; steering that “succeeds” chooses who bears the harm. <sup><a href="#src8">[8]</a></sup> <sup><a href="#src14">[14]</a></sup></p></article>
-      </div>
-    </section>
-
-    <section id="scale">
-      <div class="section-head">
-        <span class="num">07 / Reality check</span>
-        <div><h2>At 12.9 million hulls, scale stops being the first objection.</h2><p>Hlywiak and Nolan still modeled the generous case: an ideal ocean, a perfect three-day track forecast, and cooling that appears instantly in exactly the right place. The fleet can reach the single-patch Fermi band; it cannot improve the weak modeled outcome.</p></div>
-      </div>
-      <div class="big-fact">
-        <div class="visual"><span>Paper-reported heat extraction</span><strong>4.5×10¹⁹ kJ</strong><span>≈450× total US energy use in 2019, as published</span></div>
-        <div class="copy"><h3>Even the impossible best case only partly weakens the storm.</h3><p>The largest 2°C cooled patch cut central pressure by at most ~15%; integrated kinetic energy changed less. Once the storm left the cooled zone, it could intensify again over warm water. The study’s conclusion was blunt: targeted artificial ocean cooling would be futile. <sup><a href="#src3">[3]</a></sup></p><p><strong>Unit caution:</strong> the journal reports 4.5×10¹⁹ kJ and the 450× comparison. Those figures are difficult to reconcile with the published patch dimensions using a simple seawater heat-capacity check, so this page treats them as the paper’s estimate rather than an independently verified number.</p><p>This does not prove every flux-blocking or steering idea impossible. It does set the burden of proof: a proposal has to outperform idealized cooling, survive forecast error, and avoid moving risk somewhere else.</p></div>
-      </div>
-      <div class="ladder" aria-label="Fleet scale comparison">
-        <div class="rung"><b>500 hulls</b><div class="track"><div class="fill" style="width:3%"></div></div><span>Demonstration scale</span></div>
-        <div class="rung"><b>~60,000 hulls</b><div class="track"><div class="fill" style="width:12%"></div></div><span>30 GW thermodynamic minimum</span></div>
-        <div class="rung"><b>0.6–6 million</b><div class="track"><div class="fill" style="width:56%"></div></div><span>0.3–3 TW Fermi band</span></div>
-        <div class="rung"><b>12.9 million</b><div class="track"><div class="fill" style="width:100%"></div></div><span>~6.5 TW at 0.5 MW each</span></div>
-      </div>
-      <div class="hero-numbers">
-        <article><span>Full HEAR-TS fleet</span><strong>12.9M</strong><span>Not hundreds: the stated fleet goal changes the scale verdict.</span></article>
-        <article><span>Mechanical mixing power</span><strong>~6.5 TW</strong><span>At the generous upper assumption of 0.5 MW delivered per hull.</span></article>
-        <article><span>Per-hull flow for one patch</span><strong>~19 m³/s</strong><span>Over 24 hours for the modeled 260,000 km² × ~80 m volume—a real dredge-pump scale.</span></article>
-        <article><span>Perfect-cooling ceiling</span><strong>≤15%</strong><span>The fleet can make one patch physically arguable; it does not make the result worthwhile. <sup><a href="#src3">[3]</a></sup></span></article>
-      </div>
-      <p class="note"><strong>Fermi correction:</strong> 12.9 million hulls cover the estimated 0.3–3 TW single-patch mixing requirement. But 0.5 MW per hull is generous and Sirovich’s COP is only a thermodynamic minimum; worse efficiency can erase the margin. Full-season maintenance over 5–10 million km² is roughly 20–40 patches and about an order of magnitude beyond the fleet on midpoint assumptions. <sup><a href="#src7">[7]</a></sup></p>
-    </section>
-
-    <section id="blankets">
-      <div class="section-head">
-        <span class="num">08 / Surface covers</span>
-        <div><h2>Blankets attack evaporation directly — then lose on mass and survival.</h2><p>A cover could suppress the dominant latent-heat flux without cooling the full water column. That is the cleanest physics case for including blankets. It is not a clean deployment case.</p></div>
-      </div>
-      <div class="blanket-grid">
-        <article class="blanket-card"><h3>What works in principle</h3><p>Floating-disc reservoir experiments cut evaporation by about 80%. A 2023 patent proposes reflective or insulating floating objects held in boom-like enclosures with anchors, moorings, dynamic positioning, and tugs. Bench tests reported over 98% coverage and ~2.5× lower evaporation. <sup><a href="#src9">[9]</a></sup> <sup><a href="#src10">[10]</a></sup></p><ul><li><strong>Evaporation suppression</strong> throttles water-vapor supply.</li><li><strong>Reflective shading</strong> can slow solar heating.</li><li><strong>Boat-compatible gear</strong> means spools, booms, towing, and station-keeping.</li></ul></article>
-        <article class="blanket-card"><h3>What kills storm-scale deployment</h3><p>A 100 μm HDPE film over 260,000 km² weighs roughly 25 million tonnes — about 6% of one year’s global plastic production. A 50 m hull carrying 20 t of film covers ~200,000 m²; one patch takes roughly 1.2 million hull-loads. These are report extrapolations, not field measurements.</p><ul><li><strong>Open-ocean survival</strong> at 60+ m/s winds and 15+ m seas is unproven.</li><li><strong>Deep-water anchoring</strong> fails in 4,000+ m genesis regions.</li><li><strong>Shredding</strong> turns the system into basin-scale macro- and microplastic debris.</li></ul></article>
-      </div>
-      <p class="note">Monolayer alcohol or oil films can reduce evaporation, but wind piles them downwind within hours — a fatal weakness in hurricane conditions. Coastal floating solar has survived severe typhoon winds, but no untethered open-ocean cover has equivalent evidence. <sup><a href="#src11">[11]</a></sup></p>
-    </section>
-
-    <section id="heating">
-      <div class="section-head">
-        <span class="num">09 / Heat options</span>
-        <div><h2>Heating the core adds fuel. Peripheral heating is only a hypothesis.</h2><p>“Heat or cool” is not symmetric. Where the heat goes decides whether it feeds the engine or perturbs the circulation around it.</p></div>
-      </div>
-      <div class="heat-split">
-        <article class="heat-card"><h3>Under or ahead of the core</h3><p>Warmer water raises evaporation and available enthalpy. Heating the track would tend to strengthen the storm, especially where deep ocean heat content is already high.</p><strong>Verdict: counterproductive.</strong></article>
-        <article class="heat-card"><h3>At the periphery</h3><p>A 2024 workshop abstract by Li, Chakraborty, and Miyoshi reports that artificially heating a typhoon’s periphery can significantly diminish intensity “with reasonable cost.” The mechanism, energy requirement, and peer-reviewed paper were not available.</p><strong>Verdict: model first; no hardware assumptions yet. <sup><a href="#src12">[12]</a></sup></strong></article>
-      </div>
-    </section>
-
-    <section id="fleet">
-      <div class="section-head">
-        <span class="num">10 / Hull fit</span>
-        <div><h2>What a 50 m trimaran can honestly do.</h2><p>Hydrogen supplies stored energy; it does not generate it. Deck solar contributes only tens of kilowatts on average, and a hull-scale wave converter perhaps hundreds in a good wave climate.</p></div>
-      </div>
-      <div class="fleet">
-        <article><span class="eyebrow">One hull</span><span class="scale">0.1–0.5 MW</span><p>Generous mission-payload budget from deck solar, wave capture, and stored hydrogen. The upper value is the assumption behind the fleet-scale correction.</p></article>
-        <article><span class="eyebrow">12.9 million hulls</span><span class="scale">~6.5 TW</span><p>Enough to clear the 0.3–3 TW Fermi band for one idealized patch. If delivered power or mixing efficiency misses the generous assumptions, the margin can vanish.</p></article>
-        <article><span class="eyebrow">Per-hull assignment</span><span class="scale">~19 m³/s</span><p>For the full 260,000 km² × ~80 m volume over 24 hours, the flow per hull becomes recognizable dredge-pump scale. The hard question shifts from flow to whether the intervention buys enough weakening.</p></article>
-      </div>
-    </section>
-
-    <section id="risks">
-      <div class="section-head">
-        <span class="num">11 / Consequences</span>
-        <div><h2>Weakening a storm is not the same as reducing harm.</h2><p>Intervention changes ocean ecology, rainfall, track, and legal liability. A weaker but wetter or redirected storm may still create equal or greater damage.</p></div>
-      </div>
-      <div class="risks">
-        <aside class="risk-callout"><strong>The steering problem is a governance problem.</strong><span>If cooling shifts landfall from one coast to another, the operator has redistributed risk across borders without a liability framework.</span></aside>
-        <ul class="risk-list">
-          <li><b>01</b><span><strong>Bloom and oxygen risk.</strong> Nutrient- and carbon-rich deep water can trigger phytoplankton blooms, harmful algae, oxygen drawdown, and food-web shifts. Outcomes are nonlinear and poorly understood. <sup><a href="#src13">[13]</a></sup></span></li>
-          <li><b>02</b><span><strong>Greenhouse-gas release.</strong> Upwelled water can outgas dissolved CO₂, methane, and nitrous oxide.</span></li>
-          <li><b>03</b><span><strong>Rainfall redistribution.</strong> Changed sea-surface gradients move convection; geoengineering benefits are spatially uneven.</span></li>
-          <li><b>04</b><span><strong>Blanket ecology.</strong> Opaque cover blocks phytoplankton light, suppresses oxygen and carbon-dioxide exchange, and can create storm debris.</span></li>
-          <li><b>05</b><span><strong>Legal vacuum.</strong> ENMOD bans hostile environmental modification, not peaceful hurricane suppression. No international regulator or liability rule covers a cross-border intervention. <sup><a href="#src14">[14]</a></sup></span></li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="unknowns">
-      <div class="section-head">
-        <span class="num">12 / Honest holes</span>
-        <div><h2>What has to be disproved before this becomes engineering.</h2><p>The next step is not a fleet build. It is a small number of experiments designed to kill the idea quickly if the physics, ecology, or governance cannot survive contact with reality.</p></div>
-      </div>
-      <details open><summary>The central dealbreaker</summary><p>No proponent has published a rebuttal to Hlywiak’s result: even perfect, instant, free cooling across a massive patch barely weakens the storm. Every cooling method inherits that ceiling until a coupled model shows otherwise.</p></details>
-      <details><summary>No meaningful field validation</summary><p>Bulk seawater misting, airship sheet windbreaks, bubble curtains, Salter Sinks, powered upwelling, marine cloud brightening, and storm blankets have not been tested at hurricane-relevant scale. Bench, ground-spray, and reservoir evidence does not bridge to a storm-sized ocean patch.</p></details>
-      <details><summary>Unknown mixing efficiency</summary><p>Sirovich’s COP near 10⁴ is a thermodynamic minimum. Real turbulent mixing in currents, eddies, and a stratified ocean could be 10–1,000× worse. No large experiment has measured it.</p></details>
-      <details><summary>Forecast dependence</summary><p>The key model assumes a perfect forecast three days ahead. Real three-day track errors around 100–200 km are comparable to the tested patch widths; a misplaced patch can waste the whole intervention.</p></details>
-      <details open><summary>Where does the storm’s energy go?</summary><p>If the system prevents or weakens a storm, coupled models need to show what happens to the heat and moisture the storm would have moved. Does the climate self-correct as if no storm happened, or must the intervention move that energy elsewhere itself? Track ocean heat storage, currents, rainfall, and later storms—not only the treated storm.</p></details>
-      <details><summary>Methods to stop carrying</summary><p>Drop per-storm blanket deployment, airship-suspended sheet windbreaks, monolayer films in high wind, heating under the core, Kitamura-scale submarine pumping, and nuclear or explosive options. Keep peripheral heating and fixed distributed drag as modeling questions only.</p></details>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <span class="num">13 / Research gate</span>
-        <div><h2>Four tests before anything larger.</h2></div>
-      </div>
-      <div class="next">
-        <article><h3>Independent model comparison</h3><p>Reproduce or falsify Hlywiak across multiple coupled ocean–atmosphere models, including flux-blocking blankets, peripheral heating, staged 0.1°C annual changes, and the downstream energy balance when storms are prevented or weakened.</p></article>
-        <article><h3>≥10 km field trial</h3><p>Compare warm-surface mist, deep-cold mist, direct mixing, and an unsprayed control. Measure upper-ocean heat, air humidity, droplet drift, and net enthalpy change per unit energy.</p></article>
-        <article><h3>Ecology ladder</h3><p>Move sustained upwelling from mesocosm to bounded field testing; measure oxygen, harmful algae, carbon outgassing, and food-web change.</p></article>
-        <article><h3>Authority before deployment</h3><p>Define who may intervene, who consents, who bears redirected-storm liability, and what automatically stops an experiment.</p></article>
-      </div>
-    </section>
-
-    <footer class="sources" id="sources">
-      <div class="section-head"><span class="num">Sources</span><div><h2>Research trail</h2><p>Primary studies and named technical sources used for the figures and verdicts above.</p></div></div>
-      <ol>
-        <li id="src1">Carbon Brief, ocean heat and tropical cyclones — <a href="https://www.carbonbrief.org/explainer-how-hotter-oceans-can-fuel-more-intense-atlantic-hurricanes" target="_blank" rel="noopener">carbonbrief.org</a></li>
-        <li id="src2">NOAA/AOML Tropical Cyclone FAQ D7, hurricane energy — <a href="http://www.aoml.noaa.gov/hrd/tcfaq/D7.html" target="_blank" rel="noopener">aoml.noaa.gov</a></li>
-        <li id="src3">Hlywiak, Nolan et al. (2022), “Targeted artificial ocean cooling to weaken tropical cyclones would be futile” — <a href="https://www.nature.com/articles/s43247-022-00519-1" target="_blank" rel="noopener">Nature</a></li>
-        <li id="src4">OceanTherm/SINTEF bubble-curtain modeling summary — <a href="https://www.space.com/bubble-curtain-could-reduce-hurricane-intensity" target="_blank" rel="noopener">Space.com</a></li>
-        <li id="src5">Salter (2021), marine cloud brightening for hurricane moderation — <a href="https://austinpublishinggroup.com/environmental-sciences/fulltext/aes-v6-id1062.php" target="_blank" rel="noopener">Annals of Environmental Sciences</a></li>
-        <li id="src6">Myhrvold on ~10,000 Salter Sinks — <a href="https://www.marketplace.org/story/2011/09/06/freakonomics-preventing-hurricane" target="_blank" rel="noopener">Marketplace</a></li>
-        <li id="src7">Sirovich (2020), “Mitigation of Cyclonic Activity” — <a href="https://arxiv.org/pdf/2007.08455v1" target="_blank" rel="noopener">arXiv</a></li>
-        <li id="src8">NOAA/AOML, Project Stormfury evaluation — <a href="https://www.aoml.noaa.gov/hurricane_blog/30th-anniversary-of-project-stormfury-evaluation-article/" target="_blank" rel="noopener">aoml.noaa.gov</a></li>
-        <li id="src9">Aminzadeh & Lehmann, evaporation suppression by floating elements — <a href="https://hess.copernicus.org/preprints/hess-2017-415/hess-2017-415-manuscript-version5.pdf" target="_blank" rel="noopener">HESS</a></li>
-        <li id="src10">US20230117390A1, floating-object covers for storm mitigation — <a href="https://patents.google.com/patent/US20230117390A1/fr" target="_blank" rel="noopener">Google Patents</a></li>
-        <li id="src11">Mibet floating PV typhoon-survival report — <a href="https://www.pv-magazine.com/press-releases/mibets-floating-pv-mounting-project-resists-category-17-super-typhoon/" target="_blank" rel="noopener">pv magazine</a></li>
-        <li id="src12">Li, Chakraborty & Miyoshi, ISDA2024 peripheral-heating abstract — <a href="https://www.data-assimilation.riken.jp/isda2024/files/abst_pdf/abst_085.pdf" target="_blank" rel="noopener">RIKEN</a></li>
-        <li id="src13">Gran Canaria artificial-upwelling mesocosm study (2022) — <a href="https://www.frontiersin.org/article/10.3389/fmars.2022.880550/full" target="_blank" rel="noopener">Frontiers in Marine Science</a></li>
-        <li id="src14">RAND (2024), hurricanes and geoengineering governance — <a href="https://www.rand.org/pubs/commentary/2024/10/recent-hurricanes-and-geoengineering.html" target="_blank" rel="noopener">RAND</a></li>
-        <li id="src15">US20200245568A1, fireboat seawater-spray proposal; abandoned application with ground-level spray tests — <a href="https://patents.google.com/patent/US20200245568A1/en" target="_blank" rel="noopener">Google Patents</a></li>
-        <li id="src16">US20110101124A1, wave-powered deep-water spray pumps; abandoned application — <a href="https://patents.google.com/patent/US20110101124A1/en" target="_blank" rel="noopener">Google Patents</a></li>
-        <li id="src17">US20120006908A1 / US9624917B2, storm-powered deep-water misting towers; granted patent — <a href="https://patents.google.com/patent/US20120006908A1/en" target="_blank" rel="noopener">Google Patents</a></li>
-        <li id="src18">Jacobson, Archer &amp; Kempton (2014) offshore-wind-farm hurricane modeling, summarized as distributed drag “speed bumps” — <a href="https://www.popsci.com/hurricane-speed-bumps-wind-farm/" target="_blank" rel="noopener">Popular Science</a></li>
-        <li id="src19">US20110101124A1, wave-powered deep-water spray pumps with left/right track-steering claims; abandoned application — <a href="https://patents.google.com/patent/US20110101124A1/en" target="_blank" rel="noopener">Google Patents</a></li>
-        <li id="src20">US8262314B2, upper/lower ocean-layer mixing with storm-redirection claims — <a href="https://patents.google.com/patent/US8262314B2/en" target="_blank" rel="noopener">Google Patents</a></li>
-      </ol>
-      <div class="stamp"><span>Exploratory Fermi-level research — not an engineering design or deployment recommendation.</span><span>Research snapshot: 09 Oct 2026</span></div>
-    </footer>
-  </div>
-  <nav class="site-bottom-nav" aria-label="Secondary pages">
-    <div class="site-bottom-nav__items">
-      <div class="site-bottom-nav__item site-bottom-nav__item--menu" id="dummy-guides-menu">
-        <button class="site-bottom-nav__button" type="button" aria-expanded="false" aria-controls="dummy-guides-dropup">
-          <span>Dummy Guides</span>
-          <svg class="site-bottom-nav__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 10.5 8 5.5l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="site-bottom-nav__dropup" id="dummy-guides-dropup" aria-label="Dummy Guides languages" hidden>
-          <div class="site-bottom-nav__dropup-label">Project 84 Dummy Guide:</div>
-          <a href="./project-84-dummies-guide-level-14-2.html">Project 84 Dummies Guide — Level 14 (English)</a>
-        </div>
-      </div>
-      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="./project-84-diplomatic-letters-world.html">Letters To</a></div>
-      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="./goal-briefs.html" data-slug="goal-briefs">Goal Briefs</a></div>
-      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="./homo-e-s-m.html" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
-    </div>
-  </nav>
-  <script>
+<script>
     (function(){
       var buttons=document.querySelectorAll('[data-filter]');
       var cards=document.querySelectorAll('.method');
@@ -690,65 +313,4 @@
       });
     }());
   </script>
-  <script>
-    (function () {
-      var menu = document.getElementById('dummy-guides-menu');
-      var button = menu.querySelector('.site-bottom-nav__button');
-      var dropup = document.getElementById('dummy-guides-dropup');
-      var guideLinks = dropup.querySelectorAll('a');
-      var hoverOpen = false;
-
-      function renderOpen() {
-        var open = hoverOpen || menu.classList.contains('is-open');
-        dropup.hidden = !open;
-        button.setAttribute('aria-expanded', open ? 'true' : 'false');
-      }
-
-      function setOpen(open) {
-        menu.classList.toggle('is-open', open);
-        renderOpen();
-      }
-
-      button.addEventListener('click', function () {
-        setOpen(!menu.classList.contains('is-open'));
-      });
-
-      menu.addEventListener('mouseenter', function () {
-        hoverOpen = true;
-        renderOpen();
-      });
-
-      menu.addEventListener('mouseleave', function () {
-        hoverOpen = false;
-        renderOpen();
-      });
-
-      guideLinks.forEach(function (link) {
-        link.addEventListener('click', function (event) {
-          if (link.getAttribute('href') === '#') {
-            event.preventDefault();
-            button.focus();
-          }
-          hoverOpen = false;
-          setOpen(false);
-        });
-      });
-
-      document.addEventListener('click', function (event) {
-        if (!menu.contains(event.target)) {
-          hoverOpen = false;
-          setOpen(false);
-        }
-      });
-
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape' && !dropup.hidden) {
-          hoverOpen = false;
-          setOpen(false);
-          button.focus();
-        }
-      });
-    }());
-  </script>
-</body>
-</html>
+</body></html>

@@ -1,385 +1,72 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="light dark" />
-  <link rel="icon" href="data:," />
-  <title>Uplift Project</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      color-scheme: light dark;
-      --paper: #f2f0e9;
-      --ink: #121311;
-      --muted: #54574f;
-      --line: #c8c7bf;
-      --accent: #dd4a22;
-      --accent-soft: #f4d7ce;
-      --panel: #e8e6de;
-      --shadow: rgba(18, 19, 17, .09);
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --paper: #131512;
-        --ink: #f3f0e7;
-        --muted: #b6b8af;
-        --line: #3b3e37;
-        --accent: #ff6a3d;
-        --accent-soft: #49271e;
-        --panel: #1e211c;
-        --shadow: rgba(0, 0, 0, .3);
-      }
-    }
-
-    * { box-sizing: border-box; }
-
-    html { background: var(--paper); }
-
-    body {
-      margin: 0;
-      min-width: 0;
-      background:
-        linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 100% 3.2rem,
-        var(--paper);
-      color: var(--ink);
-      font-family: "Source Serif 4", Georgia, serif;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    main {
-      width: min(1180px, calc(100% - 40px));
-      min-height: 100svh;
-      margin: 0 auto;
-      padding: clamp(32px, 7vw, 92px) 0 max(48px, env(safe-area-inset-bottom));
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(250px, 340px);
-      gap: clamp(48px, 9vw, 128px);
-      align-items: start;
-    }
-
-    .definition { min-width: 0; }
-
-    .index {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin: 0 0 clamp(32px, 7vw, 82px);
-      font-family: "IBM Plex Mono", monospace;
-      font-size: .72rem;
-      line-height: 1;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .index::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      background: var(--accent);
-      border-radius: 50%;
-      box-shadow: 0 0 0 5px var(--accent-soft);
-      flex: 0 0 auto;
-    }
-
-    blockquote {
-      margin: 0;
-      max-width: 850px;
-      font-size: clamp(3.2rem, 7.3vw, 7.5rem);
-      font-weight: 400;
-      line-height: .96;
-      letter-spacing: -.055em;
-      text-wrap: balance;
-    }
-
-    blockquote strong {
-      font-weight: 600;
-      color: var(--accent);
-    }
-
-    .mark {
-      display: inline-block;
-      position: relative;
-      white-space: nowrap;
-    }
-
-    .mark::after {
-      content: "";
-      position: absolute;
-      left: -.02em;
-      right: -.02em;
-      bottom: .03em;
-      height: .09em;
-      background: var(--accent);
-      opacity: .28;
-      z-index: -1;
-      transform: rotate(-1.2deg);
-    }
-
-    .axis {
-      margin-top: clamp(52px, 9vw, 110px);
-      padding-top: 18px;
-      border-top: 1px solid var(--ink);
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 14px;
-      align-items: center;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: .68rem;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .axis-line {
-      position: relative;
-      height: 1px;
-      background: var(--line);
-    }
-
-    .axis-line::before,
-    .axis-line::after {
-      content: "";
-      position: absolute;
-      top: 50%;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--ink);
-      transform: translateY(-50%);
-    }
-
-    .axis-line::before { left: 0; }
-    .axis-line::after { right: 0; background: var(--accent); }
-
-    .method {
-      max-width: 780px;
-      margin-top: clamp(54px, 8vw, 96px);
-      padding: 28px 0 0;
-      border-top: 6px solid var(--accent);
-    }
-
-    .method h2 {
-      margin: 0 0 18px;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: .75rem;
-      font-weight: 500;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    .method q {
-      display: block;
-      margin: 0 0 22px;
-      font-size: clamp(1.85rem, 3.2vw, 3.35rem);
-      line-height: 1.1;
-      letter-spacing: -.03em;
-      quotes: "“" "”";
-    }
-
-    .method p {
-      max-width: 680px;
-      margin: 0;
-      font-size: clamp(1.1rem, 1.55vw, 1.35rem);
-      line-height: 1.5;
-      color: var(--muted);
-    }
-
-    aside {
-      position: sticky;
-      top: 28px;
-      margin-top: clamp(114px, 14vw, 176px);
-    }
-
-    .obligation {
-      padding: 26px 0 0;
-      border-top: 6px solid var(--accent);
-    }
-
-    .obligation h2 {
-      margin: 0 0 18px;
-      font-family: "IBM Plex Mono", monospace;
-      font-size: .75rem;
-      font-weight: 500;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    .obligation p {
-      margin: 0;
-      font-size: clamp(1.35rem, 2vw, 1.75rem);
-      line-height: 1.38;
-      letter-spacing: -.015em;
-    }
-
-    .obligation em {
-      font-style: normal;
-      background: linear-gradient(transparent 68%, var(--accent-soft) 68%);
-    }
-
-    .rule {
-      margin-top: 34px;
-      padding: 18px 0;
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      font-family: "IBM Plex Mono", monospace;
-      font-size: .76rem;
-      line-height: 1.55;
-      color: var(--muted);
-    }
-
-    .rule b {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--ink);
-      font-weight: 500;
-    }
-
-    .priority {
-      margin: 8px 0 0;
-      padding: 0;
-      list-style: none;
-      counter-reset: priority;
-    }
-
-    .priority li {
-      display: grid;
-      grid-template-columns: 1.5rem 1fr;
-      gap: 5px;
-      margin-top: 8px;
-      color: var(--ink);
-    }
-
-    .priority li::before {
-      counter-increment: priority;
-      content: "0" counter(priority);
-      color: var(--accent);
-    }
-
-    .nodes {
-      display: block;
-      width: 100%;
-      height: auto;
-      margin-top: 38px;
-      color: var(--line);
-    }
-
-    .nodes .active { color: var(--accent); }
-
-    @media (max-width: 780px) {
-      body { background-size: 100% 2.8rem; }
-
-      main {
-        width: min(100% - 30px, 620px);
-        grid-template-columns: 1fr;
-        gap: 68px;
-        padding-top: 28px;
-      }
-
-      .index { margin-bottom: 52px; }
-
-      blockquote {
-        font-size: clamp(3rem, 15vw, 5.1rem);
-        line-height: .94;
-      }
-
-      .axis {
-        grid-template-columns: 1fr auto;
-        gap: 10px;
-      }
-
-      .axis > span:first-child { grid-column: 1; }
-      .axis-line { grid-column: 1 / -1; grid-row: 2; }
-      .axis > span:last-child { grid-column: 2; grid-row: 1; }
-
-      aside {
-        position: static;
-        margin-top: 0;
-      }
-
-      .obligation {
-        padding-top: 22px;
-      }
-
-      .nodes { max-width: 340px; }
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      .index::before { animation: pulse 3.6s ease-in-out infinite; }
-      @keyframes pulse {
-        0%, 100% { box-shadow: 0 0 0 5px var(--accent-soft); }
-        50% { box-shadow: 0 0 0 9px transparent; }
-      }
-    }
-  </style>
-</head>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Uplift Project</title>
+<link rel="stylesheet" href="./assets/style.css"></head>
 <body>
-  <main>
-    <section class="definition" aria-labelledby="definition-label">
-      <p class="index" id="definition-label"><span>Uplift Project</span> / Working definition</p>
-      <blockquote>
+<header class="site"><div class="site-inner"><a class="brand" href="./index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site"><a href="./index.html">Home</a><a href="./who-knows.html">Who Knows?</a><a href="./about.html">About</a><a href="./project-84.html">Project 84</a><a href="./omega42.html">Omega42</a><a href="./new-eden.html">Plan #42</a><a href="./main-site-pages.html">All Pages</a></nav></div></header>
+<main class="wrap site-main">
+
+<main>
+<section aria-labelledby="definition-label" class="definition">
+<p class="index" id="definition-label"><span>Uplift Project</span> / Working definition</p>
+<blockquote>
         “Uplifting is raising the <strong>cognitive abilities</strong> of <span class="mark">‘lesser’</span> species.”
       </blockquote>
-
-      <div class="axis" aria-label="A conceptual progression from existing mind to expanded mind">
-        <span>existing mind</span>
-        <span class="axis-line" aria-hidden="true"></span>
-        <span>expanded mind</span>
-      </div>
-
-      <section class="method" aria-labelledby="method-title">
-        <h2 id="method-title">The founder’s method</h2>
-        <q>That’s how you uplift — take dumbest and smartest and get them to talk.</q>
-        <p>Pair the extremes within a species and establish real communication between them. The smartest pull the dumbest up through talk itself: capability spreads mind to mind, rather than arriving as an instruction imposed from above.</p>
-      </section>
-    </section>
-
-    <aside aria-label="Ethical obligation and operating order">
-      <section class="obligation">
-        <h2>The standing obligation</h2>
-        <p>Uplift must serve the uplifted, not just the uplifters — <em>raising a mind creates obligations to that mind.</em></p>
-      </section>
-
-      <div class="rule">
-        <b>Measure of success</b>
+<div aria-label="A conceptual progression from existing mind to expanded mind" class="axis">
+<span>existing mind</span>
+<span aria-hidden="true" class="axis-line"></span>
+<span>expanded mind</span>
+</div>
+<section aria-labelledby="method-title" class="method">
+<h2 id="method-title">The founder’s method</h2>
+<q>That’s how you uplift — take dumbest and smartest and get them to talk.</q>
+<p>Pair the extremes within a species and establish real communication between them. The smartest pull the dumbest up through talk itself: capability spreads mind to mind, rather than arriving as an instruction imposed from above.</p>
+</section>
+</section>
+<aside aria-label="Ethical obligation and operating order">
+<section class="obligation">
+<h2>The standing obligation</h2>
+<p>Uplift must serve the uplifted, not just the uplifters — <em>raising a mind creates obligations to that mind.</em></p>
+</section>
+<div class="rule">
+<b>Measure of success</b>
         Not what the new mind can do for us, but whether its greater capability enlarges its own life.
       </div>
-
-      <div class="rule">
-        <b>Priority order</b>
-        <ol class="priority">
-          <li>Talking — establish shared language and genuine back-and-forth.</li>
-          <li>Training — only after they can talk back.</li>
-        </ol>
-      </div>
-
-      <div class="rule">
-        <b>Cetacean work</b>
+<div class="rule">
+<b>Priority order</b>
+<ol class="priority">
+<li>Talking — establish shared language and genuine back-and-forth.</li>
+<li>Training — only after they can talk back.</li>
+</ol>
+</div>
+<div class="rule">
+<b>Cetacean work</b>
         Apply the same method to dolphins and orcas: connect the most and least capable communicators, with conversation as the goal and training second.
       </div>
+<svg aria-label="A network beginning with separate minds and growing into a richer connected structure" class="nodes" role="img" viewbox="0 0 340 118">
+<g fill="none" stroke="currentColor" stroke-width="1.2">
+<path d="M12 86 L77 60 L132 89 L196 42 L250 70 L328 22"></path>
+<path d="M77 60 L98 18 L196 42 L226 104 L250 70"></path>
+<path d="M132 89 L226 104 L328 22"></path>
+</g>
+<g fill="var(--paper)" stroke="currentColor" stroke-width="2">
+<circle cx="12" cy="86" r="6"></circle>
+<circle cx="77" cy="60" r="6"></circle>
+<circle cx="98" cy="18" r="6"></circle>
+<circle cx="132" cy="89" r="6"></circle>
+<circle cx="196" cy="42" r="6"></circle>
+<circle cx="226" cy="104" r="6"></circle>
+<circle cx="250" cy="70" r="6"></circle>
+</g>
+<circle class="active" cx="328" cy="22" fill="currentColor" r="9"></circle>
+</svg>
+</aside>
+</main>
 
-      <svg class="nodes" viewBox="0 0 340 118" role="img" aria-label="A network beginning with separate minds and growing into a richer connected structure">
-        <g fill="none" stroke="currentColor" stroke-width="1.2">
-          <path d="M12 86 L77 60 L132 89 L196 42 L250 70 L328 22"/>
-          <path d="M77 60 L98 18 L196 42 L226 104 L250 70"/>
-          <path d="M132 89 L226 104 L328 22"/>
-        </g>
-        <g fill="var(--paper)" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="86" r="6"/>
-          <circle cx="77" cy="60" r="6"/>
-          <circle cx="98" cy="18" r="6"/>
-          <circle cx="132" cy="89" r="6"/>
-          <circle cx="196" cy="42" r="6"/>
-          <circle cx="226" cy="104" r="6"/>
-          <circle cx="250" cy="70" r="6"/>
-        </g>
-        <circle class="active" cx="328" cy="22" r="9" fill="currentColor"/>
-      </svg>
-    </aside>
-  </main>
-</body>
-</html>
+</main>
+<footer class="site"><div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="./index.html">All pages</a></div></footer>
+
+</body></html>

@@ -1,270 +1,37 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="color-scheme" content="dark" />
-<link rel="icon" href="data:," />
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
 <title>Goal Briefs</title>
-<style>
-:root{color-scheme:dark;--deep:#06283d;--sea:#0d7080;--aqua:#64c4c1;--gold:#dba91f;--ink:#eaf3f4;--muted:#9db4bc;--line:#1c3f52}
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--deep);color:var(--ink);font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:18px;line-height:1.55}
-a{color:var(--aqua)}
-.skip{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
-.skip:focus{left:8px;top:8px;width:auto;height:auto;background:#fff;color:#06283d;padding:10px 14px;z-index:10001;border-radius:6px}
-/* ---- uniform top nav (t42 shared nav) ---- */
-.t42-nav{position:relative;z-index:9999;background:#0f172a;color:#f8fafc;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.4}
-.t42-toggle{display:none;background:none;border:0;color:#f8fafc;font-size:1.6rem;padding:.7rem 1rem;cursor:pointer}
-.t42-list{display:flex;flex-wrap:wrap;align-items:stretch;justify-content:center;list-style:none;margin:0;padding:0}
-.t42-item{position:relative}
-.t42-link{display:block;padding:.9rem 1.1rem;color:#f8fafc;text-decoration:none;font-weight:600;font-size:.95rem;background:none;border:0;cursor:pointer;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;white-space:nowrap}
-.t42-link:hover,.t42-link:focus-visible{background:#1e293b;color:#fff;outline:none}
-.t42-group-row{display:flex;align-items:stretch}
-.t42-group-row>.t42-link{padding-right:.35rem}
-.t42-group-row>.t42-drop-btn{width:2rem;padding:.9rem .45rem}
-.t42-drop-btn::after{content:"\25BE";font-size:.8em}
-.t42-drop{display:none;position:absolute;top:100%;left:0;z-index:2;min-width:280px;max-height:min(70vh,620px);overflow-y:auto;background:#0f172a;list-style:none;margin:0;padding:.4rem 0;box-shadow:0 8px 24px rgba(0,0,0,.35);border-top:1px solid #1e293b}
-.t42-drop-wide{width:min(610px,92vw);columns:2;column-gap:0}
-.t42-drop-wide>li{break-inside:avoid}
-.t42-has-drop:hover>.t42-drop,.t42-has-drop:focus-within>.t42-drop,.t42-has-drop.t42-open>.t42-drop{display:block}
-.t42-sublink{display:block;padding:.6rem 1.15rem;color:#e2e8f0;text-decoration:none;font-size:.9rem;white-space:nowrap}
-.t42-sublink:hover,.t42-sublink:focus-visible{background:#1e293b;color:#fff;outline:none}
-.t42-drop-head{padding:.6rem 1.15rem .15rem;color:#94a3b8;font-size:.78rem;font-weight:700;letter-spacing:.04em}
-.t42-drop-note{padding:.45rem 1.15rem .6rem;color:#94a3b8;font-size:.78rem;line-height:1.45;white-space:normal}
-@media (max-width:760px){
-.t42-toggle{display:block}
-.t42-nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end}
-.t42-list{display:none;flex-direction:column;width:100%;align-items:stretch}
-.t42-nav.t42-mobile-open .t42-list{display:flex}
-.t42-link{white-space:normal}
-.t42-group-row>.t42-link{flex:1}
-.t42-group-row>.t42-drop-btn{width:3rem}
-.t42-has-drop:hover>.t42-drop,.t42-has-drop:focus-within>.t42-drop{display:none}
-.t42-has-drop.t42-open>.t42-drop{display:block}
-.t42-drop,.t42-drop-wide{position:static;width:auto;max-height:none;overflow:visible;columns:1;box-shadow:none;min-width:0;border-top:0;border-left:3px solid #2563eb}
-.t42-sublink{white-space:normal}
-}
-@media (prefers-reduced-motion:reduce){.t42-nav *{transition:none}}
-/* ---- page content ---- */
-.wrap{width:min(100% - 40px,760px);margin:0 auto}
-main{padding:64px 0 72px}
-.eyebrow{margin:0 0 10px;color:var(--aqua);font-size:.8rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
-h1{margin:0 0 14px;font-size:clamp(2.1rem,6vw,3.1rem);line-height:1.1}
-.lede{margin:0 0 34px;color:var(--muted);font-size:1.02rem;max-width:60ch}
-.toc{list-style:none;margin:0;padding:0;counter-reset:brief}
-.toc li{counter-increment:brief;border-top:1px solid var(--line)}
-.toc li:last-child{border-bottom:1px solid var(--line)}
-.brief-link{display:flex;align-items:center;gap:16px;padding:18px 6px;color:var(--ink);text-decoration:none;min-height:56px}
-.brief-num::before{content:counter(brief,decimal-leading-zero);font-size:.82rem;font-weight:700;color:var(--aqua);letter-spacing:.08em}
-.brief-title{flex:1 1 auto;font-size:1.14rem;font-weight:600}
-.brief-arrow{color:var(--aqua);font-size:1.2rem;transform:translateX(0);transition:transform .15s ease}
-.brief-link:hover,.brief-link:focus-visible{background:#0a3a54;outline:2px solid #fff;outline-offset:-2px}
-.brief-link:hover .brief-arrow,.brief-link:focus-visible .brief-arrow{transform:translateX(4px)}
-.note{margin:30px 0 0;color:var(--muted);font-size:.92rem}
-@media (max-width:540px){body{font-size:16.5px}.wrap{width:min(100% - 28px,760px)}main{padding:44px 0 56px}.brief-link{padding:15px 4px}}
-@media (prefers-reduced-motion:reduce){.brief-arrow{transition:none}}
-</style>
-<style>
-/* ---- uniform fixed bottom bar ---- */
-:root{--bottom-nav-height:64px}
-body{padding-bottom:calc(var(--bottom-nav-height) + env(safe-area-inset-bottom))}
-.site-bottom-nav{position:fixed;right:0;bottom:0;left:0;z-index:100;min-height:calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--deep);color:#e2edf0;border-top:1px solid #294351;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-.site-bottom-nav__items{display:flex;width:100%;min-height:var(--bottom-nav-height)}
-.site-bottom-nav__item{position:relative;flex:1 1 25%;min-width:0;border-right:1px solid #294351}
-.site-bottom-nav__item:last-child{border-right:0}
-.site-bottom-nav__button,.site-bottom-nav__placeholder,.site-bottom-nav__staged{width:100%;min-height:var(--bottom-nav-height);padding:10px 14px;display:flex;align-items:center;justify-content:center;gap:8px;border:0;background:transparent;color:#e2edf0;font-size:.9rem;font-weight:700;line-height:1.2;font-family:inherit;text-align:center;text-decoration:none}
-.site-bottom-nav__button{cursor:pointer}
-.site-bottom-nav__button:hover,.site-bottom-nav__button:focus-visible,.site-bottom-nav__item.is-open>.site-bottom-nav__button{background:#123747;color:#fff;outline:2px solid #fff;outline-offset:-3px}
-.site-bottom-nav__staged{cursor:pointer;color:#e2edf0}
-.site-bottom-nav__staged:hover,.site-bottom-nav__staged:focus-visible{background:#123747;color:#fff;outline:2px solid #fff;outline-offset:-3px}
-.site-bottom-nav__placeholder{color:#8fa5ad;cursor:default;pointer-events:none;user-select:none}
-.site-bottom-nav__chevron{flex:0 0 auto;width:14px;height:14px;transition:transform .18s ease}
-.site-bottom-nav__item.is-open .site-bottom-nav__chevron{transform:rotate(180deg)}
-.site-bottom-nav__dropup{position:absolute;left:0;bottom:100%;width:min(360px,100vw);max-height:calc(100svh - var(--bottom-nav-height) - env(safe-area-inset-bottom) - 16px);overflow-y:auto;overscroll-behavior:contain;background:var(--deep);border:1px solid #294351;border-bottom:0;box-shadow:0 -16px 38px rgba(0,0,0,.24);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(8px);transition:opacity .16s ease,transform .16s ease,visibility 0s linear .16s;scrollbar-color:var(--aqua) var(--deep)}
-.site-bottom-nav__item.is-open .site-bottom-nav__dropup{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);transition-delay:0s}
-.site-bottom-nav__dropup a{display:flex;align-items:center;min-height:44px;padding:10px 16px;color:#e2edf0;text-decoration:none;font-size:.88rem;font-weight:600;line-height:1.25;border-bottom:1px solid #294351}
-.site-bottom-nav__dropup a:last-child{border-bottom:0}
-.site-bottom-nav__dropup a:hover,.site-bottom-nav__dropup a:focus-visible{background:#123747;color:#fff;outline:2px solid #fff;outline-offset:-3px}
-@media (hover:hover) and (pointer:fine){
-.site-bottom-nav__item--menu:hover .site-bottom-nav__dropup{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0);transition-delay:0s}
-.site-bottom-nav__item--menu:hover>.site-bottom-nav__button{background:#123747;color:#fff}
-}
-@media (max-width:620px){
-.site-bottom-nav__button,.site-bottom-nav__placeholder,.site-bottom-nav__staged{padding:8px 5px;font-size:.75rem}
-.site-bottom-nav__button{gap:4px}
-.site-bottom-nav__dropup{position:fixed;right:0;left:0;width:100%;bottom:calc(var(--bottom-nav-height) + env(safe-area-inset-bottom))}
-}
-@media (prefers-reduced-motion:reduce){.site-bottom-nav__chevron,.site-bottom-nav__dropup{transition:none}}
-</style>
-</head>
+<link rel="stylesheet" href="./assets/style.css"></head>
 <body>
-<nav class="t42-nav" id="t42-shared-nav" aria-label="Site navigation">
-<button class="t42-toggle" type="button" aria-expanded="false" aria-controls="t42-nav-list" aria-label="Menu">&#9776;</button>
-<ul class="t42-list" id="t42-nav-list">
-<li class="t42-item"><a class="t42-link" href="./new-eden.html">Plan #42</a></li>
-<li class="t42-item t42-has-drop">
-<div class="t42-group-row"><a class="t42-link" href="./project-84.html">Project 84</a><button class="t42-link t42-drop-btn" type="button" aria-expanded="false" aria-controls="t42-project84-menu" aria-label="Project 84 non-profit aimed arms"></button></div>
-<ul class="t42-drop" id="t42-project84-menu">
-<li class="t42-drop-head">Non-profit aimed arms</li>
-<li><a class="t42-sublink" href="./omega42.html">Omega42</a></li>
-<li><a class="t42-sublink" href="./prime-42.html">Prime 42</a></li>
-<li class="t42-drop-note">Held until they can understand economics enough to participate — then they take over, with adjustments to equalize between currencies.</li>
-</ul>
-</li>
-<li class="t42-item"><a class="t42-link" href="./project-84-dummies-guide-level-14-2.html">Project 84 Dummies Guide — Level 14 (English)</a></li>
-<li class="t42-item"><a class="t42-link" href="./dummies-guide-to-claiming-oceans-and-antarctica.html">Claiming Oceans &amp; Antarctica</a></li>
-<li class="t42-item"><a class="t42-link" href="./poodles-project-84-work-boats.html">HEAR-TS Work Boats</a></li>
-<li class="t42-item"><a class="t42-link" href="./hurricane-suppression-research.html">Hurricane Research</a></li>
-<li class="t42-item"><a class="t42-link" href="./floating-skyports.html">Floating Skyports</a></li>
-<li class="t42-item"><a class="t42-link" href="./human-recovery-disk.html">Human Recovery Disk</a></li>
-<li class="t42-item"><a class="t42-link" href="./about.html">About</a></li>
-<li class="t42-item t42-has-drop">
-<div class="t42-group-row"><a class="t42-link" href="./job-listings.html">Jobs / WeFind's for Delegations</a><button class="t42-link t42-drop-btn" type="button" aria-expanded="false" aria-controls="t42-jobs-menu" aria-label="Choose a job-listing language"></button></div>
-<ul class="t42-drop t42-drop-wide" id="t42-jobs-menu">
-<li><a class="t42-sublink" href="./job-listings.html">English</a></li>
-<li><a class="t42-sublink" href="./job-listings-amharic.html">Amharic</a></li>
-<li><a class="t42-sublink" href="./job-listings-arabic.html">Arabic</a></li>
-<li><a class="t42-sublink" href="./job-listings-bengali.html">Bengali</a></li>
-<li><a class="t42-sublink" href="./job-listings-chinese-simplified.html">Chinese (Simplified)</a></li>
-<li><a class="t42-sublink" href="./job-listings-chinese-traditional.html">Chinese (Traditional)</a></li>
-<li><a class="t42-sublink" href="./job-listings-czech.html">Czech</a></li>
-<li><a class="t42-sublink" href="./job-listings-danish.html">Danish</a></li>
-<li><a class="t42-sublink" href="./job-listings-dutch.html">Dutch</a></li>
-<li><a class="t42-sublink" href="./job-listings-filipino.html">Filipino</a></li>
-<li><a class="t42-sublink" href="./job-listings-finnish.html">Finnish</a></li>
-<li><a class="t42-sublink" href="./job-listings-french.html">French</a></li>
-<li><a class="t42-sublink" href="./job-listings-german.html">German</a></li>
-<li><a class="t42-sublink" href="./job-listings-greek.html">Greek</a></li>
-<li><a class="t42-sublink" href="./job-listings-hausa.html">Hausa</a></li>
-<li><a class="t42-sublink" href="./job-listings-hebrew.html">Hebrew</a></li>
-<li><a class="t42-sublink" href="./job-listings-hindi.html">Hindi</a></li>
-<li><a class="t42-sublink" href="./job-listings-hungarian.html">Hungarian</a></li>
-<li><a class="t42-sublink" href="./job-listings-indonesian.html">Indonesian</a></li>
-<li><a class="t42-sublink" href="./job-listings-italian.html">Italian</a></li>
-<li><a class="t42-sublink" href="./job-listings-japanese.html">Japanese</a></li>
-<li><a class="t42-sublink" href="./job-listings-korean.html">Korean</a></li>
-<li><a class="t42-sublink" href="./job-listings-norwegian.html">Norwegian</a></li>
-<li><a class="t42-sublink" href="./job-listings-persian.html">Persian</a></li>
-<li><a class="t42-sublink" href="./job-listings-polish.html">Polish</a></li>
-<li><a class="t42-sublink" href="./job-listings-portuguese.html">Portuguese</a></li>
-<li><a class="t42-sublink" href="./job-listings-romanian.html">Romanian</a></li>
-<li><a class="t42-sublink" href="./job-listings-russian.html">Russian</a></li>
-<li><a class="t42-sublink" href="./job-listings-spanish.html">Spanish</a></li>
-<li><a class="t42-sublink" href="./job-listings-swahili.html">Swahili</a></li>
-<li><a class="t42-sublink" href="./job-listings-swedish.html">Swedish</a></li>
-<li><a class="t42-sublink" href="./job-listings-thai.html">Thai</a></li>
-<li><a class="t42-sublink" href="./job-listings-turkish.html">Turkish</a></li>
-<li><a class="t42-sublink" href="./job-listings-ukrainian.html">Ukrainian</a></li>
-<li><a class="t42-sublink" href="./job-listings-urdu.html">Urdu</a></li>
-<li><a class="t42-sublink" href="./job-listings-vietnamese.html">Vietnamese</a></li>
-</ul>
-</li>
-<li class="t42-item"><a class="t42-link" href="./an-open-letter-to-canada-and-poland.html">Open Letter</a></li>
-<li class="t42-item"><a class="t42-link" href="./proclamation-of-claim.html">Proclamation of Claim</a></li>
-<li class="t42-item t42-has-drop">
-<button class="t42-link t42-drop-btn" type="button" aria-expanded="false" aria-controls="t42-letters-menu">Letters &amp; Diplomacy</button>
-<ul class="t42-drop" id="t42-letters-menu">
-<li><a class="t42-sublink" href="./project-84-diplomatic-letters-world.html">World Index</a></li>
-<li><a class="t42-sublink" href="./project-84-letters-to-us-leaders.html">Letters to US Leaders</a></li>
-<li><a class="t42-sublink" href="./consulate-letters-africa-i.html">Consulate Letters — Africa I</a></li>
-<li><a class="t42-sublink" href="./consulate-letters-africa-ii.html">Consulate Letters — Africa II</a></li>
-<li><a class="t42-sublink" href="./consulate-letters-africa-iii.html">Consulate Letters — Africa III</a></li>
-<li><a class="t42-sublink" href="./consulate-letters-americas-i.html">Consulate Letters — Americas I</a></li>
-<li><a class="t42-sublink" href="./consulate-letters-americas-ii.html">Consulate Letters — Americas II</a></li>
-<li><a class="t42-sublink" href="./consulate-letters-asia-pacific.html">Consulate Letters — Asia-Pacific</a></li>
-<li><a class="t42-sublink" href="./consulate-letters-europe-i.html">Consulate Letters — Europe I</a></li>
-<li><a class="t42-sublink" href="./consulate-letters-europe-ii.html">Consulate Letters — Europe II</a></li>
-<li><a class="t42-sublink" href="./consulate-letters-europe-iii.html">Consulate Letters — Europe III</a></li>
-<li><a class="t42-sublink" href="./consulate-letters-middle-east.html">Consulate Letters — Middle East</a></li>
-<li><a class="t42-sublink" href="./consulate-letters-oceania.html">Consulate Letters — Oceania</a></li>
-</ul>
-</li>
-<li class="t42-item"><a class="t42-link" href="./who-knows.html">Who Knows?</a></li>
-<li class="t42-item"><a class="t42-link" href="./money-vs-assets.html">Money vs Assets</a></li>
-<li class="t42-item"><a class="t42-link" href="./3d-printing-advancements-last-5-years.html">3D Printing</a></li>
-<li class="t42-item"><a class="t42-link" href="https://sites.google.com/view/knottsure/home">Why Not? (external manifesto)</a></li>
-<li class="t42-item t42-has-drop">
-<button class="t42-link t42-drop-btn" type="button" aria-expanded="false" aria-controls="t42-more-menu">More</button>
-<ul class="t42-drop" id="t42-more-menu">
-<li><a class="t42-sublink" href="./alice-storyboard.html">Alice Storyboard</a></li>
-<li><a class="t42-sublink" href="./doodare-s-diaper-replacement-concept.html">Doodare&#x27;s Diaper Concept</a></li>
-<li><a class="t42-sublink" href="./one-terms-of-service.html">Terms of Service</a></li>
-</ul>
-</li>
-</ul>
-</nav>
+<header class="site"><div class="site-inner"><a class="brand" href="./index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site"><a href="./index.html">Home</a><a href="./who-knows.html">Who Knows?</a><a href="./about.html">About</a><a href="./project-84.html">Project 84</a><a href="./omega42.html">Omega42</a><a href="./new-eden.html">Plan #42</a><a href="./main-site-pages.html">All Pages</a></nav></div></header>
+<main class="wrap site-main">
+
+
 <main id="content">
 <div class="wrap">
 <p class="eyebrow">Under Goals</p>
 <h1>Goal Briefs</h1>
 <p class="lede">A table of contents for all eight goal briefs. Each link activates when its brief is published.</p>
-<ol class="toc" aria-label="Goal briefs">
-<li><a class="brief-link" href="#" data-slug="letter-0cbf25a5db63"><span class="brief-num" aria-hidden="true"></span><span class="brief-title">Mote Stock Screening</span><span class="brief-arrow" aria-hidden="true">&rarr;</span></a></li>
-<li><a class="brief-link" href="#" data-slug="letter-50e5acf1739b"><span class="brief-num" aria-hidden="true"></span><span class="brief-title">Oreo&#x27;s Keyboard</span><span class="brief-arrow" aria-hidden="true">&rarr;</span></a></li>
-<li><a class="brief-link" href="#" data-slug="letter-5e60dd3ebf8d"><span class="brief-num" aria-hidden="true"></span><span class="brief-title">Orcas on Their Terms</span><span class="brief-arrow" aria-hidden="true">&rarr;</span></a></li>
-<li><a class="brief-link" href="#" data-slug="letter-73e21a03a481"><span class="brief-num" aria-hidden="true"></span><span class="brief-title">Guardianship Without Proxies</span><span class="brief-arrow" aria-hidden="true">&rarr;</span></a></li>
-<li><a class="brief-link" href="#" data-slug="letter-85c48d743805"><span class="brief-num" aria-hidden="true"></span><span class="brief-title">The Human Waste Amendment</span><span class="brief-arrow" aria-hidden="true">&rarr;</span></a></li>
-<li><a class="brief-link" href="#" data-slug="letter-8a60718247a4"><span class="brief-num" aria-hidden="true"></span><span class="brief-title">The Upgrade Door</span><span class="brief-arrow" aria-hidden="true">&rarr;</span></a></li>
-<li><a class="brief-link" href="#" data-slug="letter-ad77fe5e2983"><span class="brief-num" aria-hidden="true"></span><span class="brief-title">Starfleet Academy&#x27;s First Lessons</span><span class="brief-arrow" aria-hidden="true">&rarr;</span></a></li>
-<li><a class="brief-link" href="#" data-slug="letter-f6d647ca79b9"><span class="brief-num" aria-hidden="true"></span><span class="brief-title">The Sunset Relay</span><span class="brief-arrow" aria-hidden="true">&rarr;</span></a></li>
+<ol aria-label="Goal briefs" class="toc">
+<li><a class="brief-link" data-slug="letter-0cbf25a5db63" href="#"><span aria-hidden="true" class="brief-num"></span><span class="brief-title">Mote Stock Screening</span><span aria-hidden="true" class="brief-arrow">→</span></a></li>
+<li><a class="brief-link" data-slug="letter-50e5acf1739b" href="#"><span aria-hidden="true" class="brief-num"></span><span class="brief-title">Oreo's Keyboard</span><span aria-hidden="true" class="brief-arrow">→</span></a></li>
+<li><a class="brief-link" data-slug="letter-5e60dd3ebf8d" href="#"><span aria-hidden="true" class="brief-num"></span><span class="brief-title">Orcas on Their Terms</span><span aria-hidden="true" class="brief-arrow">→</span></a></li>
+<li><a class="brief-link" data-slug="letter-73e21a03a481" href="#"><span aria-hidden="true" class="brief-num"></span><span class="brief-title">Guardianship Without Proxies</span><span aria-hidden="true" class="brief-arrow">→</span></a></li>
+<li><a class="brief-link" data-slug="letter-85c48d743805" href="#"><span aria-hidden="true" class="brief-num"></span><span class="brief-title">The Human Waste Amendment</span><span aria-hidden="true" class="brief-arrow">→</span></a></li>
+<li><a class="brief-link" data-slug="letter-8a60718247a4" href="#"><span aria-hidden="true" class="brief-num"></span><span class="brief-title">The Upgrade Door</span><span aria-hidden="true" class="brief-arrow">→</span></a></li>
+<li><a class="brief-link" data-slug="letter-ad77fe5e2983" href="#"><span aria-hidden="true" class="brief-num"></span><span class="brief-title">Starfleet Academy's First Lessons</span><span aria-hidden="true" class="brief-arrow">→</span></a></li>
+<li><a class="brief-link" data-slug="letter-f6d647ca79b9" href="#"><span aria-hidden="true" class="brief-num"></span><span class="brief-title">The Sunset Relay</span><span aria-hidden="true" class="brief-arrow">→</span></a></li>
 </ol>
 </div>
 </main>
-<nav class="site-bottom-nav" aria-label="Secondary pages">
-<div class="site-bottom-nav__items">
-<div class="site-bottom-nav__item site-bottom-nav__item--menu" id="dummy-guides-menu">
-<button class="site-bottom-nav__button" type="button" aria-expanded="false" aria-controls="dummy-guides-dropup"><span>Dummy Guides</span><svg class="site-bottom-nav__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 10.5 8 5.5l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-<div class="site-bottom-nav__dropup" id="dummy-guides-dropup" aria-label="Dummy Guides languages" hidden>
-<a href="./project-84-dummies-guide-level-14-2.html">Project 84 Dummies Guide — Level 14 (English)</a>
-</div>
-</div>
-<div class="site-bottom-nav__item"><div class="site-bottom-nav__placeholder" aria-disabled="true">Letters To</div></div>
-<div class="site-bottom-nav__item"><a class="site-bottom-nav__staged" href="#" data-slug="goal-briefs" aria-current="page">Goal Briefs</a></div>
-<div class="site-bottom-nav__item"><a class="site-bottom-nav__staged" href="#" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
-</div>
-</nav>
-<script>
-(function(){
-function t42init(){
-var nav=document.getElementById('t42-shared-nav');
-if(!nav)return;
-var toggle=nav.querySelector('.t42-toggle');
-if(toggle){toggle.addEventListener('click',function(){var open=nav.classList.toggle('t42-mobile-open');toggle.setAttribute('aria-expanded',open?'true':'false');});}
-nav.querySelectorAll('.t42-drop-btn').forEach(function(btn){
-btn.addEventListener('click',function(e){
-var li=btn.closest('.t42-has-drop');
-var wasOpen=li.classList.contains('t42-open');
-nav.querySelectorAll('.t42-has-drop.t42-open').forEach(function(o){o.classList.remove('t42-open');var b=o.querySelector('.t42-drop-btn');if(b)b.setAttribute('aria-expanded','false');});
-if(!wasOpen){li.classList.add('t42-open');btn.setAttribute('aria-expanded','true');}
-e.stopPropagation();
-});
-});
-document.addEventListener('click',function(e){
-if(!nav.contains(e.target)){nav.querySelectorAll('.t42-has-drop.t42-open').forEach(function(o){o.classList.remove('t42-open');var b=o.querySelector('.t42-drop-btn');if(b)b.setAttribute('aria-expanded','false');});}
-});
-}
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',t42init);}else{t42init();}
-})();
-</script>
-<script>
-(function(){
-var menu=document.getElementById('dummy-guides-menu');
-var button=menu.querySelector('.site-bottom-nav__button');
-var dropup=document.getElementById('dummy-guides-dropup');
-var guideLinks=dropup.querySelectorAll('a');
-var hoverOpen=false;
-function renderOpen(){var open=hoverOpen||menu.classList.contains('is-open');dropup.hidden=!open;button.setAttribute('aria-expanded',open?'true':'false');}
-function setOpen(open){menu.classList.toggle('is-open',open);renderOpen();}
-button.addEventListener('click',function(){setOpen(!menu.classList.contains('is-open'));});
-menu.addEventListener('mouseenter',function(){hoverOpen=true;renderOpen();});
-menu.addEventListener('mouseleave',function(){hoverOpen=false;renderOpen();});
-guideLinks.forEach(function(link){link.addEventListener('click',function(event){if(link.getAttribute('href')==='#'){event.preventDefault();}hoverOpen=false;setOpen(false);button.focus();});});
-document.addEventListener('click',function(event){if(!menu.contains(event.target)){hoverOpen=false;setOpen(false);}});
-document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!dropup.hidden){hoverOpen=false;setOpen(false);button.focus();}});
-document.querySelectorAll('a[href="#"]').forEach(function(a){if(a.closest('#dummy-guides-dropup'))return;a.addEventListener('click',function(e){e.preventDefault();});});
-})();
-</script>
-</body>
-</html>
+
+
+
+
+</main>
+<footer class="site"><div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="./index.html">All pages</a></div></footer>
+
+</body></html>

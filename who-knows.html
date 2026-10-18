@@ -1,252 +1,78 @@
 <!doctype html>
-<!-- Project naming: D-Mom (pronounced like a Jamaican woman saying “demon”). The historical company name Eclipsed LLC remains unchanged. -->
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:,">
 <title>Who Knows?</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<style>
-:root {
-  color-scheme: light dark;
-  --bg:#f5f7f8; --paper:#ffffff; --text:#171b1d; --muted:#586267;
-  --line:#d7dcde; --accent:#a94321; --accent-soft:#f5e4dc; --rail:#edf1f2;
-  --measure:760px; --serif:"Source Serif 4",Georgia,serif; --sans:"IBM Plex Sans",system-ui,sans-serif;
-}
-@media(prefers-color-scheme:dark){:root{--bg:#0b0e10;--paper:#111619;--text:#edf0f1;--muted:#aeb7bb;--line:#2d363a;--accent:#ef8a63;--accent-soft:#2b1c17;--rail:#0f1417;}}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--text);font-family:var(--serif);font-size:18px;line-height:1.72}
-a{color:inherit}
-.progress{position:fixed;z-index:20;top:0;left:0;width:100%;height:3px;background:transparent}
-.progress i{display:block;height:100%;width:0;background:var(--accent)}
-.layout{display:grid;grid-template-columns:minmax(240px,320px) minmax(0,1fr);min-height:100vh}
-aside{position:sticky;top:0;height:100vh;overflow:auto;background:var(--rail);border-right:1px solid var(--line);padding:clamp(28px,4vw,56px) clamp(22px,3vw,42px)}
-.eyebrow{font:600 12px/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 12px}
-aside h1{font:700 clamp(38px,5vw,64px)/.96 var(--serif);letter-spacing:-.045em;margin:0 0 20px;max-width:8ch}
-.meta{font:400 14px/1.5 var(--sans);color:var(--muted);margin:0 0 32px}
-nav{display:grid;gap:1px}
-nav a{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:8px 0;text-decoration:none;font:500 13px/1.25 var(--sans);color:var(--muted);border-bottom:1px solid transparent}
-nav a:hover,nav a:focus-visible{color:var(--text);border-color:var(--line)}
-nav span{font-variant-numeric:tabular-nums;color:var(--accent)}
-main{min-width:0}
-article{max-width:var(--measure);margin:0 auto;padding:clamp(44px,7vw,92px) 28px 100px}
-.top-toc{width:min(1100px,calc(100% - 36px));margin:18px auto 24px;border-top:3px solid var(--accent);border-bottom:1px solid var(--line);background:var(--paper)}
-.top-toc summary{cursor:pointer;padding:13px 16px;font:600 14px/1.4 var(--sans);color:var(--text)}
-.top-toc:not([open]) ol{display:none!important}
-.top-toc ol{columns:2;column-gap:28px;margin:0;padding:0 16px 16px 42px;font:500 13px/1.35 var(--sans)}
-.top-toc li{break-inside:avoid;margin:.42em 0;padding-left:.15em}
-.top-toc a{text-decoration:none;color:var(--muted)}
-.top-toc a:hover,.top-toc a:focus-visible{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
-.public-pages{margin:0 0 46px;padding:clamp(24px,4vw,38px);border:3px solid var(--accent);background:var(--accent-soft);box-shadow:8px 8px 0 var(--line);scroll-margin-top:24px}
-.public-pages h2{max-width:none;margin-bottom:18px}
-.public-pages ul{list-style:none;padding:0;margin:0}
-.public-pages li{padding:12px 0;margin:0;border-top:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
-.public-pages li:first-child{border-top:0}
-.public-pages strong{display:block;font-family:var(--sans);font-size:15px;line-height:1.35}
-.public-pages a{display:block;font:500 13px/1.45 var(--sans);color:var(--accent);overflow-wrap:anywhere;text-underline-offset:3px}
-.public-pages .translation-note{margin:18px 0 0;padding-top:16px;border-top:2px solid var(--accent);font:500 14px/1.5 var(--sans)}
-.hero{border-bottom:1px solid var(--line);padding-bottom:42px;margin-bottom:50px}
-.hero p{margin:0}
-.source-title{font:600 clamp(24px,4vw,38px)/1.18 var(--serif);letter-spacing:-.025em;margin:0 0 18px;max-width:24ch}
-.lede-note{font-family:var(--sans);font-size:15px;line-height:1.55;color:var(--muted);max-width:62ch}
-.chapter{padding:18px 0 42px;border-bottom:1px solid var(--line);scroll-margin-top:24px}
-.chapter:last-of-type{border-bottom:0}
-h2{font:700 clamp(28px,4vw,40px)/1.12 var(--serif);letter-spacing:-.028em;margin:0 0 24px;max-width:20ch}
-h3{font:700 clamp(22px,3vw,29px)/1.2 var(--serif);letter-spacing:-.018em;margin:34px 0 14px;max-width:26ch}
-p{margin:0 0 1.15em}
-ul{margin:0 0 1.4em;padding-left:1.15em}
-li{padding-left:.35em;margin:.54em 0}
-li::marker{color:var(--accent)}
-li.nested{margin-left:1.15em;list-style-type:square}
-strong{font-weight:700}
-em{font-style:italic}
-code{font:500 .86em var(--sans);background:var(--accent-soft);padding:.08em .28em;border-radius:3px}
-blockquote{margin:1.45em 0 1.55em;padding:0 0 0 1.25em;border-left:2px solid var(--accent);font-size:1.08em;line-height:1.62}
-blockquote p{margin:0 0 .5em}
-blockquote cite{display:block;font:500 14px/1.5 var(--sans);color:var(--muted);font-style:normal}
-.personal-statement{margin:2em 0;padding:1.15em 0 1.2em;border-top:2px solid var(--text);border-bottom:2px solid var(--text);font:600 clamp(20px,3vw,26px)/1.48 var(--sans);letter-spacing:-.018em}
-.personal-statement .speaker{display:block;margin:0 0 .75em;font:600 11px/1 var(--sans);letter-spacing:.13em;text-transform:uppercase;color:var(--accent)}
-.signature{margin-top:72px;padding-top:34px;border-top:2px solid var(--text)}
-.signature .signed{font:600 28px/1.15 var(--serif);letter-spacing:-.02em;margin:0 0 7px}
-.signature a{font:500 15px/1.4 var(--sans);color:var(--accent);text-underline-offset:4px}
-.signature .roles-link{display:block;width:fit-content;margin-top:20px;padding:10px 14px;border:1px solid var(--accent);font-weight:600;text-decoration:none}
-.signature .roles-link:hover,.signature .roles-link:focus-visible{background:var(--accent);color:var(--paper)}
-.signature small{display:block;font:400 12px/1.4 var(--sans);color:var(--muted);margin-top:24px}
-@media(max-width:850px){
-  .layout{display:block}
-  aside{position:relative;height:auto;overflow:visible;border-right:0;border-bottom:1px solid var(--line);padding:34px 24px 28px}
-  aside h1{max-width:none;font-size:50px}
-  aside nav{display:none}
-  .meta{margin-bottom:0}
-  article{padding:28px 20px 72px}
-  .top-toc{margin-bottom:28px}
-  .top-toc ol{columns:1}
-  .public-pages{padding:22px 18px;box-shadow:5px 5px 0 var(--line)}
-  .hero{margin-bottom:28px;padding-bottom:30px}
-  .chapter{padding:18px 0 34px}
-}
-@media(max-width:430px){body{font-size:17px} aside h1{font-size:44px} h2{font-size:29px} article{padding-left:18px;padding-right:18px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-@media print{.progress,aside,.mobile-toc{display:none!important}.layout{display:block}article{max-width:760px;padding:0}.chapter{break-inside:avoid-page}}
-</style>
-</head>
+<link rel="stylesheet" href="./assets/style.css"></head>
 <body>
-<style>
-.core-pages{position:relative;z-index:10000;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:#070b12;border-bottom:1px solid #334155;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-.core-pages a{display:flex;align-items:center;justify-content:center;min-height:52px;padding:.75rem 1rem;color:#e2e8f0;text-decoration:none;text-align:center;font-size:.95rem;font-weight:700;line-height:1.2;border-right:1px solid #334155}
-.core-pages a:last-child{border-right:0}
-.core-pages a:hover,.core-pages a:focus-visible{background:#1e293b;color:#fff;outline:2px solid #f8fafc;outline-offset:-3px}
-.core-pages a[aria-current="page"]{background:#a94321;color:#fff}
-@media(prefers-color-scheme:dark){.core-pages a[aria-current="page"]{background:#b95531}}
-.core-item{position:relative;display:flex;border-right:1px solid #334155}
-.core-group-head{display:flex;align-items:stretch;flex:1;min-width:0}
-.core-group-head>a{flex:1;min-width:0;border-right:0}
-.core-drop-btn{width:2.35rem;flex:none;display:flex;align-items:center;justify-content:center;background:transparent;border:0;color:#e2e8f0;cursor:pointer;padding:0;font:inherit}
-.core-drop-btn::after{content:"";width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid currentColor;opacity:.8}
-.core-drop-btn:hover,.core-drop-btn:focus-visible{background:#1e293b;color:#fff;outline:2px solid #f8fafc;outline-offset:-3px}
-.core-drop{display:none;position:absolute;top:100%;left:0;min-width:280px;max-width:calc(100vw - 24px);background:#070b12;box-shadow:0 8px 24px rgba(0,0,0,.35);border:1px solid #334155;border-top:0;padding:.4rem 0;z-index:10001}
-.core-has-drop:hover>.core-drop,.core-has-drop:focus-within>.core-drop,.core-has-drop.core-open>.core-drop{display:block}
-.core-drop-head{padding:.55rem 1.15rem .2rem;color:#94a3b8;font-size:.78rem;font-weight:700;letter-spacing:.04em}
-.core-drop a{display:block;min-height:0;padding:.6rem 1.15rem;color:#e2e8f0;text-decoration:none;text-align:left;font-size:.9rem;font-weight:600;line-height:1.25;border-right:0}
-.core-drop a:hover,.core-drop a:focus-visible{background:#1e293b;color:#fff;outline:2px solid #f8fafc;outline-offset:-3px}
-.core-drop-note{padding:.45rem 1.15rem .65rem;color:#94a3b8;font-size:.78rem;line-height:1.45;max-width:320px}
-@media(max-width:560px){.core-pages{grid-template-columns:1fr}.core-pages a{min-height:44px;padding:.62rem .8rem;border-right:0;border-bottom:1px solid #334155}.core-pages a:last-child{border-bottom:0}.core-item{border-right:0;border-bottom:1px solid #334155;flex-direction:column}.core-group-head>a{border-bottom:0}.core-drop-btn{border-bottom:0}.core-has-drop:hover>.core-drop,.core-has-drop:focus-within>.core-drop{display:none}.core-has-drop.core-open>.core-drop{display:block}.core-drop{position:static;box-shadow:none;border:0;border-top:1px solid #334155;min-width:0;max-width:none}.core-drop a{border-bottom:0;min-height:0}}
-body{padding-bottom:calc(56px + env(safe-area-inset-bottom))}
-.bottom-bar{position:fixed;z-index:12000;bottom:0;left:0;right:0;display:flex;align-items:stretch;width:100%;padding-bottom:env(safe-area-inset-bottom);background:#070b12;border-top:1px solid #334155;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-.bottom-bar-item{position:relative;flex:1 1 25%;min-width:0}
-.bottom-bar button,.bottom-placeholder,.bottom-link{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;margin:0;padding:.65rem .35rem;border:0;border-right:1px solid #334155;border-radius:0;background:transparent;color:#e2e8f0;text-align:center;text-decoration:none;font:700 clamp(10px,2.6vw,15px)/1.2 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;white-space:nowrap}
-.bottom-bar-item:last-child .bottom-placeholder,.bottom-bar-item:last-child .bottom-link{border-right:0}
-.bottom-bar button{cursor:pointer}
-.bottom-bar button::after{content:"";width:0;height:0;margin-left:.45rem;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:5px solid currentColor;opacity:.8}
-.bottom-bar button:hover,.bottom-bar button:focus-visible,.bottom-link:hover,.bottom-link:focus-visible,.bottom-menu.is-open button{background:#1e293b;color:#fff;outline:2px solid #f8fafc;outline-offset:-3px}
-.bottom-placeholder{color:#94a3b8;cursor:default}
-.dummy-dropup{position:absolute;left:0;bottom:calc(100% + 1px);width:min(360px,100vw);max-height:calc(100vh - 72px - env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;background:#070b12;border:1px solid #334155;border-left:0;box-shadow:0 -12px 28px rgba(0,0,0,.28);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(6px);transition:opacity .16s ease,transform .16s ease,visibility .16s}
-.dummy-dropup a{display:block;grid-template-columns:none;gap:0;padding:.72rem 1rem;border-bottom:1px solid #334155;color:#e2e8f0;text-decoration:none;text-align:left;font:600 14px/1.25 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
-.dummy-dropup a:last-child{border-bottom:0}
-.dummy-dropup a:hover,.dummy-dropup a:focus-visible{background:#1e293b;color:#fff;outline:2px solid #f8fafc;outline-offset:-3px}
-.bottom-menu:hover .dummy-dropup,.bottom-menu.is-open .dummy-dropup{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0)}
-@media(max-width:560px){.bottom-bar button,.bottom-placeholder,.bottom-link{min-height:56px;padding:.62rem .18rem}.bottom-bar button::after{margin-left:.28rem}.dummy-dropup{width:100vw}}
-@media(prefers-reduced-motion:reduce){.dummy-dropup{transition:none}}
-@media print{.bottom-bar{display:none!important}body{padding-bottom:0}}
-</style>
-<nav class="core-pages" id="core-pages-nav" aria-label="Primary public pages">
-  <a href="./about.html">About the Founder</a>
-  <a href="./who-knows.html" aria-current="page">Who Knows?</a>
-  <div class="core-item core-has-drop">
-    <div class="core-group-head">
-      <a href="./project-84.html">Project 84</a>
-      <button class="core-drop-btn" type="button" aria-expanded="false" aria-haspopup="true" aria-label="Project 84 group"></button>
-    </div>
-    <div class="core-drop">
-      <div class="core-drop-head">Non-profit aimed arms</div>
-      <a href="./omega42.html">Omega42</a>
-      <a href="./prime-42.html">Prime 42</a>
-      <div class="core-drop-note">Held until they can understand economics enough to participate — then they take over, with adjustments to equalize between currencies.</div>
-    </div>
-  </div>
-  <a href="./proclamation-of-claim.html">Proclamation of Claim</a>
-</nav>
-<script>
-(function(){
-function init(){
-var nav=document.getElementById('core-pages-nav');
-if(!nav)return;
-nav.querySelectorAll('.core-drop-btn').forEach(function(btn){
-btn.addEventListener('click',function(e){
-var item=btn.closest('.core-has-drop');
-var wasOpen=item.classList.contains('core-open');
-nav.querySelectorAll('.core-has-drop.core-open').forEach(function(o){
-o.classList.remove('core-open');
-var b=o.querySelector('.core-drop-btn');if(b)b.setAttribute('aria-expanded','false');
-});
-if(!wasOpen){item.classList.add('core-open');btn.setAttribute('aria-expanded','true');}
-e.stopPropagation();
-});
-});
-document.addEventListener('click',function(e){
-if(!nav.contains(e.target)){
-nav.querySelectorAll('.core-has-drop.core-open').forEach(function(o){
-o.classList.remove('core-open');
-var b=o.querySelector('.core-drop-btn');if(b)b.setAttribute('aria-expanded','false');
-});
-}
-});
-}
-if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
-})();
-</script>
-<div class="progress" aria-hidden="true"><i></i></div>
+<header class="site"><div class="site-inner"><a class="brand" href="./index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site"><a href="./index.html">Home</a><a href="./who-knows.html" aria-current="page">Who Knows?</a><a href="./about.html">About</a><a href="./project-84.html">Project 84</a><a href="./omega42.html">Omega42</a><a href="./new-eden.html">Plan #42</a><a href="./main-site-pages.html">All Pages</a></nav></div></header>
+<main class="wrap site-main">
+
+
+
+
+<div aria-hidden="true" class="progress"><i></i></div>
 <details class="top-toc">
-  <summary>Table of contents</summary>
-  <ol id="top-toc-list"></ol>
+<summary>Table of contents</summary>
+<ol id="top-toc-list"></ol>
 </details>
 <div class="layout">
 <aside>
-  <p class="eyebrow">Astrophysics notes · 2026</p>
-  <h1>Who Knows?</h1>
-  <p class="meta">Notes on the deep future, the far edge, and the long way out. While waiting for a world I would want to raise my kids in...</p>
-  <nav id="sidebar-toc" aria-label="Contents"></nav>
+<p class="eyebrow">Astrophysics notes · 2026</p>
+<h1>Who Knows?</h1>
+<p class="meta">Notes on the deep future, the far edge, and the long way out. While waiting for a world I would want to raise my kids in...</p>
+<nav aria-label="Contents" id="sidebar-toc"></nav>
 </aside>
 <main>
 <article>
-
-  <section class="chapter" id="morpheuss-question">
-    <h2>Morpheus's question (added 2026-10-05)</h2>
-    <p>Matthew asked to add Morpheus's quote about having a dream that felt so real.</p>
-    <blockquote>
-      <p>"Have you ever had a dream, Neo, that you were so sure was real? What if you were unable to wake from that dream? How would you know the difference between the dream world and the real world?"</p>
-      <cite>— Morpheus, <em>The Matrix</em> (1999)</cite>
-    </blockquote>
-    <p class="personal-statement" id="matthew-personal-statement" aria-label="Matthew's personal statement"><span class="speaker">Matthew</span>What if it becomes a nightmare? Every day I wake up angry, expecting this "dream" to end and my dream becoming a precedent, and I'm pissed off that it always seems further and further away. Why do I give a fuck when none of this helps ME or future ME's in any way? Yet I still try... If I were a world leader, I would be a dictator because I believe we're too damn stupid to do it without one.</p>
-    <p>It belongs here because the whole notebook keeps circling the same question from the other side: the intelligent bomb, the sim thread, "time is the Universe." If the dream never ends, "real" is just the name the dream gives itself.</p>
-  </section>
-
-  <section class="chapter" id="created-the-universe">
-    <h2>I created the universe (added 2026-10-07)</h2>
-    <blockquote>
-      <p>"Didn't I tell you I created the universe? It's a bomb. Big Bang... and all."</p>
-      <cite>— Matthew</cite>
-    </blockquote>
-  </section>
-
-  <section class="chapter" id="humans-titanic">
-    <h2>Humans = Titanic (added 2026-10-07)</h2>
-    <blockquote>
-      <p>“Humans = Titanic.”</p>
-      <p>“An unsinkable ship.”</p>
-      <p>“They're still having fancy parties while it's about to snap in half.”</p>
-      <p>“Iceberg already hit, they just didn't notice. Too busy partying.”</p>
-      <p>On the Doomsday Clock (85 seconds): “Set to 1 second, the actual number.”</p>
-      <p>“Lifeboat is abandoned, not enough money.”</p>
-      <cite>— Matthew</cite>
-    </blockquote>
-  </section>
-
-  <section class="chapter" id="volcano-thermostat">
-    <h2>Volcano thermostat (added 2026-10-06)</h2>
-    <p><em>Working research program — if Earth gets too cold, pop a volcano to reheat it, but engineer the cooling out first.</em></p>
-    <blockquote>
-      <p>“The cooling happens because we let the soot get sucked into the atmosphere. We just need the gases, not the soot.”</p>
-      <cite>— Matthew</cite>
-    </blockquote>
-    <ul>
-      <li><strong>The problem:</strong> major eruptions are net coolers on the climate timescale. Sulfur dioxide becomes sunlight-reflecting sulfate aerosols; Tambora gave the world the “year without a summer,” and Pinatubo cooled the planet by about 0.5°C.</li>
-      <li><strong>The program:</strong> gas/particle separation at volcanic scale. Build the venting and capture system around the eruption: route the gases through controlled plumbing and leave the ash—the soot—on the ground instead of lofting it into the atmosphere.</li>
-      <li><strong>The chemistry catch:</strong> the visible ash is not the only cooling agent. SO₂ starts as a gas and becomes sulfate aerosol after release, so keeping the soot down is necessary but not sufficient. The separator also has to capture the sulfur-bearing fraction while passing only the gases that produce the wanted warming.</li>
-      <li><strong>The thermostat:</strong> eruption energy supplies the heat and pressure; engineered separation decides what reaches the sky. Pop the volcano only after the filter works. The research problem is not how to make an eruption—it is how to make one without the volcanic winter attached.</li>
-    </ul>
-  </section>
-
-  <header class="hero">
-    <p class="source-title">Deep time: Jupiter ignition &amp; the Local Group lifeboat</p>
-    <p class="lede-note">Knowledge note from a 2026-10-04 session with Matthew. Fermi-level, not engineering.</p>
-  </header>
-
+<section class="chapter" id="morpheuss-question">
+<h2>Morpheus's question (added 2026-10-05)</h2>
+<p>Matthew asked to add Morpheus's quote about having a dream that felt so real.</p>
+<blockquote>
+<p>"Have you ever had a dream, Neo, that you were so sure was real? What if you were unable to wake from that dream? How would you know the difference between the dream world and the real world?"</p>
+<cite>— Morpheus, <em>The Matrix</em> (1999)</cite>
+</blockquote>
+<p aria-label="Matthew's personal statement" class="personal-statement" id="matthew-personal-statement"><span class="speaker">Matthew</span>What if it becomes a nightmare? Every day I wake up angry, expecting this "dream" to end and my dream becoming a precedent, and I'm pissed off that it always seems further and further away. Why do I give a fuck when none of this helps ME or future ME's in any way? Yet I still try... If I were a world leader, I would be a dictator because I believe we're too damn stupid to do it without one.</p>
+<p>It belongs here because the whole notebook keeps circling the same question from the other side: the intelligent bomb, the sim thread, "time is the Universe." If the dream never ends, "real" is just the name the dream gives itself.</p>
+</section>
+<section class="chapter" id="created-the-universe">
+<h2>I created the universe (added 2026-10-07)</h2>
+<blockquote>
+<p>"Didn't I tell you I created the universe? It's a bomb. Big Bang... and all."</p>
+<cite>— Matthew</cite>
+</blockquote>
+</section>
+<section class="chapter" id="humans-titanic">
+<h2>Humans = Titanic (added 2026-10-07)</h2>
+<blockquote>
+<p>“Humans = Titanic.”</p>
+<p>“An unsinkable ship.”</p>
+<p>“They're still having fancy parties while it's about to snap in half.”</p>
+<p>“Iceberg already hit, they just didn't notice. Too busy partying.”</p>
+<p>On the Doomsday Clock (85 seconds): “Set to 1 second, the actual number.”</p>
+<p>“Lifeboat is abandoned, not enough money.”</p>
+<cite>— Matthew</cite>
+</blockquote>
+</section>
+<section class="chapter" id="volcano-thermostat">
+<h2>Volcano thermostat (added 2026-10-06)</h2>
+<p><em>Working research program — if Earth gets too cold, pop a volcano to reheat it, but engineer the cooling out first.</em></p>
+<blockquote>
+<p>“The cooling happens because we let the soot get sucked into the atmosphere. We just need the gases, not the soot.”</p>
+<cite>— Matthew</cite>
+</blockquote>
+<ul>
+<li><strong>The problem:</strong> major eruptions are net coolers on the climate timescale. Sulfur dioxide becomes sunlight-reflecting sulfate aerosols; Tambora gave the world the “year without a summer,” and Pinatubo cooled the planet by about 0.5°C.</li>
+<li><strong>The program:</strong> gas/particle separation at volcanic scale. Build the venting and capture system around the eruption: route the gases through controlled plumbing and leave the ash—the soot—on the ground instead of lofting it into the atmosphere.</li>
+<li><strong>The chemistry catch:</strong> the visible ash is not the only cooling agent. SO₂ starts as a gas and becomes sulfate aerosol after release, so keeping the soot down is necessary but not sufficient. The separator also has to capture the sulfur-bearing fraction while passing only the gases that produce the wanted warming.</li>
+<li><strong>The thermostat:</strong> eruption energy supplies the heat and pressure; engineered separation decides what reaches the sky. Pop the volcano only after the filter works. The research problem is not how to make an eruption—it is how to make one without the volcanic winter attached.</li>
+</ul>
+</section>
+<header class="hero">
+<p class="source-title">Deep time: Jupiter ignition &amp; the Local Group lifeboat</p>
+<p class="lede-note">Knowledge note from a 2026-10-04 session with Matthew. Fermi-level, not engineering.</p>
+</header>
 <section class="chapter" id="igniting-jupiter-via-starlifting"><h2>Igniting Jupiter via starlifting</h2>
 <p><strong>Correction:</strong> not a minimum-mass red dwarf. The target is the minimum mass of the next stellar class up: a K-type orange dwarf.</p>
 <ul>
@@ -552,61 +378,21 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
 </blockquote>
 <p>Nature doesn't do warnings, fines, or second chances. Misuse the equipment and she just takes it back. The tail, the attention span, the planet — same policy, no appeals process.</p>
 </section>
-  <footer class="signature">
-    <p class="signed">Matthew Joseph Nahas</p>
-    <a href="mailto:nahasmatthewj@gmail.com">nahasmatthewj@gmail.com</a>
-    <a class="roles-link" href="./job-listings.html" target="_blank" rel="noreferrer">Now hiring — open roles</a>
-    <small>Who Knows? · Astrophysics theory notes</small>
-  </footer>
+<footer class="signature">
+<p class="signed">Matthew Joseph Nahas</p>
+<a href="mailto:nahasmatthewj@gmail.com">nahasmatthewj@gmail.com</a>
+Now hiring — open roles
+<small>Who Knows? · Astrophysics theory notes</small>
+</footer>
 </article>
 </main>
 </div>
-<nav class="bottom-bar" aria-label="Additional site navigation">
-  <div class="bottom-bar-item bottom-menu">
-    <button type="button" id="dummy-guides-toggle" aria-expanded="false" aria-controls="dummy-guides-menu">Dummy Guides</button>
-    <div class="dummy-dropup" id="dummy-guides-menu" inert>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-english">English</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-amharic">Amharic</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-arabic">Arabic</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-bengali">Bengali</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-chinese-simplified">Chinese Simplified</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-chinese-traditional">Chinese Traditional</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-czech">Czech</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-danish">Danish</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-dutch">Dutch</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-filipino">Filipino</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-finnish">Finnish</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-french">French</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-german">German</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-greek">Greek</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-hausa">Hausa</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-hebrew">Hebrew</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-hindi">Hindi</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-hungarian">Hungarian</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-indonesian">Indonesian</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-italian">Italian</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-japanese">Japanese</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-korean">Korean</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-norwegian">Norwegian</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-persian">Persian</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-polish">Polish</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-portuguese">Portuguese</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-romanian">Romanian</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-russian">Russian</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-spanish">Spanish</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-swahili">Swahili</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-swedish">Swedish</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-thai">Thai</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-turkish">Turkish</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-ukrainian">Ukrainian</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-urdu">Urdu</a>
-      <a href="./project-84-dummies-guide-level-14-2.html" data-slug="project-84-dummies-guide-vietnamese">Vietnamese</a>
-    </div>
-  </div>
-  <div class="bottom-bar-item"><span class="bottom-placeholder" aria-disabled="true">Letters To</span></div>
-  <div class="bottom-bar-item"><a class="bottom-link" href="/spaces/v2/goal-briefs/">Goal Briefs</a></div>
-  <div class="bottom-bar-item"><a class="bottom-link" href="/spaces/v2/homo-e-s-m/">HOMO-E/S/M</a></div>
-</nav>
+
+
+
+</main>
+<footer class="site"><div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="./index.html">All pages</a></div></footer>
+
 <script>
 (function(){
   var headings=Array.prototype.slice.call(document.querySelectorAll('article .chapter > h2:not([data-toc-skip])'));
@@ -657,38 +443,7 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
   }
   document.addEventListener('scroll',update,{passive:true}); update();
 
-  var bottomMenu=document.querySelector('.bottom-menu');
-  var bottomToggle=document.getElementById('dummy-guides-toggle');
-  var dummyDropup=document.getElementById('dummy-guides-menu');
-  function setBottomMenu(open){
-    bottomMenu.classList.toggle('is-open',open);
-    bottomToggle.setAttribute('aria-expanded',open?'true':'false');
-    dummyDropup.inert=!open;
-  }
-  bottomMenu.addEventListener('mouseenter',function(){dummyDropup.inert=false;});
-  bottomMenu.addEventListener('mouseleave',function(){
-    if(!bottomMenu.classList.contains('is-open')){dummyDropup.inert=true;}
-  });
-  bottomToggle.addEventListener('click',function(event){
-    event.stopPropagation();
-    setBottomMenu(!bottomMenu.classList.contains('is-open'));
-  });
-  document.addEventListener('click',function(event){
-    if(!bottomMenu.contains(event.target)){setBottomMenu(false);}
-  });
-  document.addEventListener('keydown',function(event){
-    if(event.key==='Escape'){
-      setBottomMenu(false);
-      bottomToggle.focus();
-    }
-  });
-  Array.prototype.forEach.call(document.querySelectorAll('.dummy-dropup a'),function(link){
-    link.addEventListener('click',function(event){
-      if(link.getAttribute('href')==='#'){event.preventDefault();}
-      setBottomMenu(false);
-    });
-  });
+  
 })();
 </script>
-</body>
-</html>
+</body></html>

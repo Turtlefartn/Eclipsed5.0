@@ -1,392 +1,174 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="light dark" />
-  <link rel="icon" href="data:," />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Libre+Franklin:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <title>Realizim</title>
-  <style>
-    :root {
-      color-scheme: light dark;
-      --paper: #f2f0e9;
-      --surface: #fbfaf6;
-      --ink: #151715;
-      --muted: #5c625d;
-      --line: #b9b9ae;
-      --line-strong: #777b73;
-      --signal: #d84a1b;
-      --signal-soft: #f4d3c6;
-      --good: #176c5a;
-      --good-soft: #d7e9e2;
-      --warn: #8a5a08;
-      --warn-soft: #eee1bb;
-      --dark-panel: #171a18;
-      --dark-panel-2: #242824;
-      --white: #f9faf7;
-      --max: 1180px;
-      --shadow: 0 18px 48px rgba(27, 31, 27, .08);
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --paper: #101210;
-        --surface: #191c19;
-        --ink: #f0f1eb;
-        --muted: #b6bbb4;
-        --line: #3b403a;
-        --line-strong: #7b8178;
-        --signal: #ff7345;
-        --signal-soft: #512718;
-        --good: #66c9ad;
-        --good-soft: #143f34;
-        --warn: #f1bd5f;
-        --warn-soft: #493715;
-        --dark-panel: #090b09;
-        --dark-panel-2: #151815;
-        --white: #f6f7f2;
-        --shadow: 0 18px 48px rgba(0, 0, 0, .24);
-      }
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      overflow-x: hidden;
-      background: var(--paper);
-      color: var(--ink);
-      font-family: "Libre Franklin", sans-serif;
-      line-height: 1.55;
-      -webkit-font-smoothing: antialiased;
-    }
-    button, input { font: inherit; }
-    a { color: inherit; }
-    .wrap { width: min(var(--max), calc(100% - 44px)); margin-inline: auto; }
-    .skip { position: fixed; top: -80px; left: 16px; z-index: 100; padding: 10px 14px; background: var(--surface); border: 1px solid var(--line); }
-    .skip:focus { top: 16px; }
-
-    .mast {
-      border-bottom: 1px solid var(--line-strong);
-      background:
-        linear-gradient(90deg, transparent 0 24.9%, color-mix(in srgb, var(--line) 58%, transparent) 25%, transparent 25.1% 74.9%, color-mix(in srgb, var(--line) 58%, transparent) 75%, transparent 75.1%);
-    }
-    .mast-grid { min-height: 620px; display: grid; grid-template-columns: 1.28fr .72fr; }
-    .mast-copy { display: flex; flex-direction: column; justify-content: space-between; padding: 58px 64px 54px 0; }
-    .stamp { font: 600 12px/1.3 "IBM Plex Mono", monospace; letter-spacing: .07em; color: var(--signal); }
-    h1, h2, h3, p { margin-top: 0; }
-    h1 { max-width: 840px; margin: 70px 0 26px; font-size: clamp(3.55rem, 8.7vw, 8.5rem); line-height: .84; letter-spacing: -.073em; font-weight: 800; }
-    .deck { max-width: 710px; margin: 0; font-size: clamp(1.08rem, 2vw, 1.4rem); color: var(--muted); }
-    .mast-note { max-width: 710px; padding-top: 30px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 24px; color: var(--muted); font-size: .86rem; }
-    .mast-note b { color: var(--ink); }
-    .mast-side { border-left: 1px solid var(--line-strong); display: grid; grid-template-rows: repeat(3, 1fr); }
-    .side-cell { padding: 34px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; justify-content: space-between; }
-    .side-cell:last-child { border-bottom: 0; }
-    .side-label { font: 500 11px/1.3 "IBM Plex Mono", monospace; letter-spacing: .07em; color: var(--muted); text-transform: uppercase; }
-    .side-cell strong { display: block; font-size: clamp(2rem, 4vw, 4rem); line-height: .95; letter-spacing: -.055em; }
-    .side-cell span:last-child { color: var(--muted); font-size: .86rem; }
-
-    .jump { position: sticky; top: 0; z-index: 30; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--paper) 91%, transparent); backdrop-filter: blur(14px); }
-    .jump .wrap { min-height: 54px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-    .jump b { font: 600 12px/1 "IBM Plex Mono", monospace; color: var(--signal); }
-    .jump-links { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 2px; }
-    .jump a { padding: 7px 10px; color: var(--muted); text-decoration: none; font-size: .82rem; }
-    .jump a:hover, .jump a:focus-visible { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
-
-    section { padding: 92px 0; border-bottom: 1px solid var(--line); }
-    .section-head { display: grid; grid-template-columns: .43fr 1fr; gap: 56px; margin-bottom: 46px; }
-    .section-index { color: var(--signal); font: 600 12px/1.4 "IBM Plex Mono", monospace; }
-    h2 { margin-bottom: 15px; font-size: clamp(2.4rem, 5vw, 5rem); line-height: .96; letter-spacing: -.055em; }
-    .lead { max-width: 760px; margin: 0; color: var(--muted); font-size: 1.08rem; }
-
-    .ledger { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line-strong); background: var(--line); gap: 1px; }
-    .ledger-cell { min-height: 255px; padding: 26px; background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; }
-    .ledger-cell .tag { font: 500 11px/1.3 "IBM Plex Mono", monospace; color: var(--muted); }
-    .ledger-cell strong { display: block; font-size: clamp(2.35rem, 4.2vw, 4.5rem); line-height: .9; letter-spacing: -.06em; }
-    .ledger-cell p { margin: 10px 0 0; color: var(--muted); font-size: .86rem; }
-    .ledger-cell.signal { background: var(--signal); color: #fff; }
-    .ledger-cell.signal .tag, .ledger-cell.signal p { color: rgba(255,255,255,.78); }
-    .material-bar { display: grid; grid-template-columns: 82fr 18fr; height: 44px; margin-top: 28px; border: 1px solid var(--line-strong); }
-    .material-bar span { display: flex; align-items: center; padding-inline: 10px; overflow: hidden; white-space: nowrap; font: 600 11px/1 "IBM Plex Mono", monospace; }
-    .material-bar span:first-child { background: var(--ink); color: var(--paper); }
-    .material-bar span:last-child { background: var(--signal); color: #fff; }
-    .fineprint { margin: 14px 0 0; color: var(--muted); font-size: .8rem; }
-
-    .audit { background: var(--dark-panel); color: var(--white); }
-    .audit .section-index { color: #ff8c66; }
-    .audit .lead { color: #b7bdb7; }
-    .audit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #4b514b; border: 1px solid #4b514b; }
-    .audit-col { padding: 30px; background: var(--dark-panel-2); }
-    .audit-col h3 { display: flex; align-items: center; gap: 11px; margin-bottom: 25px; font-size: 1.15rem; }
-    .audit-col h3::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #7bd2b8; }
-    .audit-col:nth-child(2) h3::before { background: #f0bf61; }
-    .audit-col:nth-child(3) h3::before { background: #ff7047; }
-    .audit-list { list-style: none; margin: 0; padding: 0; }
-    .audit-list li { padding: 18px 0; border-top: 1px solid #414641; }
-    .audit-list strong { display: block; margin-bottom: 5px; font-size: .94rem; }
-    .audit-list span { color: #b6bdb7; font-size: .84rem; line-height: 1.55; }
-
-    .mechanism { display: grid; grid-template-columns: .82fr 1.18fr; gap: 22px; align-items: start; }
-    .logic { background: var(--signal-soft); padding: clamp(26px, 4vw, 44px); border-top: 5px solid var(--signal); }
-    .logic h3 { font-size: clamp(1.65rem, 3vw, 2.5rem); line-height: 1.05; letter-spacing: -.04em; }
-    .logic p { color: var(--ink); }
-    .fork { margin-top: 28px; display: grid; gap: 10px; }
-    .fork-row { display: grid; grid-template-columns: 90px 1fr; gap: 16px; padding-top: 14px; border-top: 1px solid color-mix(in srgb, var(--signal) 35%, transparent); }
-    .fork-row b { color: var(--signal); font: 600 11px/1.45 "IBM Plex Mono", monospace; text-transform: uppercase; }
-    .fork-row span { font-size: .9rem; }
-
-    .calculator { background: var(--surface); border: 1px solid var(--line-strong); box-shadow: var(--shadow); }
-    .calc-head { padding: 24px 28px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 20px; align-items: baseline; }
-    .calc-head h3 { margin: 0; font-size: 1.15rem; }
-    .calc-head span { color: var(--muted); font: 500 10px/1.3 "IBM Plex Mono", monospace; text-transform: uppercase; }
-    .controls { padding: 26px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 26px 30px; }
-    .control label { display: flex; justify-content: space-between; gap: 18px; margin-bottom: 10px; font-size: .82rem; color: var(--muted); }
-    .control output { color: var(--ink); font-family: "IBM Plex Mono", monospace; font-weight: 600; }
-    input[type="range"] { width: 100%; accent-color: var(--signal); }
-    .calc-results { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--line); gap: 1px; border-top: 1px solid var(--line); }
-    .result { padding: 22px; background: var(--paper); }
-    .result strong { display: block; font-size: clamp(1.55rem, 3vw, 2.5rem); line-height: 1; letter-spacing: -.05em; }
-    .result span { display: block; margin-top: 8px; color: var(--muted); font-size: .75rem; }
-    .calc-foot { padding: 18px 28px 22px; color: var(--muted); font-size: .78rem; border-top: 1px solid var(--line); }
-
-    .bridge { background: var(--warn-soft); }
-    .band-switch { display: inline-flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
-    .band-switch button { min-height: 42px; padding: 0 14px; border: 1px solid var(--line-strong); background: transparent; color: var(--ink); cursor: pointer; }
-    .band-switch button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
-    .bridge-board { display: grid; grid-template-columns: 1.15fr .85fr; gap: 1px; background: var(--line-strong); border: 1px solid var(--line-strong); }
-    .bridge-main, .bridge-side { background: var(--surface); padding: clamp(28px, 5vw, 54px); }
-    .bridge-main strong { display: block; margin: 10px 0 12px; font-size: clamp(3.7rem, 8vw, 8.4rem); line-height: .84; letter-spacing: -.075em; }
-    .bridge-main p, .bridge-side p { color: var(--muted); }
-    .bridge-side { display: flex; flex-direction: column; justify-content: space-between; }
-    .bridge-side h3 { font-size: 1.3rem; }
-    .range-line { margin-top: 28px; height: 14px; background: var(--surface); border: 1px solid var(--line-strong); position: relative; }
-    .range-line::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 49%; background: var(--warn); }
-    .range-labels { display: flex; justify-content: space-between; margin-top: 8px; color: var(--muted); font: 500 10px/1.2 "IBM Plex Mono", monospace; }
-
-    .sequence { counter-reset: step; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line-strong); }
-    .step { counter-increment: step; min-height: 220px; padding: 30px 30px 30px 86px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); position: relative; }
-    .step:nth-child(even) { border-right: 0; }
-    .step::before { content: counter(step, decimal-leading-zero); position: absolute; left: 30px; top: 31px; color: var(--signal); font: 600 12px/1 "IBM Plex Mono", monospace; }
-    .step h3 { margin-bottom: 10px; font-size: 1.05rem; }
-    .step p { color: var(--muted); font-size: .88rem; }
-    .step .state { display: inline-block; margin-top: 16px; padding: 4px 7px; border: 1px solid var(--line); color: var(--muted); font: 500 9px/1.2 "IBM Plex Mono", monospace; text-transform: uppercase; }
-
-    .verdict { background: var(--signal); color: #fff; padding: 92px 0 100px; }
-    .verdict-grid { display: grid; grid-template-columns: 1.25fr .75fr; gap: 70px; align-items: end; }
-    .verdict h2 { max-width: 790px; margin-bottom: 24px; }
-    .verdict p { max-width: 720px; color: rgba(255,255,255,.82); font-size: 1.08rem; }
-    .verdict-card { padding: 26px; border: 1px solid rgba(255,255,255,.55); }
-    .verdict-card span { display: block; color: rgba(255,255,255,.7); font: 500 10px/1.3 "IBM Plex Mono", monospace; text-transform: uppercase; }
-    .verdict-card strong { display: block; margin-top: 12px; font-size: 1.45rem; line-height: 1.12; }
-    footer { padding: 24px 0 32px; background: var(--dark-panel); color: #aeb5ae; font-size: .77rem; }
-    footer .wrap { display: flex; justify-content: space-between; gap: 24px; }
-
-    @media (max-width: 900px) {
-      .mast-grid { grid-template-columns: 1fr; }
-      .mast-copy { min-height: 610px; padding-right: 0; }
-      .mast-side { border-left: 0; border-top: 1px solid var(--line-strong); grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr; }
-      .side-cell { min-height: 180px; border-right: 1px solid var(--line); border-bottom: 0; }
-      .side-cell:last-child { border-right: 0; }
-      .section-head, .mechanism, .bridge-board, .verdict-grid { grid-template-columns: 1fr; gap: 28px; }
-      .ledger { grid-template-columns: 1fr 1fr; }
-      .audit-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 620px) {
-      .wrap { width: min(100% - 26px, 560px); }
-      .mast-copy { min-height: 570px; padding-top: 34px; padding-bottom: 36px; }
-      h1 { margin-top: 54px; font-size: clamp(3.5rem, 20vw, 5.8rem); }
-      .mast-note { flex-direction: column; gap: 6px; }
-      .mast-side { grid-template-columns: 1fr; }
-      .side-cell { min-height: 145px; border-right: 0; border-bottom: 1px solid var(--line); }
-      .jump .wrap { display: block; padding: 9px 0; }
-      .jump b { display: none; }
-      .jump-links { justify-content: flex-start; }
-      .jump a { padding: 5px 8px; }
-      section { padding: 68px 0; }
-      .section-head { gap: 18px; margin-bottom: 34px; }
-      .ledger { grid-template-columns: 1fr; }
-      .ledger-cell { min-height: 210px; }
-      .material-bar { grid-template-columns: 1fr; height: auto; }
-      .material-bar span { min-height: 40px; white-space: normal; }
-      .controls { grid-template-columns: 1fr; }
-      .calc-results { grid-template-columns: 1fr; }
-      .result { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; }
-      .result span { text-align: right; }
-      .sequence { grid-template-columns: 1fr; }
-      .step { border-right: 0; }
-      footer .wrap { flex-direction: column; }
-    }
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-  </style>
-</head>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Realizim</title>
+<link rel="stylesheet" href="./assets/style.css"></head>
 <body>
-  <a class="skip" href="#content">Skip to content</a>
+<header class="site"><div class="site-inner"><a class="brand" href="./index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site"><a href="./index.html">Home</a><a href="./who-knows.html">Who Knows?</a><a href="./about.html">About</a><a href="./project-84.html">Project 84</a><a href="./omega42.html">Omega42</a><a href="./new-eden.html">Plan #42</a><a href="./main-site-pages.html">All Pages</a></nav></div></header>
+<main class="wrap site-main">
 
-  <header class="mast">
-    <div class="wrap mast-grid">
-      <div class="mast-copy">
-        <span class="stamp">Working reality ledger · 04 Oct 2026</span>
-        <div>
-          <h1>The pitch is easy. The mass is not.</h1>
-          <p class="deck">A blunt audit of Project 84, its bridge to Plan 42, and the debt idea that appears to fund both. What survives arithmetic stays. What needs law, engineering or consent remains open.</p>
-        </div>
-        <div class="mast-note"><span><b>Mode:</b> internal working model</span><span>Fermi estimates are not bids, forecasts or financing commitments.</span></div>
-      </div>
-      <aside class="mast-side" aria-label="Current status">
-        <div class="side-cell"><span class="side-label">Fleet scope</span><strong>146M</strong><span>capsules · doubled for tolerance</span></div>
-        <div class="side-cell"><span class="side-label">Shell + timber</span><strong>≈$5T</strong><span>before equipment, support fleet and operations</span></div>
-        <div class="side-cell"><span class="side-label">Verdict</span><strong>Possible.</strong><span>Not yet priced as a complete system.</span></div>
-      </aside>
-    </div>
-  </header>
+<a class="skip" href="#content">Skip to content</a>
+<header class="mast">
+<div class="wrap mast-grid">
+<div class="mast-copy">
+<span class="stamp">Working reality ledger · 04 Oct 2026</span>
+<div>
+<h1>The pitch is easy. The mass is not.</h1>
+<p class="deck">A blunt audit of Project 84, its bridge to Plan 42, and the debt idea that appears to fund both. What survives arithmetic stays. What needs law, engineering or consent remains open.</p>
+</div>
+<div class="mast-note"><span><b>Mode:</b> internal working model</span><span>Fermi estimates are not bids, forecasts or financing commitments.</span></div>
+</div>
+<aside aria-label="Current status" class="mast-side">
+<div class="side-cell"><span class="side-label">Fleet scope</span><strong>146M</strong><span>capsules · doubled for tolerance</span></div>
+<div class="side-cell"><span class="side-label">Shell + timber</span><strong>≈$5T</strong><span>before equipment, support fleet and operations</span></div>
+<div class="side-cell"><span class="side-label">Verdict</span><strong>Possible.</strong><span>Not yet priced as a complete system.</span></div>
+</aside>
+</div>
+</header>
+<nav aria-label="Page sections" class="jump">
+<div class="wrap"><b>REALIZIM</b><div class="jump-links"><a href="#baseline">Baseline</a><a href="#audit">Audit</a><a href="#debt">Debt test</a><a href="#bridge">Plan 42</a><a href="#order">Next order</a></div></div>
+</nav>
+<main id="content">
+<section id="baseline">
+<div class="wrap">
+<div class="section-head">
+<span class="section-index">01 / CURRENT BASELINE</span>
+<div><h2>Start with the version that exists now.</h2><p class="lead">The latest scope is 146 million capsules at a 5 × 15 meter footprint. The headline cost below covers steel shells and timber structure only. It is not the cost of a finished autonomous vessel.</p></div>
+</div>
+<div aria-label="Current Project 84 working figures" class="ledger">
+<article class="ledger-cell signal"><span class="tag">COUNT</span><div><strong>146M</strong><p>73M requirement × 2 tolerance factor</p></div></article>
+<article class="ledger-cell"><span class="tag">STEEL</span><div><strong>1.36B t</strong><p>≈27M tonnes per year across 50 years</p></div></article>
+<article class="ledger-cell"><span class="tag">PRACTICAL SUPPORT</span><div><strong>292M</strong><p>people at the current 40/40/20 working mix</p></div></article>
+<article class="ledger-cell"><span class="tag">ALL-HABITATION CEILING</span><div><strong>730M</strong><p>five people per capsule; not the operating mix</p></div></article>
+</div>
+<div aria-label="Five trillion dollar materials split" class="material-bar"><span>$4.1T steel · 82%</span><span>$0.88T timber</span></div>
+<p class="fineprint">Working inputs: ≈9.3 tonnes of steel per capsule, $3,000 per installed tonne, and ≈$880B installed timber. Hardware, propulsion, power systems, controls, yards, carriers, finance, insurance and lifecycle operations are outside this $5T subtotal.</p>
+</div>
+</section>
+<section class="audit" id="audit">
+<div class="wrap">
+<div class="section-head">
+<span class="section-index">02 / MODEL AUDIT</span>
+<div><h2>Three bins. No brochure language.</h2><p class="lead">A number can be arithmetically correct and still be operationally useless. This separates what currently closes, what remains unproven, and what is internally out of sync.</p></div>
+</div>
+<div class="audit-grid">
+<article class="audit-col">
+<h3>Arithmetic holds</h3>
+<ul class="audit-list">
+<li><strong>The tolerance doubling is explicit.</strong><span>73M becomes 146M. The reserve is visible rather than buried.</span></li>
+<li><strong>Population claims are separable.</strong><span>292M is the working-mix figure; 730M is a pure habitation ceiling. They are not the same promise.</span></li>
+<li><strong>The shell subtotal is reconstructable.</strong><span>146M × 9.3 t × $3,000/t lands near $4.1T before timber.</span></li>
+</ul>
+</article>
+<article class="audit-col">
+<h3>Still unproven</h3>
+<ul class="audit-list">
+<li><strong>The 5 mm shell is a starting assumption.</strong><span>Fatigue, corrosion, wave loads, damage tolerance and role-specific depth need engineering.</span></li>
+<li><strong>The useful capsule is not costed.</strong><span>Propulsion, ballast, navigation, comms, autonomy, energy and role modules could materially exceed the bare structure.</span></li>
+<li><strong>The industrial ramp has no validated factory model.</strong><span>Global output share is not the same thing as fabrication capacity for millions of finished marine units.</span></li>
+</ul>
+</article>
+<article class="audit-col">
+<h3>Version drift</h3>
+<ul class="audit-list">
+<li><strong>5 × 15 and 15 × 10 coexist.</strong><span>The current headline uses a 75 m² footprint; the old per-unit geometry remains elsewhere and must be retired or reconciled.</span></li>
+<li><strong>146M and 500M coexist.</strong><span>Role mixes, build ramps, output forecasts and lifecycle math still carry the older fleet count.</span></li>
+<li><strong>Program totals inherit stale mass.</strong><span>Sea, land and air totals cannot be trusted until every dependent sheet is recalculated from one frozen unit spec.</span></li>
+</ul>
+</article>
+</div>
+</div>
+</section>
+<section id="debt">
+<div class="wrap">
+<div class="section-head">
+<span class="section-index">03 / DEBT TEST</span>
+<div><h2>The $440T is a century of coupons—not a pile of cash.</h2><p class="lead">At the working assumptions, $110T of debt at a 4% coupon produces $4.4T per year and $440T nominal over 100 years. Discount the future payments and the value falls back toward the principal. Then the legal mechanics decide whether any payment flows in at all.</p></div>
+</div>
+<div class="mechanism">
+<article class="logic">
+<h3>“Assume the debt” points the cash flow the wrong way.</h3>
+<p>If the Treasury assumes governments’ obligations, it becomes the debtor and pays the coupon. To receive interest, it must instead own the creditor claims—through purchase, assignment or a consensual exchange.</p>
+<div class="fork">
+<div class="fork-row"><b>Debtor</b><span>Takes the obligation. Pays interest and principal.</span></div>
+<div class="fork-row"><b>Creditor</b><span>Owns the bonds. Receives interest, but must acquire the claims.</span></div>
+<div class="fork-row"><b>Jubilee</b><span>Wiping principal after 100 years assigns a loss. The instrument must say who accepts it and why.</span></div>
+</div>
+</article>
+<div aria-label="Debt coupon stress test" class="calculator">
+<div class="calc-head"><h3>Coupon stress test</h3><span>illustrative · $T</span></div>
+<div class="controls">
+<div class="control"><label for="debtBase"><span>Debt claims acquired</span><output id="debtBaseOut">$110T</output></label><input id="debtBase" max="160" min="20" step="1" type="range" value="110"/></div>
+<div class="control"><label for="coupon"><span>Average coupon</span><output id="couponOut">4.0%</output></label><input id="coupon" max="8" min="1" step="0.1" type="range" value="4"/></div>
+<div class="control"><label for="collection"><span>Collected after loss/default</span><output id="collectionOut">100%</output></label><input id="collection" max="100" min="40" step="1" type="range" value="100"/></div>
+<div class="control"><label for="discount"><span>Discount rate</span><output id="discountOut">4.0%</output></label><input id="discount" max="10" min="1" step="0.1" type="range" value="4"/></div>
+</div>
+<div class="calc-results">
+<div class="result"><strong id="annualResult">$4.4T</strong><span>annual coupon collected</span></div>
+<div class="result"><strong id="nominalResult">$440T</strong><span>100-year nominal total</span></div>
+<div class="result"><strong id="pvResult">$107.8T</strong><span>present value today</span></div>
+</div>
+<div class="calc-foot">This models receipts only. It does not include the cost of acquiring the bonds, principal repayment, currency risk, restructuring, administration, legal challenges or the consent of creditors and governments.</div>
+</div>
+</div>
+</div>
+</section>
+<section class="bridge" id="bridge">
+<div class="wrap">
+<div class="section-head">
+<span class="section-index">04 / PLAN 42 BRIDGE</span>
+<div><h2>Could the coupon fund 42? On paper, yes.</h2><p class="lead">Only after the Treasury becomes the creditor, acquires the claims, survives losses and can legally redirect receipts. Select the estimate set to see how many full-coupon years the arithmetic requires.</p></div>
+</div>
+<div aria-label="Choose Plan 42 estimate set" class="band-switch" role="group">
+<button aria-pressed="true" data-high="41" data-label="Public working band" data-low="14" type="button">$14–41T working band</button>
+<button aria-pressed="false" data-high="90" data-label="Detailed system sheet" data-low="31" type="button">$31–90T system sheet</button>
+</div>
+<div class="bridge-board">
+<div class="bridge-main">
+<span class="side-label" id="bandLabel">PUBLIC WORKING BAND</span>
+<strong id="yearsResult">3.2–9.3</strong>
+<p>years of modeled coupon receipts at the current stress-test settings. This is a funding comparison, not a schedule.</p>
+<div aria-hidden="true" class="range-line"></div><div class="range-labels"><span id="lowLabel">$14T</span><span id="highLabel">$41T</span></div>
+</div>
+<aside class="bridge-side">
+<div><h3>The estimate sets do not agree yet.</h3><p>The public working band is lower. The detailed Plan 42 sheet rises when power, transit, water and compute are priced. “Real” comes after 260 site-by-site infrastructure audits, not before.</p></div>
+<p><strong>Bottom line:</strong> the coupon is large enough to discuss. It is not available capital until the ownership and recognition mechanics exist.</p>
+</aside>
+</div>
+</div>
+</section>
+<section id="order">
+<div class="wrap">
+<div class="section-head">
+<span class="section-index">05 / ORDER OF OPERATIONS</span>
+<div><h2>What has to become real first.</h2><p class="lead">The shortest path is not “raise trillions.” It is to remove the uncertainties that make the trillions meaningless.</p></div>
+</div>
+<div class="sequence">
+<article class="step"><h3>Freeze one capsule specification.</h3><p>Resolve 5 × 15 versus 15 × 10, define shell geometry, displacement, payload, draft, stability and the minimum equipment bay.</p><span class="state">blocks every downstream total</span></article>
+<article class="step"><h3>Build a bill of materials.</h3><p>Separate hull, structure, coatings, propulsion, power, controls, comms and role modules. Price an actual finished unit, not a surface shell.</p><span class="state">engineering + procurement</span></article>
+<article class="step"><h3>Prove one manufacturing cell.</h3><p>Cycle time, labor, defects, energy, yard footprint and launch method turn “share of global output” into a production plan.</p><span class="state">pilot before ramp</span></article>
+<article class="step"><h3>Reconcile every dependent model.</h3><p>Rebuild role mix, support population, annual ramp, maintenance, revenue and three-domain mass from the frozen 146M baseline.</p><span class="state">one source of truth</span></article>
+<article class="step"><h3>Choose the legal debt mechanism.</h3><p>Decide whether the Treasury buys creditor claims, novates obligations, or proposes a new instrument. “Assume” and “receive” cannot stay in the same sentence without this.</p><span class="state">law before coupon</span></article>
+<article class="step"><h3>Audit Plan 42 site by site.</h3><p>Existing grids, rail and water make the low case; full greenfield systems make the high case. The mix decides the number.</p><span class="state">260 local answers</span></article>
+</div>
+</div>
+</section>
+<section class="verdict">
+<div class="wrap verdict-grid">
+<div><h2>Not fantasy. Not financed. Not finished.</h2><p>The capsule program is small enough in raw material flow to keep studying and large enough in systems complexity to punish every shortcut. The next win is not a prettier total. It is one unit, one factory cell and one legal instrument that survive contact with specialists.</p></div>
+<div class="verdict-card"><span>Current classification</span><strong>Planetary infrastructure hypothesis with a tractable first prototype.</strong></div>
+</div>
+</section>
+</main>
+<footer><div class="wrap"><span>Working model · estimates revised 04 Oct 2026</span><span>Every figure is provisional until its dependency is closed.</span></div></footer>
 
-  <nav class="jump" aria-label="Page sections">
-    <div class="wrap"><b>REALIZIM</b><div class="jump-links"><a href="#baseline">Baseline</a><a href="#audit">Audit</a><a href="#debt">Debt test</a><a href="#bridge">Plan 42</a><a href="#order">Next order</a></div></div>
-  </nav>
 
-  <main id="content">
-    <section id="baseline">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="section-index">01 / CURRENT BASELINE</span>
-          <div><h2>Start with the version that exists now.</h2><p class="lead">The latest scope is 146 million capsules at a 5 × 15 meter footprint. The headline cost below covers steel shells and timber structure only. It is not the cost of a finished autonomous vessel.</p></div>
-        </div>
-        <div class="ledger" aria-label="Current Project 84 working figures">
-          <article class="ledger-cell signal"><span class="tag">COUNT</span><div><strong>146M</strong><p>73M requirement × 2 tolerance factor</p></div></article>
-          <article class="ledger-cell"><span class="tag">STEEL</span><div><strong>1.36B t</strong><p>≈27M tonnes per year across 50 years</p></div></article>
-          <article class="ledger-cell"><span class="tag">PRACTICAL SUPPORT</span><div><strong>292M</strong><p>people at the current 40/40/20 working mix</p></div></article>
-          <article class="ledger-cell"><span class="tag">ALL-HABITATION CEILING</span><div><strong>730M</strong><p>five people per capsule; not the operating mix</p></div></article>
-        </div>
-        <div class="material-bar" aria-label="Five trillion dollar materials split"><span>$4.1T steel · 82%</span><span>$0.88T timber</span></div>
-        <p class="fineprint">Working inputs: ≈9.3 tonnes of steel per capsule, $3,000 per installed tonne, and ≈$880B installed timber. Hardware, propulsion, power systems, controls, yards, carriers, finance, insurance and lifecycle operations are outside this $5T subtotal.</p>
-      </div>
-    </section>
+</main>
+<footer class="site"><div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="./index.html">All pages</a></div></footer>
 
-    <section class="audit" id="audit">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="section-index">02 / MODEL AUDIT</span>
-          <div><h2>Three bins. No brochure language.</h2><p class="lead">A number can be arithmetically correct and still be operationally useless. This separates what currently closes, what remains unproven, and what is internally out of sync.</p></div>
-        </div>
-        <div class="audit-grid">
-          <article class="audit-col">
-            <h3>Arithmetic holds</h3>
-            <ul class="audit-list">
-              <li><strong>The tolerance doubling is explicit.</strong><span>73M becomes 146M. The reserve is visible rather than buried.</span></li>
-              <li><strong>Population claims are separable.</strong><span>292M is the working-mix figure; 730M is a pure habitation ceiling. They are not the same promise.</span></li>
-              <li><strong>The shell subtotal is reconstructable.</strong><span>146M × 9.3 t × $3,000/t lands near $4.1T before timber.</span></li>
-            </ul>
-          </article>
-          <article class="audit-col">
-            <h3>Still unproven</h3>
-            <ul class="audit-list">
-              <li><strong>The 5 mm shell is a starting assumption.</strong><span>Fatigue, corrosion, wave loads, damage tolerance and role-specific depth need engineering.</span></li>
-              <li><strong>The useful capsule is not costed.</strong><span>Propulsion, ballast, navigation, comms, autonomy, energy and role modules could materially exceed the bare structure.</span></li>
-              <li><strong>The industrial ramp has no validated factory model.</strong><span>Global output share is not the same thing as fabrication capacity for millions of finished marine units.</span></li>
-            </ul>
-          </article>
-          <article class="audit-col">
-            <h3>Version drift</h3>
-            <ul class="audit-list">
-              <li><strong>5 × 15 and 15 × 10 coexist.</strong><span>The current headline uses a 75 m² footprint; the old per-unit geometry remains elsewhere and must be retired or reconciled.</span></li>
-              <li><strong>146M and 500M coexist.</strong><span>Role mixes, build ramps, output forecasts and lifecycle math still carry the older fleet count.</span></li>
-              <li><strong>Program totals inherit stale mass.</strong><span>Sea, land and air totals cannot be trusted until every dependent sheet is recalculated from one frozen unit spec.</span></li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="debt">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="section-index">03 / DEBT TEST</span>
-          <div><h2>The $440T is a century of coupons—not a pile of cash.</h2><p class="lead">At the working assumptions, $110T of debt at a 4% coupon produces $4.4T per year and $440T nominal over 100 years. Discount the future payments and the value falls back toward the principal. Then the legal mechanics decide whether any payment flows in at all.</p></div>
-        </div>
-        <div class="mechanism">
-          <article class="logic">
-            <h3>“Assume the debt” points the cash flow the wrong way.</h3>
-            <p>If the Treasury assumes governments’ obligations, it becomes the debtor and pays the coupon. To receive interest, it must instead own the creditor claims—through purchase, assignment or a consensual exchange.</p>
-            <div class="fork">
-              <div class="fork-row"><b>Debtor</b><span>Takes the obligation. Pays interest and principal.</span></div>
-              <div class="fork-row"><b>Creditor</b><span>Owns the bonds. Receives interest, but must acquire the claims.</span></div>
-              <div class="fork-row"><b>Jubilee</b><span>Wiping principal after 100 years assigns a loss. The instrument must say who accepts it and why.</span></div>
-            </div>
-          </article>
-
-          <div class="calculator" aria-label="Debt coupon stress test">
-            <div class="calc-head"><h3>Coupon stress test</h3><span>illustrative · $T</span></div>
-            <div class="controls">
-              <div class="control"><label for="debtBase"><span>Debt claims acquired</span><output id="debtBaseOut">$110T</output></label><input id="debtBase" type="range" min="20" max="160" value="110" step="1" /></div>
-              <div class="control"><label for="coupon"><span>Average coupon</span><output id="couponOut">4.0%</output></label><input id="coupon" type="range" min="1" max="8" value="4" step="0.1" /></div>
-              <div class="control"><label for="collection"><span>Collected after loss/default</span><output id="collectionOut">100%</output></label><input id="collection" type="range" min="40" max="100" value="100" step="1" /></div>
-              <div class="control"><label for="discount"><span>Discount rate</span><output id="discountOut">4.0%</output></label><input id="discount" type="range" min="1" max="10" value="4" step="0.1" /></div>
-            </div>
-            <div class="calc-results">
-              <div class="result"><strong id="annualResult">$4.4T</strong><span>annual coupon collected</span></div>
-              <div class="result"><strong id="nominalResult">$440T</strong><span>100-year nominal total</span></div>
-              <div class="result"><strong id="pvResult">$107.8T</strong><span>present value today</span></div>
-            </div>
-            <div class="calc-foot">This models receipts only. It does not include the cost of acquiring the bonds, principal repayment, currency risk, restructuring, administration, legal challenges or the consent of creditors and governments.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="bridge" id="bridge">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="section-index">04 / PLAN 42 BRIDGE</span>
-          <div><h2>Could the coupon fund 42? On paper, yes.</h2><p class="lead">Only after the Treasury becomes the creditor, acquires the claims, survives losses and can legally redirect receipts. Select the estimate set to see how many full-coupon years the arithmetic requires.</p></div>
-        </div>
-        <div class="band-switch" role="group" aria-label="Choose Plan 42 estimate set">
-          <button type="button" data-low="14" data-high="41" data-label="Public working band" aria-pressed="true">$14–41T working band</button>
-          <button type="button" data-low="31" data-high="90" data-label="Detailed system sheet" aria-pressed="false">$31–90T system sheet</button>
-        </div>
-        <div class="bridge-board">
-          <div class="bridge-main">
-            <span class="side-label" id="bandLabel">PUBLIC WORKING BAND</span>
-            <strong id="yearsResult">3.2–9.3</strong>
-            <p>years of modeled coupon receipts at the current stress-test settings. This is a funding comparison, not a schedule.</p>
-            <div class="range-line" aria-hidden="true"></div><div class="range-labels"><span id="lowLabel">$14T</span><span id="highLabel">$41T</span></div>
-          </div>
-          <aside class="bridge-side">
-            <div><h3>The estimate sets do not agree yet.</h3><p>The public working band is lower. The detailed Plan 42 sheet rises when power, transit, water and compute are priced. “Real” comes after 260 site-by-site infrastructure audits, not before.</p></div>
-            <p><strong>Bottom line:</strong> the coupon is large enough to discuss. It is not available capital until the ownership and recognition mechanics exist.</p>
-          </aside>
-        </div>
-      </div>
-    </section>
-
-    <section id="order">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="section-index">05 / ORDER OF OPERATIONS</span>
-          <div><h2>What has to become real first.</h2><p class="lead">The shortest path is not “raise trillions.” It is to remove the uncertainties that make the trillions meaningless.</p></div>
-        </div>
-        <div class="sequence">
-          <article class="step"><h3>Freeze one capsule specification.</h3><p>Resolve 5 × 15 versus 15 × 10, define shell geometry, displacement, payload, draft, stability and the minimum equipment bay.</p><span class="state">blocks every downstream total</span></article>
-          <article class="step"><h3>Build a bill of materials.</h3><p>Separate hull, structure, coatings, propulsion, power, controls, comms and role modules. Price an actual finished unit, not a surface shell.</p><span class="state">engineering + procurement</span></article>
-          <article class="step"><h3>Prove one manufacturing cell.</h3><p>Cycle time, labor, defects, energy, yard footprint and launch method turn “share of global output” into a production plan.</p><span class="state">pilot before ramp</span></article>
-          <article class="step"><h3>Reconcile every dependent model.</h3><p>Rebuild role mix, support population, annual ramp, maintenance, revenue and three-domain mass from the frozen 146M baseline.</p><span class="state">one source of truth</span></article>
-          <article class="step"><h3>Choose the legal debt mechanism.</h3><p>Decide whether the Treasury buys creditor claims, novates obligations, or proposes a new instrument. “Assume” and “receive” cannot stay in the same sentence without this.</p><span class="state">law before coupon</span></article>
-          <article class="step"><h3>Audit Plan 42 site by site.</h3><p>Existing grids, rail and water make the low case; full greenfield systems make the high case. The mix decides the number.</p><span class="state">260 local answers</span></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="verdict">
-      <div class="wrap verdict-grid">
-        <div><h2>Not fantasy. Not financed. Not finished.</h2><p>The capsule program is small enough in raw material flow to keep studying and large enough in systems complexity to punish every shortcut. The next win is not a prettier total. It is one unit, one factory cell and one legal instrument that survive contact with specialists.</p></div>
-        <div class="verdict-card"><span>Current classification</span><strong>Planetary infrastructure hypothesis with a tractable first prototype.</strong></div>
-      </div>
-    </section>
-  </main>
-
-  <footer><div class="wrap"><span>Working model · estimates revised 04 Oct 2026</span><span>Every figure is provisional until its dependency is closed.</span></div></footer>
-
-  <script>
+<script>
     (function () {
       var ids = ["debtBase", "coupon", "collection", "discount"];
       var band = { low: 14, high: 41 };
@@ -426,5 +208,4 @@
       update();
     }());
   </script>
-</body>
-</html>
+</body></html>

@@ -1,268 +1,54 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="color-scheme" content="light dark">
-  <link rel="icon" href="data:,">
-  <title>Alice Storyboard — John Tenniel’s Original Illustrations</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&display=swap');
-    :root{
-      color-scheme:light dark;
-      --paper:#f5f6f4; --sheet:#ffffff; --ink:#181917; --muted:#5b5f59;
-      --line:#d7d9d4; --accent:#a92e32; --accent-ink:#7d1f23; --shadow:rgba(18,22,17,.09);
-      --serif:"Libre Caslon Text", Georgia, serif; --mono:"DM Mono", monospace;
-    }
-    @media(prefers-color-scheme:dark){
-      :root{--paper:#151716;--sheet:#1e211f;--ink:#f1f2ee;--muted:#aeb4ab;--line:#3a3f3b;--accent:#e56d6f;--accent-ink:#ff9a9c;--shadow:rgba(0,0,0,.28)}
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;padding-bottom:calc(64px + env(safe-area-inset-bottom));background:var(--paper);color:var(--ink);font-family:var(--serif);line-height:1.5}
-    button,input,select{font:inherit}
-    a{color:var(--accent-ink);text-underline-offset:3px}
-    .site-menu{position:relative;z-index:30;max-width:1240px;margin:auto;padding:14px clamp(18px,4vw,54px) 0;font-family:var(--mono)}
-    .menu-shell{position:relative}
-    .menu-shell:not([open])>.menu-panel,.submenu:not([open])>:not(summary){display:none}
-    .menu-toggle{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:18px;width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:4px;background:var(--sheet);color:var(--ink);cursor:pointer;font-size:.78rem}
-    .menu-toggle::-webkit-details-marker,.submenu summary::-webkit-details-marker{display:none}
-    .menu-toggle::after{content:"+";color:var(--accent-ink);font-size:1rem;line-height:1}
-    .menu-shell[open]>.menu-toggle::after{content:"−"}
-    .menu-note{color:var(--muted);font-size:.68rem}
-    .menu-panel{position:absolute;z-index:20;top:calc(100% + 6px);left:0;right:0;max-height:min(76vh,720px);overflow-y:auto;padding:12px;border:1px solid var(--line);border-radius:4px;background:var(--sheet);box-shadow:0 18px 48px var(--shadow)}
-    .menu-list,.submenu-list{list-style:none;margin:0;padding:0}
-    .menu-list{display:grid;grid-template-columns:1fr;gap:3px;counter-reset:menu-item}
-    .menu-list>li{min-width:0;counter-increment:menu-item}
-    .menu-list>li>a,.submenu>summary{display:flex;align-items:baseline;gap:8px;padding:8px 9px;border-radius:3px;color:var(--ink);text-decoration:none;font-size:.76rem;line-height:1.35}
-    .menu-list>li>a::before,.submenu>summary::before{content:counter(menu-item,decimal-leading-zero);flex:0 0 2ch;color:var(--muted);font-size:.65rem}
-    .menu-list>li>a:hover,.submenu>summary:hover,.submenu-list a:hover{background:var(--paper);color:var(--accent-ink)}
-    .menu-list a:focus-visible,.menu-toggle:focus-visible,.submenu summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-    .submenu{border-top:1px solid transparent;border-bottom:1px solid transparent}
-    .submenu[open]{border-color:var(--line);padding-bottom:8px}
-    .submenu>summary{list-style:none;cursor:pointer}
-    .submenu>summary::after{content:"+";margin-left:auto;color:var(--accent-ink)}
-    .submenu[open]>summary::after{content:"−"}
-    .submenu-main{padding:0 9px 7px 39px;font-size:.7rem}
-    .submenu-main a{font-weight:500}
-    .submenu-list{margin:0 9px 2px 39px;padding-left:10px;border-left:1px solid var(--line);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px 12px}
-    .submenu-list a{display:block;padding:6px 7px;border-radius:3px;color:var(--ink);text-decoration:none;font-size:.68rem;line-height:1.35}
-    .submenu-heading{grid-column:1/-1;padding:6px 7px 2px;color:var(--muted);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase}
-    .submenu-note{grid-column:1/-1;padding:4px 7px 6px;color:var(--muted);font-size:.62rem;line-height:1.4}
-    .mast{max-width:1240px;margin:auto;padding:clamp(28px,5vw,72px) clamp(18px,4vw,54px) 28px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(240px,.75fr);gap:28px;align-items:end;border-bottom:1px solid var(--line)}
-    h1{font-size:clamp(2.2rem,6vw,5.3rem);line-height:.95;letter-spacing:-.055em;margin:0 0 22px;max-width:850px;font-weight:400}
-    .dek{font-size:clamp(1rem,1.6vw,1.25rem);max-width:700px;margin:0;color:var(--muted)}
-    .ledger{border-top:5px solid var(--accent);padding-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
-    .datum b{font:500 clamp(1.6rem,4vw,2.8rem)/1 var(--mono);display:block}.datum span{font:400 .72rem/1.35 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-    .controls{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 94%,transparent);backdrop-filter:blur(9px);border-bottom:1px solid var(--line)}
-    .control-inner{max-width:1240px;margin:auto;padding:12px clamp(18px,4vw,54px);display:grid;grid-template-columns:auto minmax(180px,1fr) auto;gap:10px;align-items:center}
-    .tabs{display:flex;gap:4px}.tab,.jump,.clear{border:1px solid var(--line);background:var(--sheet);color:var(--ink);padding:9px 12px;border-radius:4px;cursor:pointer;font-family:var(--mono);font-size:.76rem}
-    .tab[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-    .search{width:100%;border:1px solid var(--line);background:var(--sheet);color:var(--ink);padding:9px 12px;border-radius:4px;min-width:0}
-    .jump{max-width:220px}
-    main{max-width:1240px;margin:auto;padding:34px clamp(18px,4vw,54px) 80px}
-    .book{margin:0 0 70px}.bookhead{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end;margin-bottom:28px;padding-bottom:16px;border-bottom:3px double var(--ink)}
-    .bookhead h2{font-weight:400;font-size:clamp(1.7rem,3.3vw,3.1rem);line-height:1.05;margin:0}.bookhead p{font-family:var(--mono);font-size:.74rem;color:var(--muted);margin:0;text-align:right}
-    .chapter{scroll-margin-top:84px;margin:0 0 46px}.chapterhead{display:grid;grid-template-columns:52px 1fr auto;align-items:baseline;gap:12px;margin-bottom:15px}.chapterhead::after{content:"";height:1px;background:var(--line);grid-column:2/4;grid-row:2}.roman{font:500 .74rem var(--mono);color:var(--accent-ink)}
-    .chapter h3{font-size:clamp(1.05rem,1.8vw,1.35rem);margin:0;font-weight:700}.chapter-count{font:400 .7rem var(--mono);color:var(--muted)}
-    .grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
-    .plate{appearance:none;width:100%;border:1px solid var(--line);border-radius:3px;background:var(--sheet);color:var(--ink);padding:0;text-align:left;overflow:hidden;cursor:zoom-in;box-shadow:0 4px 15px var(--shadow);display:flex;flex-direction:column;min-width:0}
-    .plate:focus-visible,.tab:focus-visible,.jump:focus-visible,.search:focus-visible,.dialog-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-    .frame{background-color:#fff;background-repeat:no-repeat;background-position:center;background-size:contain;height:220px;display:grid;place-items:center;border:14px solid #fff;border-bottom-width:13px;outline:1px solid var(--line)}
-    @media(prefers-color-scheme:dark){.frame{background-color:#e9e9e5;border-color:#e9e9e5}}
-    .frame img{width:1px;height:1px;opacity:.001;display:block}
-    .caption{padding:11px 12px 13px;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
-    .num{font:500 .66rem/1.5 var(--mono);color:var(--accent-ink)}.caption-text{font-size:.83rem;line-height:1.35}
-    .empty{padding:80px 20px;text-align:center;color:var(--muted);display:none}.empty strong{display:block;color:var(--ink);font-size:1.3rem;margin-bottom:7px}
-    .sources{border-top:1px solid var(--line);padding-top:22px;display:grid;grid-template-columns:1fr 1fr;gap:24px;color:var(--muted);font-size:.8rem}.sources h2{font-size:1rem;color:var(--ink);margin:0 0 8px}.sources p{margin:0 0 8px}
-    dialog{width:min(1000px,calc(100vw - 28px));height:min(92vh,900px);padding:0;border:1px solid var(--line);border-radius:5px;background:var(--sheet);color:var(--ink);box-shadow:0 24px 80px rgba(0,0,0,.35)}
-    dialog::backdrop{background:rgba(4,5,4,.78)}
-    .viewer{height:100%;display:grid;grid-template-rows:auto 1fr auto}.viewer-top,.viewer-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 14px;border-bottom:1px solid var(--line)}.viewer-bottom{border-top:1px solid var(--line);border-bottom:0}
-    .viewer-meta{font:400 .72rem var(--mono);color:var(--muted)}.viewer-img{min-height:0;display:grid;place-items:center;padding:18px;background:#efefeb}.viewer-img img{width:100%;height:100%;object-fit:contain;filter:grayscale(1) contrast(1.06)}
-    .viewer-title{font-size:.92rem;line-height:1.35}.dialog-btn{border:1px solid var(--line);background:var(--sheet);color:var(--ink);padding:8px 11px;border-radius:4px;cursor:pointer;font-family:var(--mono);font-size:.72rem;white-space:nowrap}.viewer-actions{display:flex;gap:7px}
-    .hide{display:none!important}
-    @media(max-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.frame{height:220px}.mast{grid-template-columns:1fr}.ledger{max-width:420px}.control-inner{grid-template-columns:1fr 1fr}.search{grid-column:1/3;grid-row:2}.jump{justify-self:stretch;max-width:none}.tabs{min-width:0}.tab{flex:1;padding-inline:8px}}
-    @media(max-width:620px){.site-menu{padding-inline:12px}.menu-panel{position:fixed;top:58px;right:12px;bottom:12px;left:12px;max-height:none}.menu-list,.submenu-list{grid-template-columns:1fr}.menu-note{display:none}.submenu-list{margin-left:25px}.mast{padding-top:28px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.frame{height:176px;padding:9px}.caption{display:block;padding:9px}.num{display:block;margin-bottom:3px}.caption-text{font-size:.76rem}.bookhead{grid-template-columns:1fr}.bookhead p{text-align:left}.chapterhead{grid-template-columns:35px 1fr auto;gap:8px}.controls{position:static}.control-inner{grid-template-columns:1fr}.tabs,.search,.jump{grid-column:1}.search{grid-row:auto}.sources{grid-template-columns:1fr}}
-    @media(max-width:370px){.grid{grid-template-columns:1fr}.frame{height:240px}}
-    .bottom-nav{position:fixed;z-index:1000;right:0;bottom:0;left:0;display:flex;align-items:stretch;padding-bottom:env(safe-area-inset-bottom);border-top:1px solid var(--line);background:var(--sheet);box-shadow:0 -12px 34px var(--shadow);font-family:var(--mono)}
-    .bottom-slot{position:relative;display:flex;flex:1 1 25%;min-width:0;min-height:56px;border-right:1px solid var(--line)}
-    .bottom-slot:last-child{border-right:0}
-    .bottom-trigger,.bottom-placeholder,.bottom-link{display:flex;align-items:center;justify-content:center;width:100%;min-width:0;padding:10px 6px;border:0;background:transparent;color:var(--ink);font:500 .72rem/1.2 var(--mono);text-align:center}
-    .bottom-trigger{cursor:pointer}
-    .bottom-link{text-decoration:none;cursor:pointer}
-    .bottom-link:hover{background:var(--paper);color:var(--accent-ink)}
-    .bottom-trigger::after{content:"↑";margin-left:6px;color:var(--accent-ink);font-size:.8rem}
-    .bottom-guides:hover>.bottom-trigger,.bottom-guides:focus-within>.bottom-trigger,.bottom-trigger[aria-expanded="true"]{background:var(--paper);color:var(--accent-ink)}
-    .bottom-trigger:focus-visible,.bottom-link:focus-visible,.guide-dropup a:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
-    .bottom-placeholder{color:var(--muted);cursor:default;opacity:.72}
-    .guide-dropup{position:absolute;left:8px;bottom:100%;display:none;width:min(360px,calc(100vw - 16px));max-height:calc(100vh - 72px - env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;padding:8px;border:1px solid var(--line);border-bottom:0;border-radius:4px 4px 0 0;background:var(--sheet);box-shadow:0 -18px 48px var(--shadow)}
-    .bottom-guides:hover>.guide-dropup,.bottom-guides:focus-within>.guide-dropup,.bottom-guides.is-open>.guide-dropup{display:block}
-    .guide-dropup a{display:block;padding:8px 9px;border-radius:3px;color:var(--ink);text-decoration:none;font-size:.7rem;line-height:1.3}
-    .guide-dropup a:hover{background:var(--paper);color:var(--accent-ink)}
-    @media(max-width:480px){.bottom-trigger,.bottom-placeholder,.bottom-link{padding-inline:3px;font-size:clamp(.58rem,2.65vw,.7rem)}.bottom-trigger::after{margin-left:3px}.guide-dropup{left:4px;width:calc(100vw - 8px)}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-    @media print{body{padding-bottom:0}.controls,.bottom-nav{display:none}.grid{grid-template-columns:repeat(3,1fr)}.plate{box-shadow:none;break-inside:avoid}.frame{height:210px}.sources{display:block}dialog{display:none}}
-  </style>
-</head>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Alice Storyboard — John Tenniel’s Original Illustrations</title>
+<link rel="stylesheet" href="./assets/style.css"></head>
 <body>
-  <nav class="site-menu" aria-label="Public pages">
-    <details class="menu-shell">
-      <summary class="menu-toggle"><span>Explore public pages</span><span class="menu-note">Every project, letter, and language</span></summary>
-      <div class="menu-panel">
-        <ol class="menu-list">
-          <li><a href="./new-eden.html">Plan #42</a></li>
-          <li>
-            <details class="submenu">
-              <summary>Project 84</summary>
-              <div class="submenu-main"><a href="./project-84.html">Project 84</a></div>
-              <ul class="submenu-list submenu-arms">
-                <li class="submenu-heading">Non-profit aimed arms</li>
-                <li><a href="./omega42.html">Omega42</a></li>
-                <li><a href="./prime-42.html">Prime 42</a></li>
-                <li class="submenu-note">Held until they can understand economics enough to participate — then they take over, with adjustments to equalize between currencies.</li>
-              </ul>
-            </details>
-          </li>
-          <li><a href="./project-84-dummies-guide-level-14-2.html">Project 84 Dummies Guide — Level 14 (English)</a></li>
-          <li><a href="./dummies-guide-to-claiming-oceans-and-antarctica.html">Claiming Oceans &amp; Antarctica</a></li>
-          <li><a href="./poodles-project-84-work-boats.html">HEAR-TS Work Boats</a></li>
-          <li><a href="./hurricane-suppression-research.html">Hurricane Research</a></li>
-          <li><a href="./floating-skyports.html">Floating Skyports</a></li>
-          <li><a href="./human-recovery-disk.html">Human Recovery Disk</a></li>
-          <li><a href="./about.html">About the Founder</a></li>
-          <li>
-            <details class="submenu">
-              <summary>Jobs / WeFind's for Delegations</summary>
-              <div class="submenu-main"><a href="./job-listings.html">Open the English jobs page</a></div>
-              <ul class="submenu-list" aria-label="Job listing languages">
-                <li><a href="./job-listings.html">English</a></li>
-                <li><a href="./job-listings-amharic.html">Amharic</a></li>
-                <li><a href="./job-listings-arabic.html">Arabic</a></li>
-                <li><a href="./job-listings-bengali.html">Bengali</a></li>
-                <li><a href="./job-listings-chinese-simplified.html">Chinese (Simplified)</a></li>
-                <li><a href="./job-listings-chinese-traditional.html">Chinese (Traditional)</a></li>
-                <li><a href="./job-listings-czech.html">Czech</a></li>
-                <li><a href="./job-listings-danish.html">Danish</a></li>
-                <li><a href="./job-listings-dutch.html">Dutch</a></li>
-                <li><a href="./job-listings-filipino.html">Filipino</a></li>
-                <li><a href="./job-listings-finnish.html">Finnish</a></li>
-                <li><a href="./job-listings-french.html">French</a></li>
-                <li><a href="./job-listings-german.html">German</a></li>
-                <li><a href="./job-listings-greek.html">Greek</a></li>
-                <li><a href="./job-listings-hausa.html">Hausa</a></li>
-                <li><a href="./job-listings-hebrew.html">Hebrew</a></li>
-                <li><a href="./job-listings-hindi.html">Hindi</a></li>
-                <li><a href="./job-listings-hungarian.html">Hungarian</a></li>
-                <li><a href="./job-listings-indonesian.html">Indonesian</a></li>
-                <li><a href="./job-listings-italian.html">Italian</a></li>
-                <li><a href="./job-listings-japanese.html">Japanese</a></li>
-                <li><a href="./job-listings-korean.html">Korean</a></li>
-                <li><a href="./job-listings-norwegian.html">Norwegian</a></li>
-                <li><a href="./job-listings-persian.html">Persian</a></li>
-                <li><a href="./job-listings-polish.html">Polish</a></li>
-                <li><a href="./job-listings-portuguese.html">Portuguese</a></li>
-                <li><a href="./job-listings-romanian.html">Romanian</a></li>
-                <li><a href="./job-listings-russian.html">Russian</a></li>
-                <li><a href="./job-listings-spanish.html">Spanish</a></li>
-                <li><a href="./job-listings-swahili.html">Swahili</a></li>
-                <li><a href="./job-listings-swedish.html">Swedish</a></li>
-                <li><a href="./job-listings-thai.html">Thai</a></li>
-                <li><a href="./job-listings-turkish.html">Turkish</a></li>
-                <li><a href="./job-listings-ukrainian.html">Ukrainian</a></li>
-                <li><a href="./job-listings-urdu.html">Urdu</a></li>
-                <li><a href="./job-listings-vietnamese.html">Vietnamese</a></li>
-              </ul>
-            </details>
-          </li>
-          <li><a href="./an-open-letter-to-canada-and-poland.html">Open Letter</a></li>
-          <li><a href="./proclamation-of-claim.html">Proclamation of Claim</a></li>
-          <li>
-            <details class="submenu">
-              <summary>Letters &amp; Diplomacy</summary>
-              <ul class="submenu-list">
-                <li><a href="./project-84-diplomatic-letters-world.html">World Index</a></li>
-                <li><a href="./project-84-letters-to-us-leaders.html">Letters to US Leaders</a></li>
-                <li><a href="./consulate-letters-africa-i.html">Consulate Letters — Africa I</a></li>
-                <li><a href="./consulate-letters-africa-ii.html">Consulate Letters — Africa II</a></li>
-                <li><a href="./consulate-letters-africa-iii.html">Consulate Letters — Africa III</a></li>
-                <li><a href="./consulate-letters-americas-i.html">Consulate Letters — Americas I</a></li>
-                <li><a href="./consulate-letters-americas-ii.html">Consulate Letters — Americas II</a></li>
-                <li><a href="./consulate-letters-asia-pacific.html">Consulate Letters — Asia-Pacific</a></li>
-                <li><a href="./consulate-letters-europe-i.html">Consulate Letters — Europe I</a></li>
-                <li><a href="./consulate-letters-europe-ii.html">Consulate Letters — Europe II</a></li>
-                <li><a href="./consulate-letters-europe-iii.html">Consulate Letters — Europe III</a></li>
-                <li><a href="./consulate-letters-middle-east.html">Consulate Letters — Middle East</a></li>
-                <li><a href="./consulate-letters-oceania.html">Consulate Letters — Oceania</a></li>
-              </ul>
-            </details>
-          </li>
-          <li><a href="./who-knows.html">Who Knows?</a></li>
-          <li><a href="./money-vs-assets.html">Money vs Assets</a></li>
-          <li><a href="./3d-printing-advancements-last-5-years.html">3D Printing</a></li>
-          <li><a href="https://sites.google.com/view/knottsure/home">Why Not?</a></li>
-          <li>
-            <details class="submenu">
-              <summary>More</summary>
-              <ul class="submenu-list">
-                <li><a href="./alice-storyboard.html">Alice Storyboard</a></li>
-                <li><a href="./doodare-s-diaper-replacement-concept.html">Doodare's Diaper Concept</a></li>
-                <li><a href="./one-terms-of-service.html">Terms of Service</a></li>
-              </ul>
-            </details>
-          </li>
-        </ol>
-      </div>
-    </details>
-  </nav>
-  <header class="mast">
-    <div>
-      <h1>92 drawings.<br>Two impossible journeys.</h1>
-      <p class="dek">John Tenniel’s complete original illustration sequence for <em>Alice’s Adventures in Wonderland</em> and <em>Through the Looking-Glass</em>, arranged in book order and grouped by chapter.</p>
-    </div>
-    <div class="ledger" aria-label="Collection summary">
-      <div class="datum"><b>42</b><span>Wonderland<br>drawings</span></div>
-      <div class="datum"><b>50</b><span>Looking-Glass<br>drawings</span></div>
-      <div class="datum"><b>1865</b><span>First book</span></div>
-      <div class="datum"><b>1871</b><span>Second book</span></div>
-    </div>
-  </header>
+<header class="site"><div class="site-inner"><a class="brand" href="./index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site"><a href="./index.html">Home</a><a href="./who-knows.html">Who Knows?</a><a href="./about.html">About</a><a href="./project-84.html">Project 84</a><a href="./omega42.html">Omega42</a><a href="./new-eden.html">Plan #42</a><a href="./main-site-pages.html">All Pages</a></nav></div></header>
+<main class="wrap site-main">
 
-  <nav class="controls" aria-label="Storyboard controls">
-    <div class="control-inner">
-      <div class="tabs" aria-label="Choose book">
-        <button class="tab" data-book="all" aria-pressed="true">All</button>
-        <button class="tab" data-book="wonderland" aria-pressed="false">Wonderland</button>
-        <button class="tab" data-book="looking-glass" aria-pressed="false">Looking-Glass</button>
-      </div>
-      <input class="search" id="search" type="search" placeholder="Find a scene — rabbit, butterfly, queen…" aria-label="Search illustration captions">
-      <select class="jump" id="jump" aria-label="Jump to a chapter"><option value="">Jump to chapter</option></select>
-    </div>
-  </nav>
 
-  <main id="storyboard"></main>
-  <div class="empty" id="empty"><strong>No scene found.</strong>Try a character, object, or chapter title.</div>
+<header class="mast">
+<div>
+<h1>92 drawings.<br/>Two impossible journeys.</h1>
+<p class="dek">John Tenniel’s complete original illustration sequence for <em>Alice’s Adventures in Wonderland</em> and <em>Through the Looking-Glass</em>, arranged in book order and grouped by chapter.</p>
+</div>
+<div aria-label="Collection summary" class="ledger">
+<div class="datum"><b>42</b><span>Wonderland<br/>drawings</span></div>
+<div class="datum"><b>50</b><span>Looking-Glass<br/>drawings</span></div>
+<div class="datum"><b>1865</b><span>First book</span></div>
+<div class="datum"><b>1871</b><span>Second book</span></div>
+</div>
+</header>
+<nav aria-label="Storyboard controls" class="controls">
+<div class="control-inner">
+<div aria-label="Choose book" class="tabs">
+<button aria-pressed="true" class="tab" data-book="all">All</button>
+<button aria-pressed="false" class="tab" data-book="wonderland">Wonderland</button>
+<button aria-pressed="false" class="tab" data-book="looking-glass">Looking-Glass</button>
+</div>
+<input aria-label="Search illustration captions" class="search" id="search" placeholder="Find a scene — rabbit, butterfly, queen…" type="search"/>
+<select aria-label="Jump to a chapter" class="jump" id="jump"><option value="">Jump to chapter</option></select>
+</div>
+</nav>
+<main id="storyboard"></main>
+<div class="empty" id="empty"><strong>No scene found.</strong>Try a character, object, or chapter title.</div>
 
-  <nav class="bottom-nav" aria-label="More page collections">
-    <div class="bottom-slot bottom-guides" id="bottomGuides">
-      <button class="bottom-trigger" id="guideTrigger" type="button" aria-expanded="false" aria-controls="guideDropup">Dummy Guides</button>
-      <div class="guide-dropup" id="guideDropup" role="menu" aria-label="Dummy Guides">
-        <a role="menuitem" href="./project-84-dummies-guide-level-14-2.html">Project 84 Dummies Guide — Level 14 (English)</a>
-      </div>
-    </div>
-    <div class="bottom-slot"><span class="bottom-placeholder" aria-disabled="true">Letters To</span></div>
-    <div class="bottom-slot"><a class="bottom-link" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></div>
-    <div class="bottom-slot"><a class="bottom-link" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
-  </nav>
+<dialog id="viewer">
+<div class="viewer">
+<div class="viewer-top"><span class="viewer-meta" id="viewerMeta"></span><button class="dialog-btn" id="closeViewer">Close</button></div>
+<div class="viewer-img"><img alt="" id="viewerImage"/></div>
+<div class="viewer-bottom"><div class="viewer-title" id="viewerTitle"></div><div class="viewer-actions"><button class="dialog-btn" id="prev">← Prev</button><button class="dialog-btn" id="next">Next →</button></div></div>
+</div>
+</dialog>
 
-  <dialog id="viewer">
-    <div class="viewer">
-      <div class="viewer-top"><span class="viewer-meta" id="viewerMeta"></span><button class="dialog-btn" id="closeViewer">Close</button></div>
-      <div class="viewer-img"><img id="viewerImage" alt=""></div>
-      <div class="viewer-bottom"><div class="viewer-title" id="viewerTitle"></div><div class="viewer-actions"><button class="dialog-btn" id="prev">← Prev</button><button class="dialog-btn" id="next">Next →</button></div></div>
-    </div>
-  </dialog>
 
-  <script>
+</main>
+<footer class="site"><div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="./index.html">All pages</a></div></footer>
+
+<script>
   const books = [
     {
       id:'wonderland', title:"Alice’s Adventures in Wonderland", year:'1865', count:42,
@@ -372,12 +158,5 @@
   viewer.addEventListener('click',e=>{if(e.target===viewer)viewer.close()});
   viewer.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')openItem((current+allItems.length-1)%allItems.length);if(e.key==='ArrowRight')openItem((current+1)%allItems.length)});
 
-  const bottomGuides=document.getElementById('bottomGuides');
-  const guideTrigger=document.getElementById('guideTrigger');
-  function setGuideOpen(open){bottomGuides.classList.toggle('is-open',open);guideTrigger.setAttribute('aria-expanded',String(open));}
-  guideTrigger.addEventListener('click',()=>setGuideOpen(!bottomGuides.classList.contains('is-open')));
-  document.addEventListener('click',event=>{if(!bottomGuides.contains(event.target))setGuideOpen(false)});
-  document.addEventListener('keydown',event=>{if(event.key==='Escape'){setGuideOpen(false);guideTrigger.focus();}});
   </script>
-</body>
-</html>
+</body></html>

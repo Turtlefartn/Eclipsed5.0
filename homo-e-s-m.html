@@ -1,373 +1,61 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="color-scheme" content="light dark" />
-  <meta name="theme-color" content="#eef2f1" media="(prefers-color-scheme: light)" />
-  <meta name="theme-color" content="#0b1113" media="(prefers-color-scheme: dark)" />
-  <link rel="icon" href="data:," />
-  <title>HOMO-E/S/M</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,650;8..60,750&display=swap');
-
-    :root {
-      color-scheme: light dark;
-      --bg: #eef2f1;
-      --paper: #fbfcfb;
-      --ink: #132024;
-      --muted: #58696e;
-      --line: #b9c6c7;
-      --line-strong: #73868a;
-      --deep: #0b3139;
-      --signal: #d34f2c;
-      --signal-soft: #f4ddd6;
-      --sea: #0c6c70;
-      --open: #126b4d;
-      --saved: #8d541d;
-      --staged: #647277;
-      --shadow: rgba(12, 31, 35, .12);
-      --serif: "Source Serif 4", Georgia, serif;
-      --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-      --bar-h: 62px;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0b1113;
-        --paper: #11191c;
-        --ink: #edf2f1;
-        --muted: #aab7ba;
-        --line: #334347;
-        --line-strong: #64777b;
-        --deep: #082e35;
-        --signal: #ff7654;
-        --signal-soft: #35201b;
-        --sea: #73cbc9;
-        --open: #7ad8ac;
-        --saved: #efb16e;
-        --staged: #aab7ba;
-        --shadow: rgba(0, 0, 0, .34);
-      }
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      min-width: 0;
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--serif);
-      font-size: 18px;
-      line-height: 1.5;
-      padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom, 0px));
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: inherit; }
-    button { font: inherit; }
-    a:focus-visible, button:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; }
-    .wrap { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
-
-    .public-nav { padding-top: 16px; position: relative; z-index: 20; }
-    .public-nav-inner { border-top: 5px solid var(--signal); background: var(--paper); box-shadow: 0 8px 24px var(--shadow); }
-    .nav-toggle {
-      width: 100%; min-height: 48px; padding: 11px 16px; border: 0; background: transparent; color: var(--ink);
-      display: flex; align-items: center; justify-content: space-between; cursor: pointer;
-      font: 600 12px/1.3 var(--mono); letter-spacing: .02em; text-align: left;
-    }
-    .nav-toggle::after { content: "+"; color: var(--signal); font-size: 20px; line-height: 1; }
-    .nav-toggle[aria-expanded="true"]::after { content: "−"; }
-    .nav-links { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); }
-    .nav-entry { min-width: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-    .nav-entry:nth-child(3n) { border-right: 0; }
-    .nav-entry > a, .nav-group-label {
-      display: flex; align-items: center; min-height: 48px; width: 100%; padding: 11px 14px; border: 0;
-      background: transparent; color: var(--muted); text-decoration: none; cursor: pointer;
-      font: 500 11px/1.3 var(--mono); text-align: left;
-    }
-    .nav-entry > a:hover, .nav-entry > a:focus-visible, .nav-group-label:hover, .nav-group-label:focus-visible { color: var(--signal); background: var(--signal-soft); outline: none; }
-    .nav-group-head { display: grid; grid-template-columns: 1fr 46px; }
-    .submenu-toggle { border: 0; border-left: 1px solid var(--line); background: transparent; color: var(--signal); cursor: pointer; font: 600 18px/1 var(--mono); }
-    .submenu-toggle::before { content: "+"; }
-    .submenu-toggle[aria-expanded="true"]::before { content: "−"; }
-    .nav-submenu { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); max-height: calc(100vh - 150px - var(--bar-h)); overflow-y: auto; overscroll-behavior: contain; border-top: 1px solid var(--line); background: var(--bg); }
-    .nav-submenu a { padding: 10px 12px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--muted); text-decoration: none; font: 400 10px/1.35 var(--mono); }
-    .nav-submenu a:nth-child(4n) { border-right: 0; }
-    .nav-submenu a:hover, .nav-submenu a:focus-visible { color: var(--ink); background: var(--paper); outline: none; }
-    .nav-submenu .submenu-heading { grid-column: 1 / -1; padding: 10px 12px; border-bottom: 1px solid var(--line); color: var(--ink); font: 600 10px/1.35 var(--mono); letter-spacing: .02em; }
-    .nav-submenu .submenu-note { grid-column: 1 / -1; padding: 10px 12px; border-bottom: 1px solid var(--line); color: var(--muted); font: 400 10px/1.5 var(--mono); }
-
-    main { padding: clamp(58px, 9vw, 112px) 0 100px; }
-    .masthead { display: grid; grid-template-columns: minmax(0, 1fr) 210px; gap: 48px; align-items: end; padding-bottom: 44px; border-bottom: 1px solid var(--line-strong); }
-    h1 { margin: 0; max-width: 800px; font-size: clamp(54px, 9vw, 108px); line-height: .88; letter-spacing: -.062em; font-weight: 750; }
-    .count { align-self: stretch; border-top: 5px solid var(--sea); padding-top: 16px; display: flex; flex-direction: column; justify-content: space-between; }
-    .count strong { display: block; font: 600 clamp(48px, 7vw, 80px)/.85 var(--mono); letter-spacing: -.08em; }
-    .count span { display: block; margin-top: 16px; color: var(--muted); font: 500 11px/1.45 var(--mono); }
-    .legend { display: flex; flex-wrap: wrap; gap: 10px 20px; padding: 20px 0 18px; border-bottom: 1px solid var(--line); font: 500 11px/1.4 var(--mono); color: var(--muted); }
-    .legend span { display: inline-flex; align-items: center; gap: 8px; }
-    .legend i { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
-    .legend .is-open { color: var(--open); }
-    .legend .is-saved { color: var(--saved); }
-    .legend .is-staged { color: var(--staged); }
-
-    .toc { list-style: none; padding: 0; margin: 0; counter-reset: pages; }
-    .toc li { counter-increment: pages; border-bottom: 1px solid var(--line); }
-    .toc a {
-      min-width: 0; display: grid; grid-template-columns: 70px minmax(0, 1fr) auto; gap: 24px; align-items: center;
-      min-height: 86px; padding: 14px 0; color: var(--ink); text-decoration: none;
-    }
-    .toc a::before { content: counter(pages, decimal-leading-zero); color: var(--muted); font: 400 12px/1 var(--mono); }
-    .title { min-width: 0; font-size: clamp(22px, 2.5vw, 31px); font-weight: 650; line-height: 1.08; letter-spacing: -.025em; }
-    .toc a:hover .title, .toc a:focus-visible .title { color: var(--signal); }
-    .toc a:focus-visible { outline-offset: 7px; }
-    .state { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; color: var(--staged); font: 500 10px/1.3 var(--mono); }
-    .state::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-    [data-state="open"] .state { color: var(--open); }
-    [data-state="saved"] .state { color: var(--saved); }
-    [data-state="staged"] { cursor: not-allowed; }
-    [data-state="staged"] .title { color: var(--ink); }
-    [data-state="staged"]:hover .title { color: var(--signal); }
-    .notice { margin: 22px 0 0 94px; min-height: 26px; color: var(--signal); font: 500 12px/1.45 var(--mono); }
-
-    .bottom-nav {
-      position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; min-height: var(--bar-h);
-      display: flex; padding-bottom: env(safe-area-inset-bottom, 0px); border-top: 5px solid var(--signal);
-      background: var(--paper); box-shadow: 0 -10px 30px var(--shadow); font: 500 12px/1.25 var(--mono);
-    }
-    .bottom-item { position: relative; flex: 1 1 25%; min-width: 0; border-right: 1px solid var(--line); }
-    .bottom-item:last-child { border-right: 0; }
-    .bottom-button, .bottom-link, .bottom-placeholder {
-      display: grid; width: 100%; min-height: var(--bar-h); place-items: center; padding: 9px 6px; border: 0; background: transparent;
-      color: var(--ink); font: inherit; text-align: center; text-decoration: none;
-    }
-    .bottom-button { cursor: pointer; }
-    .bottom-button::after { content: "+"; margin-left: 5px; color: var(--signal); }
-    .bottom-item.open .bottom-button::after { content: "−"; }
-    .bottom-button:hover, .bottom-button:focus-visible, .bottom-link:hover, .bottom-link:focus-visible, .bottom-link[aria-current="page"] { background: var(--signal-soft); color: var(--signal); outline: none; }
-    .bottom-placeholder { color: var(--muted); opacity: .65; cursor: default; }
-    .guide-menu {
-      position: absolute; left: 0; bottom: 100%; width: min(420px, 100vw); max-height: calc(100vh - 78px - env(safe-area-inset-bottom, 0px));
-      overflow-y: auto; overscroll-behavior: contain; display: none; grid-template-columns: repeat(2, minmax(0, 1fr));
-      border: 1px solid var(--line-strong); border-bottom: 0; background: var(--paper); box-shadow: 0 -18px 50px var(--shadow);
-    }
-    .bottom-item.open .guide-menu { display: grid; }
-    @media (hover: hover) and (pointer: fine) { .bottom-item.has-menu:hover .guide-menu { display: grid; } }
-    .guide-menu a { min-width: 0; padding: 11px 14px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); color: var(--muted); text-decoration: none; font: 500 11px/1.35 var(--mono); }
-    .guide-menu a:nth-child(2n) { border-right: 0; }
-    .guide-menu a:hover, .guide-menu a:focus-visible { color: var(--signal); background: var(--signal-soft); outline: none; }
-
-    @media (max-width: 820px) {
-      .nav-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .nav-entry, .nav-entry:nth-child(3n) { border-right: 1px solid var(--line); }
-      .nav-entry:nth-child(2n) { border-right: 0; }
-      .nav-submenu { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .nav-submenu a:nth-child(4n) { border-right: 1px solid var(--line); }
-      .nav-submenu a:nth-child(2n) { border-right: 0; }
-      #project-84-links a { border-right: 1px solid var(--line); }
-      #project-84-links a:last-of-type { border-right: 0; }
-      .masthead { grid-template-columns: 1fr; gap: 36px; }
-      .count { min-height: 130px; }
-    }
-    @media (max-width: 560px) {
-      :root { --bar-h: 58px; }
-      .wrap { width: min(100% - 24px, 1120px); }
-      .public-nav { padding-top: 10px; }
-      .nav-links, .nav-submenu { grid-template-columns: 1fr; }
-      #project-84-links a { border-right: 0; }
-      .nav-entry, .nav-entry:nth-child(2n), .nav-entry:nth-child(3n), .nav-submenu a, .nav-submenu a:nth-child(2n), .nav-submenu a:nth-child(4n) { border-right: 0; }
-      main { padding-top: 58px; }
-      h1 { font-size: clamp(48px, 17vw, 76px); }
-      .toc a { grid-template-columns: 40px minmax(0, 1fr); gap: 10px; min-height: 84px; }
-      .title { font-size: 22px; }
-      .state { grid-column: 2; justify-self: start; margin-top: -5px; }
-      .notice { margin-left: 50px; }
-      .bottom-button, .bottom-link, .bottom-placeholder { padding: 7px 3px; font-size: 10px; letter-spacing: -.02em; }
-      .guide-menu { width: min(310px, 100vw); grid-template-columns: 1fr; }
-      .guide-menu a, .guide-menu a:nth-child(2n) { border-right: 0; }
-    }
-    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-  </style>
-</head>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>HOMO-E/S/M</title>
+<link rel="stylesheet" href="./assets/style.css"></head>
 <body>
-  <nav class="wrap public-nav" aria-label="Public pages">
-    <div class="public-nav-inner">
-      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="public-page-links">All pages</button>
-      <div class="nav-links" id="public-page-links" hidden>
-        <div class="nav-entry"><a href="./new-eden.html">Plan #42</a></div>
-        <div class="nav-entry grouped">
-          <div class="nav-group-head">
-            <a class="nav-group-label" href="./project-84.html">Project 84</a>
-            <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="project-84-links" aria-label="Show Project 84 pages" data-submenu-toggle></button>
-          </div>
-          <div class="nav-submenu" id="project-84-links" hidden>
-            <span class="submenu-heading">Non-profit aimed arms</span>
-            <a href="./omega42.html">Omega42</a>
-            <a href="./prime-42.html">Prime 42</a>
-            <span class="submenu-note">Held until they can understand economics enough to participate — then they take over, with adjustments to equalize between currencies.</span>
-          </div>
-        </div>
-        <div class="nav-entry"><a href="./project-84-dummies-guide-level-14-2.html">Project 84 Dummies Guide — Level 14 (English)</a></div>
-        <div class="nav-entry"><a href="./dummies-guide-to-claiming-oceans-and-antarctica.html">Claiming Oceans &amp; Antarctica</a></div>
-        <div class="nav-entry"><a href="./poodles-project-84-work-boats.html">HEAR-TS Work Boats</a></div>
-        <div class="nav-entry"><a href="./hurricane-suppression-research.html">Hurricane Research</a></div>
-        <div class="nav-entry"><a href="./floating-skyports.html">Floating Skyports</a></div>
-        <div class="nav-entry"><a href="./human-recovery-disk.html">Human Recovery Disk</a></div>
-        <div class="nav-entry"><a href="./about.html">About the Founder</a></div>
-        <div class="nav-entry"><a href="./job-listings.html">Jobs / WeFind's for Delegations</a></div>
-        <div class="nav-entry"><a href="./an-open-letter-to-canada-and-poland.html">Open Letter</a></div>
-        <div class="nav-entry"><a href="./proclamation-of-claim.html">Proclamation of Claim</a></div>
-        <div class="nav-entry grouped">
-          <div class="nav-group-head">
-            <button class="nav-group-label" type="button" aria-expanded="false" aria-controls="diplomacy-links" data-submenu-toggle>Letters &amp; Diplomacy</button>
-            <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="diplomacy-links" aria-label="Show letters and diplomacy pages" data-submenu-toggle></button>
-          </div>
-          <div class="nav-submenu" id="diplomacy-links" hidden>
-            <a href="./project-84-diplomatic-letters-world.html">World Index</a>
-            <a href="./project-84-letters-to-us-leaders.html">Letters to US Leaders</a>
-            <a href="./consulate-letters-africa-i.html">Africa I</a>
-            <a href="./consulate-letters-africa-ii.html">Africa II</a>
-            <a href="./consulate-letters-africa-iii.html">Africa III</a>
-            <a href="./consulate-letters-americas-i.html">Americas I</a>
-            <a href="./consulate-letters-americas-ii.html">Americas II</a>
-            <a href="./consulate-letters-asia-pacific.html">Asia-Pacific</a>
-            <a href="./consulate-letters-europe-i.html">Europe I</a>
-            <a href="./consulate-letters-europe-ii.html">Europe II</a>
-            <a href="./consulate-letters-europe-iii.html">Europe III</a>
-            <a href="./consulate-letters-middle-east.html">Middle East</a>
-            <a href="./consulate-letters-oceania.html">Oceania</a>
-          </div>
-        </div>
-        <div class="nav-entry"><a href="./who-knows.html">Who Knows?</a></div>
-        <div class="nav-entry"><a href="./money-vs-assets.html">Money vs Assets</a></div>
-        <div class="nav-entry"><a href="./3d-printing-advancements-last-5-years.html">3D Printing</a></div>
-        <div class="nav-entry"><a href="https://sites.google.com/view/knottsure/home">Why Not?</a></div>
-        <div class="nav-entry grouped">
-          <div class="nav-group-head">
-            <button class="nav-group-label" type="button" aria-expanded="false" aria-controls="more-links" data-submenu-toggle>More</button>
-            <button class="submenu-toggle" type="button" aria-expanded="false" aria-controls="more-links" aria-label="Show more public pages" data-submenu-toggle></button>
-          </div>
-          <div class="nav-submenu" id="more-links" hidden>
-            <a href="./alice-storyboard.html">Alice Storyboard</a>
-            <a href="./doodare-s-diaper-replacement-concept.html">Doodare's Diaper Concept</a>
-            <a href="./one-terms-of-service.html">Terms of Service</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </nav>
+<header class="site"><div class="site-inner"><a class="brand" href="./index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site"><a href="./index.html">Home</a><a href="./who-knows.html">Who Knows?</a><a href="./about.html">About</a><a href="./project-84.html">Project 84</a><a href="./omega42.html">Omega42</a><a href="./new-eden.html">Plan #42</a><a href="./main-site-pages.html">All Pages</a></nav></div></header>
+<main class="wrap site-main">
 
-  <main class="wrap" id="main-content">
-    <header class="masthead">
-      <h1>Main Site<br />Pages</h1>
-      <div class="count"><strong>28</strong><span>All main pages<br />A–Z</span></div>
-    </header>
 
-    <div class="legend" aria-label="Page status key">
-      <span class="is-open"><i></i>Open now</span>
-      <span class="is-saved"><i></i>Link saved · unpublished</span>
-      <span class="is-staged"><i></i>Awaiting first public link</span>
-    </div>
+<main class="wrap" id="main-content">
+<header class="masthead">
+<h1>Main Site<br/>Pages</h1>
+<div class="count"><strong>28</strong><span>All main pages<br/>A–Z</span></div>
+</header>
+<div aria-label="Page status key" class="legend">
+<span class="is-open"><i></i>Open now</span>
+<span class="is-saved"><i></i>Link saved · unpublished</span>
+<span class="is-staged"><i></i>Awaiting first public link</span>
+</div>
+<ol class="toc">
+<li><a data-state="saved" href="./3d-printing-advancements-last-5-years.html"><span class="title">3D Printing Advancements: Last 5 Years</span><span class="state">Link saved</span></a></li>
+<li><a data-state="open" href="./about.html"><span class="title">About the Founder</span><span class="state">Open</span></a></li>
+<li><a data-state="saved" href="./alice-storyboard.html"><span class="title">Alice Storyboard</span><span class="state">Link saved</span></a></li>
+<li><a data-state="saved" href="./an-open-letter-to-canada-and-poland.html"><span class="title">An Open Letter to Canada and Poland</span><span class="state">Link saved</span></a></li>
+<li><a data-state="open" href="./co2-balls.html"><span class="title">CO2 Balls</span><span class="state">Open</span></a></li>
+<li><a data-state="saved" href="./doodare-s-diaper-replacement-concept.html"><span class="title">Doodare's — Diaper Replacement Concept</span><span class="state">Link saved</span></a></li>
 
-    <ol class="toc">
-      <li><a href="./3d-printing-advancements-last-5-years.html" data-state="saved"><span class="title">3D Printing Advancements: Last 5 Years</span><span class="state">Link saved</span></a></li>
-      <li><a href="./about.html" data-state="open"><span class="title">About the Founder</span><span class="state">Open</span></a></li>
-      <li><a href="./alice-storyboard.html" data-state="saved"><span class="title">Alice Storyboard</span><span class="state">Link saved</span></a></li>
-      <li><a href="./an-open-letter-to-canada-and-poland.html" data-state="saved"><span class="title">An Open Letter to Canada and Poland</span><span class="state">Link saved</span></a></li>
-      <li><a href="./co2-balls.html" data-state="open"><span class="title">CO2 Balls</span><span class="state">Open</span></a></li>
-      <li><a href="./doodare-s-diaper-replacement-concept.html" data-state="saved"><span class="title">Doodare's — Diaper Replacement Concept</span><span class="state">Link saved</span></a></li>
-      <li><a href="./dummies-guide-to-claiming-oceans-and-antarctica.html" data-state="saved"><span class="title">Dummies Guide to Claiming Oceans and Antarctica</span><span class="state">Link saved</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="floating-skyports"><span class="title">Floating Skyports</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="poodles-project-84-work-boats"><span class="title">HEAR-TS — Project 84 Work Boats</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="human-recovery-disk"><span class="title">Human Recovery Disk</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="hurricane-suppression-research"><span class="title">Hurricane Suppression Research</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="money-vs-assets"><span class="title">Money vs Assets</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="shamooooo-is-free"><span class="title">Omega42</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="one-terms-of-service"><span class="title">One Terms of Service</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="new-eden"><span class="title">Plan #42</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="project-84-letters-to-us-leaders"><span class="title">Plan 42 — Letters to US Leaders</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="prime-42"><span class="title">Prime 42</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="project-42-bank-pitch"><span class="title">Project 42 Bank Pitch</span><span class="state">Staged</span></a></li>
-      <li><a href="./project-84.html" data-state="open"><span class="title">Project 84</span><span class="state">Open</span></a></li>
-      <li><a href="./proclamation-of-claim.html" data-state="open"><span class="title">Proclamation of Claim</span><span class="state">Open</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="realizim"><span class="title">Realizim</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="remove-90-of-ads"><span class="title">Remove 90% of Ads</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="stellar-engineering-crash-course"><span class="title">Stellar Engineering — Crash Course</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="stellar-engineering-crash-course-2"><span class="title">Stellar Engineering Crash Course · Version 2</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="under-30-world-stats"><span class="title">Under-30 World Stats</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="up-and-out"><span class="title">Up and Out</span><span class="state">Staged</span></a></li>
-      <li><a href="#" data-state="staged" data-slug="uplift-project"><span class="title">Uplift Project</span><span class="state">Staged</span></a></li>
-      <li><a href="./who-knows.html" data-state="open"><span class="title">Who Knows?</span><span class="state">Open</span></a></li>
-    </ol>
-    <p class="notice" id="toc-notice" role="status" aria-live="polite"></p>
-  </main>
+<li><a data-slug="floating-skyports" data-state="staged" href="#"><span class="title">Floating Skyports</span><span class="state">Staged</span></a></li>
+<li><a data-slug="poodles-project-84-work-boats" data-state="staged" href="#"><span class="title">HEAR-TS — Project 84 Work Boats</span><span class="state">Staged</span></a></li>
+<li><a data-slug="human-recovery-disk" data-state="staged" href="#"><span class="title">Human Recovery Disk</span><span class="state">Staged</span></a></li>
+<li><a data-slug="hurricane-suppression-research" data-state="staged" href="#"><span class="title">Hurricane Suppression Research</span><span class="state">Staged</span></a></li>
+<li><a data-slug="money-vs-assets" data-state="staged" href="#"><span class="title">Money vs Assets</span><span class="state">Staged</span></a></li>
+<li><a data-slug="shamooooo-is-free" data-state="staged" href="#"><span class="title">Omega42</span><span class="state">Staged</span></a></li>
+<li><a data-slug="one-terms-of-service" data-state="staged" href="#"><span class="title">One Terms of Service</span><span class="state">Staged</span></a></li>
+<li><a data-slug="new-eden" data-state="staged" href="#"><span class="title">Plan #42</span><span class="state">Staged</span></a></li>
+<li><a data-slug="project-84-letters-to-us-leaders" data-state="staged" href="#"><span class="title">Plan 42 — Letters to US Leaders</span><span class="state">Staged</span></a></li>
+<li><a data-slug="prime-42" data-state="staged" href="#"><span class="title">Prime 42</span><span class="state">Staged</span></a></li>
+<li><a data-slug="project-42-bank-pitch" data-state="staged" href="#"><span class="title">Project 42 Bank Pitch</span><span class="state">Staged</span></a></li>
+<li><a data-state="open" href="./project-84.html"><span class="title">Project 84</span><span class="state">Open</span></a></li>
+<li><a data-state="open" href="./proclamation-of-claim.html"><span class="title">Proclamation of Claim</span><span class="state">Open</span></a></li>
+<li><a data-slug="realizim" data-state="staged" href="#"><span class="title">Realizim</span><span class="state">Staged</span></a></li>
+<li><a data-slug="remove-90-of-ads" data-state="staged" href="#"><span class="title">Remove 90% of Ads</span><span class="state">Staged</span></a></li>
+<li><a data-slug="stellar-engineering-crash-course" data-state="staged" href="#"><span class="title">Stellar Engineering — Crash Course</span><span class="state">Staged</span></a></li>
+<li><a data-slug="stellar-engineering-crash-course-2" data-state="staged" href="#"><span class="title">Stellar Engineering Crash Course · Version 2</span><span class="state">Staged</span></a></li>
+<li><a data-slug="under-30-world-stats" data-state="staged" href="#"><span class="title">Under-30 World Stats</span><span class="state">Staged</span></a></li>
+<li><a data-slug="up-and-out" data-state="staged" href="#"><span class="title">Up and Out</span><span class="state">Staged</span></a></li>
+<li><a data-slug="uplift-project" data-state="staged" href="#"><span class="title">Uplift Project</span><span class="state">Staged</span></a></li>
+<li><a data-state="open" href="./who-knows.html"><span class="title">Who Knows?</span><span class="state">Open</span></a></li>
+</ol>
+<p aria-live="polite" class="notice" id="toc-notice" role="status"></p>
+</main>
 
-  <nav class="bottom-nav" aria-label="Project collections">
-    <div class="bottom-item has-menu" data-guide-item>
-      <button class="bottom-button" type="button" aria-expanded="false" aria-controls="guide-menu">Dummy Guides</button>
-      <div class="guide-menu" id="guide-menu">
-        <a href="./project-84-dummies-guide-level-14-2.html">Project 84 Dummies Guide — Level 14 (English)</a>
-      </div>
-    </div>
-    <div class="bottom-item"><span class="bottom-placeholder">Letters To</span></div>
-    <div class="bottom-item"><a class="bottom-link" href="#" data-slug="goal-briefs">Goal Briefs</a></div>
-    <div class="bottom-item"><a class="bottom-link" href="#main-content" aria-current="page">HOMO-E/S/M</a></div>
-  </nav>
 
-  <script>
-    (function () {
-      var navToggle = document.querySelector('.nav-toggle');
-      var navLinks = document.getElementById('public-page-links');
-      navToggle.addEventListener('click', function () {
-        var open = navToggle.getAttribute('aria-expanded') === 'true';
-        navToggle.setAttribute('aria-expanded', String(!open));
-        navLinks.hidden = open;
-      });
 
-      document.querySelectorAll('[data-submenu-toggle]').forEach(function (button) {
-        button.addEventListener('click', function () {
-          var target = document.getElementById(button.getAttribute('aria-controls'));
-          var willOpen = target.hidden;
-          target.hidden = !willOpen;
-          document.querySelectorAll('[aria-controls="' + target.id + '"]').forEach(function (peer) {
-            peer.setAttribute('aria-expanded', String(willOpen));
-          });
-        });
-      });
+</main>
+<footer class="site"><div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="./index.html">All pages</a></div></footer>
 
-      var guideItem = document.querySelector('[data-guide-item]');
-      var guideButton = guideItem.querySelector('.bottom-button');
-      function closeGuides() {
-        guideItem.classList.remove('open');
-        guideButton.setAttribute('aria-expanded', 'false');
-      }
-      guideButton.addEventListener('click', function () {
-        var open = guideItem.classList.toggle('open');
-        guideButton.setAttribute('aria-expanded', String(open));
-      });
-      document.addEventListener('click', function (event) {
-        if (!guideItem.contains(event.target)) closeGuides();
-      });
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape') closeGuides();
-      });
-
-      var notice = document.getElementById('toc-notice');
-      document.querySelectorAll('a[data-state="staged"]').forEach(function (link) {
-        link.addEventListener('click', function (event) {
-          event.preventDefault();
-          notice.textContent = link.querySelector('.title').textContent + ' is staged. Its public link will activate after first publication.';
-        });
-      });
-      document.querySelectorAll('.guide-menu a[data-slug], .bottom-link[data-slug]').forEach(function (link) {
-        link.addEventListener('click', function (event) {
-          if (link.getAttribute('href') !== '#') return;
-          event.preventDefault();
-          closeGuides();
-          notice.textContent = link.textContent.trim() + ' is staged. Its public link will activate after first publication.';
-          notice.scrollIntoView({ block: 'center', behavior: 'smooth' });
-        });
-      });
-    })();
-  </script>
-</body>
-</html>
+</body></html>
