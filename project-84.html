@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
   <title>Project 84</title>
+<link rel="stylesheet" href="./assets/style.css">
+
   <style>
     :root {
       color-scheme: light dark;
@@ -267,48 +269,28 @@
     }
     @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   </style>
+
+<style id="theme-bridge">
+/* Theme bridge: re-point this page's palette to the shared Eclipsed 5.0 theme. */
+:root{
+  --paper:#f2f0e9; --surface:#faf9f5; --surface-2:#e9e7de;
+  --ink:#17201c; --muted:#59645e; --line:#c7ccc5;
+  --deep:#111513; --sea:#0f6a66; --aqua:#75c9be;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#111513; --surface:#181d1a; --surface-2:#1e2420;
+    --ink:#edf1eb; --muted:#aeb8b0; --line:#3b453f;
+    --deep:#0b0e0c; --sea:#75c9be; --aqua:#9adcd2;
+  }
+}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+</style>
 </head>
 <body>
-<style>
-.core-nav {
-  position: relative;
-  z-index: 30;
-  background: #00121c;
-  color: #f4fbfa;
-  border-bottom: 1px solid rgba(255,255,255,.16);
-}
-.core-nav .wrap {
-  min-height: 58px;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-}
-.core-nav a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 14px 24px;
-  color: #d8e8eb;
-  text-decoration: none;
-  font-weight: 700;
-  text-align: center;
-  border-bottom: 3px solid transparent;
-}
-.core-nav a:hover,
-.core-nav a:focus-visible {
-  color: #fff;
-  background: rgba(255,255,255,.07);
-  outline: none;
-}
-.core-nav a[aria-current="page"] {
-  color: #fff;
-  border-bottom-color: #f1c344;
-}
-@media (max-width: 540px) {
-  .core-nav .wrap { width: 100%; }
-  .core-nav a { flex: 1 1 0; padding: 12px 7px; font-size: .82rem; }
-}
-</style>
+<header class="site"><div class="site-inner"><a class="brand" href="./index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site"><a href="./index.html">Home</a><a href="./who-knows.html">Who Knows?</a><a href="./about.html">About</a><a href="./project-84.html" aria-current="page">Project 84</a><a href="./omega42.html">Omega42</a><a href="./new-eden.html">Plan #42</a><a href="./main-site-pages.html">All Pages</a></nav></div></header>
+
+
 <style>
 /* Editorial system shared with the primary public pages. */
 :root {
@@ -633,179 +615,9 @@ body { padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-botto
   .site-bottom-nav__dropup { transition: none; }
 }
 </style>
-<style>
-.core-nav__group { position: relative; display: flex; min-width: 0; }
-.core-nav__group > a { flex: 1 1 auto; gap: 7px; }
-.core-nav__chevron { flex: 0 0 auto; width: 13px; height: 13px; transition: transform .18s ease; }
-.core-nav__group.is-open .core-nav__chevron { transform: rotate(180deg); }
-.core-nav__dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: max-content;
-  min-width: 100%;
-  max-width: min(340px, 92vw);
-  background: var(--deep);
-  border: 1px solid #294351;
-  border-top: 0;
-  box-shadow: 0 16px 38px rgba(0, 0, 0, .24);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateY(-6px);
-  transition: opacity .16s ease, transform .16s ease, visibility 0s linear .16s;
-}
-.core-nav__group.is-open .core-nav__dropdown {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateY(0);
-  transition-delay: 0s;
-}
-.core-nav__heading {
-  display: block;
-  padding: 12px 16px 6px;
-  color: #8fa5ad;
-  font-size: .72rem;
-  font-weight: 700;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-}
-.core-nav__dropdown a {
-  display: flex;
-  justify-content: flex-start;
-  min-height: 44px;
-  padding: 10px 16px;
-  border-right: 0;
-  border-bottom: 1px solid #294351;
-  font-size: .88rem;
-  font-weight: 600;
-  text-align: left;
-}
-.core-nav__note {
-  display: block;
-  padding: 10px 16px 13px;
-  color: #b9ced5;
-  font-size: .78rem;
-  line-height: 1.45;
-}
-@media (hover: hover) and (pointer: fine) {
-  .core-nav__group:hover .core-nav__dropdown,
-  .core-nav__group:focus-within .core-nav__dropdown {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateY(0);
-    transition-delay: 0s;
-  }
-  .core-nav__group:hover .core-nav__chevron { transform: rotate(180deg); }
-}
-.core-nav__group:focus-within .core-nav__dropdown {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateY(0);
-  transition-delay: 0s;
-}
-@media (max-width: 760px) {
-  .core-nav__group { border-top: 1px solid #294351; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .core-nav__chevron,
-  .core-nav__dropdown { transition: none; }
-}
-</style>
-<nav class="core-nav" aria-label="Primary pages">
-  <div class="wrap">
-    <a href="./about.html">About</a>
-    <a href="./who-knows.html">Who Knows?</a>
-    <div class="core-nav__group" id="project-84-menu">
-      <a href="./project-84.html" aria-current="page" aria-haspopup="true" aria-expanded="false" id="project-84-menu-link">Project 84
-        <svg class="core-nav__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 5.5 8 10.5l5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </a>
-      <div class="core-nav__dropdown" id="project-84-dropdown" hidden>
-        <span class="core-nav__heading">Non-profit aimed arms</span>
-        <a href="./omega42.html">Omega42</a>
-        <a href="./prime-42.html">Prime 42</a>
-        <span class="core-nav__note">Held until they can understand economics enough to participate — then they take over, with adjustments to equalize between currencies.</span>
-      </div>
-    </div>
-    <a href="./proclamation-of-claim.html">Proclamation of Claim</a>
-  </div>
-</nav>
-<script>
-  (function () {
-    var group = document.getElementById('project-84-menu');
-    var link = document.getElementById('project-84-menu-link');
-    var dropdown = document.getElementById('project-84-dropdown');
-    var touchLike = window.matchMedia('(hover: none)').matches;
-    var hoverOpen = false;
 
-    function renderOpen() {
-      var open = hoverOpen || group.classList.contains('is-open');
-      dropdown.hidden = !open;
-      link.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
 
-    function setOpen(open) {
-      group.classList.toggle('is-open', open);
-      renderOpen();
-    }
 
-    link.addEventListener('click', function (event) {
-      if (touchLike && !group.classList.contains('is-open')) {
-        event.preventDefault();
-        setOpen(true);
-      } else {
-        setOpen(false);
-      }
-    });
-
-    group.addEventListener('mouseenter', function () {
-      hoverOpen = true;
-      renderOpen();
-    });
-
-    group.addEventListener('mouseleave', function () {
-      hoverOpen = false;
-      renderOpen();
-    });
-
-    group.addEventListener('focusin', function () {
-      hoverOpen = true;
-      renderOpen();
-    });
-
-    group.addEventListener('focusout', function (event) {
-      if (!group.contains(event.relatedTarget)) {
-        hoverOpen = false;
-        renderOpen();
-      }
-    });
-
-    dropdown.querySelectorAll('a').forEach(function (item) {
-      item.addEventListener('click', function () {
-        hoverOpen = false;
-        setOpen(false);
-      });
-    });
-
-    document.addEventListener('click', function (event) {
-      if (!group.contains(event.target)) {
-        hoverOpen = false;
-        setOpen(false);
-      }
-    });
-
-    document.addEventListener('keydown', function (event) {
-      if (event.key === 'Escape' && !dropdown.hidden) {
-        hoverOpen = false;
-        setOpen(false);
-        link.focus();
-      }
-    });
-  }());
-</script>
   <a class="skip" href="#content">Skip to content</a>
 
   <header class="hero" id="top">
@@ -970,82 +782,10 @@ body { padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-botto
     <div class="wrap"><span>Project 84 · working concept · October 2026</span><span>Numbers are design targets and Fermi estimates unless marked otherwise.</span><a href="./job-listings.html">Now hiring — open roles</a></div>
   </footer>
 
-  <nav class="site-bottom-nav" aria-label="Secondary pages">
-    <div class="site-bottom-nav__items">
-      <div class="site-bottom-nav__item site-bottom-nav__item--menu" id="dummy-guides-menu">
-        <button class="site-bottom-nav__button" type="button" aria-expanded="false" aria-controls="dummy-guides-dropup">
-          <span>Dummy Guides</span>
-          <svg class="site-bottom-nav__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 10.5 8 5.5l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="site-bottom-nav__dropup" id="dummy-guides-dropup" aria-label="Dummy Guides languages" hidden>
-          <a href="./project-84-dummies-guide-level-14-2.html">Project 84 Dummies Guide — Level 14 (English)</a>
-        </div>
-      </div>
-      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="./project-84-diplomatic-letters-world.html" data-slug="project-84-diplomatic-letters-world">Letters To</a></div>
-      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="/spaces/v2/goal-briefs/" data-slug="goal-briefs">Goal Briefs</a></div>
-      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="/spaces/v2/homo-e-s-m/" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
-    </div>
-  </nav>
+  
 
-  <script>
-    (function () {
-      var menu = document.getElementById('dummy-guides-menu');
-      var button = menu.querySelector('.site-bottom-nav__button');
-      var dropup = document.getElementById('dummy-guides-dropup');
-      var guideLinks = dropup.querySelectorAll('a');
-      var hoverOpen = false;
-
-      function renderOpen() {
-        var open = hoverOpen || menu.classList.contains('is-open');
-        dropup.hidden = !open;
-        button.setAttribute('aria-expanded', open ? 'true' : 'false');
-      }
-
-      function setOpen(open) {
-        menu.classList.toggle('is-open', open);
-        renderOpen();
-      }
-
-      button.addEventListener('click', function () {
-        setOpen(!menu.classList.contains('is-open'));
-      });
-
-      menu.addEventListener('mouseenter', function () {
-        hoverOpen = true;
-        renderOpen();
-      });
-
-      menu.addEventListener('mouseleave', function () {
-        hoverOpen = false;
-        renderOpen();
-      });
-
-      guideLinks.forEach(function (link) {
-        link.addEventListener('click', function (event) {
-          if (link.getAttribute('href') === '#') {
-            event.preventDefault();
-            button.focus();
-          }
-          hoverOpen = false;
-          setOpen(false);
-        });
-      });
-
-      document.addEventListener('click', function (event) {
-        if (!menu.contains(event.target)) {
-          hoverOpen = false;
-          setOpen(false);
-        }
-      });
-
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape' && !dropup.hidden) {
-          hoverOpen = false;
-          setOpen(false);
-          button.focus();
-        }
-      });
-    }());
-  </script>
+  
+<footer class="site"><div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="./index.html">All pages</a></div></footer>
+<style>body{padding-bottom:0}</style>
 </body>
 </html>
