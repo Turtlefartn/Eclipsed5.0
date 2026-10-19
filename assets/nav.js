@@ -1,20 +1,16 @@
-// ONE canonical header/footer for the whole site.
-// Edit THIS file once — every page that includes nav.js updates.
-// This replaces the old per-page nav wave problem from the Muse artifacts.
+// ONE canonical header/footer for the whole site — same links as the static header in every page.
+// Edit THIS file and the static headers together.
 (function(){
-  // Works from root or from /pages/<slug>/ — adjust base if you move things
-  var inPages = location.pathname.includes('/pages/');
-  var base = inPages ? '../../' : './';
-  var header = document.querySelector('header.site');
-  if(header){
-    header.innerHTML = '<nav class="main">' +
-      '<a href="'+base+'index.html">Home</a>' +
-      '<a href="'+base+'pages/example-page/">Example Page</a>' +
-      '<a href="'+base+'index.html#add">Add a page</a>' +
-      '</nav>';
+  var base='./';
+  var header=document.querySelector('header.site');
+  if(header && !header.querySelector('nav.main')){
+    header.innerHTML='<div class="site-inner"><a class="brand" href="'+base+'index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site">'
+      +'<a href="'+base+'index.html">Home</a><a href="'+base+'who-knows.html">Who Knows?</a><a href="'+base+'about.html">About</a>'
+      +'<a href="'+base+'project-84.html">Project 84</a><a href="'+base+'omega42.html">Omega42</a><a href="'+base+'new-eden.html">Plan #42</a>'
+      +'<a href="'+base+'main-site-pages.html">All Pages</a></nav></div>';
   }
-  var footer = document.querySelector('footer.site');
-  if(footer){
-    footer.innerHTML = 'Journey to the End of the Universe &middot; Hosted free on GitHub Pages &middot; Edit any page in your browser at github.dev';
+  var footer=document.querySelector('footer.site');
+  if(footer && !footer.querySelector('.site-inner')){
+    footer.innerHTML='<div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="'+base+'index.html">All pages</a></div>';
   }
 })();
