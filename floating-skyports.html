@@ -6,6 +6,8 @@
   <meta name="color-scheme" content="light dark" />
   <link rel="icon" href="data:," />
   <title>Floating Skyports</title>
+<link rel="stylesheet" href="./assets/style.css">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wdth,wght@75..125,400..800&display=swap" rel="stylesheet">
@@ -277,109 +279,25 @@
     }
     @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   </style>
+
+<style id="theme-bridge">
+/* Theme bridge: re-point this page's palette to the shared Eclipsed 5.0 theme. */
+:root{
+  --paper:#f2f0e9; --ink:#17201c; --muted:#59645e; --line:#c7ccc5;
+  --card:#faf9f5; --deep:#111513;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#111513; --ink:#edf1eb; --muted:#aeb8b0; --line:#3b453f; --card:#181d1a;
+  }
+}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+</style>
 </head>
 <body>
-  <nav class="t42-nav" id="t42-shared-nav" aria-label="Site navigation">
-    <button class="t42-toggle" type="button" aria-expanded="false" aria-controls="t42-nav-list" aria-label="Menu">&#9776;</button>
-    <ul class="t42-list" id="t42-nav-list">
-      <li class="t42-item"><a class="t42-link" href="./new-eden.html">Plan #42</a></li>
-      <li class="t42-item t42-has-drop">
-        <div class="t42-split">
-          <a class="t42-link" href="./project-84.html">Project 84</a>
-          <button class="t42-link t42-drop-btn" type="button" aria-expanded="false" aria-label="Project 84 submenu"></button>
-        </div>
-        <ul class="t42-drop">
-          <li><span class="t42-drop-head">Non-profit aimed arms</span></li>
-          <li><a class="t42-sublink" href="./omega42.html">Omega42</a></li>
-          <li><a class="t42-sublink" href="./prime-42.html">Prime 42</a></li>
-          <li><span class="t42-drop-note">Held until they can understand economics enough to participate — then they take over, with adjustments to equalize between currencies.</span></li>
-        </ul>
-      </li>
-      <li class="t42-item"><a class="t42-link" href="./project-84-dummies-guide-level-14-2.html">Project 84 Dummies Guide — Level 14 (English)</a></li>
-      <li class="t42-item"><a class="t42-link" href="./dummies-guide-to-claiming-oceans-and-antarctica.html">Claiming Oceans &amp; Antarctica</a></li>
-      <li class="t42-item"><a class="t42-link" href="./poodles-project-84-work-boats.html">HEAR-TS Work Boats</a></li>
-      <li class="t42-item"><a class="t42-link" href="./hurricane-suppression-research.html">Hurricane Research</a></li>
-      <li class="t42-item"><a class="t42-link t42-active" href="./floating-skyports.html" aria-current="page">Floating Skyports</a></li>
-      <li class="t42-item"><a class="t42-link" href="./human-recovery-disk.html">Human Recovery Disk</a></li>
-      <li class="t42-item"><a class="t42-link" href="./about-the-founder.html">About the Founder</a></li>
-      <li class="t42-item t42-has-drop">
-        <div class="t42-split">
-          <a class="t42-link" href="./job-listings.html">Jobs / WeFind's for Delegations</a>
-          <button class="t42-link t42-drop-btn" type="button" aria-expanded="false" aria-label="Choose job-listing language"></button>
-        </div>
-        <ul class="t42-drop t42-jobs-drop">
-          <li><a class="t42-sublink" href="./job-listings.html">English</a></li>
-          <li><a class="t42-sublink" href="./job-listings-amharic.html">Amharic</a></li>
-          <li><a class="t42-sublink" href="./job-listings-arabic.html">Arabic</a></li>
-          <li><a class="t42-sublink" href="./job-listings-bengali.html">Bengali</a></li>
-          <li><a class="t42-sublink" href="./job-listings-chinese-simplified.html">Chinese (Simplified)</a></li>
-          <li><a class="t42-sublink" href="./job-listings-chinese-traditional.html">Chinese (Traditional)</a></li>
-          <li><a class="t42-sublink" href="./job-listings-czech.html">Czech</a></li>
-          <li><a class="t42-sublink" href="./job-listings-danish.html">Danish</a></li>
-          <li><a class="t42-sublink" href="./job-listings-dutch.html">Dutch</a></li>
-          <li><a class="t42-sublink" href="./job-listings-filipino.html">Filipino</a></li>
-          <li><a class="t42-sublink" href="./job-listings-finnish.html">Finnish</a></li>
-          <li><a class="t42-sublink" href="./job-listings-french.html">French</a></li>
-          <li><a class="t42-sublink" href="./job-listings-german.html">German</a></li>
-          <li><a class="t42-sublink" href="./job-listings-greek.html">Greek</a></li>
-          <li><a class="t42-sublink" href="./job-listings-hausa.html">Hausa</a></li>
-          <li><a class="t42-sublink" href="./job-listings-hebrew.html">Hebrew</a></li>
-          <li><a class="t42-sublink" href="./job-listings-hindi.html">Hindi</a></li>
-          <li><a class="t42-sublink" href="./job-listings-hungarian.html">Hungarian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-indonesian.html">Indonesian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-italian.html">Italian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-japanese.html">Japanese</a></li>
-          <li><a class="t42-sublink" href="./job-listings-korean.html">Korean</a></li>
-          <li><a class="t42-sublink" href="./job-listings-norwegian.html">Norwegian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-persian.html">Persian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-polish.html">Polish</a></li>
-          <li><a class="t42-sublink" href="./job-listings-portuguese.html">Portuguese</a></li>
-          <li><a class="t42-sublink" href="./job-listings-romanian.html">Romanian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-russian.html">Russian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-spanish.html">Spanish</a></li>
-          <li><a class="t42-sublink" href="./job-listings-swahili.html">Swahili</a></li>
-          <li><a class="t42-sublink" href="./job-listings-swedish.html">Swedish</a></li>
-          <li><a class="t42-sublink" href="./job-listings-thai.html">Thai</a></li>
-          <li><a class="t42-sublink" href="./job-listings-turkish.html">Turkish</a></li>
-          <li><a class="t42-sublink" href="./job-listings-ukrainian.html">Ukrainian</a></li>
-          <li><a class="t42-sublink" href="./job-listings-urdu.html">Urdu</a></li>
-          <li><a class="t42-sublink" href="./job-listings-vietnamese.html">Vietnamese</a></li>
-        </ul>
-      </li>
-      <li class="t42-item"><a class="t42-link" href="./an-open-letter-to-canada-and-poland.html">Open Letter</a></li>
-      <li class="t42-item"><a class="t42-link" href="./proclamation-of-claim.html">Proclamation of Claim</a></li>
-      <li class="t42-item t42-has-drop">
-        <button class="t42-link t42-drop-btn" type="button" aria-expanded="false">Letters &amp; Diplomacy</button>
-        <ul class="t42-drop">
-          <li><a class="t42-sublink" href="./project-84-diplomatic-letters-world.html">World Index</a></li>
-          <li><a class="t42-sublink" href="./project-84-letters-to-us-leaders.html">Letters to US Leaders</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-africa-i.html">Consulate Letters — Africa I</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-africa-ii.html">Consulate Letters — Africa II</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-africa-iii.html">Consulate Letters — Africa III</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-americas-i.html">Consulate Letters — Americas I</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-americas-ii.html">Consulate Letters — Americas II</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-asia-pacific.html">Consulate Letters — Asia-Pacific</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-europe-i.html">Consulate Letters — Europe I</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-europe-ii.html">Consulate Letters — Europe II</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-europe-iii.html">Consulate Letters — Europe III</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-middle-east.html">Consulate Letters — Middle East</a></li>
-          <li><a class="t42-sublink" href="./consulate-letters-oceania.html">Consulate Letters — Oceania</a></li>
-        </ul>
-      </li>
-      <li class="t42-item"><a class="t42-link" href="./who-knows.html">Who Knows?</a></li>
-      <li class="t42-item"><a class="t42-link" href="./money-vs-assets.html">Money vs Assets</a></li>
-      <li class="t42-item"><a class="t42-link" href="./3d-printing-advancements-last-5-years.html">3D Printing</a></li>
-      <li class="t42-item"><a class="t42-link" href="https://sites.google.com/view/knottsure/home">Why Not? (external manifesto)</a></li>
-      <li class="t42-item t42-has-drop">
-        <button class="t42-link t42-drop-btn" type="button" aria-expanded="false">More</button>
-        <ul class="t42-drop">
-          <li><a class="t42-sublink" href="./alice-storyboard.html">Alice Storyboard</a></li>
-          <li><a class="t42-sublink" href="./doodare-s-diaper-replacement-concept.html">Doodare's Diaper Concept</a></li>
-          <li><a class="t42-sublink" href="./one-terms-of-service.html">Terms of Service</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
+<header class="site"><div class="site-inner"><a class="brand" href="./index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site"><a href="./index.html">Home</a><a href="./who-knows.html">Who Knows?</a><a href="./about.html">About</a><a href="./project-84.html">Project 84</a><a href="./omega42.html">Omega42</a><a href="./new-eden.html">Plan #42</a><a href="./main-site-pages.html">All Pages</a></nav></div></header>
+
+  
   <script>
     (function(){
       function init(){
@@ -541,223 +459,12 @@
     </section>
   </main>
 
-<style>
-:root { --bottom-nav-height: 64px; }
-body { padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom)); }
-.site-bottom-nav {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 10000;
-  min-height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
-  padding-bottom: env(safe-area-inset-bottom);
-  background: #0f172a;
-  color: #f8fafc;
-  border-top: 1px solid #1e293b;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-.site-bottom-nav__items {
-  display: flex;
-  width: 100%;
-  min-height: var(--bottom-nav-height);
-}
-.site-bottom-nav__item {
-  position: relative;
-  flex: 1 1 25%;
-  min-width: 0;
-  border-right: 1px solid #1e293b;
-}
-.site-bottom-nav__item:last-child { border-right: 0; }
-.site-bottom-nav__button,
-.site-bottom-nav__link {
-  width: 100%;
-  min-height: var(--bottom-nav-height);
-  padding: 10px 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  border: 0;
-  background: transparent;
-  color: #f8fafc;
-  font: 700 .9rem/1.2 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  text-align: center;
-}
-.site-bottom-nav__button { cursor: pointer; }
-.site-bottom-nav__link { text-decoration: none; }
-.site-bottom-nav__button:hover,
-.site-bottom-nav__button:focus-visible,
-.site-bottom-nav__link:hover,
-.site-bottom-nav__link:focus-visible,
-.site-bottom-nav__item.is-open > .site-bottom-nav__button {
-  background: #1e293b;
-  color: #fff;
-  outline: 2px solid #fff;
-  outline-offset: -3px;
-}
-.site-bottom-nav__chevron {
-  flex: 0 0 auto;
-  width: 14px;
-  height: 14px;
-  transition: transform .18s ease;
-}
-.site-bottom-nav__item.is-open .site-bottom-nav__chevron { transform: rotate(180deg); }
-.site-bottom-nav__dropup {
-  position: absolute;
-  left: 0;
-  bottom: 100%;
-  width: min(360px, 100vw);
-  max-height: calc(100svh - var(--bottom-nav-height) - env(safe-area-inset-bottom) - 16px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  background: #0f172a;
-  border: 1px solid #1e293b;
-  border-bottom: 0;
-  box-shadow: 0 -16px 38px rgba(0, 0, 0, .24);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateY(8px);
-  transition: opacity .16s ease, transform .16s ease, visibility 0s linear .16s;
-  scrollbar-color: #94a3b8 #0f172a;
-}
-.site-bottom-nav__item.is-open .site-bottom-nav__dropup {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transform: translateY(0);
-  transition-delay: 0s;
-}
-.site-bottom-nav__dropup-label {
-  display: block;
-  padding: 12px 16px 8px;
-  color: #94a3b8;
-  font-size: .72rem;
-  font-weight: 700;
-  letter-spacing: .09em;
-  text-transform: uppercase;
-}
-.site-bottom-nav__dropup a {
-  display: flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 10px 16px;
-  color: #e2e8f0;
-  text-decoration: none;
-  font: 600 .88rem/1.25 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  border-bottom: 1px solid #1e293b;
-}
-.site-bottom-nav__dropup a:last-child { border-bottom: 0; }
-.site-bottom-nav__dropup a:hover,
-.site-bottom-nav__dropup a:focus-visible {
-  background: #1e293b;
-  color: #fff;
-  outline: 2px solid #fff;
-  outline-offset: -3px;
-}
-@media (hover: hover) and (pointer: fine) {
-  .site-bottom-nav__item--menu:hover .site-bottom-nav__dropup {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transform: translateY(0);
-    transition-delay: 0s;
-  }
-  .site-bottom-nav__item--menu:hover > .site-bottom-nav__button {
-    background: #1e293b;
-    color: #fff;
-  }
-}
-@media (max-width: 620px) {
-  .site-bottom-nav__button,
-  .site-bottom-nav__link { padding: 8px 5px; font-size: .75rem; }
-  .site-bottom-nav__button { gap: 4px; }
-  .site-bottom-nav__dropup { position: fixed; right: 0; left: 0; width: 100%; bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom)); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .site-bottom-nav__chevron,
-  .site-bottom-nav__dropup { transition: none; }
-}
-</style>
 
-  <nav class="site-bottom-nav" aria-label="Secondary pages">
-    <div class="site-bottom-nav__items">
-      <div class="site-bottom-nav__item site-bottom-nav__item--menu" id="dummy-guides-menu">
-        <button class="site-bottom-nav__button" type="button" aria-expanded="false" aria-controls="dummy-guides-dropup">
-          <span>Dummy Guides</span>
-          <svg class="site-bottom-nav__chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 10.5 8 5.5l5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="site-bottom-nav__dropup" id="dummy-guides-dropup" aria-label="Dummy Guides languages" hidden>
-          <span class="site-bottom-nav__dropup-label">Project 84 Dummy Guide:</span>
-          <a href="./project-84-dummies-guide-level-14-2.html">Project 84 Dummies Guide — Level 14 (English)</a>
-        </div>
-      </div>
-      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="./project-84-diplomatic-letters-world.html" data-slug="project-84-diplomatic-letters-world">Letters To</a></div>
-      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="./goal-briefs.html" data-slug="goal-briefs">Goal Briefs</a></div>
-      <div class="site-bottom-nav__item"><a class="site-bottom-nav__link" href="./homo-e-s-m.html" data-slug="homo-e-s-m">HOMO-E/S/M</a></div>
-    </div>
-  </nav>
 
-  <script>
-    (function () {
-      var menu = document.getElementById('dummy-guides-menu');
-      var button = menu.querySelector('.site-bottom-nav__button');
-      var dropup = document.getElementById('dummy-guides-dropup');
-      var guideLinks = dropup.querySelectorAll('a');
-      var hoverOpen = false;
+  
 
-      function renderOpen() {
-        var open = hoverOpen || menu.classList.contains('is-open');
-        dropup.hidden = !open;
-        button.setAttribute('aria-expanded', open ? 'true' : 'false');
-      }
-
-      function setOpen(open) {
-        menu.classList.toggle('is-open', open);
-        renderOpen();
-      }
-
-      button.addEventListener('click', function () {
-        setOpen(!menu.classList.contains('is-open'));
-      });
-
-      menu.addEventListener('mouseenter', function () {
-        hoverOpen = true;
-        renderOpen();
-      });
-
-      menu.addEventListener('mouseleave', function () {
-        hoverOpen = false;
-        renderOpen();
-      });
-
-      guideLinks.forEach(function (link) {
-        link.addEventListener('click', function (event) {
-          if (link.getAttribute('href') === '#') {
-            event.preventDefault();
-            button.focus();
-          }
-          hoverOpen = false;
-          setOpen(false);
-        });
-      });
-
-      document.addEventListener('click', function (event) {
-        if (!menu.contains(event.target)) {
-          hoverOpen = false;
-          setOpen(false);
-        }
-      });
-
-      document.addEventListener('keydown', function (event) {
-        if (event.key === 'Escape' && !dropup.hidden) {
-          hoverOpen = false;
-          setOpen(false);
-          button.focus();
-        }
-      });
-    }());
-  </script>
+  
+<footer class="site"><div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="./index.html">All pages</a></div></footer>
+<style>body{padding-bottom:0}</style>
 </body>
 </html>
