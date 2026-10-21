@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:," />
+  <title>One Terms of Service — DRAFT</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper: #f4f0e6; --ink: #11110f; --muted: #555149;
+      --accent: #d92f25; --yellow: #f0cf37; --panel: #fffaf0; --line: #171714;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --paper: #141412; --ink: #f5f0e5; --muted: #bbb5a8; --panel: #1e1d19; --line: #f5f0e5; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink);
+      font-family: Georgia, "Times New Roman", serif; font-size: 18px; line-height: 1.55; }
+    .signal { min-height: 11px; border-bottom: 2px solid var(--line);
+      background: repeating-linear-gradient(135deg, var(--yellow) 0 13px, var(--yellow) 13px 24px, var(--ink) 24px 37px, var(--ink) 37px 48px); }
+    main { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+    .issue { font: 600 12px/1.25 ui-monospace, monospace; letter-spacing: .13em; text-transform: uppercase; color: var(--muted); }
+    h1 { font-size: clamp(40px, 7vw, 76px); line-height: .95; margin: 18px 0 10px; text-transform: uppercase; }
+    h2 { font-size: 28px; margin: 44px 0 10px; }
+    .lead { font-size: 22px; }
+    .panel { background: var(--panel); border: 2px solid var(--line); border-radius: 10px; padding: 20px 24px; margin: 24px 0; }
+    .cookie { font-family: ui-monospace, monospace; font-size: 15px; word-break: break-all; }
+    ul, ol { padding-left: 1.3em; }
+    li { margin: 6px 0; }
+    footer { margin-top: 60px; border-top: 2px solid var(--line); padding-top: 18px; color: var(--muted); font-size: 15px; }
+    a { color: inherit; }
+  </style>
+</head>
+<body>
+  <div class="signal"></div>
+  <main>
+    <p class="issue" style="color:var(--accent); font-size:14px;"><strong>DRAFT</strong> — rebuilt draft for review, same status as the constitution drafts. Not final text.</p>
+    <p class="issue">A campaign for the whole internet</p>
+    <h1>One Terms of Service</h1>
+    <p class="lead"><strong>One terms of service, in a single cookie.</strong>
+    One universal agreement — written so a person can actually read it — accepted once,
+    and honored by every participating service. No more signing a different contract
+    you've never read at every door on the internet.</p>
+
+    <div class="panel">
+      <h2 style="margin-top:0">The single cookie</h2>
+      <p>The acceptance lives in <em>one</em> cookie that <em>you</em> hold:</p>
+      <p class="cookie">one-tos = accepted · version 1 · date of acceptance</p>
+      <p>That is the whole payload. It is <strong>not</strong> a tracking cookie: it carries no
+      identity, no history, and nothing about you. It says one thing — this person has
+      agreed to the One Terms — and a participating site reads it instead of making you
+      agree to its own private terms all over again.</p>
+    </div>
+
+    <h2>The draft universal terms (plain language)</h2>
+    <ol>
+      <li><strong>We say what we do.</strong> A service states, in plain language, what it does with you and your data. If it isn't stated, it isn't permitted.</li>
+      <li><strong>Your data is yours.</strong> You can see it, export it, and delete it. Deletion means deletion.</li>
+      <li><strong>No dark patterns.</strong> No trick buttons, no roach-motels, no consent obtained by exhaustion.</li>
+      <li><strong>Changes are announced, not buried.</strong> A change to the terms is announced in advance, in plain language, and takes effect only for people who accept it.</li>
+      <li><strong>One agreement, everywhere.</strong> A participating service may add terms only for genuinely new risks it creates — and those additions get the same plain-language test.</li>
+      <li><strong>Leaving is a right.</strong> You can leave any service and take your data with you. No hostage data, no exit fees on your own life.</li>
+    </ol>
+    <p><em>This is a campaign draft, not a finished legal instrument — see the lawyer note below.</em></p>
+
+    <h2>The interpretive tests</h2>
+    <ul>
+      <li><strong>The read-it test:</strong> could a normal person read the whole agreement, out loud, in one sitting — and understand it?</li>
+      <li><strong>The grandmother test:</strong> would you be comfortable with your grandmother agreeing to this without a lawyer in the room?</li>
+      <li><strong>The mirror test:</strong> would the company accept these same terms if the roles were reversed?</li>
+      <li><strong>The front-page test:</strong> would the practice survive being described, accurately, on the front page?</li>
+    </ul>
+    <p>A clause that fails a test doesn't ship.</p>
+
+    <h2>How it gets real — the implementation path</h2>
+    <ol>
+      <li><strong>Publish the standard.</strong> One versioned, public document — the One Terms — maintained in the open.</li>
+      <li><strong>The cookie spec.</strong> A tiny, public technical standard for the acceptance cookie: what it may contain (almost nothing) and what it may never contain (tracking).</li>
+      <li><strong>Early adopters.</strong> Independent sites adopt first and display the mark: “One Terms honored here.”</li>
+      <li><strong>The lawyer.</strong> The campaign is hiring a lawyer to draft the One Terms of Service for the entire internet as a real legal instrument — the plain-language draft above is the brief, not the finished law.</li>
+      <li><strong>Scale.</strong> Adoption is voluntary and contagious: every site that honors the One Terms makes the next site's private 40-page contract look worse.</li>
+    </ol>
+
+    <h2>FAQ</h2>
+    <p><strong>Is the cookie a tracker?</strong> No. A tracking cookie follows you for someone else's benefit. This cookie speaks for you, once, and says nothing else.</p>
+    <p><strong>Can a site still have its own rules?</strong> Yes — community rules, safety rules, and paid-tier terms are fine, as long as they pass the tests and don't contradict the One Terms.</p>
+    <p><strong>What if I never accept?</strong> Then nothing changes for you: sites keep showing you their own terms, one at a time, forever. That's the world we already live in.</p>
+    <p><strong>Who runs it?</strong> Nobody owns an agreement everyone holds. The document is public, versioned, and changed in the open.</p>
+
+    <footer>
+      <p>One Terms of Service — a campaign page in the <a href="./index.html">Journey to the End of the Universe</a> set.
+      See also: <a href="./remove-90-of-ads.html">Remove 90% of Ads</a>.</p>
+      <p>Rebuilt October 2026 from the campaign's recorded structure after the original page was deleted — draft for review.</p>
+    </footer>
+  </main>
+</body>
+</html>
