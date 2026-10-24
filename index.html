@@ -3,17 +3,45 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:,">
-<title>Journey to the End of the Universe — All Pages</title>
-<link rel="stylesheet" href="./assets/style.css"></head>
+<title>Eclipsed 5.0 — Journey to the End of the Universe</title>
+<link rel="stylesheet" href="./assets/style.css">
+<style>
+/* Flyer front page — one screen, one page printed. Not a pamphlet. */
+.flyer{max-width:900px;margin:0 auto;padding:28px 20px 10px;text-align:center}
+.flyer .kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.14em;font-size:.85rem;color:var(--accent-ink);font-weight:700}
+.flyer h1{font-family:var(--serif);font-size:clamp(3.2rem,11vw,7.5rem);line-height:.92;margin:.12em 0 .08em;letter-spacing:-.02em}
+.flyer .sub{font-family:var(--serif);font-size:clamp(1.25rem,3.4vw,1.9rem);line-height:1.25;color:var(--muted);margin:.2em auto .6em;max-width:34ch}
+.flyer .ladder{font-family:var(--mono);font-size:clamp(.9rem,2.6vw,1.1rem);font-weight:700;letter-spacing:.04em;margin:.8em 0 1.4em}
+.flyer .ladder span{color:var(--signal)}
+.doors{display:grid;gap:14px;grid-template-columns:1fr 1fr;text-align:left;margin:0 0 18px}
+@media (max-width:600px){.doors{grid-template-columns:1fr}}
+.door{display:block;background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:18px;text-decoration:none;color:var(--ink)}
+.door:hover{border-color:var(--accent);text-decoration:none}
+.door b{display:block;font-family:var(--serif);font-size:1.45rem;line-height:1.1;margin-bottom:6px}
+.door span{color:var(--muted);font-size:.98rem;line-height:1.4;display:block}
+.flyer .all{display:inline-block;font-weight:700;font-size:1.05rem;margin:4px 0 10px}
+.flyer .sign{font-family:var(--mono);font-size:.9rem;color:var(--muted);margin-top:8px}
+@media print{.flyer{padding-top:10px}header.site,footer.site{display:none}}
+</style></head>
 <body>
 <header class="site"><div class="site-inner"><a class="brand" href="./index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site"><a href="./index.html" aria-current="page">Home</a><a href="./who-knows.html">Who Knows?</a><a href="./about.html">About</a><a href="./project-84.html">Project 84</a><a href="./omega42.html">Omega42</a><a href="./new-eden.html">Plan #42</a><a href="./main-site-pages.html">All Pages</a></nav></div></header>
-<main class="wrap site-main">
-<h1>Journey to the End of the Universe</h1>
-<p class="lede">All pages, one site. Ocean settlements, Plan 42, Project 84, and the long ladder out — Earth, Luna, Jupiter, Alpha Centauri.</p>
-<div class="index-grid">
-<div class="card"><h2>Flagships</h2><ul><li><a href="./project-84.html">Project 84</a></li><li><a href="./new-eden.html">Plan #42</a></li><li><a href="./prime-42.html">Prime 42</a></li><li><a href="./omega42.html">Omega42</a></li><li><a href="./proclamation-of-claim.html">Proclamation of Claim</a></li><li><a href="./floating-skyports.html">Floating Skyports</a></li></ul></div><div class="card"><h2>Main</h2><ul><li><a href="./who-knows.html">Who Knows?</a></li><li><a href="./about.html">About</a></li><li><a href="./about-the-founder.html">About the Founder</a></li><li><a href="./goal-briefs.html">Goal Briefs</a></li><li><a href="./main-site-pages.html">Main Site Pages</a></li></ul></div><div class="card"><h2>Projects & proposals</h2><ul><li><a href="./poodles-project-84-work-boats.html">HEAR-TS — Project 84 Work Boats</a></li><li><a href="./project-42-bank-pitch.html">Project 42 — Planning Facility</a></li><li><a href="./co2-balls.html">CO2 Balls</a></li><li><a href="./uplift-project.html">Uplift Project</a></li><li><a href="./doodare-s-diaper-replacement-concept.html">Doodare's — Diaper Replacement Concept</a></li><li><a href="./hurricane-suppression-research.html">Hurricane Suppression Research</a></li><li><a href="./human-recovery-disk.html">Human Recovery Disk</a></li><li><a href="./homo-e-s-m.html">HOMO-E/S/M</a></li><li><a href="./remove-90-of-ads.html">Remove 90% of Ads</a></li><li><a href="./money-vs-assets.html">Money vs Assets</a></li><li><a href="./realizim.html">Realizim</a></li></ul></div><div class="card"><h2>Notes & research</h2><ul><li><a href="./3d-printing-advancements-last-5-years.html">3D Printing Advancements: Last 5 Years</a></li><li><a href="./alice-storyboard.html">Alice Storyboard</a></li><li><a href="./an-open-letter-to-canada-and-poland.html">An Open Letter to Canada and Poland</a></li><li><a href="./stellar-engineering-crash-course.html">Stellar Engineering — Crash Course</a></li><li><a href="./stellar-engineering-crash-course-2.html">Stellar Engineering — Crash Course 2</a></li><li><a href="./under-30-world-stats.html">Under-30 World Stats</a></li><li><a href="./who-knows-2.html">Who Knows? (2)</a></li></ul></div>
-</div>
-<p class="index-note">Every page on this site now shares the same header, footer, and stylesheet. The flagship pages (Project 84, Plan #42, Prime 42, Proclamation of Claim, Floating Skyports) are linked above and live in this same repo.</p>
+
+<main class="flyer">
+  <p class="kicker">Eclipsed 5.0 &middot; Journey to the End of the Universe</p>
+  <h1>Why<br>Not?</h1>
+  <p class="sub">Ocean settlements. Cities for the next generation.<br>A ladder longer than a lifetime.</p>
+  <p class="ladder">EARTH <span>&rarr;</span> LUNA <span>&rarr;</span> JUPITER <span>&rarr;</span> ALPHA CENTAURI</p>
+
+  <div class="doors">
+    <a class="door" href="./project-84.html"><b>Project 84</b><span>Build civilization where the map is still blue.</span></a>
+    <a class="door" href="./new-eden.html"><b>Plan #42</b><span>Cities for a tenth of humanity. Prototypes for the Moon.</span></a>
+    <a class="door" href="./omega42.html"><b>Omega42</b><span>The ones behind the glass are not attractions. They are people.</span></a>
+    <a class="door" href="./prime-42.html"><b>Prime 42</b><span>Forty-two troop-cities built as territory, not cages.</span></a>
+  </div>
+
+  <a class="all" href="./main-site-pages.html">Everything else &rarr; All Pages</a>
+  <p class="sign">Matthew Nahas &middot; Eureka, California</p>
 </main>
-<footer class="site"><div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="./index.html">All pages</a></div></footer>
+
+<footer class="site"><div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="./main-site-pages.html">All pages</a></div></footer>
 </body></html>
