@@ -50,6 +50,18 @@ nav.main{display:flex;gap:6px 18px;flex-wrap:wrap;margin-top:8px}
 nav.main a{color:var(--header-muted);text-decoration:none;font-weight:600;font-size:.98rem;padding:2px 0}
 nav.main a:hover{color:var(--header-ink);text-decoration:underline}
 nav.main a[aria-current="page"]{color:var(--header-ink);border-bottom:2px solid var(--signal)}
+/* Floating top menu with Main Quests / Side Quests dropdowns (2026-10-25) — header.site is sticky above, so the menu floats at the top while scrolling */
+header.site{box-shadow:0 3px 16px rgba(0,0,0,.35)}
+nav.main{align-items:flex-start}
+nav.main details.nav-drop{position:relative}
+nav.main details.nav-drop summary{color:var(--header-muted);font-weight:600;font-size:.98rem;padding:2px 0;cursor:pointer;list-style:none}
+nav.main details.nav-drop summary::-webkit-details-marker{display:none}
+nav.main details.nav-drop summary::after{content:" \25BE";color:var(--signal)}
+nav.main details.nav-drop summary:hover{color:var(--header-ink);text-decoration:underline}
+nav.main details.nav-drop[open] summary{color:var(--header-ink)}
+nav.main .nav-drop-menu{position:absolute;top:calc(100% + 8px);left:0;min-width:260px;max-width:88vw;background:var(--header-bg);border:1px solid #3b453f;border-top:4px solid var(--accent);box-shadow:0 10px 28px rgba(0,0,0,.45);padding:8px 0;z-index:90;display:flex;flex-direction:column}
+nav.main .nav-drop-menu a{padding:7px 18px;white-space:nowrap}
+nav.main .nav-drop-menu a:hover{background:rgba(255,255,255,.07);text-decoration:none;color:var(--header-ink)}
 footer.site{background:var(--header-bg);color:var(--header-muted);margin-top:56px}
 footer.site .site-inner{max-width:1100px;margin:0 auto;padding:22px 20px;font-size:.95rem}
 footer.site a{color:var(--header-ink)}
