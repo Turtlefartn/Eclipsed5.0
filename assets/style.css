@@ -62,7 +62,19 @@ nav.main details.nav-drop[open] summary{color:var(--header-ink)}
 nav.main .nav-drop-menu{position:absolute;top:calc(100% + 8px);left:0;min-width:260px;max-width:88vw;background:var(--header-bg);border:1px solid #3b453f;border-top:4px solid var(--accent);box-shadow:0 10px 28px rgba(0,0,0,.45);padding:8px 0;z-index:90;display:flex;flex-direction:column}
 nav.main .nav-drop-menu a{padding:7px 18px;white-space:nowrap}
 nav.main .nav-drop-menu a:hover{background:rgba(255,255,255,.07);text-decoration:none;color:var(--header-ink)}
+/* Guard: page-local accordion styles (e.g. Project 84's holes list) must never leak into the menu toggles */
+nav.main details.nav-drop summary{display:block;grid-template-columns:none;gap:0;border:none;white-space:nowrap}
+nav.main details.nav-drop{border:none}
 footer.site{background:var(--header-bg);color:var(--header-muted);margin-top:56px}
+/* Donate + contact block in the footer (2026-10-25) */
+footer.site .donate-block{margin:0 0 14px}
+footer.site .donate-qrs{display:flex;gap:26px;flex-wrap:wrap;margin:0 0 10px}
+footer.site .donate-qrs figure{margin:0;text-align:center}
+footer.site .donate-qrs img{width:104px;height:104px;background:#fff;padding:6px;border-radius:8px}
+footer.site .donate-qrs figcaption{margin-top:6px;font-size:.88rem;color:var(--header-ink);font-weight:600}
+footer.site .donate-eth{margin:0 0 6px;font-size:.92rem}
+footer.site .contact-line{margin:0 0 12px;font-size:.95rem}
+footer.site .contact-line a{color:var(--header-ink)}
 footer.site .site-inner{max-width:1100px;margin:0 auto;padding:22px 20px;font-size:.95rem}
 footer.site a{color:var(--header-ink)}
 
