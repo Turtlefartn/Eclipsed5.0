@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:,">
+<title>Capped Volcano — Manual Pressure, Sideways Release · DRAFT</title>
+<link rel="stylesheet" href="./assets/style.css">
+<style>
+/* Capped Volcano — page-specific styling, shared site stylesheet underneath. */
+.cv-hero{background:#14100e;color:#f5ead9;border-radius:18px;overflow:hidden;margin:18px 0 8px;box-shadow:0 18px 50px rgba(20,10,0,.35)}
+.cv-hero .in{padding:clamp(28px,5vw,64px)}
+.cv-kicker{font-family:var(--mono);text-transform:uppercase;letter-spacing:.16em;font-size:.82rem;color:#ffb37a;font-weight:700}
+.cv-hero h1{font-family:var(--serif);font-size:clamp(2.6rem,7.5vw,5.2rem);line-height:.98;margin:.18em 0 .25em;letter-spacing:-.015em}
+.cv-hero h1 em{font-style:normal;color:#ff6b35}
+.cv-hero .lede{font-size:clamp(1.05rem,2.4vw,1.35rem);line-height:1.45;color:#e8d9c3;max-width:56ch;margin:0}
+.cv-diagram{display:block;width:100%;height:auto;background:linear-gradient(#241610,#17100c)}
+.cv-flow{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 4px}
+.cv-flow span{font-family:var(--mono);font-size:.82rem;font-weight:700;letter-spacing:.05em;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:7px 13px}
+.cv-flow span b{color:var(--signal)}
+.cv-legs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
+.cv-leg{background:var(--panel);border:1px solid var(--line);border-top:4px solid #d34b2b;border-radius:12px;padding:18px}
+.cv-leg .n{font-family:var(--mono);font-weight:700;color:var(--signal);font-size:.85rem;letter-spacing:.1em}
+.cv-leg h3{margin:.35em 0 .4em;font-family:var(--serif);font-size:1.3rem;line-height:1.15}
+.cv-leg p{margin:0;color:var(--muted);font-size:.97rem;line-height:1.5}
+.cv-dark{background:#181310;color:#efe3cf;border-radius:14px;padding:clamp(20px,4vw,40px);margin:22px 0}
+.cv-dark h2{font-family:var(--serif);font-size:clamp(1.7rem,4vw,2.5rem);margin:.1em 0 .4em;line-height:1.1}
+.cv-dark p{color:#d8c6ab;max-width:68ch}
+.cv-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+@media (max-width:640px){.cv-cols{grid-template-columns:1fr}}
+.cv-hole{border:1px solid var(--line);border-left:4px solid #7a1f1f;border-radius:10px;padding:16px 18px;background:var(--panel)}
+.cv-hole h3{margin:.1em 0 .35em;font-size:1.08rem}
+.cv-hole p{margin:0;color:var(--muted);font-size:.96rem;line-height:1.5}
+.cv-stat{font-family:var(--serif);font-size:2rem;line-height:1;color:#ff6b35;display:block;margin-bottom:6px}
+.cv-note{font-family:var(--mono);font-size:.8rem;color:var(--muted);letter-spacing:.04em}
+</style></head>
+<body><div class="draft-banner" style="background:#7a1f1f;color:#fdf6e8;text-align:center;font:600 13px/1.5 system-ui,sans-serif;letter-spacing:.12em;padding:8px 12px">DRAFT — THIS PAGE IS A DRAFT FOR REVIEW. NOT FINAL TEXT.</div>
+<header class="site"><div class="site-inner"><a class="brand" href="./index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site"><a href="./index.html">Home</a><a href="./who-knows.html">Who Knows?</a><a href="./about.html">About</a><a href="./project-84.html">Project 84</a><a href="./omega42.html">Omega42</a><a href="./plan-42.html">Plan #42</a><a href="./remote-nature.html">Remote Nature</a><a href="./capped-volcano.html" aria-current="page">Volcano</a><a href="./main-site-pages.html">All Pages</a></nav></div></header>
+
+<main class="wrap site-main">
+
+<section class="cv-hero">
+  <div class="in">
+    <p class="cv-kicker">Volcano Reheat · The Delivery Mechanism</p>
+    <h1>Cap it.<br>Pressurise it.<br><em>Blow it sideways.</em></h1>
+    <p class="lede">A volcano that erupts where you point it, when you choose it — with geothermal power taken off the system every day in between, and the gas captured for processing at an outlet you built. Not geology's schedule. Yours.</p>
+  </div>
+  <svg class="cv-diagram" viewBox="0 0 900 340" role="img" aria-label="Cross-section diagram: a capped volcano with a magma chamber, a lateral tunnel through the flank, and a plant capturing gas and making power">
+    <polygon points="90,320 380,60 450,60 730,320" fill="#3a2a20"/>
+    <polygon points="380,60 450,60 470,120 360,120" fill="#241812"/>
+    <rect x="352" y="38" width="126" height="26" rx="8" fill="#8f9296"/>
+    <text x="415" y="26" text-anchor="middle" fill="#ffb37a" font-family="monospace" font-size="14" font-weight="700">THE CAP</text>
+    <ellipse cx="415" cy="262" rx="120" ry="44" fill="#ff5a1f"/>
+    <ellipse cx="415" cy="262" rx="82" ry="28" fill="#ffb02e"/>
+    <text x="415" y="330" text-anchor="middle" fill="#ffb37a" font-family="monospace" font-size="13">MAGMA CHAMBER</text>
+    <polygon points="470,238 700,268 700,292 462,282" fill="#ff7a2e"/>
+    <rect x="668" y="238" width="52" height="30" rx="5" fill="#c33"/>
+    <text x="694" y="226" text-anchor="middle" fill="#ffb37a" font-family="monospace" font-size="13" font-weight="700">VALVE</text>
+    <rect x="730" y="196" width="130" height="112" rx="10" fill="#2e2620" stroke="#ffb37a" stroke-width="2"/>
+    <text x="795" y="228" text-anchor="middle" fill="#f5ead9" font-family="monospace" font-size="13" font-weight="700">THE PLANT</text>
+    <text x="795" y="254" text-anchor="middle" fill="#d8c6ab" font-family="monospace" font-size="12">⚡ GEOTHERMAL</text>
+    <text x="795" y="276" text-anchor="middle" fill="#d8c6ab" font-family="monospace" font-size="12">GAS CAPTURE</text>
+    <text x="795" y="298" text-anchor="middle" fill="#d8c6ab" font-family="monospace" font-size="12">+ PROCESSING</text>
+    <text x="180" y="200" fill="#d8c6ab" font-family="monospace" font-size="13">SEALED SUMMIT</text>
+    <text x="540" y="218" fill="#ffb37a" font-family="monospace" font-size="13">PREPPED LATERAL TUNNEL →</text>
+  </svg>
+</section>
+
+<div class="cv-flow" aria-label="How a release flows">
+  <span><b>01</b> CAP</span><span>→</span><span><b>02</b> PRESSURE, BUILT BY HAND</span><span>→</span><span><b>03</b> SIDEWAYS VALVE</span><span>→</span><span><b>04</b> POWER</span><span>→</span><span><b>05</b> GAS, CAPTURED + SORTED</span>
+</div>
+
+<h2 style="font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.1">Five legs. One mountain.</h2>
+
+<div class="cv-legs">
+  <article class="cv-leg"><span class="n">LEG 01</span><h3>Cap the mountain</h3><p>Seal the summit and the natural vents. The volcano stops degassing on its own schedule — and every exit is closed except the ones you built.</p></article>
+  <article class="cv-leg"><span class="n">LEG 02</span><h3>Build the pressure manually</h3><p>Don't wait for a chamber to recharge on geological time. Pressurise on a human schedule — seal-and-wait, water flashed to steam, gas injection, geothermal cycling. The mechanism is a maths question, and the maths is queued.</p></article>
+  <article class="cv-leg"><span class="n">LEG 03</span><h3>Prepped release valves</h3><p>Lateral tunnels driven into the flank in advance, aimed at a chosen direction, ending at a plant — not open country. The "valve" is a sacrificial plug designed to fail first, on command, one way.</p></article>
+  <article class="cv-leg"><span class="n">LEG 04</span><h3>Geothermal energy</h3><p>The same capped, hot, pressurised system is a power plant the rest of the time. Drawing heat and fluid off is also pressure management — the plant is a piston, not just a witness.</p></article>
+  <article class="cv-leg"><span class="n">LEG 05</span><h3>Gas capture, for processing</h3><p>At a sideways outlet you built, the flow arrives somewhere prepared. Drop the soot. Scrub the acids. Sort the stream — and release only the fraction you actually want in the sky.</p></article>
+</div>
+
+<section class="cv-dark">
+  <p class="cv-kicker">Why this exists</p>
+  <h2>The reheat problem was never heat. It was control.</h2>
+  <p>If Earth ever gets too cold, the <a href="./who-knows.html#volcano-thermostat" style="color:#ffb37a">volcano reheat program</a> wants an eruption on purpose — but a natural eruption brings its own winter with it: sulfur aerosols cool harder than the gases warm, and it goes off when and where geology says.</p>
+  <p>This project is the missing machine: <strong style="color:#f5ead9">timing</strong> from manual pressure, <strong style="color:#f5ead9">direction</strong> from the lateral valve, and a <strong style="color:#f5ead9">sorting gate</strong> from capture-and-processing. We just need the gases. Not the soot.</p>
+</section>
+
+<h2 style="font-family:var(--serif)">Nature already ran the sideways version. Badly.</h2>
+<div class="cv-cols">
+  <article class="cv-hole" style="border-left-color:#d34b2b">
+    <span class="cv-stat">~600 km²</span>
+    <h3>Mount St Helens, 1980</h3>
+    <p>A magnitude 5.1 quake failed the bulging north flank, the landslide uncorked the pressurised magma, and the blast went <strong>north, sideways</strong> — devastating nearly 600 km² before the vertical column rose past 24 km. Every part of it was accidental: the direction, the timing, the people in the way. This project is that event with each accident replaced by preparation.</p>
+    <p class="cv-note">USGS historical record — reported figures.</p>
+  </article>
+  <article class="cv-hole" style="border-left-color:#d34b2b">
+    <span class="cv-stat">~35 MW, one well</span>
+    <h3>Krafla, Iceland — IDDP-1, 2009</h3>
+    <p>Drillers hit magma at just 2.1 km, 900–1,000 °C. The well produced steam over 450 °C — an estimated ~35 MW, five to ten times a conventional geothermal well. Then the acid gases ate the valves, and it was shut in by 2012. The geothermal leg is proven, and so is its hardest problem.</p>
+    <p class="cv-note">IDDP / Geothermics reporting — reported figures.</p>
+  </article>
+</div>
+
+<h2 style="font-family:var(--serif)">The honest holes</h2>
+<p style="color:var(--muted);max-width:68ch">Grievances on the record — noted, never smoothed over. Where one can be turned into maths, maths arbitrates.</p>
+<div class="cv-cols">
+  <article class="cv-hole"><h3>The cap paradox</h3><p>If the cap holds, the mountain fails at its next-weakest point. That's the design — your valve must be that point — and the risk: rank the flanks and faults wrong, and the mountain picks a different sideways.</p></article>
+  <article class="cv-hole"><h3>There is no valve</h3><p>No closable valve survives magma temperatures and acid, rock-laden flow. A "valve" here means a sacrificial plug: single-use, open-only, no throttle. The control is all in the prep.</p></article>
+  <article class="cv-hole"><h3>Can hands pressurise a mountain?</h3><p>A chamber is cubic kilometres of molten rock in leaking, creeping crust. Whether manual injection can beat the leaks to eruption overpressure is the project's kill-question — and it is pure maths, queued first.</p></article>
+  <article class="cv-hole"><h3>Sideways doesn't guarantee low</h3><p>St Helens still put a column past 24 km. Capture gets the directed first fraction — what share of the total gas that is decides whether processing is the product or a gesture.</p></article>
+</div>
+
+<section class="cv-dark">
+  <p class="cv-kicker">Status</p>
+  <h2>Opened 24 Oct 2026. Deliberately unfinished.</h2>
+  <p>Not yet set, and not invented here: the project's name, the pressurisation mechanism, whether the design centre is a geothermal plant that can erupt or a reheat vent that pays in power, and the first site. The maths queue — pressurisation budget, weak-point ranking, capture fraction, geothermal duty cycle — settles the grievances in that order.</p>
+  <p><a href="./who-knows.html#volcano-thermostat" style="color:#ffb37a">Read the parent program: the volcano thermostat →</a> &nbsp;·&nbsp; <a href="./main-site-pages.html" style="color:#ffb37a">All pages →</a></p>
+</section>
+
+</main>
+<footer class="site"><div class="site-inner">Journey to the End of the Universe &middot; Matthew Joseph Nahas &middot; Hosted on GitHub Pages &middot; <a href="./main-site-pages.html">All pages</a></div></footer>
+</body></html>
