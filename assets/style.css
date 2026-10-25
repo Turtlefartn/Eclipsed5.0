@@ -53,8 +53,8 @@ nav.main a[aria-current="page"]{color:var(--header-ink);border-bottom:2px solid 
 /* Floating top menu with Main Quests / Side Quests dropdowns (2026-10-25) — header.site is sticky above, so the menu floats at the top while scrolling */
 header.site{box-shadow:0 3px 16px rgba(0,0,0,.35)}
 nav.main{align-items:flex-start}
-nav.main details.nav-drop{position:relative}
-nav.main details.nav-drop summary{color:var(--header-muted);font-weight:600;font-size:.98rem;padding:2px 0;cursor:pointer;list-style:none}
+nav.main details.nav-drop{position:relative;background:transparent;border:none;border-radius:0;padding:0;margin:0}
+nav.main details.nav-drop summary{color:var(--header-muted);font-weight:600;font-size:.98rem;padding:2px 0;cursor:pointer;list-style:none;font-family:inherit;line-height:inherit;letter-spacing:inherit}
 nav.main details.nav-drop summary::-webkit-details-marker{display:none}
 nav.main details.nav-drop summary::after{content:" \25BE";color:var(--signal)}
 nav.main details.nav-drop summary:hover{color:var(--header-ink);text-decoration:underline}
