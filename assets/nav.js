@@ -5,7 +5,7 @@
   var header=document.querySelector('header.site');
   if(header && !header.querySelector('nav.main')){
     header.innerHTML='<div class="site-inner"><a class="brand" href="'+base+'index.html">Journey to the End of the Universe</a><nav class="main" aria-label="Site">'
-      +'<a href="'+base+'index.html">Home</a><a href="'+base+'who-knows.html">Who Knows?</a><a href="'+base+'about.html">About</a>'
+      +'<a href="'+base+'index.html">Home</a><a href="'+base+'who-knows.html">Who Knows?</a>'
       +'<a href="'+base+'project-84.html">Project 84</a><a href="'+base+'omega42.html">Omega42</a><a href="'+base+'new-eden.html">Plan #42</a>'
       +'<a href="'+base+'main-site-pages.html">All Pages</a></nav></div>';
   }
